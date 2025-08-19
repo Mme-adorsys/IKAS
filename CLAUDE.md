@@ -17,7 +17,7 @@ IKAS is an intelligent administrative system for Keycloak that revolutionizes in
 ```
 ┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐
 │   Frontend      │    │   AI Gateway    │    │  MCP Services   │
-│  (Next.js/TS)   │◄──►│  (FastAPI/Py)   │◄──►│ Keycloak + Neo4j│
+│  (Next.js/TS)   │◄──►│   (Node.js/TS)  │◄──►│ Keycloak + Neo4j│
 │                 │    │                 │    │                 │
 │ • Voice UI      │    │ • LLM Orchestr. │    │ • Admin Tools   │
 │ • WebSocket     │    │ • Tool Discovery│    │ • Graph Queries │
@@ -230,16 +230,16 @@ This is the development repository for IKAS containing:
 
 ### ✅ Phase 0 - Completed Components
 - **keycloak-mcp-server/**: Node.js/TypeScript MCP server for Keycloak administration (✅ Tested & Documented)
-- **mcp-neo4j/**: Python MCP server for Neo4j database interactions (✅ Tested & Documented)
+- **mcp-neo4j/**: TypeScript/Node.js MCP server for Neo4j database interactions (✅ Tested & Documented)
 - **shared-types/**: TypeScript interfaces and schemas (✅ Complete with 11 interface files)
 - **docker/**: Container orchestration and development environment (✅ Working with health checks)
 - **docs/**: Complete architecture documentation and implementation plan (✅ Ready)
 - **tests/**: Integration tests for MCP servers (✅ Automated testing)
 
 ### 🚧 Phase 1-4 - Next Development Phases
-- **ai-gateway/**: FastAPI Python service for LLM orchestration and MCP coordination
+- **ai-gateway/**: Express.js/TypeScript service for LLM orchestration and MCP coordination
 - **frontend/**: Next.js/TypeScript web application with voice interface
-- **websocket-server/**: Real-time communication service
+- **websocket-server/**: Socket.io/TypeScript real-time communication service
 
 ### 📊 Available MCP Tools (Documented & Tested)
 **Keycloak MCP** (8 tools): create-user, delete-user, list-users, list-realms, list-admin-events, get-event-details, list-user-events, get-metrics
@@ -266,12 +266,13 @@ cd mcp-neo4j/ && uv sync  # or pip install requirements
 ### 🚧 Phase 1: AI Gateway Development (NEXT - Weeks 2-4)
 ```bash
 # Step 1: Create AI Gateway structure
-mkdir -p ai-gateway/src/{orchestration,llm,mcp,api}
+mkdir -p ai-gateway/src/{orchestration,llm,mcp,api,types}
 cd ai-gateway/
 
-# Step 2: Initialize Python project with dependencies
-uv init
-uv add fastapi uvicorn google-generativeai websockets redis pydantic structlog
+# Step 2: Initialize TypeScript project with dependencies
+npm init -y
+npm install express @types/express @google/generative-ai ws @types/ws ioredis @types/ioredis winston zod
+npm install -D typescript @types/node tsx nodemon
 
 # Step 3: Environment setup
 export GEMINI_API_KEY="your-google-gemini-key"
@@ -280,7 +281,7 @@ export KEYCLOAK_MCP_URL="http://localhost:8001"
 export NEO4J_MCP_URL="http://localhost:8002"
 
 # Step 4: Start development server
-uv run uvicorn src.main:app --reload --port 8000
+npm run dev  # Port 8000
 
 # Available tools after Phase 0
 # - All MCP tools documented and tested
@@ -320,16 +321,16 @@ npx playwright test
 - **Key Tools**: create-user, list-users, list-admin-events, get-metrics
 - **Entry Point**: `src/index.ts`
 
-### 2. Neo4j MCP Server (Existing ✅)  
-- **Framework**: FastMCP + Neo4j Python driver
+### 2. Neo4j MCP Server (To Migrate 🚧)  
+- **Framework**: @modelcontextprotocol/sdk + Neo4j JavaScript driver
 - **Capabilities**: Cypher execution (read/write), schema inspection
 - **Transport**: stdio, http, sse modes
 - **Environment**: NEO4J_URI, NEO4J_USERNAME, NEO4J_PASSWORD
 - **Key Tools**: get_neo4j_schema, query_read, query_write
-- **Entry Point**: `src/mcp_neo4j_cypher/server.py`
+- **Entry Point**: `src/index.ts`
 
 ### 3. AI Gateway (To Build 🚧)
-- **Framework**: FastAPI + Google Gemini LLM
+- **Framework**: Express.js/TypeScript + Google Gemini LLM
 - **Purpose**: Orchestrate between LLM and MCP services
 - **Key Features**: 
   - Dynamic MCP tool discovery
@@ -346,7 +347,7 @@ npx playwright test
   - Responsive dashboard with dark mode
 
 ### 5. WebSocket Server (To Build 🚧)
-- **Framework**: Socket.io + Redis pub/sub  
+- **Framework**: Socket.io/TypeScript + Redis pub/sub  
 - **Purpose**: Real-time updates for graph changes and analysis progress
 - **Events**: graph:update, analysis:progress, compliance:alert
 
@@ -367,11 +368,13 @@ export NEO4J_USERNAME="neo4j"
 export NEO4J_PASSWORD="password"
 export NEO4J_DATABASE="neo4j"
 
-# Phase 1: AI Gateway
+# Phase 1: AI Gateway (TypeScript/Node.js)
 export GEMINI_API_KEY="your-google-gemini-key"
 export REDIS_URL="redis://localhost:6379"
 export KEYCLOAK_MCP_URL="http://localhost:8001"
 export NEO4J_MCP_URL="http://localhost:8002"
+export NODE_ENV="development"
+export PORT="8000"
 
 # Phase 2: Frontend
 export NEXT_PUBLIC_API_URL="http://localhost:8000"
@@ -415,17 +418,17 @@ npm test
 
 # Test Neo4j MCP  
 cd mcp-neo4j/
-uv run pytest tests/integration/ -v  # Uses testcontainers
+npm test  # Uses testcontainers for Node.js
 ```
 
 ### Phase 1: AI Gateway Tests
 ```bash
 # Unit tests for orchestration logic
 cd ai-gateway/
-uv run pytest tests/unit/ -v
+npm test
 
 # Integration tests with mock MCPs
-uv run pytest tests/integration/ -v
+npm run test:integration
 ```
 
 ### Phase 2: Frontend Tests
@@ -457,15 +460,19 @@ npm run test:scenarios  # Demo scenarios testing
 ### MCP Orchestration Strategy
 The AI Gateway must intelligently route requests:
 
-```python
-# Example decision logic
-def determine_data_source(intent: str) -> str:
-    if "current" in intent or "latest" in intent:
-        return "keycloak_direct"  # Fresh data
-    elif "analyze" in intent or "pattern" in intent:
-        return "neo4j_analysis"  # Historical analysis
-    else:
-        return "both_coordinated"  # Sync then analyze
+```typescript
+// Example decision logic
+const determineDataSource = (intent: string): string => {
+  const lowerIntent = intent.toLowerCase();
+  
+  if (lowerIntent.includes("current") || lowerIntent.includes("latest")) {
+    return "keycloak_direct";  // Fresh data
+  } else if (lowerIntent.includes("analyze") || lowerIntent.includes("pattern")) {
+    return "neo4j_analysis";  // Historical analysis
+  } else {
+    return "both_coordinated";  // Sync then analyze
+  }
+};
 ```
 
 ### Voice Command Processing
@@ -497,309 +504,403 @@ socket.on('graph:update', (data) => {
 The AI Gateway serves as the intelligent coordinator between LLM and MCP services. Follow these patterns for consistent implementation:
 
 #### 1. Dynamic Tool Discovery
-```python
-# ai-gateway/src/mcp/discovery.py
-class MCPToolDiscovery:
-    async def discover_all_tools(self) -> Dict[str, List[ToolDefinition]]:
-        """Dynamically discover tools from all MCP servers"""
-        tools = {}
-        
-        # Keycloak MCP tools
-        keycloak_tools = await self.keycloak_mcp.list_tools()
-        tools['keycloak'] = [
-            self.enhance_tool_description(tool, 'keycloak')
-            for tool in keycloak_tools
-        ]
-        
-        # Neo4j MCP tools  
-        neo4j_tools = await self.neo4j_mcp.list_tools()
-        tools['neo4j'] = [
-            self.enhance_tool_description(tool, 'neo4j')
-            for tool in neo4j_tools
-        ]
-        
-        return tools
+```typescript
+// ai-gateway/src/mcp/discovery.ts
+import { ToolDefinition } from '../types/mcp';
+
+class MCPToolDiscovery {
+  async discoverAllTools(): Promise<Record<string, ToolDefinition[]>> {
+    const tools: Record<string, ToolDefinition[]> = {};
     
-    def enhance_tool_description(self, tool: ToolDefinition, source: str) -> ToolDefinition:
-        """Add context hints to help LLM make better routing decisions"""
-        enhancements = {
-            'keycloak': {
-                'list-users': tool.description + " Use for current live user data from Keycloak.",
-                'list-admin-events': tool.description + " Use for recent administrative actions and audit trails.",
-            },
-            'neo4j': {
-                'query_read': tool.description + " Use for pattern analysis, relationship queries, and historical data analysis.",
-                'get_neo4j_schema': tool.description + " Use to understand data structure before writing complex queries.",
-            }
-        }
-        
-        enhanced_desc = enhancements.get(source, {}).get(tool.name, tool.description)
-        return ToolDefinition(name=f"{source}_{tool.name}", description=enhanced_desc, inputSchema=tool.inputSchema)
+    // Keycloak MCP tools
+    const keycloakTools = await this.keycloakMcp.listTools();
+    tools.keycloak = keycloakTools.map(tool => 
+      this.enhanceToolDescription(tool, 'keycloak')
+    );
+    
+    // Neo4j MCP tools  
+    const neo4jTools = await this.neo4jMcp.listTools();
+    tools.neo4j = neo4jTools.map(tool => 
+      this.enhanceToolDescription(tool, 'neo4j')
+    );
+    
+    return tools;
+  }
+  
+  private enhanceToolDescription(tool: ToolDefinition, source: string): ToolDefinition {
+    const enhancements: Record<string, Record<string, string>> = {
+      keycloak: {
+        'list-users': tool.description + " Use for current live user data from Keycloak.",
+        'list-admin-events': tool.description + " Use for recent administrative actions and audit trails.",
+      },
+      neo4j: {
+        'query_read': tool.description + " Use for pattern analysis, relationship queries, and historical data analysis.",
+        'get_neo4j_schema': tool.description + " Use to understand data structure before writing complex queries.",
+      }
+    };
+    
+    const enhancedDesc = enhancements[source]?.[tool.name] || tool.description;
+    return {
+      ...tool,
+      name: `${source}_${tool.name}`,
+      description: enhancedDesc
+    };
+  }
+}
 ```
 
 #### 2. Intelligent Routing Strategy
-```python
-# ai-gateway/src/orchestration/routing.py
-class IntelligentRouter:
-    def __init__(self):
-        self.freshness_threshold = 30  # minutes
-        self.patterns = {
-            'fresh_data_keywords': ['aktuell', 'current', 'latest', 'jetzt', 'live'],
-            'analysis_keywords': ['analysiere', 'analyze', 'finde', 'pattern', 'duplikat', 'muster', 'statistik'],
-            'write_keywords': ['erstelle', 'create', 'lösche', 'delete', 'update', 'ändere']
-        }
+```typescript
+// ai-gateway/src/orchestration/routing.ts
+import { ExecutionStrategy } from '../types/orchestration';
+
+class IntelligentRouter {
+  private freshnessThreshold = 30; // minutes
+  private patterns = {
+    freshDataKeywords: ['aktuell', 'current', 'latest', 'jetzt', 'live'],
+    analysisKeywords: ['analysiere', 'analyze', 'finde', 'pattern', 'duplikat', 'muster', 'statistik'],
+    writeKeywords: ['erstelle', 'create', 'lösche', 'delete', 'update', 'ändere']
+  };
+  
+  async determineExecutionStrategy(userInput: string): Promise<ExecutionStrategy> {
+    const userLower = userInput.toLowerCase();
     
-    async def determine_execution_strategy(self, user_input: str) -> ExecutionStrategy:
-        """Determine the optimal routing strategy based on user intent"""
-        
-        user_lower = user_input.lower()
-        
-        # Check for write operations (always route to Keycloak first)
-        if any(keyword in user_lower for keyword in self.patterns['write_keywords']):
-            return ExecutionStrategy.KEYCLOAK_WRITE_THEN_SYNC
-        
-        # Check for fresh data requirements
-        elif any(keyword in user_lower for keyword in self.patterns['fresh_data_keywords']):
-            return ExecutionStrategy.KEYCLOAK_FRESH_DATA
-        
-        # Check for analysis requirements
-        elif any(keyword in user_lower for keyword in self.patterns['analysis_keywords']):
-            freshness = await self.check_graph_data_freshness()
-            if freshness.needs_refresh:
-                return ExecutionStrategy.SYNC_THEN_ANALYZE
-            else:
-                return ExecutionStrategy.NEO4J_ANALYSIS_ONLY
-        
-        # Default: coordinated approach
-        else:
-            return ExecutionStrategy.COORDINATED_MULTI_MCP
+    // Check for write operations (always route to Keycloak first)
+    if (this.patterns.writeKeywords.some(keyword => userLower.includes(keyword))) {
+      return ExecutionStrategy.KEYCLOAK_WRITE_THEN_SYNC;
+    }
+    
+    // Check for fresh data requirements
+    if (this.patterns.freshDataKeywords.some(keyword => userLower.includes(keyword))) {
+      return ExecutionStrategy.KEYCLOAK_FRESH_DATA;
+    }
+    
+    // Check for analysis requirements
+    if (this.patterns.analysisKeywords.some(keyword => userLower.includes(keyword))) {
+      const freshness = await this.checkGraphDataFreshness();
+      return freshness.needsRefresh 
+        ? ExecutionStrategy.SYNC_THEN_ANALYZE
+        : ExecutionStrategy.NEO4J_ANALYSIS_ONLY;
+    }
+    
+    // Default: coordinated approach
+    return ExecutionStrategy.COORDINATED_MULTI_MCP;
+  }
+  
+  private async checkGraphDataFreshness() {
+    // Implementation for checking data freshness
+    return { needsRefresh: false };
+  }
+}
 ```
 
 #### 3. Data Synchronization Patterns
-```python
-# ai-gateway/src/orchestration/sync.py
-class DataSynchronizer:
-    async def sync_keycloak_to_neo4j(self, realm: str = "master", force: bool = False) -> SyncResult:
-        """Intelligently sync data from Keycloak to Neo4j"""
+```typescript
+// ai-gateway/src/orchestration/sync.ts
+import { SyncResult } from '../types/orchestration';
+import { logger } from '../utils/logger';
+
+class DataSynchronizer {
+  async syncKeycloakToNeo4j(realm: string = "master", force: boolean = false): Promise<SyncResult> {
+    // Check if sync is needed
+    if (!force) {
+      const freshness = await this.checkFreshness(realm);
+      if (!freshness.needsRefresh) {
+        return { skipped: true, reason: "Data is fresh" };
+      }
+    }
+    
+    try {
+      // Fetch users from Keycloak
+      const usersResult = await this.keycloakMcp.callTool("list-users", { realm });
+      const users = usersResult.data;
+      
+      // Fetch roles and groups if needed
+      const rolesResult = await this.keycloakMcp.callTool("list-roles", { realm });
+      
+      // Create comprehensive sync query
+      const syncQuery = `
+        // Clear existing data for this realm
+        MATCH (n:User {realm: $realm}) DETACH DELETE n
         
-        # Check if sync is needed
-        if not force:
-            freshness = await self.check_freshness(realm)
-            if not freshness.needs_refresh:
-                return SyncResult(skipped=True, reason="Data is fresh")
+        // Import users
+        UNWIND $users as userData
+        CREATE (u:User {
+          id: userData.id,
+          username: userData.username,
+          email: userData.email,
+          firstName: userData.firstName,
+          lastName: userData.lastName,
+          enabled: userData.enabled,
+          realm: $realm,
+          lastSync: datetime()
+        })
         
-        try:
-            # Fetch users from Keycloak
-            users_result = await self.keycloak_mcp.call_tool("list-users", {"realm": realm})
-            users = users_result.data
-            
-            # Fetch roles and groups if needed
-            roles_result = await self.keycloak_mcp.call_tool("list-roles", {"realm": realm})
-            
-            # Create comprehensive sync query
-            sync_query = """
-            // Clear existing data for this realm
-            MATCH (n:User {realm: $realm}) DETACH DELETE n
-            
-            // Import users
-            UNWIND $users as userData
-            CREATE (u:User {
-                id: userData.id,
-                username: userData.username,
-                email: userData.email,
-                firstName: userData.firstName,
-                lastName: userData.lastName,
-                enabled: userData.enabled,
-                realm: $realm,
-                lastSync: datetime()
-            })
-            
-            // Update sync metadata
-            MERGE (m:Metadata {type: 'sync', realm: $realm})
-            SET m.lastUpdated = datetime(),
-                m.userCount = size($users),
-                m.syncVersion = randomUUID()
-            """
-            
-            # Execute sync
-            await self.neo4j_mcp.call_tool("query_write", {
-                "query": sync_query,
-                "parameters": {
-                    "realm": realm,
-                    "users": users
-                }
-            })
-            
-            return SyncResult(success=True, records_synced=len(users))
-            
-        except Exception as e:
-            logger.error(f"Sync failed: {str(e)}")
-            return SyncResult(success=False, error=str(e))
+        // Update sync metadata
+        MERGE (m:Metadata {type: 'sync', realm: $realm})
+        SET m.lastUpdated = datetime(),
+            m.userCount = size($users),
+            m.syncVersion = randomUUID()
+      `;
+      
+      // Execute sync
+      await this.neo4jMcp.callTool("query_write", {
+        query: syncQuery,
+        parameters: {
+          realm,
+          users
+        }
+      });
+      
+      return { success: true, recordsSynced: users.length };
+      
+    } catch (error) {
+      const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+      logger.error(`Sync failed: ${errorMessage}`);
+      return { success: false, error: errorMessage };
+    }
+  }
+  
+  private async checkFreshness(realm: string) {
+    // Implementation for checking data freshness
+    return { needsRefresh: false };
+  }
+}
 ```
 
 #### 4. Error Recovery and Circuit Breakers
-```python
-# ai-gateway/src/orchestration/resilience.py
-from circuit_breaker import CircuitBreaker
+```typescript
+// ai-gateway/src/orchestration/resilience.ts
+import { CircuitBreaker } from '../utils/circuit-breaker';
+import { MCPResponse, HttpError, Neo4jError } from '../types/mcp';
+import { logger } from '../utils/logger';
 
-class ResilientOrchestrator:
-    def __init__(self):
-        # Circuit breakers for each MCP
-        self.keycloak_breaker = CircuitBreaker(
-            failure_threshold=5,
-            recovery_timeout=30,
-            expected_exception=HttpError
-        )
-        
-        self.neo4j_breaker = CircuitBreaker(
-            failure_threshold=3,
-            recovery_timeout=60,
-            expected_exception=Neo4jError
-        )
+class ResilientOrchestrator {
+  private keycloakBreaker: CircuitBreaker;
+  private neo4jBreaker: CircuitBreaker;
+  
+  constructor() {
+    // Circuit breakers for each MCP
+    this.keycloakBreaker = new CircuitBreaker({
+      failureThreshold: 5,
+      recoveryTimeout: 30000, // 30 seconds
+      expectedExceptions: [HttpError]
+    });
     
-    @self.keycloak_breaker
-    async def call_keycloak_tool(self, tool_name: str, args: dict) -> MCPResponse:
-        """Call Keycloak MCP with circuit breaker protection"""
-        return await self.keycloak_mcp.call_tool(tool_name, args)
-    
-    @self.neo4j_breaker  
-    async def call_neo4j_tool(self, tool_name: str, args: dict) -> MCPResponse:
-        """Call Neo4j MCP with circuit breaker protection"""
-        return await self.neo4j_mcp.call_tool(tool_name, args)
-    
-    async def execute_with_fallback(self, primary_call, fallback_call=None):
-        """Execute primary call with optional fallback"""
-        try:
-            return await primary_call()
-        except CircuitBreakerOpenException:
-            if fallback_call:
-                logger.warning("Primary service unavailable, using fallback")
-                return await fallback_call()
-            else:
-                raise ServiceUnavailableException("Primary service down, no fallback available")
+    this.neo4jBreaker = new CircuitBreaker({
+      failureThreshold: 3,
+      recoveryTimeout: 60000, // 60 seconds
+      expectedExceptions: [Neo4jError]
+    });
+  }
+  
+  async callKeycloakTool(toolName: string, args: Record<string, any>): Promise<MCPResponse> {
+    return this.keycloakBreaker.execute(async () => {
+      return await this.keycloakMcp.callTool(toolName, args);
+    });
+  }
+  
+  async callNeo4jTool(toolName: string, args: Record<string, any>): Promise<MCPResponse> {
+    return this.neo4jBreaker.execute(async () => {
+      return await this.neo4jMcp.callTool(toolName, args);
+    });
+  }
+  
+  async executeWithFallback<T>(
+    primaryCall: () => Promise<T>,
+    fallbackCall?: () => Promise<T>
+  ): Promise<T> {
+    try {
+      return await primaryCall();
+    } catch (error) {
+      if (error instanceof CircuitBreakerOpenException && fallbackCall) {
+        logger.warn("Primary service unavailable, using fallback");
+        return await fallbackCall();
+      } else if (!fallbackCall) {
+        throw new ServiceUnavailableException("Primary service down, no fallback available");
+      }
+      throw error;
+    }
+  }
+}
+
+class CircuitBreakerOpenException extends Error {}
+class ServiceUnavailableException extends Error {}
 ```
 
 #### 5. Caching and Performance Optimization
-```python
-# ai-gateway/src/orchestration/cache.py
-class IntelligentCache:
-    def __init__(self, redis_client):
-        self.redis = redis_client
-        self.ttl_config = {
-            'user_data': 300,      # 5 minutes
-            'compliance_results': 1800,  # 30 minutes  
-            'graph_analysis': 3600,      # 1 hour
-            'system_metrics': 60         # 1 minute
-        }
+```typescript
+// ai-gateway/src/orchestration/cache.ts
+import Redis from 'ioredis';
+import { createHash } from 'crypto';
+
+class IntelligentCache {
+  private redis: Redis;
+  private ttlConfig = {
+    user_data: 300,          // 5 minutes
+    compliance_results: 1800, // 30 minutes  
+    graph_analysis: 3600,     // 1 hour
+    system_metrics: 60        // 1 minute
+  };
+  
+  constructor(redisClient: Redis) {
+    this.redis = redisClient;
+  }
+  
+  async getOrExecute<T>(
+    cacheKey: string, 
+    cacheType: keyof typeof this.ttlConfig, 
+    executorFunc: () => Promise<T>
+  ): Promise<T> {
+    // Try cache first
+    const cachedResult = await this.redis.get(cacheKey);
+    if (cachedResult) {
+      return JSON.parse(cachedResult);
+    }
     
-    async def get_or_execute(self, cache_key: str, cache_type: str, executor_func) -> Any:
-        """Get from cache or execute function and cache result"""
-        
-        # Try cache first
-        cached_result = await self.redis.get(cache_key)
-        if cached_result:
-            return json.loads(cached_result)
-        
-        # Execute and cache
-        result = await executor_func()
-        ttl = self.ttl_config.get(cache_type, 300)
-        
-        await self.redis.setex(
-            cache_key, 
-            ttl, 
-            json.dumps(result, default=str)
-        )
-        
-        return result
+    // Execute and cache
+    const result = await executorFunc();
+    const ttl = this.ttlConfig[cacheType] || 300;
     
-    def generate_cache_key(self, operation: str, params: dict) -> str:
-        """Generate consistent cache keys"""
-        param_hash = hashlib.md5(
-            json.dumps(params, sort_keys=True).encode()
-        ).hexdigest()[:8]
-        
-        return f"ikas:{operation}:{param_hash}"
+    await this.redis.setex(
+      cacheKey,
+      ttl,
+      JSON.stringify(result, null, 0)
+    );
+    
+    return result;
+  }
+  
+  generateCacheKey(operation: string, params: Record<string, any>): string {
+    const paramHash = createHash('md5')
+      .update(JSON.stringify(params, Object.keys(params).sort()))
+      .digest('hex')
+      .substring(0, 8);
+    
+    return `ikas:${operation}:${paramHash}`;
+  }
+}
 ```
 
 ### Best Practices for MCP Integration
 
 1. **Always Use Type-Safe Interfaces**
-   ```python
-   from pydantic import BaseModel
+   ```typescript
+   // ai-gateway/src/types/mcp.ts
+   export interface MCPToolCall {
+     server: 'keycloak' | 'neo4j';
+     tool: string;
+     arguments: Record<string, any>;
+     context?: Record<string, any>;
+   }
    
-   class MCPToolCall(BaseModel):
-       server: Literal['keycloak', 'neo4j']
-       tool: str
-       arguments: Dict[str, Any]
-       context: Optional[Dict[str, Any]] = None
+   export interface MCPResponse<T = any> {
+     success: boolean;
+     data?: T;
+     error?: string;
+     metadata?: Record<string, any>;
+   }
    
-   class MCPResponse(BaseModel):
-       success: bool
-       data: Optional[Any] = None
-       error: Optional[str] = None
-       metadata: Optional[Dict[str, Any]] = None
+   export interface ToolDefinition {
+     name: string;
+     description: string;
+     inputSchema: Record<string, any>;
+   }
    ```
 
 2. **Implement Comprehensive Logging**
-   ```python
-   import structlog
+   ```typescript
+   // ai-gateway/src/utils/logger.ts
+   import winston from 'winston';
    
-   logger = structlog.get_logger()
+   export const logger = winston.createLogger({
+     format: winston.format.combine(
+       winston.format.timestamp(),
+       winston.format.json()
+     ),
+     transports: [
+       new winston.transports.Console(),
+       new winston.transports.File({ filename: 'logs/app.log' })
+     ]
+   });
    
-   async def orchestrate_request(request: OrchestrationRequest) -> OrchestrationResponse:
-       logger.info(
-           "orchestration_started",
-           user_input=request.user_input,
-           session_id=request.session_id,
-           strategy=request.strategy
-       )
+   // Usage in orchestration
+   async function orchestrateRequest(
+     request: OrchestrationRequest
+   ): Promise<OrchestrationResponse> {
+     logger.info('orchestration_started', {
+       userInput: request.userInput,
+       sessionId: request.sessionId,
+       strategy: request.strategy
+     });
+     
+     try {
+       const result = await this.executeStrategy(request);
        
-       try:
-           result = await self.execute_strategy(request)
-           
-           logger.info(
-               "orchestration_completed",
-               session_id=request.session_id,
-               duration=result.duration,
-               tools_called=result.tools_called
-           )
-           
-           return result
-           
-       except Exception as e:
-           logger.error(
-               "orchestration_failed", 
-               session_id=request.session_id,
-               error=str(e),
-               exc_info=True
-           )
-           raise
+       logger.info('orchestration_completed', {
+         sessionId: request.sessionId,
+         duration: result.duration,
+         toolsCalled: result.toolsCalled
+       });
+       
+       return result;
+       
+     } catch (error) {
+       logger.error('orchestration_failed', {
+         sessionId: request.sessionId,
+         error: error instanceof Error ? error.message : 'Unknown error',
+         stack: error instanceof Error ? error.stack : undefined
+       });
+       throw error;
+     }
+   }
    ```
 
 3. **Monitor Performance Metrics**
-   ```python
-   from prometheus_client import Counter, Histogram, Gauge
+   ```typescript
+   // ai-gateway/src/utils/metrics.ts
+   import { register, Counter, Histogram, Gauge } from 'prom-client';
    
-   # Metrics
-   mcp_calls_total = Counter('ikas_mcp_calls_total', 'Total MCP calls', ['server', 'tool', 'status'])
-   mcp_duration = Histogram('ikas_mcp_duration_seconds', 'MCP call duration', ['server', 'tool'])
-   active_sessions = Gauge('ikas_active_sessions', 'Number of active user sessions')
+   // Metrics
+   export const mcpCallsTotal = new Counter({
+     name: 'ikas_mcp_calls_total',
+     help: 'Total MCP calls',
+     labelNames: ['server', 'tool', 'status']
+   });
    
-   async def call_mcp_with_metrics(self, server: str, tool: str, args: dict):
-       start_time = time.time()
+   export const mcpDuration = new Histogram({
+     name: 'ikas_mcp_duration_seconds',
+     help: 'MCP call duration',
+     labelNames: ['server', 'tool']
+   });
+   
+   export const activeSessions = new Gauge({
+     name: 'ikas_active_sessions',
+     help: 'Number of active user sessions'
+   });
+   
+   export async function callMcpWithMetrics(
+     server: string,
+     tool: string,
+     args: Record<string, any>,
+     mcpCall: () => Promise<any>
+   ) {
+     const startTime = Date.now();
+     
+     try {
+       const result = await mcpCall();
+       mcpCallsTotal.labels({ server, tool, status: 'success' }).inc();
+       return result;
        
-       try:
-           result = await self.call_mcp(server, tool, args)
-           mcp_calls_total.labels(server=server, tool=tool, status='success').inc()
-           return result
-           
-       except Exception as e:
-           mcp_calls_total.labels(server=server, tool=tool, status='error').inc()
-           raise
-           
-       finally:
-           duration = time.time() - start_time
-           mcp_duration.labels(server=server, tool=tool).observe(duration)
+     } catch (error) {
+       mcpCallsTotal.labels({ server, tool, status: 'error' }).inc();
+       throw error;
+       
+     } finally {
+       const duration = (Date.now() - startTime) / 1000;
+       mcpDuration.labels({ server, tool }).observe(duration);
+     }
+   }
    ```
 
 ## ✅ Phase 0 Completion Status
@@ -833,9 +934,9 @@ The foundation is complete and tested. You can immediately start Phase 1 develop
 ### Next Phase Priority Tasks
 
 #### Week 2 - AI Gateway Foundation
-1. **FastAPI Setup**: Create basic AI Gateway with health endpoints
-2. **MCP Client Library**: Implement HTTP clients for both MCP servers
-3. **Google Gemini Integration**: Setup LLM with function calling
+1. **Express.js Setup**: Create basic AI Gateway with health endpoints and TypeScript configuration
+2. **MCP Client Library**: Implement HTTP clients for both MCP servers with type safety
+3. **Google Gemini Integration**: Setup LLM with function calling using @google/generative-ai
 4. **Dynamic Tool Discovery**: Auto-detect and map MCP tools to Gemini functions
 
 #### Week 3 - Intelligent Orchestration  
@@ -855,26 +956,34 @@ The foundation is complete and tested. You can immediately start Phase 1 develop
 # Phase 1 will create these key files:
 ai-gateway/
 ├── src/
-│   ├── main.py                 # FastAPI application
+│   ├── main.ts                  # Express.js application
+│   ├── types/
+│   │   ├── mcp.ts               # MCP type definitions
+│   │   └── orchestration.ts    # Orchestration types
 │   ├── orchestration/
-│   │   ├── orchestrator.py     # Main orchestration logic
-│   │   ├── routing.py          # Intelligent MCP selection
-│   │   └── sync.py             # Data synchronization
+│   │   ├── orchestrator.ts      # Main orchestration logic
+│   │   ├── routing.ts           # Intelligent MCP selection
+│   │   └── sync.ts              # Data synchronization
 │   ├── llm/
-│   │   ├── gemini_service.py   # Google Gemini integration
-│   │   └── tool_discovery.py   # Dynamic MCP tool mapping
+│   │   ├── gemini-service.ts    # Google Gemini integration
+│   │   └── tool-discovery.ts    # Dynamic MCP tool mapping
 │   ├── mcp/
-│   │   ├── client.py           # Base MCP client
-│   │   ├── keycloak_client.py  # Keycloak MCP wrapper
-│   │   └── neo4j_client.py     # Neo4j MCP wrapper
-│   └── api/
-│       ├── routes.py           # REST endpoints
-│       └── websocket.py        # WebSocket handlers
+│   │   ├── client.ts            # Base MCP client
+│   │   ├── keycloak-client.ts   # Keycloak MCP wrapper
+│   │   └── neo4j-client.ts      # Neo4j MCP wrapper
+│   ├── api/
+│   │   ├── routes.ts            # REST endpoints
+│   │   └── websocket.ts         # WebSocket handlers
+│   └── utils/
+│       ├── logger.ts            # Winston logging
+│       ├── metrics.ts           # Prometheus metrics
+│       └── circuit-breaker.ts   # Circuit breaker util
 ├── tests/
-│   ├── test_orchestration.py
-│   ├── test_mcp_clients.py
-│   └── test_integration.py
-└── pyproject.toml
+│   ├── orchestration.test.ts
+│   ├── mcp-clients.test.ts
+│   └── integration.test.ts
+├── package.json
+└── tsconfig.json
 ```
 
 ### Success Metrics for Phase 1

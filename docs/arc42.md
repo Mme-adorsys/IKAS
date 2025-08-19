@@ -69,7 +69,7 @@ Das Intelligente Keycloak Admin System (IKAS) revolutioniert die Verwaltung von 
 |------------|-------------|
 | **CV1** Architektur | Microservices-Ansatz mit REST APIs |
 | **CV2** Dokumentation | arc42 für Architektur, OpenAPI für APIs |
-| **CV3** Code-Style | ESLint für JS/TS, Black für Python |
+| **CV3** Code-Style | ESLint + Prettier für TypeScript |
 | **CV4** Versionierung | Semantic Versioning, Git Flow |
 
 ---
@@ -115,13 +115,13 @@ graph TB
 
 | Aspekt | Lösung | Begründung |
 |--------|--------|------------|
-| **Frontend** | React + TypeScript | Type-Safety, große Community, Komponenten-Ökosystem |
+| **Frontend** | Next.js + TypeScript | Full-Stack Framework, SSR-Support, Type-Safety |
 | **Spracherkennung** | Web Speech API + Fallback | Native Browser-Unterstützung, keine Kosten |
-| **KI/LLM** | Google Gemini | Deutsch-Support, Function Calling, TTS integriert |
-| **Backend** | FastAPI (Python) | Async-Support, automatische OpenAPI-Docs |
-| **MCP Implementation** | Python mit Pydantic | Type-Validation, Keycloak-Python-Admin verfügbar |
-| **Graph Database** | Neo4j | Beste Graph-Traversal-Performance, Cypher-Query-Language |
-| **Message Queue** | Redis Pub/Sub | Einfachheit, Performance für Event-Streaming |
+| **KI/LLM** | Google Gemini | Deutsch-Support, Function Calling, @google/generative-ai |
+| **Backend** | Express.js (TypeScript) | Async-Support, einheitliche Sprache, große Community |
+| **MCP Implementation** | TypeScript mit Zod | Type-Validation, @modelcontextprotocol/sdk |
+| **Graph Database** | Neo4j | Beste Graph-Traversal-Performance, Neo4j JavaScript Driver |
+| **Message Queue** | Redis Pub/Sub | Einfachheit, Performance für Event-Streaming, ioredis |
 
 ### 4.2 Architekturansätze
 
@@ -145,13 +145,13 @@ graph TB
     end
     
     subgraph "Application Layer"
-        AG[AI Gateway<br/>FastAPI]
-        WS[WebSocket Server<br/>Socket.io]
+        AG[AI Gateway<br/>Express.js/TypeScript]
+        WS[WebSocket Server<br/>Socket.io/TypeScript]
     end
     
     subgraph "MCP Layer (Multi-Channel-Proxy)"
-        MCP_KC[Keycloak MCP<br/>Python Service]
-        MCP_NG[Neo4j MCP<br/>Python Service]
+        MCP_KC[Keycloak MCP<br/>TypeScript Service]
+        MCP_NG[Neo4j MCP<br/>TypeScript Service]
     end
     
     subgraph "Intelligence Layer"
@@ -183,20 +183,21 @@ graph TB
 
 #### 5.2.1 Keycloak MCP Service
 
-```python
-# keycloak_mcp_service/
-├── api/
-│   ├── endpoints/
-│   │   ├── users.py         # Benutzerverwaltung
-│   │   ├── roles.py         # Rollenverwaltung
-│   │   ├── groups.py        # Gruppenverwaltung
-│   │   ├── clients.py       # Client-Konfiguration
-│   │   └── realms.py        # Realm-Operationen
-│   └── middleware/
-│       ├── auth.py
-│       ├── rate_limiting.py
-│       └── logging.py
-├── core/
+```typescript
+// keycloak-mcp-server/
+├── src/
+│   ├── api/
+│   │   ├── endpoints/
+│   │   │   ├── users.ts         // Benutzerverwaltung
+│   │   │   ├── roles.ts         // Rollenverwaltung
+│   │   │   ├── groups.ts        // Gruppenverwaltung
+│   │   │   ├── clients.ts       // Client-Konfiguration
+│   │   │   └── realms.ts        // Realm-Operationen
+│   │   └── middleware/
+│   │       ├── auth.ts
+│   │       ├── rate-limiting.ts
+│   │       └── logging.ts
+│   ├── core/
 │   ├── config.py
 │   ├── keycloak_client.py  # Keycloak Admin Client Wrapper
 │   └── exceptions.py

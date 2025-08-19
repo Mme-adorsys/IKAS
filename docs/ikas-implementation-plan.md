@@ -219,34 +219,46 @@ With Phase 0 complete, we now have verified MCP tool schemas and can implement m
 
 **Tasks**:
 
-1. **FastAPI Setup with MCP Client** (6 hours)
+1. **Express.js Setup with MCP Client** (6 hours)
    *Updated: Using documented MCP tool schemas from Phase 0*
-   ```python
-   # ai-gateway/src/main.py
-   from fastapi import FastAPI, WebSocket
-   from fastapi.middleware.cors import CORSMiddleware
-   import asyncio
-   import logging
+   ```typescript
+   // ai-gateway/src/main.ts
+   import express from 'express';
+   import cors from 'cors';
+   import { createServer } from 'http';
+   import { Server as SocketIOServer } from 'socket.io';
    
-   app = FastAPI(title="IKAS AI Gateway", version="1.0.0")
+   const app = express();
+   const server = createServer(app);
+   const io = new SocketIOServer(server, {
+     cors: {
+       origin: "http://localhost:3000", // Frontend
+       credentials: true
+     }
+   });
    
-   app.add_middleware(
-       CORSMiddleware,
-       allow_origins=["http://localhost:3000"],  # Frontend
-       allow_credentials=True,
-       allow_methods=["*"],
-       allow_headers=["*"],
-   )
+   app.use(cors({
+     origin: "http://localhost:3000",
+     credentials: true
+   }));
    
-   # Health check
-   @app.get("/health")
-   async def health_check():
-       return {"status": "healthy", "services": await check_mcp_services()}
+   app.use(express.json());
+   
+   // Health check
+   app.get('/health', async (req, res) => {
+     const services = await checkMcpServices();
+     res.json({ status: 'healthy', services });
+   });
+   
+   const PORT = process.env.PORT || 8000;
+   server.listen(PORT, () => {
+     console.log(`IKAS AI Gateway running on port ${PORT}`);
+   });
    ```
 
 2. **MCP Client Implementation** (8 hours)
-   ```python
-   # ai-gateway/src/mcp/client.py
+   ```typescript
+   // ai-gateway/src/mcp/client.ts
    import httpx
    from typing import Dict, Any, List
    from pydantic import BaseModel
