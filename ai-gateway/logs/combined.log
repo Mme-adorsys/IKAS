@@ -1,0 +1,3 @@
+[32m{"apiConfigured":true,"level":"info","message":"Gemini service initialized","model":"gemini-1.5-pro","service":"ikas-ai-gateway","timestamp":"2025-08-19T15:40:36.908Z"}[39m
+[32m{"level":"info","message":"Orchestrator initialized","service":"ikas-ai-gateway","timestamp":"2025-08-19T15:40:36.909Z"}[39m
+[32m{"environment":"development","keycloakMcp":"http://localhost:8001","level":"info","message":"IKAS AI Gateway started","neo4jMcp":"http://localhost:8002","port":8000,"service":"ikas-ai-gateway","timestamp":"2025-08-19T15:40:36.911Z"}[39m
