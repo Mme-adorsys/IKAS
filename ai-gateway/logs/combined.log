@@ -1,3 +1,11 @@
 [32m{"apiConfigured":true,"level":"info","message":"Gemini service initialized","model":"gemini-1.5-pro","service":"ikas-ai-gateway","timestamp":"2025-08-19T15:40:36.908Z"}[39m
 [32m{"level":"info","message":"Orchestrator initialized","service":"ikas-ai-gateway","timestamp":"2025-08-19T15:40:36.909Z"}[39m
 [32m{"environment":"development","keycloakMcp":"http://localhost:8001","level":"info","message":"IKAS AI Gateway started","neo4jMcp":"http://localhost:8002","port":8000,"service":"ikas-ai-gateway","timestamp":"2025-08-19T15:40:36.911Z"}[39m
+[32m{"apiConfigured":true,"level":"info","message":"Gemini service initialized","model":"gemini-1.5-pro","service":"ikas-ai-gateway","timestamp":"2025-08-20T07:42:27.262Z"}[39m
+[32m{"level":"info","message":"Orchestrator initialized","service":"ikas-ai-gateway","timestamp":"2025-08-20T07:42:27.264Z"}[39m
+[32m{"environment":"development","keycloakMcp":"http://localhost:8001","level":"info","message":"IKAS AI Gateway started","neo4jMcp":"http://localhost:8002","port":8005,"service":"ikas-ai-gateway","timestamp":"2025-08-20T07:42:27.267Z"}[39m
+[32m{"level":"info","message":"Connecting to WebSocket server","service":"ikas-ai-gateway","timestamp":"2025-08-20T07:42:27.267Z","url":"http://localhost:3001"}[39m
+[32m{"level":"info","message":"Connected to WebSocket server","service":"ikas-ai-gateway","socketId":"Cvot49U4xf5k2SYMAAAB","timestamp":"2025-08-20T07:42:27.289Z"}[39m
+[32m{"level":"info","message":"WebSocket client connected successfully","service":"ikas-ai-gateway","timestamp":"2025-08-20T07:42:27.290Z"}[39m
+[32m{"level":"info","message":"WebSocket session established Willkommen bei IKAS! Verbindung erfolgreich hergestellt.","service":"ikas-ai-gateway","sessionId":"6798a878-0e23-41c4-9e05-c6aaa754a650","timestamp":"2025-08-20T07:42:27.290Z"}[39m
+[34m{"eventTypes":["voice:command","analysis:started","compliance:check"],"level":"debug","message":"Subscription confirmed","room":"global","service":"ikas-ai-gateway","timestamp":"2025-08-20T07:42:27.290Z"}[39m
