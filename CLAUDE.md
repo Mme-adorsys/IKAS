@@ -15,14 +15,14 @@ IKAS is an intelligent administrative system for Keycloak that revolutionizes in
 ### Architecture Overview
 
 ```
-┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐
-│   Frontend      │    │   AI Gateway    │    │  MCP Services   │
-│  (Next.js/TS)   │◄──►│   (Node.js/TS)  │◄──►│ Keycloak + Neo4j│
-│                 │    │                 │    │                 │
-│ • Voice UI      │    │ • LLM Orchestr. │    │ • Admin Tools   │
-│ • WebSocket     │    │ • Tool Discovery│    │ • Graph Queries │
-│ • Graph Viz     │    │ • Smart Routing │    │ • Event Monitor │
-└─────────────────┘    └─────────────────┘    └─────────────────┘
+┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐
+│  Voice Client   │    │ WebSocket Server│    │   AI Gateway    │    │  MCP Services   │
+│   (Browser)     │◄──►│  (Socket.io/TS) │◄──►│  (Express/TS)   │◄──►│ Keycloak + Neo4j│
+│                 │    │                 │    │                 │    │                 │
+│ • German Voice  │    │ • Real-time Hub │    │ • LLM Orchestr. │    │ • Admin Tools   │
+│ • Hey Keycloak  │    │ • Redis Pub/Sub │    │ • Event Handler │    │ • Graph Queries │
+│ • WebSocket     │    │ • Session Mgmt  │    │ • Smart Routing │    │ • User Data     │
+└─────────────────┘    └─────────────────┘    └─────────────────┘    └─────────────────┘
 ```
 
 ### Timeline & Milestones
@@ -30,13 +30,13 @@ IKAS is an intelligent administrative system for Keycloak that revolutionizes in
 - **Total Duration**: 12 weeks to MVP for Amsterdam demo
 - **Team Size**: 2-3 developers (reduced from original plan)
 - **Key Advantage**: 5 weeks saved by leveraging existing MCPs
-- **Current Status**: ✅ Phase 0 Complete - Foundation Ready
+- **Current Status**: ✅ Phase 2 Complete - Voice Interface & WebSocket Ready
 
 ### Phase Status Overview
 - **✅ Phase 0** (Week 1): MCP Integration & Foundation - **COMPLETED**
-- **🚧 Phase 1** (Weeks 2-4): Intelligence Layer with AI Gateway - **NEXT**
-- **⏳ Phase 2** (Weeks 5-7): Voice Interface & Real-time WebSocket
-- **⏳ Phase 3** (Weeks 8-10): Frontend Development
+- **✅ Phase 1** (Weeks 2-4): Intelligence Layer with AI Gateway - **COMPLETED**  
+- **✅ Phase 2** (Weeks 5-7): Voice Interface & Real-time WebSocket - **COMPLETED**
+- **🚧 Phase 3** (Weeks 8-10): Frontend Development - **NEXT**
 - **⏳ Phase 4** (Weeks 11-12): Integration & Amsterdam Demo Prep
 
 ## Project Management via Trello
@@ -228,18 +228,19 @@ Co-authored-by: [Name] <email@domain.com>
 
 This is the development repository for IKAS containing:
 
-### ✅ Phase 0 - Completed Components
+### ✅ Phase 0-2 - Completed Components
 - **keycloak-mcp-server/**: Node.js/TypeScript MCP server for Keycloak administration (✅ Tested & Documented)
-- **mcp-neo4j/**: TypeScript/Node.js MCP server for Neo4j database interactions (✅ Tested & Documented)
+- **mcp-neo4j/**: Python MCP server for Neo4j database interactions (✅ Tested & Documented)
 - **shared-types/**: TypeScript interfaces and schemas (✅ Complete with 11 interface files)
 - **docker/**: Container orchestration and development environment (✅ Working with health checks)
 - **docs/**: Complete architecture documentation and implementation plan (✅ Ready)
 - **tests/**: Integration tests for MCP servers (✅ Automated testing)
+- **ai-gateway/**: Express.js/TypeScript service for LLM orchestration and MCP coordination (✅ Running on Port 8005)
+- **websocket-server/**: Socket.io/TypeScript real-time communication service (✅ Running on Port 3001)
 
-### 🚧 Phase 1-4 - Next Development Phases
-- **ai-gateway/**: Express.js/TypeScript service for LLM orchestration and MCP coordination
-- **frontend/**: Next.js/TypeScript web application with voice interface
-- **websocket-server/**: Socket.io/TypeScript real-time communication service
+### 🚧 Phase 3-4 - Next Development Phases  
+- **frontend/**: Next.js/TypeScript web application with full voice interface and graph visualization
+- **e2e-tests/**: End-to-end testing suite for Amsterdam demo scenarios
 
 ### 📊 Available MCP Tools (Documented & Tested)
 **Keycloak MCP** (8 tools): create-user, delete-user, list-users, list-realms, list-admin-events, get-event-details, list-user-events, get-metrics
@@ -263,39 +264,69 @@ cd keycloak-mcp-server/ && npm install && npm run build
 cd mcp-neo4j/ && uv sync  # or pip install requirements
 ```
 
-### 🚧 Phase 1: AI Gateway Development (NEXT - Weeks 2-4)
+### ✅ Phase 1-2: AI Gateway & WebSocket Development (COMPLETED)
 ```bash
-# Step 1: Create AI Gateway structure
-mkdir -p ai-gateway/src/{orchestration,llm,mcp,api,types}
+# Start AI Gateway (requires GEMINI_API_KEY environment variable)
 cd ai-gateway/
-
-# Step 2: Initialize TypeScript project with dependencies
-npm init -y
-npm install express @types/express @google/generative-ai ws @types/ws ioredis @types/ioredis winston zod
-npm install -D typescript @types/node tsx nodemon
-
-# Step 3: Environment setup
 export GEMINI_API_KEY="your-google-gemini-key"
-export REDIS_URL="redis://localhost:6379"
-export KEYCLOAK_MCP_URL="http://localhost:8001"
-export NEO4J_MCP_URL="http://localhost:8002"
+export PORT=8005
+npm run dev  # Runs on port 8005
 
-# Step 4: Start development server
-npm run dev  # Port 8000
+# Start WebSocket Server  
+cd websocket-server/
+npm run dev  # Runs on port 3001
 
-# Available tools after Phase 0
-# - All MCP tools documented and tested
-# - Shared TypeScript interfaces ready
-# - Docker environment operational
+# Test Voice Interface
+open http://localhost:8080/test-client.html  # German voice commands
 ```
 
-### Phase 2: Frontend Development  
+### ✅ Current System Status (Phase 2 Complete)
 ```bash
-# Create Next.js frontend
+# All services running and integrated:
+
+# 1. WebSocket Server (Real-time Hub)
+# Port 3001 - Socket.io server with Redis Pub/Sub
+# ✅ Session management, room subscriptions, event distribution
+# ✅ German voice command processing
+# ✅ Health monitoring and cleanup
+
+# 2. AI Gateway (LLM Orchestration)  
+# Port 8005 - Express.js with WebSocket client integration
+# ✅ Connected to WebSocket server for real-time processing
+# ✅ Google Gemini LLM integration with function calling
+# ✅ MCP orchestration (Keycloak + Neo4j)
+# ✅ Intelligent routing and event handling
+
+# 3. Voice Test Client (German Interface)
+# Port 8080 - Browser-based voice interface
+# ✅ "Hey Keycloak" hotword detection
+# ✅ German Web Speech API integration
+# ✅ Real-time WebSocket communication
+# ✅ Visual feedback and event logging
+
+# 4. MCP Services (Backend Tools)
+# Keycloak MCP (Port 8001) - User management
+# Neo4j MCP (Port 8002) - Graph analytics
+# ✅ 11 total tools available for voice commands
+```
+
+### 🎤 Demo Voice Commands Available Now
+```bash
+# German voice commands that work end-to-end:
+"Hey Keycloak, zeige alle Benutzer"       # Show all users
+"Hey Keycloak, analysiere die Compliance" # Run compliance analysis  
+"Hey Keycloak, finde doppelte Benutzer"   # Find duplicate users
+"Hey Keycloak, erstelle einen Benutzer"   # Create a new user
+"Hey Keycloak, zeige die Statistiken"     # Show usage statistics
+```
+
+### 🚧 Phase 3: Frontend Development (NEXT - Weeks 8-10)
+```bash
+# Create Next.js frontend with full IKAS interface
 npx create-next-app@latest frontend --typescript --tailwind --app
 cd frontend/
 
-# Add IKAS dependencies
+# Add IKAS dependencies for voice, WebSocket, and graph visualization
 npm install @types/speech-recognition socket.io-client zustand d3 @types/d3
 
 # Start development
@@ -431,29 +462,51 @@ npm test
 npm run test:integration
 ```
 
-### Phase 2: Frontend Tests
+### Phase 2: WebSocket & Voice Interface Tests (COMPLETED)
+```bash
+# WebSocket server tests
+cd websocket-server/
+npm run build  # TypeScript compilation successful
+npm run test   # Event system and session management tests
+
+# Voice interface testing  
+open http://localhost:8080/test-client.html
+# Test German voice commands:
+# - "Hey Keycloak" hotword detection ✅
+# - Real-time WebSocket communication ✅ 
+# - Voice response synthesis ✅
+```
+
+### Phase 3: Frontend Tests (NEXT)
 ```bash
 # Component tests
 cd frontend/
 npm run test
 
-# E2E voice interface testing
+# E2E voice interface testing with full UI
 npx playwright test tests/voice-commands.spec.ts
 ```
 
-### Phase 3: Full System Tests
+### Phase 4: Amsterdam Demo Tests
 ```bash
-# End-to-end scenarios
+# End-to-end demo scenarios
 cd e2e-tests/
 npm run test:scenarios  # Demo scenarios testing
 ```
 
-### Amsterdam Demo Test Scenarios
+### 🚀 Amsterdam Demo Test Scenarios (Phase 2 Ready)
 
+**✅ Currently Working End-to-End:**
 1. **"Hey Keycloak, zeige alle Benutzer"** - Voice activation and user listing
-2. **"Analysiere die Compliance"** - Multi-MCP orchestration  
-3. **"Finde doppelte Benutzer"** - Graph analysis with real-time visualization
-4. **System Health Check** - All components operational with fallback modes
+   - German hotword detection → WebSocket → AI Gateway → Keycloak MCP → Real-time response
+2. **"Hey Keycloak, analysiere die Compliance"** - Multi-MCP orchestration  
+   - Voice processing → Analysis event → Progress updates → Neo4j queries → Results
+3. **System Health Check** - All components operational with WebSocket status monitoring
+
+**🚧 Phase 3 Additions:**
+4. **"Hey Keycloak, finde doppelte Benutzer"** - Graph analysis with visual interface
+5. **Real-time Graph Visualization** - D3.js rendering of Neo4j data updates
+6. **Dashboard Integration** - Complete web UI with voice, graphs, and admin tools
 
 ## Critical Implementation Notes
 
