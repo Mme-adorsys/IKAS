@@ -1,6 +1,7 @@
 import { Router } from 'express';
 import { logger } from '../utils/logger';
 import { config } from '../utils/config';
+import { wsClient } from '../websocket';
 import axios from 'axios';
 
 const healthRouter = Router();
@@ -12,6 +13,7 @@ interface HealthStatus {
   services: {
     keycloakMcp: ServiceHealth;
     neo4jMcp: ServiceHealth;
+    websocket: ServiceHealth;
     redis?: ServiceHealth;
   };
   version: string;
@@ -68,8 +70,15 @@ healthRouter.get('/', async (req, res) => {
       checkMcpService(config.KEYCLOAK_MCP_URL, 'keycloak-mcp'),
       checkMcpService(config.NEO4J_MCP_URL, 'neo4j-mcp')
     ]);
+
+    // Check WebSocket connection status
+    const wsStatus = wsClient.getConnectionStatus();
+    const websocketHealth: ServiceHealth = {
+      status: wsStatus.connected ? 'healthy' : 'unhealthy',
+      lastChecked: new Date().toISOString()
+    };
     
-    const overallHealthy = keycloakHealth.status === 'healthy' && neo4jHealth.status === 'healthy';
+    const overallHealthy = keycloakHealth.status === 'healthy' && neo4jHealth.status === 'healthy' && websocketHealth.status === 'healthy';
     
     const healthStatus: HealthStatus = {
       status: overallHealthy ? 'healthy' : 'unhealthy',
@@ -77,7 +86,8 @@ healthRouter.get('/', async (req, res) => {
       uptime: process.uptime(),
       services: {
         keycloakMcp: keycloakHealth,
-        neo4jMcp: neo4jHealth
+        neo4jMcp: neo4jHealth,
+        websocket: websocketHealth
       },
       version: process.env.npm_package_version || '1.0.0',
       environment: config.NODE_ENV
@@ -100,6 +110,11 @@ healthRouter.get('/', async (req, res) => {
           lastChecked: new Date().toISOString()
         },
         neo4jMcp: {
+          status: 'unknown',
+          error: 'Health check failed',
+          lastChecked: new Date().toISOString()
+        },
+        websocket: {
           status: 'unknown',
           error: 'Health check failed',
           lastChecked: new Date().toISOString()

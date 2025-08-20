@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IKAS WebSocket Voice Test Client</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            min-height: 100vh;
+        }
+        
+        .container {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+        }
+        
+        h1 {
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 2.5em;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        
+        .status {
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            font-weight: bold;
+        }
+        
+        .status.connected {
+            background: rgba(76, 175, 80, 0.3);
+            border: 1px solid rgba(76, 175, 80, 0.6);
+        }
+        
+        .status.disconnected {
+            background: rgba(244, 67, 54, 0.3);
+            border: 1px solid rgba(244, 67, 54, 0.6);
+        }
+        
+        .voice-controls {
+            text-align: center;
+            margin: 30px 0;
+        }
+        
+        .voice-button {
+            padding: 20px 40px;
+            font-size: 1.2em;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            margin: 10px;
+            transition: all 0.3s ease;
+            font-weight: bold;
+        }
+        
+        .voice-button.start {
+            background: linear-gradient(45deg, #ff6b6b, #ee5a24);
+            color: white;
+        }
+        
+        .voice-button.start:hover {
+            background: linear-gradient(45deg, #ee5a24, #ff6b6b);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+        
+        .voice-button.stop {
+            background: linear-gradient(45deg, #74b9ff, #0984e3);
+            color: white;
+        }
+        
+        .voice-button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        
+        .transcript {
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+            min-height: 60px;
+            font-family: 'Courier New', monospace;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .events {
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 10px;
+            padding: 20px;
+            max-height: 400px;
+            overflow-y: auto;
+            font-family: 'Courier New', monospace;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .event {
+            padding: 8px;
+            margin: 5px 0;
+            border-radius: 5px;
+            border-left: 4px solid #64b5f6;
+            background: rgba(100, 181, 246, 0.1);
+        }
+        
+        .hotword-training {
+            margin: 20px 0;
+            padding: 20px;
+            background: rgba(255, 193, 7, 0.2);
+            border-radius: 10px;
+            border: 1px solid rgba(255, 193, 7, 0.5);
+        }
+        
+        .recognition-wave {
+            display: none;
+            text-align: center;
+            margin: 20px 0;
+        }
+        
+        .wave {
+            display: inline-block;
+            width: 8px;
+            height: 40px;
+            background: #ff6b6b;
+            margin: 0 2px;
+            border-radius: 4px;
+            animation: wave 1s ease-in-out infinite;
+        }
+        
+        .wave:nth-child(2) { animation-delay: 0.1s; }
+        .wave:nth-child(3) { animation-delay: 0.2s; }
+        .wave:nth-child(4) { animation-delay: 0.3s; }
+        .wave:nth-child(5) { animation-delay: 0.4s; }
+        .wave:nth-child(6) { animation-delay: 0.5s; }
+        
+        @keyframes wave {
+            0%, 100% { height: 20px; }
+            50% { height: 60px; }
+        }
+    </style>
+    <script src="https://cdn.socket.io/4.7.4/socket.io.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <h1>🎤 IKAS Voice Client</h1>
+        
+        <div id="status" class="status disconnected">
+            Nicht verbunden
+        </div>
+        
+        <div class="voice-controls">
+            <button id="startButton" class="voice-button start">🎤 Sprachaufnahme starten</button>
+            <button id="stopButton" class="voice-button stop" disabled>⏹️ Stoppen</button>
+            <button id="hotwordButton" class="voice-button start">🔥 Hey Keycloak aktivieren</button>
+        </div>
+        
+        <div class="recognition-wave" id="recognitionWave">
+            <div class="wave"></div>
+            <div class="wave"></div>
+            <div class="wave"></div>
+            <div class="wave"></div>
+            <div class="wave"></div>
+            <div class="wave"></div>
+        </div>
+        
+        <div class="hotword-training">
+            <h3>🎯 Hey Keycloak Hotword</h3>
+            <p>Sagen Sie "Hey Keycloak" gefolgt von Ihrem Befehl:</p>
+            <ul>
+                <li>"Hey Keycloak, zeige alle Benutzer"</li>
+                <li>"Hey Keycloak, analysiere die Compliance"</li>
+                <li>"Hey Keycloak, finde doppelte Benutzer"</li>
+                <li>"Hey Keycloak, erstelle einen neuen Benutzer"</li>
+            </ul>
+        </div>
+        
+        <div class="transcript">
+            <strong>Transkript:</strong>
+            <div id="transcript">Warten auf Sprachaufnahme...</div>
+        </div>
+        
+        <div class="events">
+            <strong>WebSocket Events:</strong>
+            <div id="events"></div>
+        </div>
+    </div>
+
+    <script>
+        class IKASVoiceClient {
+            constructor() {
+                this.socket = null;
+                this.recognition = null;
+                this.isListening = false;
+                this.hotwordActive = false;
+                this.sessionId = null;
+                
+                this.initWebSocket();
+                this.initSpeechRecognition();
+                this.bindEvents();
+            }
+            
+            initWebSocket() {
+                // Connect to WebSocket server
+                this.socket = io('http://localhost:3001', {
+                    auth: {
+                        userId: 'test-user',
+                        realm: 'master'
+                    }
+                });
+                
+                this.socket.on('connect', () => {
+                    this.updateStatus('Verbunden', true);
+                    this.addEvent('WebSocket verbunden');
+                });
+                
+                this.socket.on('connected', (data) => {
+                    this.sessionId = data.sessionId;
+                    this.addEvent(`Session erstellt: ${data.sessionId}`);
+                    this.addEvent(`Willkommen: ${data.message}`);
+                });
+                
+                this.socket.on('disconnect', () => {
+                    this.updateStatus('Nicht verbunden', false);
+                    this.addEvent('WebSocket getrennt');
+                });
+                
+                this.socket.on('event', (event) => {
+                    this.addEvent(`Event: ${event.type} - ${JSON.stringify(event.payload)}`);
+                    
+                    // Handle voice responses
+                    if (event.type === 'voice:response') {
+                        this.speakResponse(event.payload.response);
+                    }
+                });
+                
+                this.socket.on('voiceCommandReceived', (data) => {
+                    this.addEvent(`Voice Command ACK: ${data.eventId}`);
+                });
+                
+                this.socket.on('error', (error) => {
+                    this.addEvent(`Fehler: ${error.message}`, true);
+                });
+            }
+            
+            initSpeechRecognition() {
+                if (!('webkitSpeechRecognition' in window) && !('SpeechRecognition' in window)) {
+                    this.addEvent('Speech Recognition wird nicht unterstützt', true);
+                    return;
+                }
+                
+                const SpeechRecognition = window.webkitSpeechRecognition || window.SpeechRecognition;
+                this.recognition = new SpeechRecognition();
+                
+                // Configure for German
+                this.recognition.lang = 'de-DE';
+                this.recognition.continuous = false;
+                this.recognition.interimResults = true;
+                this.recognition.maxAlternatives = 3;
+                
+                this.recognition.onstart = () => {
+                    this.isListening = true;
+                    this.addEvent('👂 Spracherkennung gestartet');
+                    this.showRecognitionWave(true);
+                    document.getElementById('startButton').disabled = true;
+                    document.getElementById('stopButton').disabled = false;
+                };
+                
+                this.recognition.onresult = (event) => {
+                    let finalTranscript = '';
+                    let interimTranscript = '';
+                    
+                    for (let i = event.resultIndex; i < event.results.length; i++) {
+                        const transcript = event.results[i][0].transcript;
+                        const confidence = event.results[i][0].confidence;
+                        
+                        if (event.results[i].isFinal) {
+                            finalTranscript += transcript;
+                            this.handleFinalTranscript(transcript, confidence);
+                        } else {
+                            interimTranscript += transcript;
+                        }
+                    }
+                    
+                    this.updateTranscript(finalTranscript || interimTranscript);
+                };
+                
+                this.recognition.onerror = (event) => {
+                    this.addEvent(`Speech Recognition Fehler: ${event.error}`, true);
+                    this.stopListening();
+                };
+                
+                this.recognition.onend = () => {
+                    this.stopListening();
+                    
+                    // If hotword is active, restart listening
+                    if (this.hotwordActive) {
+                        setTimeout(() => {
+                            this.startListening();
+                        }, 1000);
+                    }
+                };
+            }
+            
+            handleFinalTranscript(transcript, confidence) {
+                const lowerTranscript = transcript.toLowerCase().trim();
+                
+                // Check for hotword
+                if (lowerTranscript.includes('hey keycloak')) {
+                    this.addEvent(`🔥 Hotword erkannt: "${transcript}"`);
+                    
+                    // Extract command after hotword
+                    const command = lowerTranscript.replace('hey keycloak', '').trim();
+                    
+                    if (command) {
+                        this.sendVoiceCommand(command, transcript, confidence);
+                    } else {
+                        this.addEvent('Warten auf Befehl nach "Hey Keycloak"...');
+                    }
+                } else if (this.hotwordActive) {
+                    // If hotword mode is active but no hotword detected, ignore
+                    this.addEvent(`Ignoriert (kein Hotword): "${transcript}"`);
+                } else {
+                    // Direct command without hotword
+                    this.sendVoiceCommand(transcript, transcript, confidence);
+                }
+            }
+            
+            sendVoiceCommand(command, transcript, confidence) {
+                if (!this.socket || !this.socket.connected) {
+                    this.addEvent('Nicht verbunden - kann Befehl nicht senden', true);
+                    return;
+                }
+                
+                const voiceCommand = {
+                    command: command,
+                    transcript: transcript,
+                    confidence: confidence || 1.0,
+                    language: 'de-DE',
+                    timestamp: new Date().toISOString()
+                };
+                
+                this.socket.emit('voiceCommand', voiceCommand);
+                this.addEvent(`📤 Befehl gesendet: "${command}" (Confidence: ${(confidence * 100).toFixed(1)}%)`);
+            }
+            
+            speakResponse(text) {
+                if ('speechSynthesis' in window) {
+                    const utterance = new SpeechSynthesisUtterance(text);
+                    utterance.lang = 'de-DE';
+                    utterance.rate = 0.9;
+                    utterance.pitch = 1;
+                    
+                    speechSynthesis.speak(utterance);
+                    this.addEvent(`🔊 Antwort: "${text}"`);
+                }
+            }
+            
+            startListening() {
+                if (!this.recognition) {
+                    this.addEvent('Speech Recognition nicht verfügbar', true);
+                    return;
+                }
+                
+                if (this.isListening) {
+                    this.addEvent('Bereits am Zuhören...');
+                    return;
+                }
+                
+                try {
+                    this.recognition.start();
+                } catch (error) {
+                    this.addEvent(`Fehler beim Starten: ${error.message}`, true);
+                }
+            }
+            
+            stopListening() {
+                if (this.recognition && this.isListening) {
+                    this.recognition.stop();
+                }
+                
+                this.isListening = false;
+                this.showRecognitionWave(false);
+                document.getElementById('startButton').disabled = false;
+                document.getElementById('stopButton').disabled = true;
+            }
+            
+            toggleHotword() {
+                this.hotwordActive = !this.hotwordActive;
+                const button = document.getElementById('hotwordButton');
+                
+                if (this.hotwordActive) {
+                    button.textContent = '🔥 Hey Keycloak aktiv';
+                    button.style.background = 'linear-gradient(45deg, #00b894, #00a085)';
+                    this.addEvent('🔥 Hotword Modus aktiviert - sage "Hey Keycloak"');
+                    this.startListening();
+                } else {
+                    button.textContent = '🔥 Hey Keycloak aktivieren';
+                    button.style.background = 'linear-gradient(45deg, #ff6b6b, #ee5a24)';
+                    this.addEvent('Hotword Modus deaktiviert');
+                    this.stopListening();
+                }
+            }
+            
+            bindEvents() {
+                document.getElementById('startButton').addEventListener('click', () => {
+                    this.startListening();
+                });
+                
+                document.getElementById('stopButton').addEventListener('click', () => {
+                    this.stopListening();
+                });
+                
+                document.getElementById('hotwordButton').addEventListener('click', () => {
+                    this.toggleHotword();
+                });
+            }
+            
+            updateStatus(message, connected) {
+                const statusEl = document.getElementById('status');
+                statusEl.textContent = message;
+                statusEl.className = `status ${connected ? 'connected' : 'disconnected'}`;
+            }
+            
+            updateTranscript(text) {
+                document.getElementById('transcript').textContent = text || 'Warten auf Sprachaufnahme...';
+            }
+            
+            showRecognitionWave(show) {
+                document.getElementById('recognitionWave').style.display = show ? 'block' : 'none';
+            }
+            
+            addEvent(message, isError = false) {
+                const eventsEl = document.getElementById('events');
+                const eventEl = document.createElement('div');
+                eventEl.className = 'event';
+                if (isError) {
+                    eventEl.style.borderLeftColor = '#f44336';
+                    eventEl.style.backgroundColor = 'rgba(244, 67, 54, 0.1)';
+                }
+                
+                const timestamp = new Date().toLocaleTimeString('de-DE');
+                eventEl.innerHTML = `<strong>${timestamp}:</strong> ${message}`;
+                
+                eventsEl.insertBefore(eventEl, eventsEl.firstChild);
+                
+                // Keep only last 50 events
+                while (eventsEl.children.length > 50) {
+                    eventsEl.removeChild(eventsEl.lastChild);
+                }
+            }
+        }
+        
+        // Initialize client when page loads
+        window.addEventListener('load', () => {
+            new IKASVoiceClient();
+        });
+    </script>
+</body>
+</html>

@@ -5,6 +5,7 @@ import { logger } from './utils/logger';
 import { config } from './utils/config';
 import { healthRouter } from './api/health';
 import { orchestrationRouter } from './api/orchestration';
+import { wsClient } from './websocket';
 
 const app = express();
 const server = createServer(app);
@@ -72,8 +73,16 @@ app.use('*', (req, res) => {
 });
 
 // Graceful shutdown handler
-const gracefulShutdown = (signal: string): void => {
+const gracefulShutdown = async (signal: string): Promise<void> => {
   logger.info(`Received ${signal}, shutting down gracefully`);
+  
+  try {
+    // Disconnect from WebSocket server
+    await wsClient.disconnect();
+    logger.info('WebSocket client disconnected');
+  } catch (error) {
+    logger.error('Error disconnecting WebSocket client', { error });
+  }
   
   server.close(() => {
     logger.info('Server closed');
@@ -104,13 +113,24 @@ process.on('uncaughtException', (error) => {
 
 // Start server only if this file is run directly
 if (require.main === module) {
-  server.listen(config.PORT, () => {
+  server.listen(config.PORT, async () => {
     logger.info(`IKAS AI Gateway started`, {
       port: config.PORT,
       environment: config.NODE_ENV,
       keycloakMcp: config.KEYCLOAK_MCP_URL,
       neo4jMcp: config.NEO4J_MCP_URL
     });
+
+    // Connect to WebSocket server for real-time communication
+    try {
+      await wsClient.connect();
+      logger.info('WebSocket client connected successfully');
+    } catch (error) {
+      logger.error('Failed to connect WebSocket client', { 
+        error: error instanceof Error ? error.message : 'Unknown error'
+      });
+      // Continue running without WebSocket connection
+    }
   });
 }
 
