@@ -112,6 +112,8 @@ interface IKASStore {
   initializeServices: () => Promise<void>;
   connectWebSocket: (userId?: string, realm?: string) => Promise<void>;
   disconnectWebSocket: () => Promise<void>;
+  reconnectWebSocket: (userId?: string, realm?: string) => Promise<void>;
+  checkServiceHealth: () => Promise<void>;
   
   // Voice actions
   initializeVoice: () => void;
@@ -203,6 +205,17 @@ export const useIKASStore = create<IKASStore>()(
 
       connectWebSocket: async (userId?: string, realm?: string) => {
         try {
+          // Update connection status to connecting
+          set((state) => ({
+            system: {
+              ...state.system,
+              services: {
+                ...state.system.services,
+                websocket: 'unknown'
+              }
+            }
+          }));
+
           await websocketService.connect(userId, realm);
           
           // Set up event handlers
@@ -220,33 +233,84 @@ export const useIKASStore = create<IKASStore>()(
             });
           });
 
+          // Handle connection retry events
+          websocketService.on('connectionRetrying', (data) => {
+            get().addNotification({
+              type: 'warning',
+              title: 'Reconnecting...',
+              message: `Attempt ${data.attempts}/${data.maxAttempts}`
+            });
+          });
+
+          // Handle connection failure events
+          websocketService.on('connectionFailed', (data) => {
+            set((state) => ({
+              system: {
+                ...state.system,
+                websocketConnected: false,
+                services: {
+                  ...state.system.services,
+                  websocket: 'unhealthy'
+                }
+              }
+            }));
+
+            get().addNotification({
+              type: 'error',
+              title: 'Connection Failed',
+              message: `Failed to connect to WebSocket server. Please check if the server is running at ${data.url}`
+            });
+          });
+
           // Subscribe to all event types
           await websocketService.subscribe({
             eventTypes: Object.values(EventType),
             room: 'global'
           });
 
+          // Test connection health
+          const healthy = await websocketService.testConnection();
+
           set((state) => ({
             system: {
               ...state.system,
               websocketConnected: true,
-              sessionId: websocketService.getSessionId()
+              sessionId: websocketService.getSessionId(),
+              services: {
+                ...state.system.services,
+                websocket: healthy ? 'healthy' : 'unhealthy'
+              }
             }
           }));
 
           get().addNotification({
             type: 'success',
             title: 'Connected',
-            message: 'Connected to IKAS system successfully'
+            message: 'Connected to IKAS WebSocket server successfully'
           });
 
         } catch (error) {
           console.error('Failed to connect WebSocket:', error);
+          
+          set((state) => ({
+            system: {
+              ...state.system,
+              websocketConnected: false,
+              services: {
+                ...state.system.services,
+                websocket: 'unhealthy'
+              }
+            }
+          }));
+
+          const errorMessage = error instanceof Error ? error.message : 'Unknown error';
           get().addNotification({
             type: 'error',
             title: 'Connection Failed',
-            message: error instanceof Error ? error.message : 'Unknown error'
+            message: `WebSocket connection failed: ${errorMessage}`
           });
+
+          throw error; // Re-throw for caller to handle
         }
       },
 
@@ -256,9 +320,102 @@ export const useIKASStore = create<IKASStore>()(
           system: {
             ...state.system,
             websocketConnected: false,
-            sessionId: null
+            sessionId: null,
+            services: {
+              ...state.system.services,
+              websocket: 'unknown'
+            }
           }
         }));
+      },
+
+      reconnectWebSocket: async (userId?: string, realm?: string) => {
+        try {
+          get().addNotification({
+            type: 'info',
+            title: 'Reconnecting',
+            message: 'Attempting to reconnect to WebSocket server...'
+          });
+
+          // Force reconnection using the service method
+          await websocketService.forceReconnect(userId, realm);
+          
+          // Re-setup event handlers and subscriptions
+          await get().connectWebSocket(userId, realm);
+
+        } catch (error) {
+          console.error('Forced reconnection failed:', error);
+          get().addNotification({
+            type: 'error', 
+            title: 'Reconnection Failed',
+            message: 'Manual reconnection attempt failed. Please check WebSocket server status.'
+          });
+        }
+      },
+
+      checkServiceHealth: async () => {
+        try {
+          // Check WebSocket health
+          const wsStatus = await websocketService.getEnhancedConnectionStatus();
+          
+          set((state) => ({
+            system: {
+              ...state.system,
+              websocketConnected: wsStatus.connected,
+              services: {
+                ...state.system.services,
+                websocket: wsStatus.healthy ? 'healthy' : (wsStatus.connected ? 'unhealthy' : 'unknown')
+              }
+            }
+          }));
+
+          // TODO: Add health checks for other services
+          // For now, we'll check if services are reachable via basic HTTP requests
+          const services = ['aiGateway', 'keycloakMcp', 'neo4jMcp'] as const;
+          const healthUrls = {
+            aiGateway: process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8005',
+            keycloakMcp: 'http://localhost:8001',
+            neo4jMcp: 'http://localhost:8002'
+          };
+
+          for (const service of services) {
+            try {
+              // Implement timeout using AbortController
+              const controller = new AbortController();
+              const timeoutId = setTimeout(() => controller.abort(), 5000);
+              
+              const response = await fetch(`${healthUrls[service]}/health`, { 
+                method: 'GET',
+                signal: controller.signal
+              });
+              
+              clearTimeout(timeoutId);
+              
+              set((state) => ({
+                system: {
+                  ...state.system,
+                  services: {
+                    ...state.system.services,
+                    [service]: response.ok ? 'healthy' : 'unhealthy'
+                  }
+                }
+              }));
+            } catch (error) {
+              set((state) => ({
+                system: {
+                  ...state.system,
+                  services: {
+                    ...state.system.services,
+                    [service]: 'unhealthy'
+                  }
+                }
+              }));
+            }
+          }
+
+        } catch (error) {
+          console.error('Health check failed:', error);
+        }
       },
 
       // Voice actions
