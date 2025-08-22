@@ -3,6 +3,7 @@ import { IKASEvent, EventType, validateEvent } from '../types/events';
 import { SessionManager } from '../rooms/session-manager';
 import { EventPublisher } from '../redis/event-publisher';
 import winston from 'winston';
+import { randomUUID } from 'crypto';
 
 export class EventHandlers {
   private io: SocketIOServer;
@@ -141,13 +142,13 @@ export class EventHandlers {
         if (realmAdminSessions.length > 0) {
           // Create notification event for admins
           const notificationEvent: any = {
-            id: crypto.randomUUID(),
+            id: randomUUID(),
             type: EventType.COMPLIANCE_CHECK,
             timestamp: new Date().toISOString(),
             sessionId: event.sessionId,
             realm: event.realm,
             payload: {
-              checkId: crypto.randomUUID(),
+              checkId: randomUUID(),
               severity: 'info' as const,
               rule: 'user_creation',
               description: `Neuer Benutzer wurde erstellt: ${(event.payload as any).user?.username}`,
@@ -178,7 +179,7 @@ export class EventHandlers {
       if (payload.result && payload.result.patterns) {
         for (const pattern of payload.result.patterns) {
           const patternEvent: any = {
-            id: crypto.randomUUID(),
+            id: randomUUID(),
             type: EventType.PATTERN_DETECTED,
             timestamp: new Date().toISOString(),
             sessionId: event.sessionId,
@@ -244,7 +245,7 @@ export class EventHandlers {
       // If voice command has low confidence, create a response event asking for clarification
       if (payload.confidence && payload.confidence < 0.7) {
         const clarificationEvent: any = {
-          id: crypto.randomUUID(),
+          id: randomUUID(),
           type: EventType.VOICE_RESPONSE,
           timestamp: new Date().toISOString(),
           sessionId: event.sessionId,
@@ -351,13 +352,13 @@ export class EventHandlers {
     targetRealm?: string
   ): Promise<void> {
     const announcementEvent: any = {
-      id: crypto.randomUUID(),
+      id: randomUUID(),
       type: EventType.COMPLIANCE_ALERT,
       timestamp: new Date().toISOString(),
       sessionId: 'system',
       realm: targetRealm,
       payload: {
-        checkId: crypto.randomUUID(),
+        checkId: randomUUID(),
         severity,
         rule: 'system_announcement',
         description: message,
@@ -377,7 +378,7 @@ export class EventHandlers {
     const stats = this.sessionManager.getStatistics();
     
     const healthEvent: any = {
-      id: crypto.randomUUID(),
+      id: randomUUID(),
       type: EventType.CONNECTION_STATUS,
       timestamp: new Date().toISOString(),
       sessionId: 'system',

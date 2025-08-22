@@ -1,9 +1,46 @@
 import { Router } from 'express';
 import { logger } from '../utils/logger';
+import { config } from '../utils/config';
 import { Orchestrator } from '../orchestration';
 import { MCPToolDiscovery } from '../llm';
 import { checkAllMcpServices } from '../mcp';
 import { z } from 'zod';
+import axios from 'axios';
+
+// Reuse the health check method from health.ts
+async function checkMcpService(url: string, serviceName: string): Promise<{status: 'healthy' | 'unhealthy'; latency?: number; error?: string; lastChecked: string}> {
+  const startTime = Date.now();
+  
+  try {
+    // Both MCP servers now have standard /health endpoints
+    const healthPath = '/health';
+    const response = await axios.get(`${url}${healthPath}`, {
+      timeout: config.HEALTH_CHECK_TIMEOUT,
+      validateStatus: (status) => status < 400 // Standard health check for all services
+    });
+    
+    const latency = Date.now() - startTime;
+    
+    // Standard health check for all services
+    const isHealthy = response.status < 400;
+    
+    return {
+      status: isHealthy ? 'healthy' : 'unhealthy',
+      latency,
+      lastChecked: new Date().toISOString()
+    };
+  } catch (error) {
+    const latency = Date.now() - startTime;
+    const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+    
+    return {
+      status: 'unhealthy',
+      latency,
+      error: errorMessage,
+      lastChecked: new Date().toISOString()
+    };
+  }
+}
 
 const orchestrationRouter = Router();
 
@@ -37,8 +74,18 @@ orchestrationRouter.post('/chat', async (req, res): Promise<any> => {
       priority: context?.priority
     });
 
-    // Check if MCP services are healthy
-    const serviceHealth = await checkAllMcpServices();
+    // Check if MCP services are healthy using the same method as main health endpoint
+    const [keycloakHealth, neo4jHealth] = await Promise.all([
+      checkMcpService(config.KEYCLOAK_MCP_URL, 'keycloak-mcp'),
+      checkMcpService(config.NEO4J_MCP_URL, 'neo4j-mcp')
+    ]);
+    
+    const serviceHealth = {
+      keycloak: keycloakHealth.status === 'healthy',
+      neo4j: neo4jHealth.status === 'healthy', 
+      overall: keycloakHealth.status === 'healthy' && neo4jHealth.status === 'healthy'
+    };
+
     if (!serviceHealth.overall) {
       logger.warn('MCP services are not fully healthy', serviceHealth);
       

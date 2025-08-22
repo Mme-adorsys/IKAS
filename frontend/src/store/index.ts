@@ -371,11 +371,19 @@ export const useIKASStore = create<IKASStore>()(
 
           // TODO: Add health checks for other services
           // For now, we'll check if services are reachable via basic HTTP requests
-          const services = ['aiGateway', 'keycloakMcp', 'neo4jMcp'] as const;
+          // Frontend only checks services with CORS enabled
+          // AI Gateway reports Neo4j MCP status in its health response
+          const services = ['aiGateway', 'keycloakMcp'] as const;
           const healthUrls = {
             aiGateway: process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8005',
             keycloakMcp: 'http://localhost:8001',
             neo4jMcp: 'http://localhost:8002'
+          };
+          
+          const healthPaths = {
+            aiGateway: '/health',
+            keycloakMcp: '/health', 
+            neo4jMcp: '/health'  // Neo4j MCP now uses standard health endpoint
           };
 
           for (const service of services) {
@@ -384,9 +392,10 @@ export const useIKASStore = create<IKASStore>()(
               const controller = new AbortController();
               const timeoutId = setTimeout(() => controller.abort(), 5000);
               
-              const response = await fetch(`${healthUrls[service]}/health`, { 
+              const response = await fetch(`${healthUrls[service]}${healthPaths[service]}`, { 
                 method: 'GET',
-                signal: controller.signal
+                signal: controller.signal,
+                mode: 'cors'  // Handle CORS properly
               });
               
               clearTimeout(timeoutId);

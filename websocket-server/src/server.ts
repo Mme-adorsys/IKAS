@@ -4,6 +4,7 @@ import { Redis } from 'ioredis';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import winston from 'winston';
+import { randomUUID } from 'crypto';
 
 import { SessionManager } from './rooms/session-manager';
 import { EventPublisher } from './redis/event-publisher';
@@ -345,7 +346,7 @@ class IKASWebSocketServer {
       }
 
       const { analysisType, parameters } = data;
-      const analysisId = crypto.randomUUID();
+      const analysisId = randomUUID();
 
       // Create analysis started event
       const analysisEvent = createAnalysisEvent(
