@@ -1,0 +1,79 @@
+🛡️ Privacy Guidelines (Datenschutzrichtlinien)
+
+1. Zweckbindung und Datenminimierung
+	•	Personenbezogene Daten dürfen nur für eindeutig definierte, legitime Zwecke erhoben und verarbeitet werden.
+	•	Es dürfen nur solche Daten erhoben werden, die für den jeweiligen Zweck zwingend erforderlich sind (Data Minimization).
+	•	Wo möglich, sind anonyme oder pseudonyme Daten zu bevorzugen.
+
+⸻
+
+2. Transparenz und Information
+	•	Betroffene Personen müssen klar, verständlich und rechtzeitig über die Erhebung und Verarbeitung ihrer Daten informiert werden.
+	•	Eine aktuelle und leicht zugängliche Datenschutzerklärung muss bereitgestellt werden (z. B. auf der Website oder in der App).
+	•	Informationen über die Datenverarbeitung müssen folgende Punkte enthalten:
+	•	Zweck der Verarbeitung
+	•	Kategorien verarbeiteter Daten
+	•	Rechtsgrundlage
+	•	Speicherdauer
+	•	Weitergabe an Dritte
+
+⸻
+
+3. Einwilligung und Rechtsgrundlage
+	•	Die Verarbeitung personenbezogener Daten erfordert eine gültige Rechtsgrundlage nach Art. 6 DSGVO (z. B. Einwilligung, Vertragserfüllung).
+	•	Einwilligungen müssen:
+	•	freiwillig erfolgen
+	•	spezifisch und eindeutig sein
+	•	jederzeit widerrufbar sein
+	•	Alle Einwilligungen sind zu dokumentieren und auf Anfrage nachweisbar bereitzuhalten.
+
+⸻
+
+4. Zugriff und Zugriffskontrolle
+	•	Nur autorisierte Personen mit einem konkreten beruflichen Bedarf dürfen Zugriff auf personenbezogene Daten erhalten.
+	•	Zugriffskontrollen müssen durch technische und organisatorische Maßnahmen (TOMs) sichergestellt werden.
+	•	Zugriffe sind regelmäßig zu überprüfen und zu protokollieren.
+
+⸻
+
+5. Aufbewahrung und Löschung
+	•	Daten dürfen nur so lange gespeichert werden, wie sie für den definierten Zweck erforderlich sind.
+	•	Es sind Löschkonzepte zu definieren und technisch umzusetzen.
+	•	Die Löschung erfolgt automatisiert, nachvollziehbar und revisionssicher.
+
+⸻
+
+6. Auftragsverarbeitung und Drittanbieter
+	•	Externe Dienstleister, die Zugriff auf personenbezogene Daten erhalten, müssen durch einen Auftragsverarbeitungsvertrag (AVV) nach Art. 28 DSGVO verpflichtet werden.
+	•	Die Auswahl der Dienstleister erfolgt auf Basis klarer Datenschutzkriterien.
+	•	Transfers in Drittstaaten (außerhalb der EU) dürfen nur bei Vorliegen geeigneter Garantien erfolgen (z. B. Standardvertragsklauseln, Angemessenheitsbeschluss).
+
+⸻
+
+7. Rechte der betroffenen Personen
+	•	Es müssen Verfahren etabliert sein, um folgende Betroffenenrechte fristgerecht umzusetzen:
+	•	Auskunft (Art. 15 DSGVO)
+	•	Berichtigung (Art. 16 DSGVO)
+	•	Löschung („Recht auf Vergessenwerden“, Art. 17 DSGVO)
+	•	Einschränkung (Art. 18 DSGVO)
+	•	Datenübertragbarkeit (Art. 20 DSGVO)
+	•	Widerspruch (Art. 21 DSGVO)
+
+⸻
+
+8. Privacy by Design & Default
+	•	Datenschutz muss bereits bei der Systemarchitektur und der Softwareentwicklung berücksichtigt werden („Privacy by Design“).
+	•	Voreinstellungen müssen die datenschutzfreundlichste Option darstellen („Privacy by Default“).
+	•	Neue Anwendungen, Tools oder Prozesse müssen vor Einführung einem Datenschutz-Folgenabschätzungsprozess (DSFA) unterzogen werden, sofern ein hohes Risiko besteht.
+
+⸻
+
+9. Schulung & Sensibilisierung
+	•	Alle Mitarbeitenden müssen regelmäßig zu Datenschutzthemen geschult werden.
+	•	Neue Teammitglieder erhalten eine Datenschutzunterweisung im Onboarding-Prozess.
+
+⸻
+
+10. Vorfallmanagement
+	•	Datenschutzverletzungen (Data Breaches) müssen intern dokumentiert und ggf. der Aufsichtsbehörde innerhalb von 72 Stunden gemeldet werden.
+	•	Betroffene Personen sind unverzüglich zu informieren, wenn ein hohes Risiko für ihre Rechte und Freiheiten besteht.
