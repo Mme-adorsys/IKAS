@@ -5,16 +5,59 @@ export class WebSocketService {
   private socket: Socket | null = null;
   private isConnected = false;
   private reconnectAttempts = 0;
-  private maxReconnectAttempts = 5;
+  private maxReconnectAttempts: number;
+  private reconnectDelay: number;
+  private connectionTimeout: number;
   private eventHandlers: Map<string, (event: any) => void> = new Map();
   private sessionId: string | null = null;
+  private debugMode: boolean;
+  private url: string;
 
-  constructor(private url: string = 'http://localhost:3001') {}
+  constructor(url?: string) {
+    // Use environment variables with fallbacks
+    this.url = url || 
+               process.env.NEXT_PUBLIC_WS_URL || 
+               'ws://localhost:3001';
+    
+    this.maxReconnectAttempts = parseInt(process.env.NEXT_PUBLIC_WS_RECONNECT_ATTEMPTS || '5');
+    this.reconnectDelay = parseInt(process.env.NEXT_PUBLIC_WS_RECONNECT_DELAY || '1000');
+    this.connectionTimeout = parseInt(process.env.NEXT_PUBLIC_WS_TIMEOUT || '10000');
+    this.debugMode = process.env.NEXT_PUBLIC_DEBUG_WEBSOCKET === 'true';
+
+    if (this.debugMode) {
+      console.log('🔧 WebSocket Service Configuration:', {
+        url: this.url,
+        maxReconnectAttempts: this.maxReconnectAttempts,
+        reconnectDelay: this.reconnectDelay,
+        connectionTimeout: this.connectionTimeout
+      });
+    }
+  }
 
   async connect(userId?: string, realm?: string): Promise<void> {
     return new Promise((resolve, reject) => {
       try {
-        console.log('🔗 Connecting to IKAS WebSocket server...', this.url);
+        const connectionLog = this.debugMode ? console.log : () => {};
+        connectionLog('🔗 Connecting to IKAS WebSocket server...', {
+          url: this.url,
+          userId: userId || 'frontend-user',
+          realm: realm || 'master'
+        });
+
+        // Check if already connected
+        if (this.isConnected && this.socket?.connected) {
+          connectionLog('✅ Already connected to WebSocket server');
+          resolve();
+          return;
+        }
+
+        // Validate WebSocket URL
+        if (!this.isValidWebSocketUrl(this.url)) {
+          const error = new Error(`Invalid WebSocket URL: ${this.url}`);
+          console.error('❌ WebSocket URL validation failed:', error.message);
+          reject(error);
+          return;
+        }
 
         this.socket = io(this.url, {
           auth: {
@@ -23,8 +66,11 @@ export class WebSocketService {
           },
           reconnection: true,
           reconnectionAttempts: this.maxReconnectAttempts,
-          reconnectionDelay: 1000,
-          timeout: 20000
+          reconnectionDelay: this.reconnectDelay,
+          timeout: this.connectionTimeout,
+          transports: ['websocket', 'polling'],
+          forceNew: false,
+          autoConnect: true
         });
 
         this.socket.on('connect', () => {
@@ -53,14 +99,28 @@ export class WebSocketService {
 
         this.socket.on('connect_error', (error) => {
           this.reconnectAttempts++;
-          console.error('🚫 WebSocket connection error', {
+          
+          const errorDetails = {
             error: error.message,
             attempts: this.reconnectAttempts,
-            maxAttempts: this.maxReconnectAttempts
-          });
+            maxAttempts: this.maxReconnectAttempts,
+            url: this.url,
+            timestamp: new Date().toISOString()
+          };
+
+          console.error('🚫 WebSocket connection error', errorDetails);
 
           if (this.reconnectAttempts >= this.maxReconnectAttempts) {
-            reject(new Error(`Failed to connect after ${this.maxReconnectAttempts} attempts`));
+            const finalError = new Error(
+              `WebSocket connection failed after ${this.maxReconnectAttempts} attempts. ` +
+              `Check if WebSocket server is running at ${this.url}. ` +
+              `Original error: ${error.message}`
+            );
+            
+            this.callHandler('connectionFailed', errorDetails);
+            reject(finalError);
+          } else {
+            this.callHandler('connectionRetrying', errorDetails);
           }
         });
 
@@ -227,6 +287,74 @@ export class WebSocketService {
     if (this.socket) {
       this.socket.emit('ping');
     }
+  }
+
+  // URL validation
+  private isValidWebSocketUrl(url: string): boolean {
+    try {
+      const urlObj = new URL(url);
+      return ['ws:', 'wss:', 'http:', 'https:'].includes(urlObj.protocol);
+    } catch {
+      return false;
+    }
+  }
+
+  // Connection health check
+  async testConnection(): Promise<boolean> {
+    if (!this.isConnected || !this.socket) {
+      return false;
+    }
+
+    return new Promise((resolve) => {
+      const timeout = setTimeout(() => {
+        resolve(false);
+      }, 5000);
+
+      this.socket!.emit('ping', (response: any) => {
+        clearTimeout(timeout);
+        resolve(response === 'pong');
+      });
+    });
+  }
+
+  // Enhanced connection status with service availability
+  async getEnhancedConnectionStatus(): Promise<{
+    connected: boolean;
+    socketId?: string;
+    sessionId?: string;
+    reconnectAttempts: number;
+    url: string;
+    healthy: boolean;
+    lastPingTime?: number;
+  }> {
+    const healthy = await this.testConnection();
+    
+    return {
+      connected: this.isConnected,
+      socketId: this.socket?.id,
+      sessionId: this.sessionId || undefined,
+      reconnectAttempts: this.reconnectAttempts,
+      url: this.url,
+      healthy,
+      lastPingTime: healthy ? Date.now() : undefined
+    };
+  }
+
+  // Force reconnection
+  async forceReconnect(userId?: string, realm?: string): Promise<void> {
+    console.log('🔄 Forcing WebSocket reconnection...');
+    
+    if (this.socket) {
+      await this.disconnect();
+    }
+    
+    // Reset reconnection attempts
+    this.reconnectAttempts = 0;
+    
+    // Wait a moment before reconnecting
+    await new Promise(resolve => setTimeout(resolve, 1000));
+    
+    return this.connect(userId, realm);
   }
 }
 

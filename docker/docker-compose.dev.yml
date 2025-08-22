@@ -1,4 +1,4 @@
-version: '3.8'
+# Removed obsolete version attribute as per Docker Compose v2 recommendations
 
 services:
   # Keycloak Identity Provider
@@ -23,9 +23,10 @@ services:
         condition: service_healthy
     healthcheck:
       test: ["CMD-SHELL", "curl -f http://localhost:8080/realms/master || exit 1"]
-      interval: 30s
-      timeout: 10s
-      retries: 5
+      interval: 15s
+      timeout: 30s
+      retries: 10
+      start_period: 60s
 
   # PostgreSQL Database for Keycloak
   postgres:
@@ -138,14 +139,15 @@ services:
       dockerfile: Dockerfile
     container_name: ikas-ai-gateway
     ports:
-      - "8000:8000"
+      - "8005:8005"
     environment:
       GEMINI_API_KEY: ${GEMINI_API_KEY}
       REDIS_URL: redis://redis:6379
       KEYCLOAK_MCP_URL: http://keycloak-mcp:8001
       NEO4J_MCP_URL: http://neo4j-mcp:8002
+      WEBSOCKET_SERVER_URL: http://websocket-server:3001
       NODE_ENV: development
-      PORT: 8000
+      PORT: 8005
     depends_on:
       keycloak-mcp:
         condition: service_healthy
@@ -154,7 +156,32 @@ services:
       redis:
         condition: service_healthy
     healthcheck:
-      test: ["CMD-SHELL", "curl -f http://localhost:8000/health || exit 1"]
+      test: ["CMD-SHELL", "curl -f http://localhost:8005/health || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # WebSocket Server (Real-time communication hub)
+  websocket-server:
+    build:
+      context: ../websocket-server
+      dockerfile: Dockerfile
+    container_name: ikas-websocket-server
+    ports:
+      - "3001:3001"
+    environment:
+      REDIS_URL: redis://redis:6379
+      AI_GATEWAY_URL: http://ai-gateway:8005
+      NODE_ENV: development
+      PORT: 3001
+      CORS_ORIGINS: "http://localhost:3000,http://localhost:3001"
+    depends_on:
+      ai-gateway:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:3001/health || exit 1"]
       interval: 30s
       timeout: 10s
       retries: 3

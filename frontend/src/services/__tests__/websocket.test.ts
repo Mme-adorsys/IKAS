@@ -50,7 +50,10 @@ describe('WebSocketService', () => {
         reconnection: true,
         reconnectionAttempts: 5,
         reconnectionDelay: 1000,
-        timeout: 20000
+        timeout: 10000,
+        transports: ['websocket', 'polling'],
+        forceNew: false,
+        autoConnect: true
       })
     })
 
@@ -81,7 +84,7 @@ describe('WebSocketService', () => {
         errorHandler({ message: 'Connection failed' })
       }
       
-      await expect(connectPromise).rejects.toThrow('Failed to connect after 5 attempts')
+      await expect(connectPromise).rejects.toThrow('WebSocket connection failed after 5 attempts')
     })
 
     it('sets session ID when connected event is received', () => {
