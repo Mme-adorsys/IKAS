@@ -43,6 +43,8 @@ RUN mkdir -p logs && chown nodejs:nodejs logs
 # Switch to non-root user
 USER nodejs
 
+ENV GEMINI_API_KEY=AIzaSyDa1fNkc-LVV7EKhEBHm8VA7yyrpEitje4
+
 # Expose port
 EXPOSE 8000
 

@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import { randomUUID } from 'crypto';
 
 // Event Types für IKAS Real-time Communication
 export enum EventType {
@@ -189,7 +190,7 @@ export function createUserEvent(
   changes?: Record<string, any>
 ): z.infer<typeof UserEventSchema> {
   return {
-    id: crypto.randomUUID(),
+    id: randomUUID(),
     type: action === 'created' ? EventType.USER_CREATED : 
           action === 'updated' ? EventType.USER_UPDATED : EventType.USER_DELETED,
     timestamp: new Date().toISOString(),
@@ -214,7 +215,7 @@ export function createAnalysisEvent(
   error?: string
 ): z.infer<typeof AnalysisEventSchema> {
   return {
-    id: crypto.randomUUID(),
+    id: randomUUID(),
     type: status === 'started' ? EventType.ANALYSIS_STARTED :
           status === 'completed' || status === 'failed' ? EventType.ANALYSIS_COMPLETED :
           EventType.ANALYSIS_PROGRESS,
@@ -244,7 +245,7 @@ export function createVoiceEvent(
   }
 ): z.infer<typeof VoiceEventSchema> {
   return {
-    id: crypto.randomUUID(),
+    id: randomUUID(),
     type,
     timestamp: new Date().toISOString(),
     sessionId,

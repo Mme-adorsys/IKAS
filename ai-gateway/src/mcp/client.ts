@@ -70,10 +70,21 @@ export abstract class BaseMCPClient {
         args: args
       });
 
-      const response: AxiosResponse = await this.httpClient.post('/call-tool', {
-        tool: toolName,
-        arguments: args
-      });
+      let response: AxiosResponse;
+
+      if (this.serverName === 'keycloak') {
+        // Keycloak MCP uses custom REST endpoints
+        response = await this.httpClient.post(`/tools/${toolName}`, args);
+      } else if (this.serverName === 'neo4j') {
+        // Neo4j MCP now uses REST API like Keycloak
+        response = await this.httpClient.post(`/tools/${toolName}`, { arguments: args });
+      } else {
+        // Fallback to generic MCP protocol
+        response = await this.httpClient.post('/call-tool', {
+          tool: toolName,
+          arguments: args
+        });
+      }
 
       const duration = Date.now() - startTime;
       const metadata: MCPResponseMetadata = {
@@ -89,9 +100,12 @@ export abstract class BaseMCPClient {
         success: true
       });
 
+      // Both Neo4j and Keycloak now use REST API format
+      const responseData = response.data;
+
       return {
         success: true,
-        data: response.data,
+        data: responseData,
         metadata
       };
 
@@ -126,9 +140,35 @@ export abstract class BaseMCPClient {
     try {
       logger.debug(`Listing tools for ${this.serverName}`);
       
-      const response: AxiosResponse = await this.httpClient.get('/tools');
-      
-      return response.data.tools || [];
+      let response: AxiosResponse;
+
+      if (this.serverName === 'keycloak') {
+        // Keycloak MCP returns simple list of tool names
+        response = await this.httpClient.get('/tools');
+        const toolNames = response.data.tools || [];
+        
+        // Convert tool names to ToolDefinition format
+        return toolNames.map((name: string) => ({
+          name,
+          description: `Keycloak ${name} tool`,
+          inputSchema: { type: 'object', properties: {} }
+        }));
+      } else if (this.serverName === 'neo4j') {
+        // Neo4j MCP now uses REST API like Keycloak
+        response = await this.httpClient.get('/tools');
+        const toolNames = response.data.tools || [];
+        
+        // Convert tool names to ToolDefinition format
+        return toolNames.map((name: string) => ({
+          name,
+          description: `Neo4j ${name} tool`,
+          inputSchema: { type: 'object', properties: {} }
+        }));
+      } else {
+        // Fallback
+        response = await this.httpClient.get('/tools');
+        return response.data.tools || [];
+      }
       
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : 'Unknown error';
@@ -143,11 +183,26 @@ export abstract class BaseMCPClient {
 
   async healthCheck(): Promise<boolean> {
     try {
-      const response = await this.httpClient.get('/health', {
-        timeout: 3000 // Shorter timeout for health checks
-      });
+      let response: AxiosResponse;
+
+      if (this.serverName === 'keycloak') {
+        // Keycloak MCP has a custom health endpoint
+        response = await this.httpClient.get('/health', {
+          timeout: 3000
+        });
+      } else if (this.serverName === 'neo4j') {
+        // Neo4j MCP now has a standard health endpoint
+        response = await this.httpClient.get('/health', {
+          timeout: 3000
+        });
+      } else {
+        // Fallback
+        response = await this.httpClient.get('/health', {
+          timeout: 3000
+        });
+      }
       
-      return response.status >= 200 && response.status < 400;
+      return response.status >= 200 && response.status < 500;
       
     } catch (error) {
       logger.warn(`Health check failed for ${this.serverName}`, {

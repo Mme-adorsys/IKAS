@@ -136,8 +136,18 @@ if [ $keycloak_attempts -eq $max_keycloak_attempts ]; then
     echo -e " ${YELLOW}⚠️  Keycloak health check timeout. Continuing anyway...${NC}"
 fi
 
+# Build and start MCP servers
+echo -e "\n${YELLOW}🔧 Building and Starting MCP Servers...${NC}"
+
+# Build MCP Docker images if they don't exist or need updating
+echo "Building Keycloak MCP Server..."
+docker build -t ikas-keycloak-mcp ./keycloak-mcp-server
+
+echo "Building Neo4j MCP Server..."
+docker build -t ikas-neo4j-mcp ./mcp-neo4j
+
 # Start MCP servers
-echo -e "\n${YELLOW}🔧 Starting MCP Servers...${NC}"
+echo "Starting MCP containers..."
 docker-compose -f docker/docker-compose.dev.yml up -d keycloak-mcp neo4j-mcp
 
 # Wait for MCP servers with timeout

@@ -31,15 +31,20 @@ async function checkMcpService(url: string, serviceName: string): Promise<Servic
   const startTime = Date.now();
   
   try {
-    const response = await axios.get(`${url}/health`, {
+    // Both MCP servers now have standard /health endpoints
+    const healthPath = '/health';
+    const response = await axios.get(`${url}${healthPath}`, {
       timeout: config.HEALTH_CHECK_TIMEOUT,
-      validateStatus: (status) => status < 500 // Accept 4xx as healthy (service is responding)
+      validateStatus: (status) => status < 400 // Standard health check for all services
     });
     
     const latency = Date.now() - startTime;
     
+    // Standard health check for all services
+    const isHealthy = response.status < 400;
+    
     return {
-      status: response.status < 400 ? 'healthy' : 'unhealthy',
+      status: isHealthy ? 'healthy' : 'unhealthy',
       latency,
       lastChecked: new Date().toISOString()
     };

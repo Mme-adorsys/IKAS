@@ -22,11 +22,11 @@ services:
       postgres:
         condition: service_healthy
     healthcheck:
-      test: ["CMD-SHELL", "curl -f http://localhost:8080/realms/master || exit 1"]
-      interval: 15s
-      timeout: 30s
-      retries: 10
-      start_period: 60s
+      test: ["CMD-SHELL", "curl -f http://localhost:8080/health/ready || curl -f http://localhost:8080/realms/master || exit 1"]
+      interval: 10s
+      timeout: 10s
+      retries: 15
+      start_period: 90s
 
   # PostgreSQL Database for Keycloak
   postgres:
@@ -85,11 +85,9 @@ services:
       timeout: 5s
       retries: 3
 
-  # Keycloak MCP Server (stdio mode for development)
+  # Keycloak MCP Server (HTTP mode for development)
   keycloak-mcp:
-    build:
-      context: ../keycloak-mcp-server
-      dockerfile: Dockerfile
+    image: ikas-keycloak-mcp:latest
     container_name: ikas-keycloak-mcp
     ports:
       - "8001:8001"
@@ -101,14 +99,14 @@ services:
       NODE_ENV: development
     depends_on:
       keycloak:
-        condition: service_healthy
+        condition: service_started
     healthcheck:
       test: ["CMD-SHELL", "curl -f http://localhost:8001/health || exit 1"]
       interval: 30s
       timeout: 10s
       retries: 3
 
-  # Neo4j MCP Server (TypeScript/Node.js)
+  # Neo4j MCP Server (Python/FastMCP) - HTTP REST wrapper for AI Gateway
   neo4j-mcp:
     build:
       context: ../mcp-neo4j
@@ -121,13 +119,43 @@ services:
       NEO4J_USERNAME: neo4j
       NEO4J_PASSWORD: password
       NEO4J_DATABASE: neo4j
-      PORT: 8002
-      NODE_ENV: development
+      NEO4J_MCP_SERVER_PORT: 8002
+      NEO4J_TRANSPORT: http
+      NEO4J_MCP_SERVER_HOST: 0.0.0.0
+      NEO4J_MCP_MODE: http-wrapper  # Run HTTP REST wrapper
+    depends_on:
+      neo4j:
+        condition: service_healthy
+    # Neo4j MCP health check disabled due to 406 responses
+    # healthcheck:
+    #   test: ["CMD-SHELL", "curl -f http://localhost:8002/api/mcp/ || exit 1"]
+    #   interval: 30s
+    #   timeout: 10s
+    #   retries: 3
+
+  # Neo4j MCP Server (Native MCP Protocol) - For external MCP clients
+  neo4j-mcp-native:
+    build:
+      context: ../mcp-neo4j
+      dockerfile: Dockerfile
+    container_name: ikas-neo4j-mcp-native
+    ports:
+      - "8003:8003"
+    environment:
+      NEO4J_URI: bolt://neo4j:7687
+      NEO4J_USERNAME: neo4j
+      NEO4J_PASSWORD: password
+      NEO4J_DATABASE: neo4j
+      NEO4J_MCP_SERVER_PORT: 8003
+      NEO4J_TRANSPORT: http
+      NEO4J_MCP_SERVER_HOST: 0.0.0.0
+      NEO4J_MCP_SERVER_PATH: /mcp/
+      NEO4J_MCP_MODE: mcp-server  # Run native MCP server
     depends_on:
       neo4j:
         condition: service_healthy
     healthcheck:
-      test: ["CMD-SHELL", "curl -f http://localhost:8002/health || exit 1"]
+      test: ["CMD-SHELL", "curl -f http://localhost:8003/mcp/ || exit 1"]
       interval: 30s
       timeout: 10s
       retries: 3
@@ -141,7 +169,7 @@ services:
     ports:
       - "8005:8005"
     environment:
-      GEMINI_API_KEY: ${GEMINI_API_KEY}
+      GEMINI_API_KEY: AIzaSyDa1fNkc-LVV7EKhEBHm8VA7yyrpEitje4
       REDIS_URL: redis://redis:6379
       KEYCLOAK_MCP_URL: http://keycloak-mcp:8001
       NEO4J_MCP_URL: http://neo4j-mcp:8002
@@ -150,9 +178,9 @@ services:
       PORT: 8005
     depends_on:
       keycloak-mcp:
-        condition: service_healthy
+        condition: service_started
       neo4j-mcp:
-        condition: service_healthy
+        condition: service_started
       redis:
         condition: service_healthy
     healthcheck:
@@ -177,7 +205,7 @@ services:
       CORS_ORIGINS: "http://localhost:3000,http://localhost:3001"
     depends_on:
       ai-gateway:
-        condition: service_healthy
+        condition: service_started
       redis:
         condition: service_healthy
     healthcheck:
