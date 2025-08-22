@@ -1,0 +1,55 @@
+🔐 Security Guidelines (Draft)
+
+1. Authentication & Authorization
+	•	All endpoints must be protected using OAuth 2.0 or JWT-based authentication.
+	•	Role-based access control (RBAC) should be enforced at the API gateway and service level.
+	•	Never hardcode credentials or tokens in source code. Use environment variables or secrets managers.
+	•	Ensure password policies are enforced (min. 12 characters, complexity, expiry, no reuse).
+
+⸻
+
+2. Data Protection
+	•	All data in transit must be encrypted using TLS 1.2 or higher.
+	•	Sensitive data at rest must be encrypted using AES-256 or equivalent.
+	•	Personally Identifiable Information (PII) must be stored and processed in compliance with GDPR.
+	•	Avoid logging sensitive information (e.g., tokens, passwords, full names, email addresses).
+
+⸻
+
+3. Secure Development Practices
+	•	Validate all user input (both client-side and server-side) to prevent injection attacks.
+	•	Sanitize output to avoid Cross-Site Scripting (XSS) vulnerabilities.
+	•	Use parameterized queries to prevent SQL injection.
+	•	Perform regular dependency checks and keep third-party libraries up to date.
+
+⸻
+
+4. API Security
+	•	All public APIs must be rate-limited to prevent abuse (e.g., DoS).
+	•	Use API gateways or service meshes to enforce centralized authentication, logging, and throttling.
+	•	Enable CORS policies only for trusted domains.
+	•	Define and enforce proper scopes and permissions for all API tokens.
+
+⸻
+
+5. Infrastructure & Deployment
+	•	Use infrastructure-as-code (IaC) with version control and code review.
+	•	Apply the principle of least privilege (PoLP) to all IAM roles and service accounts.
+	•	All containers must be scanned for vulnerabilities before deployment.
+	•	Enforce multi-factor authentication (MFA) for all admin and privileged access.
+
+⸻
+
+6. Monitoring & Incident Response
+	•	Enable centralized logging and real-time alerting for all critical systems.
+	•	Define a security incident response plan with clear escalation paths.
+	•	Retain logs for a minimum of 90 days for forensic analysis.
+	•	Perform regular security drills and simulated breach tests.
+
+⸻
+
+7. Compliance & Auditing
+	•	All systems must adhere to relevant security standards (e.g., ISO 27001, NIST, CIS).
+	•	Regular security audits and penetration tests must be conducted at least once per year.
+	•	Maintain an asset inventory and update it continuously.
+	•	All findings from security reviews must be tracked and remediated in a timely manner.
