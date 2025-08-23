@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="de">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -155,13 +155,13 @@
         <h1>🎤 IKAS Voice Client</h1>
         
         <div id="status" class="status disconnected">
-            Nicht verbunden
+            Not connected
         </div>
         
         <div class="voice-controls">
             <button id="startButton" class="voice-button start">🎤 Sprachaufnahme starten</button>
             <button id="stopButton" class="voice-button stop" disabled>⏹️ Stoppen</button>
-            <button id="hotwordButton" class="voice-button start">🔥 Hey Keycloak aktivieren</button>
+            <button id="hotwordButton" class="voice-button start">🔥 Activate IKAS</button>
         </div>
         
         <div class="recognition-wave" id="recognitionWave">
@@ -174,18 +174,18 @@
         </div>
         
         <div class="hotword-training">
-            <h3>🎯 Hey Keycloak Hotword</h3>
-            <p>Sagen Sie "Hey Keycloak" gefolgt von Ihrem Befehl:</p>
+            <h3>🎯 IKAS Hotword</h3>
+            <p>Say "IKAS" followed by your command:</p>
             <ul>
-                <li>"Hey Keycloak, zeige alle Benutzer"</li>
-                <li>"Hey Keycloak, analysiere die Compliance"</li>
-                <li>"Hey Keycloak, finde doppelte Benutzer"</li>
-                <li>"Hey Keycloak, erstelle einen neuen Benutzer"</li>
+                <li>"IKAS, list all users"</li>
+                <li>"IKAS, analyze compliance"</li>
+                <li>"IKAS, find duplicate users"</li>
+                <li>"IKAS, create a new user"</li>
             </ul>
         </div>
         
         <div class="transcript">
-            <strong>Transkript:</strong>
+            <strong>Transcript:</strong>
             <div id="transcript">Warten auf Sprachaufnahme...</div>
         </div>
         
@@ -219,8 +219,8 @@
                 });
                 
                 this.socket.on('connect', () => {
-                    this.updateStatus('Verbunden', true);
-                    this.addEvent('WebSocket verbunden');
+                    this.updateStatus('Connected', true);
+                    this.addEvent('WebSocket connected');
                 });
                 
                 this.socket.on('connected', (data) => {
@@ -230,8 +230,8 @@
                 });
                 
                 this.socket.on('disconnect', () => {
-                    this.updateStatus('Nicht verbunden', false);
-                    this.addEvent('WebSocket getrennt');
+                    this.updateStatus('Not connected', false);
+                    this.addEvent('WebSocket disconnected');
                 });
                 
                 this.socket.on('event', (event) => {
@@ -248,7 +248,7 @@
                 });
                 
                 this.socket.on('error', (error) => {
-                    this.addEvent(`Fehler: ${error.message}`, true);
+                    this.addEvent(`Error: ${error.message}`, true);
                 });
             }
             
@@ -261,8 +261,8 @@
                 const SpeechRecognition = window.webkitSpeechRecognition || window.SpeechRecognition;
                 this.recognition = new SpeechRecognition();
                 
-                // Configure for German
-                this.recognition.lang = 'de-DE';
+                // Configure for English
+                this.recognition.lang = 'en-US';
                 this.recognition.continuous = false;
                 this.recognition.interimResults = true;
                 this.recognition.maxAlternatives = 3;
@@ -295,7 +295,7 @@
                 };
                 
                 this.recognition.onerror = (event) => {
-                    this.addEvent(`Speech Recognition Fehler: ${event.error}`, true);
+                    this.addEvent(`Speech Recognition Error: ${event.error}`, true);
                     this.stopListening();
                 };
                 
@@ -315,20 +315,20 @@
                 const lowerTranscript = transcript.toLowerCase().trim();
                 
                 // Check for hotword
-                if (lowerTranscript.includes('hey keycloak')) {
-                    this.addEvent(`🔥 Hotword erkannt: "${transcript}"`);
+                if (lowerTranscript.includes('ikas')) {
+                    this.addEvent(`🔥 Hotword detected: "${transcript}"`);
                     
                     // Extract command after hotword
-                    const command = lowerTranscript.replace('hey keycloak', '').trim();
+                    const command = lowerTranscript.replace('ikas', '').trim();
                     
                     if (command) {
                         this.sendVoiceCommand(command, transcript, confidence);
                     } else {
-                        this.addEvent('Warten auf Befehl nach "Hey Keycloak"...');
+                        this.addEvent('Waiting for command after "IKAS"...');
                     }
                 } else if (this.hotwordActive) {
                     // If hotword mode is active but no hotword detected, ignore
-                    this.addEvent(`Ignoriert (kein Hotword): "${transcript}"`);
+                    this.addEvent(`Ignored (no hotword): "${transcript}"`);
                 } else {
                     // Direct command without hotword
                     this.sendVoiceCommand(transcript, transcript, confidence);
@@ -337,7 +337,7 @@
             
             sendVoiceCommand(command, transcript, confidence) {
                 if (!this.socket || !this.socket.connected) {
-                    this.addEvent('Nicht verbunden - kann Befehl nicht senden', true);
+                    this.addEvent('Not connected - cannot send command', true);
                     return;
                 }
                 
@@ -345,7 +345,7 @@
                     command: command,
                     transcript: transcript,
                     confidence: confidence || 1.0,
-                    language: 'de-DE',
+                    language: 'en-US',
                     timestamp: new Date().toISOString()
                 };
                 
@@ -356,7 +356,7 @@
             speakResponse(text) {
                 if ('speechSynthesis' in window) {
                     const utterance = new SpeechSynthesisUtterance(text);
-                    utterance.lang = 'de-DE';
+                    utterance.lang = 'en-US';
                     utterance.rate = 0.9;
                     utterance.pitch = 1;
                     
@@ -379,7 +379,7 @@
                 try {
                     this.recognition.start();
                 } catch (error) {
-                    this.addEvent(`Fehler beim Starten: ${error.message}`, true);
+                    this.addEvent(`Error starting: ${error.message}`, true);
                 }
             }
             
@@ -399,14 +399,14 @@
                 const button = document.getElementById('hotwordButton');
                 
                 if (this.hotwordActive) {
-                    button.textContent = '🔥 Hey Keycloak aktiv';
+                    button.textContent = '🔥 IKAS Active';
                     button.style.background = 'linear-gradient(45deg, #00b894, #00a085)';
-                    this.addEvent('🔥 Hotword Modus aktiviert - sage "Hey Keycloak"');
+                    this.addEvent('🔥 Hotword mode activated - say "IKAS"');
                     this.startListening();
                 } else {
-                    button.textContent = '🔥 Hey Keycloak aktivieren';
+                    button.textContent = '🔥 Activate IKAS';
                     button.style.background = 'linear-gradient(45deg, #ff6b6b, #ee5a24)';
-                    this.addEvent('Hotword Modus deaktiviert');
+                    this.addEvent('Hotword mode deactivated');
                     this.stopListening();
                 }
             }
@@ -448,7 +448,7 @@
                     eventEl.style.backgroundColor = 'rgba(244, 67, 54, 0.1)';
                 }
                 
-                const timestamp = new Date().toLocaleTimeString('de-DE');
+                const timestamp = new Date().toLocaleTimeString('en-US');
                 eventEl.innerHTML = `<strong>${timestamp}:</strong> ${message}`;
                 
                 eventsEl.insertBefore(eventEl, eventsEl.firstChild);

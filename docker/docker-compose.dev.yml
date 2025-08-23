@@ -202,7 +202,7 @@ services:
       AI_GATEWAY_URL: http://ai-gateway:8005
       NODE_ENV: development
       PORT: 3001
-      CORS_ORIGINS: "http://localhost:3000,http://localhost:3001"
+      CORS_ORIGIN: "http://localhost:3000,http://localhost:3001,http://localhost:3002"
     depends_on:
       ai-gateway:
         condition: service_started

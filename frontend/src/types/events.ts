@@ -27,6 +27,9 @@ export enum EventType {
   VOICE_RESPONSE = 'voice:response',
   VOICE_ERROR = 'voice:error',
   
+  // Data Events
+  DATA_UPDATE = 'data:update',
+  
   // Session Events
   SESSION_STARTED = 'session:started',
   SESSION_ENDED = 'session:ended',
@@ -126,6 +129,14 @@ export interface VoiceEvent extends BaseEvent {
   };
 }
 
+export interface DataEvent extends BaseEvent {
+  type: EventType.DATA_UPDATE;
+  payload: {
+    dataType: string;
+    data: any;
+  };
+}
+
 export interface ConnectionEvent extends BaseEvent {
   type: EventType.CONNECTION_STATUS | EventType.HEARTBEAT;
   payload: {
@@ -146,6 +157,7 @@ export type IKASEvent =
   | AnalysisEvent
   | ComplianceEvent
   | VoiceEvent
+  | DataEvent
   | ConnectionEvent;
 
 // WebSocket message types

@@ -1,5 +1,5 @@
 import { io, Socket } from 'socket.io-client';
-import { logger } from '../utils/logger';
+import { logger, RequestTracker } from '../utils/logger';
 import { config } from '../utils/config';
 
 export interface WebSocketConfig {
@@ -201,6 +201,40 @@ export class WebSocketClient {
         success: response.success
       });
 
+      // Send data updates if available
+      if (response.success && response.data) {
+        logger.info('📤 Processing data updates from orchestration response', {
+          sessionId: event.sessionId,
+          hasData: !!response.data,
+          dataKeys: Object.keys(response.data),
+          dataCount: Object.keys(response.data).length
+        });
+
+        for (const [dataType, data] of Object.entries(response.data)) {
+          if (data && dataType !== 'usage' && dataType !== 'finishReason') {
+            logger.debug('📦 Sending data update', {
+              sessionId: event.sessionId,
+              dataType,
+              hasData: !!data,
+              dataPreview: Array.isArray(data) ? `Array[${data.length}]` : typeof data
+            });
+            await this.sendDataUpdate(event.sessionId, dataType, data);
+          } else {
+            logger.debug('⏭️ Skipping data update', {
+              sessionId: event.sessionId,
+              dataType,
+              reason: data ? 'metadata type' : 'no data'
+            });
+          }
+        }
+      } else {
+        logger.debug('📭 No data updates to send', {
+          sessionId: event.sessionId,
+          success: response.success,
+          hasData: !!response.data
+        });
+      }
+
     } catch (error) {
       logger.error('Error processing voice command', {
         error: error instanceof Error ? error.message : 'Unknown error',
@@ -314,6 +348,36 @@ export class WebSocketClient {
     logger.debug('Sent voice response', {
       sessionId,
       success: payload.success
+    });
+  }
+
+  async sendDataUpdate(sessionId: string, dataType: string, data: any): Promise<void> {
+    if (!this.isConnected || !this.socket) {
+      logger.warn('Cannot send data update - not connected');
+      return;
+    }
+
+    const dataEvent = {
+      type: 'data:update',
+      sessionId,
+      timestamp: new Date().toISOString(),
+      payload: {
+        dataType,
+        data
+      }
+    };
+
+    this.socket.emit('event', dataEvent);
+    
+    logger.info('📡 Sent data update via WebSocket', {
+      sessionId,
+      dataType,
+      eventType: 'data:update',
+      recordCount: Array.isArray(data) ? data.length : (data && typeof data === 'object' ? Object.keys(data).length : 0),
+      dataSize: JSON.stringify(data).length,
+      timestamp: dataEvent.timestamp,
+      isArray: Array.isArray(data),
+      sampleKeys: data && typeof data === 'object' && !Array.isArray(data) ? Object.keys(data).slice(0, 5) : []
     });
   }
 
