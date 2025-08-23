@@ -1,23 +1,28 @@
-import { OrchestrationRequest, OrchestrationResponse, ExecutionStrategy, MCPToolCall } from '../types';
+import { OrchestrationRequest, OrchestrationResponse, ExecutionStrategy, MCPToolCall, ToolDefinition } from '../types';
 import { FunctionCallingMode } from '@google/generative-ai';
-import { GeminiService, MCPToolDiscovery } from '../llm';
+import { LLMService, LLMFactory, MCPToolDiscovery, LLMProvider, LLMChatRequest, LLMFunctionCall, LLMFunction } from '../llm';
 import { IntelligentRouter } from './routing';
 import { getKeycloakClient, getNeo4jClient } from '../mcp';
 import { logger, RequestTracker } from '../utils/logger';
 import { v4 as uuidv4 } from 'uuid';
 
 export class Orchestrator {
-  private geminiService: GeminiService;
+  private llmService: LLMService;
   private toolDiscovery: MCPToolDiscovery;
   private router: IntelligentRouter;
   private toolResults: Map<string, any> = new Map();
 
   constructor() {
-    this.geminiService = new GeminiService();
+    // Use factory to create LLM service based on configuration
+    this.llmService = LLMFactory.createLLMService();
     this.toolDiscovery = new MCPToolDiscovery();
     this.router = new IntelligentRouter();
 
-    logger.info('Orchestrator initialized');
+    const providerInfo = this.llmService.getProviderInfo();
+    logger.info('Orchestrator initialized', {
+      llmProvider: providerInfo.provider,
+      llmModel: providerInfo.model
+    });
   }
 
   async processRequest(request: OrchestrationRequest): Promise<OrchestrationResponse> {
@@ -55,7 +60,21 @@ export class Orchestrator {
 
       // 2. Get appropriate tools for the strategy
       const intent = this.getIntentFromStrategy(strategy);
-      const availableTools = await this.toolDiscovery.getToolsForIntent(intent);
+      const discoveryResult = await this.toolDiscovery.discoverAllTools();
+      // Flatten tools from all servers
+      const allTools = Object.values(discoveryResult.tools).flat();
+      
+      // Filter tools based on intent (simplified for now)
+      const availableTools = intent === 'all' ? allTools : allTools.filter((tool: ToolDefinition) => {
+        if (intent === 'read') {
+          return !tool.name.includes('create') && !tool.name.includes('delete');
+        } else if (intent === 'write') {
+          return tool.name.includes('create') || tool.name.includes('delete') || tool.name.includes('write');
+        } else if (intent === 'analyze') {
+          return tool.name.includes('get') || tool.name.includes('read') || tool.name.includes('query');
+        }
+        return true;
+      });
 
       logger.info('🛠️ Tools selected for request', {
         requestId,
@@ -63,7 +82,7 @@ export class Orchestrator {
         strategy,
         intent,
         toolCount: availableTools.length,
-        availableTools: availableTools.map(tool => ({
+        availableTools: availableTools.map((tool: ToolDefinition) => ({
           name: tool.name,
           description: tool.description.substring(0, 100)
         }))
@@ -87,32 +106,38 @@ export class Orchestrator {
         }
       });
 
-      const geminiResponse = await this.geminiService.chat({
+      // Convert tools to LLM interface format
+      const llmTools = this.convertToolsToLLMFormat(availableTools);
+      
+      const llmRequest: LLMChatRequest = {
         message: request.userInput,
         sessionId: request.sessionId,
-        tools: availableTools,
+        tools: llmTools,
         context: {
           realm: request.context?.realm,
           language: request.context?.preferredLanguage || 'en'
-        },
-        functionCallingMode
-      });
+        }
+      };
+      
+      const llmResponse = await this.llmService.chat(llmRequest);
 
-      logger.info('🎭 Gemini response received', {
+      logger.info('🎭 LLM response received', {
         requestId,
         sessionId: request.sessionId,
-        hasResponse: !!geminiResponse.response,
-        responseLength: geminiResponse.response?.length || 0,
-        hasFunctionCalls: !!(geminiResponse.functionCalls && geminiResponse.functionCalls.length > 0),
-        functionCallCount: geminiResponse.functionCalls?.length || 0,
-        functionNames: geminiResponse.functionCalls?.map(fc => fc.name) || []
+        provider: this.llmService.provider,
+        model: this.llmService.model,
+        hasResponse: !!llmResponse.response,
+        responseLength: llmResponse.response?.length || 0,
+        hasFunctionCalls: !!(llmResponse.functionCalls && llmResponse.functionCalls.length > 0),
+        functionCallCount: llmResponse.functionCalls?.length || 0,
+        functionNames: llmResponse.functionCalls?.map(fc => fc.name) || []
       });
 
-      // 5. Execute function calls in loop until Gemini stops requesting them
+      // 5. Execute function calls in loop until LLM stops requesting them
       const toolsCalled: MCPToolCall[] = [];
-      let finalResponse = geminiResponse.response;
+      let finalResponse = llmResponse.response;
       let aggregatedData: any = {};
-      let currentResponse = geminiResponse;
+      let currentResponse = llmResponse;
       let maxIterations = 5; // Safety limit to prevent infinite loops
       let iteration = 0;
 
@@ -145,13 +170,12 @@ export class Orchestrator {
           });
         }
 
-        // Process function calls and get response from Gemini
-        const processResult = await this.geminiService.processFunctionCalls(
+        // Process function calls and get response from LLM
+        const processResult = await this.llmService.processFunctionCalls(
           request.sessionId,
-          currentResponse.functionCalls,
+          currentResponse.functionCalls!,
           (functionCall) => this.executeFunctionCall(functionCall, request.context?.realm),
-          availableTools,
-          functionCallingMode
+          llmTools
         );
 
         finalResponse = processResult.response;
@@ -238,9 +262,9 @@ export class Orchestrator {
         response: finalResponse,
         data: {
           ...aggregatedData,
-          ...(geminiResponse.usage ? {
-            usage: geminiResponse.usage,
-            finishReason: geminiResponse.finishReason
+          ...(llmResponse.usage ? {
+            usage: llmResponse.usage,
+            finishReason: llmResponse.finishReason
           } : {})
         },
         toolsCalled,
@@ -489,7 +513,8 @@ export class Orchestrator {
 
   // Cleanup method for old chat sessions
   cleanup(): void {
-    this.geminiService.cleanupOldSessions();
+    // Note: Session cleanup should be implemented in abstract interface if needed
+    // this.llmService.cleanupOldSessions();
     logger.debug('Orchestrator cleanup completed');
   }
 
@@ -616,8 +641,20 @@ export class Orchestrator {
     toolCacheStatus: any;
   } {
     return {
-      activeSessions: this.geminiService.getActiveSessions().length,
+      activeSessions: this.llmService.getActiveSessions().length,
       toolCacheStatus: this.toolDiscovery.getCacheStatus()
     };
+  }
+
+  private convertToolsToLLMFormat(mcpTools: ToolDefinition[]): LLMFunction[] {
+    return mcpTools.map(tool => ({
+      name: tool.name,
+      description: tool.description,
+      parameters: {
+        type: 'object' as const,
+        properties: tool.inputSchema.properties || {},
+        required: tool.inputSchema.required || []
+      }
+    }));
   }
 }

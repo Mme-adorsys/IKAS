@@ -2461,3 +2461,2804 @@
   "duration": "4ms",
   "userAgent": "Wget"
 }
+2025-08-23 14:19:35.935 [INFO]  HTTP Request
+{
+  "method": "GET",
+  "url": "/",
+  "status": 200,
+  "duration": "5ms",
+  "userAgent": "Wget"
+}
+2025-08-23 14:20:35.987 [INFO]  HTTP Request
+{
+  "method": "GET",
+  "url": "/",
+  "status": 200,
+  "duration": "4ms",
+  "userAgent": "Wget"
+}
+2025-08-23 14:21:36.034 [INFO]  HTTP Request
+{
+  "method": "GET",
+  "url": "/",
+  "status": 200,
+  "duration": "4ms",
+  "userAgent": "Wget"
+}
+2025-08-23 14:22:36.078 [INFO]  HTTP Request
+{
+  "method": "GET",
+  "url": "/",
+  "status": 200,
+  "duration": "3ms",
+  "userAgent": "Wget"
+}
+2025-08-23 14:23:36.112 [INFO]  HTTP Request
+{
+  "method": "GET",
+  "url": "/",
+  "status": 200,
+  "duration": "3ms",
+  "userAgent": "Wget"
+}
+2025-08-23 14:24:36.157 [INFO]  HTTP Request
+{
+  "method": "GET",
+  "url": "/",
+  "status": 200,
+  "duration": "3ms",
+  "userAgent": "Wget"
+}
+2025-08-23 14:25:36.200 [INFO]  HTTP Request
+{
+  "method": "GET",
+  "url": "/",
+  "status": 200,
+  "duration": "3ms",
+  "userAgent": "Wget"
+}
+2025-08-23 14:26:36.251 [INFO]  HTTP Request
+{
+  "method": "GET",
+  "url": "/",
+  "status": 200,
+  "duration": "4ms",
+  "userAgent": "Wget"
+}
+2025-08-23 14:27:36.294 [INFO]  HTTP Request
+{
+  "method": "GET",
+  "url": "/",
+  "status": 200,
+  "duration": "3ms",
+  "userAgent": "Wget"
+}
+2025-08-23 14:28:36.314 [INFO]  HTTP Request
+{
+  "method": "GET",
+  "url": "/",
+  "status": 200,
+  "duration": "3ms",
+  "userAgent": "Wget"
+}
+2025-08-23 14:29:36.353 [INFO]  HTTP Request
+{
+  "method": "GET",
+  "url": "/",
+  "status": 200,
+  "duration": "3ms",
+  "userAgent": "Wget"
+}
+2025-08-23 14:30:36.399 [INFO]  HTTP Request
+{
+  "method": "GET",
+  "url": "/",
+  "status": 200,
+  "duration": "4ms",
+  "userAgent": "Wget"
+}
+2025-08-23 14:31:36.449 [INFO]  HTTP Request
+{
+  "method": "GET",
+  "url": "/",
+  "status": 200,
+  "duration": "4ms",
+  "userAgent": "Wget"
+}
+2025-08-23 14:32:36.499 [INFO]  HTTP Request
+{
+  "method": "GET",
+  "url": "/",
+  "status": 200,
+  "duration": "4ms",
+  "userAgent": "Wget"
+}
+2025-08-23 14:33:36.549 [INFO]  HTTP Request
+{
+  "method": "GET",
+  "url": "/",
+  "status": 200,
+  "duration": "4ms",
+  "userAgent": "Wget"
+}
+2025-08-23 14:34:36.594 [INFO]  HTTP Request
+{
+  "method": "GET",
+  "url": "/",
+  "status": 200,
+  "duration": "3ms",
+  "userAgent": "Wget"
+}
+2025-08-23 14:35:36.642 [INFO]  HTTP Request
+{
+  "method": "GET",
+  "url": "/",
+  "status": 200,
+  "duration": "4ms",
+  "userAgent": "Wget"
+}
+2025-08-23 14:36:36.683 [INFO]  HTTP Request
+{
+  "method": "GET",
+  "url": "/",
+  "status": 200,
+  "duration": "5ms",
+  "userAgent": "Wget"
+}
+2025-08-23 14:37:36.731 [INFO]  HTTP Request
+{
+  "method": "GET",
+  "url": "/",
+  "status": 200,
+  "duration": "4ms",
+  "userAgent": "Wget"
+}
+2025-08-23 14:38:36.781 [INFO]  HTTP Request
+{
+  "method": "GET",
+  "url": "/",
+  "status": 200,
+  "duration": "4ms",
+  "userAgent": "Wget"
+}
+2025-08-23 14:39:36.843 [INFO]  HTTP Request
+{
+  "method": "GET",
+  "url": "/",
+  "status": 200,
+  "duration": "4ms",
+  "userAgent": "Wget"
+}
+2025-08-23 14:40:36.891 [INFO]  HTTP Request
+{
+  "method": "GET",
+  "url": "/",
+  "status": 200,
+  "duration": "4ms",
+  "userAgent": "Wget"
+}
+2025-08-23 14:41:36.942 [INFO]  HTTP Request
+{
+  "method": "GET",
+  "url": "/",
+  "status": 200,
+  "duration": "4ms",
+  "userAgent": "Wget"
+}
+2025-08-23 14:42:36.986 [INFO]  HTTP Request
+{
+  "method": "GET",
+  "url": "/",
+  "status": 200,
+  "duration": "5ms",
+  "userAgent": "Wget"
+}
+2025-08-23 14:43:37.039 [INFO]  HTTP Request
+{
+  "method": "GET",
+  "url": "/",
+  "status": 200,
+  "duration": "4ms",
+  "userAgent": "Wget"
+}
+2025-08-23 14:44:37.090 [INFO]  HTTP Request
+{
+  "method": "GET",
+  "url": "/",
+  "status": 200,
+  "duration": "5ms",
+  "userAgent": "Wget"
+}
+2025-08-23 14:45:37.146 [INFO]  HTTP Request
+{
+  "method": "GET",
+  "url": "/",
+  "status": 200,
+  "duration": "4ms",
+  "userAgent": "Wget"
+}
+2025-08-23 14:45:46.545 [INFO]  Received SIGTERM, shutting down gracefully
+2025-08-23 14:45:46.851 [INFO]  Gemini service initialized
+{
+  "model": "gemini-2.5-pro",
+  "apiConfigured": true
+}
+2025-08-23 14:45:46.852 [INFO]  Orchestrator initialized
+2025-08-23 14:45:46.856 [INFO]  IKAS AI Gateway started
+{
+  "port": 8005,
+  "environment": "development",
+  "keycloakMcp": "http://keycloak-mcp:8001",
+  "neo4jMcp": "http://neo4j-mcp:8002"
+}
+2025-08-23 14:45:46.856 [INFO]  Connecting to WebSocket server
+{
+  "url": "http://websocket-server:3001"
+}
+2025-08-23 14:45:46.873 [INFO]  Connected to WebSocket server
+{
+  "socketId": "FxCBf5jQv15Ht53NAAAx"
+}
+2025-08-23 14:45:46.874 [INFO]  WebSocket client connected successfully
+2025-08-23 14:45:46.874 [INFO]  WebSocket session established Welcome to IKAS! Connection established successfully.
+{
+  "sessionId": "9807276d-b4a9-4a87-9de9-718dde73fff0"
+}
+2025-08-23 14:45:46.874 [DEBUG]  Subscription confirmed
+{
+  "eventTypes": [
+    "voice:command",
+    "analysis:started",
+    "compliance:check"
+  ],
+  "room": "global"
+}
+2025-08-23 14:45:55.830 [INFO]  Received SIGTERM, shutting down gracefully
+2025-08-23 14:45:56.135 [INFO]  Gemini service initialized
+{
+  "model": "gemini-2.5-pro",
+  "apiConfigured": true
+}
+2025-08-23 14:45:56.136 [INFO]  Orchestrator initialized
+2025-08-23 14:45:56.141 [INFO]  IKAS AI Gateway started
+{
+  "port": 8005,
+  "environment": "development",
+  "keycloakMcp": "http://keycloak-mcp:8001",
+  "neo4jMcp": "http://neo4j-mcp:8002"
+}
+2025-08-23 14:45:56.141 [INFO]  Connecting to WebSocket server
+{
+  "url": "http://websocket-server:3001"
+}
+2025-08-23 14:45:56.160 [INFO]  Connected to WebSocket server
+{
+  "socketId": "5WyPEstm1IlUXojGAAAz"
+}
+2025-08-23 14:45:56.161 [INFO]  WebSocket client connected successfully
+2025-08-23 14:45:56.161 [INFO]  WebSocket session established Welcome to IKAS! Connection established successfully.
+{
+  "sessionId": "a1c6cb8f-0cc8-4981-a1fe-ea17618d6382"
+}
+2025-08-23 14:45:56.161 [DEBUG]  Subscription confirmed
+{
+  "eventTypes": [
+    "voice:command",
+    "analysis:started",
+    "compliance:check"
+  ],
+  "room": "global"
+}
+2025-08-23 14:46:01.378 [INFO]  Received SIGTERM, shutting down gracefully
+2025-08-23 14:46:01.673 [INFO]  Gemini service initialized
+{
+  "model": "gemini-2.5-pro",
+  "apiConfigured": true
+}
+2025-08-23 14:46:01.674 [INFO]  Orchestrator initialized
+2025-08-23 14:46:01.678 [INFO]  IKAS AI Gateway started
+{
+  "port": 8005,
+  "environment": "development",
+  "keycloakMcp": "http://keycloak-mcp:8001",
+  "neo4jMcp": "http://neo4j-mcp:8002"
+}
+2025-08-23 14:46:01.679 [INFO]  Connecting to WebSocket server
+{
+  "url": "http://websocket-server:3001"
+}
+2025-08-23 14:46:01.697 [INFO]  Connected to WebSocket server
+{
+  "socketId": "6iGvXUxu8cAWyW5vAAA1"
+}
+2025-08-23 14:46:01.698 [INFO]  WebSocket client connected successfully
+2025-08-23 14:46:01.698 [INFO]  WebSocket session established Welcome to IKAS! Connection established successfully.
+{
+  "sessionId": "768b9f63-45fa-45d5-9cbb-308fec2948eb"
+}
+2025-08-23 14:46:01.698 [DEBUG]  Subscription confirmed
+{
+  "eventTypes": [
+    "voice:command",
+    "analysis:started",
+    "compliance:check"
+  ],
+  "room": "global"
+}
+2025-08-23 14:46:10.075 [INFO]  Received SIGTERM, shutting down gracefully
+2025-08-23 14:46:10.377 [INFO]  Gemini service initialized
+{
+  "provider": "gemini",
+  "model": "gemini-2.5-pro",
+  "apiConfigured": true,
+  "temperature": 0.1,
+  "maxTokens": 8192
+}
+2025-08-23 14:46:10.378 [INFO]  Orchestrator initialized
+2025-08-23 14:46:10.382 [INFO]  IKAS AI Gateway started
+{
+  "port": 8005,
+  "environment": "development",
+  "keycloakMcp": "http://keycloak-mcp:8001",
+  "neo4jMcp": "http://neo4j-mcp:8002"
+}
+2025-08-23 14:46:10.382 [INFO]  Connecting to WebSocket server
+{
+  "url": "http://websocket-server:3001"
+}
+2025-08-23 14:46:10.401 [INFO]  Connected to WebSocket server
+{
+  "socketId": "bopoXcb432eQbnRVAAA3"
+}
+2025-08-23 14:46:10.402 [INFO]  WebSocket client connected successfully
+2025-08-23 14:46:10.402 [INFO]  WebSocket session established Welcome to IKAS! Connection established successfully.
+{
+  "sessionId": "360d6741-cb0f-43b7-b7df-8ab46f0fab18"
+}
+2025-08-23 14:46:10.402 [DEBUG]  Subscription confirmed
+{
+  "eventTypes": [
+    "voice:command",
+    "analysis:started",
+    "compliance:check"
+  ],
+  "room": "global"
+}
+2025-08-23 14:46:16.768 [INFO]  Received SIGTERM, shutting down gracefully
+2025-08-23 14:46:17.071 [INFO]  Gemini service initialized
+{
+  "provider": "gemini",
+  "model": "gemini-2.5-pro",
+  "apiConfigured": true,
+  "temperature": 0.1,
+  "maxTokens": 8192
+}
+2025-08-23 14:46:17.072 [INFO]  Orchestrator initialized
+2025-08-23 14:46:17.076 [INFO]  IKAS AI Gateway started
+{
+  "port": 8005,
+  "environment": "development",
+  "keycloakMcp": "http://keycloak-mcp:8001",
+  "neo4jMcp": "http://neo4j-mcp:8002"
+}
+2025-08-23 14:46:17.077 [INFO]  Connecting to WebSocket server
+{
+  "url": "http://websocket-server:3001"
+}
+2025-08-23 14:46:17.094 [INFO]  Connected to WebSocket server
+{
+  "socketId": "nKvoBpERMFRAEc8_AAA5"
+}
+2025-08-23 14:46:17.095 [INFO]  WebSocket client connected successfully
+2025-08-23 14:46:17.095 [INFO]  WebSocket session established Welcome to IKAS! Connection established successfully.
+{
+  "sessionId": "d5add2b1-6e4c-4138-8646-1a35cf7b5eeb"
+}
+2025-08-23 14:46:17.095 [DEBUG]  Subscription confirmed
+{
+  "eventTypes": [
+    "voice:command",
+    "analysis:started",
+    "compliance:check"
+  ],
+  "room": "global"
+}
+2025-08-23 14:46:25.537 [INFO]  Received SIGTERM, shutting down gracefully
+2025-08-23 14:46:25.834 [INFO]  Gemini service initialized
+{
+  "provider": "gemini",
+  "model": "gemini-2.5-pro",
+  "apiConfigured": true,
+  "temperature": 0.1,
+  "maxTokens": 8192
+}
+2025-08-23 14:46:25.835 [INFO]  Orchestrator initialized
+2025-08-23 14:46:25.839 [INFO]  IKAS AI Gateway started
+{
+  "port": 8005,
+  "environment": "development",
+  "keycloakMcp": "http://keycloak-mcp:8001",
+  "neo4jMcp": "http://neo4j-mcp:8002"
+}
+2025-08-23 14:46:25.840 [INFO]  Connecting to WebSocket server
+{
+  "url": "http://websocket-server:3001"
+}
+2025-08-23 14:46:25.857 [INFO]  Connected to WebSocket server
+{
+  "socketId": "pa9KuE0LzzE-08DdAAA7"
+}
+2025-08-23 14:46:25.858 [INFO]  WebSocket client connected successfully
+2025-08-23 14:46:25.858 [INFO]  WebSocket session established Welcome to IKAS! Connection established successfully.
+{
+  "sessionId": "837169d1-7cf5-4f2b-bcca-82e9fd6ec85b"
+}
+2025-08-23 14:46:25.858 [DEBUG]  Subscription confirmed
+{
+  "eventTypes": [
+    "voice:command",
+    "analysis:started",
+    "compliance:check"
+  ],
+  "room": "global"
+}
+2025-08-23 14:46:31.527 [INFO]  Received SIGTERM, shutting down gracefully
+2025-08-23 14:46:31.814 [INFO]  Gemini service initialized
+{
+  "provider": "gemini",
+  "model": "gemini-2.5-pro",
+  "apiConfigured": true,
+  "temperature": 0.1,
+  "maxTokens": 8192
+}
+2025-08-23 14:46:31.815 [INFO]  Orchestrator initialized
+2025-08-23 14:46:31.819 [INFO]  IKAS AI Gateway started
+{
+  "port": 8005,
+  "environment": "development",
+  "keycloakMcp": "http://keycloak-mcp:8001",
+  "neo4jMcp": "http://neo4j-mcp:8002"
+}
+2025-08-23 14:46:31.820 [INFO]  Connecting to WebSocket server
+{
+  "url": "http://websocket-server:3001"
+}
+2025-08-23 14:46:31.838 [INFO]  Connected to WebSocket server
+{
+  "socketId": "Vl0aUqLjAVbEtbe6AAA9"
+}
+2025-08-23 14:46:31.838 [INFO]  WebSocket client connected successfully
+2025-08-23 14:46:31.838 [INFO]  WebSocket session established Welcome to IKAS! Connection established successfully.
+{
+  "sessionId": "79940a60-1e57-4c85-be38-4c7978f91557"
+}
+2025-08-23 14:46:31.839 [DEBUG]  Subscription confirmed
+{
+  "eventTypes": [
+    "voice:command",
+    "analysis:started",
+    "compliance:check"
+  ],
+  "room": "global"
+}
+2025-08-23 14:46:37.201 [INFO]  HTTP Request
+{
+  "method": "GET",
+  "url": "/",
+  "status": 200,
+  "duration": "12ms",
+  "userAgent": "Wget"
+}
+2025-08-23 14:46:38.409 [INFO]  Received SIGTERM, shutting down gracefully
+2025-08-23 14:46:38.717 [INFO]  Gemini service initialized
+{
+  "provider": "gemini",
+  "model": "gemini-2.5-pro",
+  "apiConfigured": true,
+  "temperature": 0.1,
+  "maxTokens": 8192
+}
+2025-08-23 14:46:38.718 [INFO]  Orchestrator initialized
+2025-08-23 14:46:38.722 [INFO]  IKAS AI Gateway started
+{
+  "port": 8005,
+  "environment": "development",
+  "keycloakMcp": "http://keycloak-mcp:8001",
+  "neo4jMcp": "http://neo4j-mcp:8002"
+}
+2025-08-23 14:46:38.722 [INFO]  Connecting to WebSocket server
+{
+  "url": "http://websocket-server:3001"
+}
+2025-08-23 14:46:38.741 [INFO]  Connected to WebSocket server
+{
+  "socketId": "-4fJA-yWRbqtoD3lAAA_"
+}
+2025-08-23 14:46:38.742 [INFO]  WebSocket client connected successfully
+2025-08-23 14:46:38.742 [INFO]  WebSocket session established Welcome to IKAS! Connection established successfully.
+{
+  "sessionId": "6b0e26dd-38b8-437e-bf0c-53c72279e81e"
+}
+2025-08-23 14:46:38.742 [DEBUG]  Subscription confirmed
+{
+  "eventTypes": [
+    "voice:command",
+    "analysis:started",
+    "compliance:check"
+  ],
+  "room": "global"
+}
+2025-08-23 14:46:44.793 [INFO]  Received SIGTERM, shutting down gracefully
+2025-08-23 14:46:45.087 [INFO]  Gemini service initialized
+{
+  "provider": "gemini",
+  "model": "gemini-2.5-pro",
+  "apiConfigured": true,
+  "temperature": 0.1,
+  "maxTokens": 8192
+}
+2025-08-23 14:46:45.088 [INFO]  Orchestrator initialized
+2025-08-23 14:46:45.093 [INFO]  IKAS AI Gateway started
+{
+  "port": 8005,
+  "environment": "development",
+  "keycloakMcp": "http://keycloak-mcp:8001",
+  "neo4jMcp": "http://neo4j-mcp:8002"
+}
+2025-08-23 14:46:45.093 [INFO]  Connecting to WebSocket server
+{
+  "url": "http://websocket-server:3001"
+}
+2025-08-23 14:46:45.110 [INFO]  Connected to WebSocket server
+{
+  "socketId": "XJAxLHuiyqVBVJr2AABB"
+}
+2025-08-23 14:46:45.111 [INFO]  WebSocket client connected successfully
+2025-08-23 14:46:45.111 [INFO]  WebSocket session established Welcome to IKAS! Connection established successfully.
+{
+  "sessionId": "c2482421-3a8b-48e1-8f46-8ac47a62b7b5"
+}
+2025-08-23 14:46:45.111 [DEBUG]  Subscription confirmed
+{
+  "eventTypes": [
+    "voice:command",
+    "analysis:started",
+    "compliance:check"
+  ],
+  "room": "global"
+}
+2025-08-23 14:46:55.134 [INFO]  Received SIGTERM, shutting down gracefully
+2025-08-23 14:46:55.431 [INFO]  Gemini service initialized
+{
+  "provider": "gemini",
+  "model": "gemini-2.5-pro",
+  "apiConfigured": true,
+  "temperature": 0.1,
+  "maxTokens": 8192
+}
+2025-08-23 14:46:55.432 [INFO]  Orchestrator initialized
+2025-08-23 14:46:55.436 [INFO]  IKAS AI Gateway started
+{
+  "port": 8005,
+  "environment": "development",
+  "keycloakMcp": "http://keycloak-mcp:8001",
+  "neo4jMcp": "http://neo4j-mcp:8002"
+}
+2025-08-23 14:46:55.436 [INFO]  Connecting to WebSocket server
+{
+  "url": "http://websocket-server:3001"
+}
+2025-08-23 14:46:55.454 [INFO]  Connected to WebSocket server
+{
+  "socketId": "XAEpZagWUBZ-DEYTAABD"
+}
+2025-08-23 14:46:55.455 [INFO]  WebSocket client connected successfully
+2025-08-23 14:46:55.455 [INFO]  WebSocket session established Welcome to IKAS! Connection established successfully.
+{
+  "sessionId": "0d081bdd-112a-4eec-bb5e-3aa969ee8c54"
+}
+2025-08-23 14:46:55.455 [DEBUG]  Subscription confirmed
+{
+  "eventTypes": [
+    "voice:command",
+    "analysis:started",
+    "compliance:check"
+  ],
+  "room": "global"
+}
+2025-08-23 14:47:13.356 [INFO]  Received SIGTERM, shutting down gracefully
+2025-08-23 14:47:13.657 [INFO]  Gemini service initialized
+{
+  "provider": "gemini",
+  "model": "gemini-2.5-pro",
+  "apiConfigured": true,
+  "temperature": 0.1,
+  "maxTokens": 8192
+}
+2025-08-23 14:47:13.658 [INFO]  Orchestrator initialized
+2025-08-23 14:47:13.662 [INFO]  IKAS AI Gateway started
+{
+  "port": 8005,
+  "environment": "development",
+  "keycloakMcp": "http://keycloak-mcp:8001",
+  "neo4jMcp": "http://neo4j-mcp:8002"
+}
+2025-08-23 14:47:13.662 [INFO]  Connecting to WebSocket server
+{
+  "url": "http://websocket-server:3001"
+}
+2025-08-23 14:47:13.680 [INFO]  Connected to WebSocket server
+{
+  "socketId": "LSaoQ5Uirkw20zMnAABF"
+}
+2025-08-23 14:47:13.681 [INFO]  WebSocket client connected successfully
+2025-08-23 14:47:13.681 [INFO]  WebSocket session established Welcome to IKAS! Connection established successfully.
+{
+  "sessionId": "523a7112-a723-4535-9b93-edbc44e5bd70"
+}
+2025-08-23 14:47:13.681 [DEBUG]  Subscription confirmed
+{
+  "eventTypes": [
+    "voice:command",
+    "analysis:started",
+    "compliance:check"
+  ],
+  "room": "global"
+}
+2025-08-23 14:47:37.245 [INFO]  HTTP Request
+{
+  "method": "GET",
+  "url": "/",
+  "status": 200,
+  "duration": "13ms",
+  "userAgent": "Wget"
+}
+2025-08-23 14:48:05.327 [INFO]  Received SIGTERM, shutting down gracefully
+2025-08-23 14:48:05.640 [INFO]  Gemini service initialized
+{
+  "provider": "gemini",
+  "model": "gemini-2.5-pro",
+  "apiConfigured": true,
+  "temperature": 0.1,
+  "maxTokens": 8192
+}
+2025-08-23 14:48:05.641 [INFO]  Orchestrator initialized
+2025-08-23 14:48:05.645 [INFO]  IKAS AI Gateway started
+{
+  "port": 8005,
+  "environment": "development",
+  "keycloakMcp": "http://keycloak-mcp:8001",
+  "neo4jMcp": "http://neo4j-mcp:8002"
+}
+2025-08-23 14:48:05.645 [INFO]  Connecting to WebSocket server
+{
+  "url": "http://websocket-server:3001"
+}
+2025-08-23 14:48:05.661 [INFO]  Connected to WebSocket server
+{
+  "socketId": "dmALMcvc6OAB4F3RAABH"
+}
+2025-08-23 14:48:05.662 [INFO]  WebSocket client connected successfully
+2025-08-23 14:48:05.662 [INFO]  WebSocket session established Welcome to IKAS! Connection established successfully.
+{
+  "sessionId": "8d265995-f794-4364-8a7d-d1328f6a3a04"
+}
+2025-08-23 14:48:05.662 [DEBUG]  Subscription confirmed
+{
+  "eventTypes": [
+    "voice:command",
+    "analysis:started",
+    "compliance:check"
+  ],
+  "room": "global"
+}
+2025-08-23 14:48:37.304 [INFO]  HTTP Request
+{
+  "method": "GET",
+  "url": "/",
+  "status": 200,
+  "duration": "14ms",
+  "userAgent": "Wget"
+}
+2025-08-23 14:49:37.351 [INFO]  HTTP Request
+{
+  "method": "GET",
+  "url": "/",
+  "status": 200,
+  "duration": "6ms",
+  "userAgent": "Wget"
+}
+2025-08-23 14:49:42.357 [INFO]  Received SIGTERM, shutting down gracefully
+2025-08-23 14:49:42.654 [INFO]  Creating new LLM service instance
+{
+  "provider": "gemini",
+  "model": "gemini-2.5-pro",
+  "previousProvider": null
+}
+2025-08-23 14:49:42.655 [INFO]  Gemini service initialized
+{
+  "provider": "gemini",
+  "model": "gemini-2.5-pro",
+  "apiConfigured": true,
+  "temperature": 0.1,
+  "maxTokens": 8192
+}
+2025-08-23 14:49:42.656 [INFO]  Orchestrator initialized
+{
+  "llmProvider": "gemini",
+  "llmModel": "gemini-2.5-pro"
+}
+2025-08-23 14:49:42.660 [INFO]  IKAS AI Gateway started
+{
+  "port": 8005,
+  "environment": "development",
+  "keycloakMcp": "http://keycloak-mcp:8001",
+  "neo4jMcp": "http://neo4j-mcp:8002"
+}
+2025-08-23 14:49:42.660 [INFO]  Connecting to WebSocket server
+{
+  "url": "http://websocket-server:3001"
+}
+2025-08-23 14:49:42.677 [INFO]  Connected to WebSocket server
+{
+  "socketId": "xsVsRjHADIZcpk1RAABJ"
+}
+2025-08-23 14:49:42.678 [INFO]  WebSocket client connected successfully
+2025-08-23 14:49:42.678 [INFO]  WebSocket session established Welcome to IKAS! Connection established successfully.
+{
+  "sessionId": "90c3e439-52e2-45e2-a285-82fe60623ac0"
+}
+2025-08-23 14:49:42.678 [DEBUG]  Subscription confirmed
+{
+  "eventTypes": [
+    "voice:command",
+    "analysis:started",
+    "compliance:check"
+  ],
+  "room": "global"
+}
+2025-08-23 14:50:01.434 [INFO]  Received SIGTERM, shutting down gracefully
+2025-08-23 14:50:01.733 [INFO]  Creating new LLM service instance
+{
+  "provider": "gemini",
+  "model": "gemini-2.5-pro",
+  "previousProvider": null
+}
+2025-08-23 14:50:01.735 [INFO]  Gemini service initialized
+{
+  "provider": "gemini",
+  "model": "gemini-2.5-pro",
+  "apiConfigured": true,
+  "temperature": 0.1,
+  "maxTokens": 8192
+}
+2025-08-23 14:50:01.735 [INFO]  Orchestrator initialized
+{
+  "llmProvider": "gemini",
+  "llmModel": "gemini-2.5-pro"
+}
+2025-08-23 14:50:01.740 [INFO]  IKAS AI Gateway started
+{
+  "port": 8005,
+  "environment": "development",
+  "keycloakMcp": "http://keycloak-mcp:8001",
+  "neo4jMcp": "http://neo4j-mcp:8002"
+}
+2025-08-23 14:50:01.740 [INFO]  Connecting to WebSocket server
+{
+  "url": "http://websocket-server:3001"
+}
+2025-08-23 14:50:01.760 [INFO]  Connected to WebSocket server
+{
+  "socketId": "ymUhH6sQ8DaagGd9AABL"
+}
+2025-08-23 14:50:01.761 [INFO]  WebSocket client connected successfully
+2025-08-23 14:50:01.761 [INFO]  WebSocket session established Welcome to IKAS! Connection established successfully.
+{
+  "sessionId": "f3463b0f-ba05-489d-a42a-587ee0dbd03e"
+}
+2025-08-23 14:50:01.761 [DEBUG]  Subscription confirmed
+{
+  "eventTypes": [
+    "voice:command",
+    "analysis:started",
+    "compliance:check"
+  ],
+  "room": "global"
+}
+2025-08-23 14:50:27.182 [INFO]  Received SIGTERM, shutting down gracefully
+2025-08-23 14:50:27.479 [INFO]  Creating new LLM service instance
+{
+  "provider": "gemini",
+  "model": "gemini-2.5-pro",
+  "previousProvider": null
+}
+2025-08-23 14:50:27.481 [INFO]  Gemini service initialized
+{
+  "provider": "gemini",
+  "model": "gemini-2.5-pro",
+  "apiConfigured": true,
+  "temperature": 0.1,
+  "maxTokens": 8192
+}
+2025-08-23 14:50:27.481 [INFO]  Orchestrator initialized
+{
+  "llmProvider": "gemini",
+  "llmModel": "gemini-2.5-pro"
+}
+2025-08-23 14:50:27.486 [INFO]  IKAS AI Gateway started
+{
+  "port": 8005,
+  "environment": "development",
+  "keycloakMcp": "http://keycloak-mcp:8001",
+  "neo4jMcp": "http://neo4j-mcp:8002"
+}
+2025-08-23 14:50:27.486 [INFO]  Connecting to WebSocket server
+{
+  "url": "http://websocket-server:3001"
+}
+2025-08-23 14:50:27.506 [INFO]  Connected to WebSocket server
+{
+  "socketId": "hpUxT_g2UZqvOTmMAABN"
+}
+2025-08-23 14:50:27.507 [INFO]  WebSocket client connected successfully
+2025-08-23 14:50:27.507 [INFO]  WebSocket session established Welcome to IKAS! Connection established successfully.
+{
+  "sessionId": "17bc9231-fae4-4ebf-9a0a-d3b8dc1401a9"
+}
+2025-08-23 14:50:27.507 [DEBUG]  Subscription confirmed
+{
+  "eventTypes": [
+    "voice:command",
+    "analysis:started",
+    "compliance:check"
+  ],
+  "room": "global"
+}
+2025-08-23 14:50:32.594 [INFO]  Received SIGTERM, shutting down gracefully
+2025-08-23 14:50:32.890 [INFO]  Creating new LLM service instance
+{
+  "provider": "gemini",
+  "model": "gemini-2.5-pro",
+  "previousProvider": null
+}
+2025-08-23 14:50:32.891 [INFO]  Gemini service initialized
+{
+  "provider": "gemini",
+  "model": "gemini-2.5-pro",
+  "apiConfigured": true,
+  "temperature": 0.1,
+  "maxTokens": 8192
+}
+2025-08-23 14:50:32.892 [INFO]  Orchestrator initialized
+{
+  "llmProvider": "gemini",
+  "llmModel": "gemini-2.5-pro"
+}
+2025-08-23 14:50:32.896 [INFO]  IKAS AI Gateway started
+{
+  "port": 8005,
+  "environment": "development",
+  "keycloakMcp": "http://keycloak-mcp:8001",
+  "neo4jMcp": "http://neo4j-mcp:8002"
+}
+2025-08-23 14:50:32.896 [INFO]  Connecting to WebSocket server
+{
+  "url": "http://websocket-server:3001"
+}
+2025-08-23 14:50:32.913 [INFO]  Connected to WebSocket server
+{
+  "socketId": "eoptWJwaeIZH42_WAABP"
+}
+2025-08-23 14:50:32.914 [INFO]  WebSocket client connected successfully
+2025-08-23 14:50:32.918 [INFO]  WebSocket session established Welcome to IKAS! Connection established successfully.
+{
+  "sessionId": "af43dccf-9dae-4d79-8555-ad4404c49ef4"
+}
+2025-08-23 14:50:32.918 [DEBUG]  Subscription confirmed
+{
+  "eventTypes": [
+    "voice:command",
+    "analysis:started",
+    "compliance:check"
+  ],
+  "room": "global"
+}
+2025-08-23 14:50:37.414 [INFO]  HTTP Request
+{
+  "method": "GET",
+  "url": "/",
+  "status": 200,
+  "duration": "14ms",
+  "userAgent": "Wget"
+}
+2025-08-23 14:50:44.715 [INFO]  Received SIGTERM, shutting down gracefully
+2025-08-23 14:50:45.009 [INFO]  Creating new LLM service instance
+{
+  "provider": "gemini",
+  "model": "gemini-2.5-pro",
+  "previousProvider": null
+}
+2025-08-23 14:50:45.011 [INFO]  Gemini service initialized
+{
+  "provider": "gemini",
+  "model": "gemini-2.5-pro",
+  "apiConfigured": true,
+  "temperature": 0.1,
+  "maxTokens": 8192
+}
+2025-08-23 14:50:45.011 [INFO]  Orchestrator initialized
+{
+  "llmProvider": "gemini",
+  "llmModel": "gemini-2.5-pro"
+}
+2025-08-23 14:50:45.015 [INFO]  IKAS AI Gateway started
+{
+  "port": 8005,
+  "environment": "development",
+  "keycloakMcp": "http://keycloak-mcp:8001",
+  "neo4jMcp": "http://neo4j-mcp:8002"
+}
+2025-08-23 14:50:45.015 [INFO]  Connecting to WebSocket server
+{
+  "url": "http://websocket-server:3001"
+}
+2025-08-23 14:50:45.035 [INFO]  Connected to WebSocket server
+{
+  "socketId": "2jeb2IzFA97Dc2QwAABR"
+}
+2025-08-23 14:50:45.035 [INFO]  WebSocket client connected successfully
+2025-08-23 14:50:45.036 [INFO]  WebSocket session established Welcome to IKAS! Connection established successfully.
+{
+  "sessionId": "18947e25-eac0-4337-9940-423024cfc22b"
+}
+2025-08-23 14:50:45.036 [DEBUG]  Subscription confirmed
+{
+  "eventTypes": [
+    "voice:command",
+    "analysis:started",
+    "compliance:check"
+  ],
+  "room": "global"
+}
+2025-08-23 14:51:37.478 [INFO]  HTTP Request
+{
+  "method": "GET",
+  "url": "/",
+  "status": 200,
+  "duration": "12ms",
+  "userAgent": "Wget"
+}
+2025-08-23 14:52:37.529 [INFO]  HTTP Request
+{
+  "method": "GET",
+  "url": "/",
+  "status": 200,
+  "duration": "6ms",
+  "userAgent": "Wget"
+}
+2025-08-23 14:52:41.634 [INFO]  Received SIGTERM, shutting down gracefully
+2025-08-23 14:52:41.921 [INFO]  Creating new LLM service instance
+{
+  "provider": "gemini",
+  "model": "gemini-2.5-pro",
+  "previousProvider": null
+}
+2025-08-23 14:52:41.922 [INFO]  Gemini service initialized
+{
+  "provider": "gemini",
+  "model": "gemini-2.5-pro",
+  "apiConfigured": true,
+  "temperature": 0.1,
+  "maxTokens": 8192
+}
+2025-08-23 14:52:41.923 [INFO]  Orchestrator initialized
+{
+  "llmProvider": "gemini",
+  "llmModel": "gemini-2.5-pro"
+}
+2025-08-23 14:52:41.927 [INFO]  IKAS AI Gateway started
+{
+  "port": 8005,
+  "environment": "development",
+  "keycloakMcp": "http://keycloak-mcp:8001",
+  "neo4jMcp": "http://neo4j-mcp:8002"
+}
+2025-08-23 14:52:41.927 [INFO]  Connecting to WebSocket server
+{
+  "url": "http://websocket-server:3001"
+}
+2025-08-23 14:52:41.944 [INFO]  Connected to WebSocket server
+{
+  "socketId": "dstRpGU-Lt12E5f8AABT"
+}
+2025-08-23 14:52:41.944 [INFO]  WebSocket client connected successfully
+2025-08-23 14:52:41.944 [INFO]  WebSocket session established Welcome to IKAS! Connection established successfully.
+{
+  "sessionId": "7301ba26-88cf-4074-93a7-932275241fe1"
+}
+2025-08-23 14:52:41.945 [DEBUG]  Subscription confirmed
+{
+  "eventTypes": [
+    "voice:command",
+    "analysis:started",
+    "compliance:check"
+  ],
+  "room": "global"
+}
+2025-08-23 14:53:05.439 [INFO]  Received SIGTERM, shutting down gracefully
+2025-08-23 14:53:05.729 [INFO]  Creating new LLM service instance
+{
+  "provider": "gemini",
+  "model": "gemini-2.5-pro",
+  "previousProvider": null
+}
+2025-08-23 14:53:05.731 [INFO]  Gemini service initialized
+{
+  "provider": "gemini",
+  "model": "gemini-2.5-pro",
+  "apiConfigured": true,
+  "temperature": 0.1,
+  "maxTokens": 8192
+}
+2025-08-23 14:53:05.731 [INFO]  Orchestrator initialized
+{
+  "llmProvider": "gemini",
+  "llmModel": "gemini-2.5-pro"
+}
+2025-08-23 14:53:05.735 [INFO]  IKAS AI Gateway started
+{
+  "port": 8005,
+  "environment": "development",
+  "keycloakMcp": "http://keycloak-mcp:8001",
+  "neo4jMcp": "http://neo4j-mcp:8002"
+}
+2025-08-23 14:53:05.736 [INFO]  Connecting to WebSocket server
+{
+  "url": "http://websocket-server:3001"
+}
+2025-08-23 14:53:05.751 [INFO]  Connected to WebSocket server
+{
+  "socketId": "4cxxjrtwaGEvbPQnAABV"
+}
+2025-08-23 14:53:05.751 [INFO]  WebSocket client connected successfully
+2025-08-23 14:53:05.752 [INFO]  WebSocket session established Welcome to IKAS! Connection established successfully.
+{
+  "sessionId": "474ca67b-d030-47df-a877-56399f2532c4"
+}
+2025-08-23 14:53:05.752 [DEBUG]  Subscription confirmed
+{
+  "eventTypes": [
+    "voice:command",
+    "analysis:started",
+    "compliance:check"
+  ],
+  "room": "global"
+}
+2025-08-23 14:53:15.396 [INFO]  Received SIGTERM, shutting down gracefully
+2025-08-23 14:53:15.690 [INFO]  Creating new LLM service instance
+{
+  "provider": "gemini",
+  "model": "gemini-2.5-pro",
+  "previousProvider": null
+}
+2025-08-23 14:53:15.691 [INFO]  Gemini service initialized
+{
+  "provider": "gemini",
+  "model": "gemini-2.5-pro",
+  "apiConfigured": true,
+  "temperature": 0.1,
+  "maxTokens": 8192
+}
+2025-08-23 14:53:15.691 [INFO]  Orchestrator initialized
+{
+  "llmProvider": "gemini",
+  "llmModel": "gemini-2.5-pro"
+}
+2025-08-23 14:53:15.696 [INFO]  IKAS AI Gateway started
+{
+  "port": 8005,
+  "environment": "development",
+  "keycloakMcp": "http://keycloak-mcp:8001",
+  "neo4jMcp": "http://neo4j-mcp:8002"
+}
+2025-08-23 14:53:15.696 [INFO]  Connecting to WebSocket server
+{
+  "url": "http://websocket-server:3001"
+}
+2025-08-23 14:53:15.713 [INFO]  Connected to WebSocket server
+{
+  "socketId": "XPKxWWqAxfVmwU55AABX"
+}
+2025-08-23 14:53:15.714 [INFO]  WebSocket client connected successfully
+2025-08-23 14:53:15.714 [INFO]  WebSocket session established Welcome to IKAS! Connection established successfully.
+{
+  "sessionId": "5cab0d6f-ec90-4430-b55c-0957fc3f7b9d"
+}
+2025-08-23 14:53:15.714 [DEBUG]  Subscription confirmed
+{
+  "eventTypes": [
+    "voice:command",
+    "analysis:started",
+    "compliance:check"
+  ],
+  "room": "global"
+}
+2025-08-23 14:53:36.024 [INFO]  Received SIGTERM, shutting down gracefully
+2025-08-23 14:53:36.323 [INFO]  Creating new LLM service instance
+{
+  "provider": "gemini",
+  "model": "gemini-2.5-pro",
+  "previousProvider": null
+}
+2025-08-23 14:53:36.324 [INFO]  Gemini service initialized
+{
+  "provider": "gemini",
+  "model": "gemini-2.5-pro",
+  "apiConfigured": true,
+  "temperature": 0.1,
+  "maxTokens": 8192
+}
+2025-08-23 14:53:36.325 [INFO]  Orchestrator initialized
+{
+  "llmProvider": "gemini",
+  "llmModel": "gemini-2.5-pro"
+}
+2025-08-23 14:53:36.329 [INFO]  IKAS AI Gateway started
+{
+  "port": 8005,
+  "environment": "development",
+  "keycloakMcp": "http://keycloak-mcp:8001",
+  "neo4jMcp": "http://neo4j-mcp:8002"
+}
+2025-08-23 14:53:36.329 [INFO]  Connecting to WebSocket server
+{
+  "url": "http://websocket-server:3001"
+}
+2025-08-23 14:53:36.347 [INFO]  Connected to WebSocket server
+{
+  "socketId": "fyJc8-LSEODvgAwkAABZ"
+}
+2025-08-23 14:53:36.347 [INFO]  WebSocket client connected successfully
+2025-08-23 14:53:36.347 [INFO]  WebSocket session established Welcome to IKAS! Connection established successfully.
+{
+  "sessionId": "3f88ef4d-4bc3-4b63-9ced-cb0f39021eae"
+}
+2025-08-23 14:53:36.348 [DEBUG]  Subscription confirmed
+{
+  "eventTypes": [
+    "voice:command",
+    "analysis:started",
+    "compliance:check"
+  ],
+  "room": "global"
+}
+2025-08-23 14:53:37.603 [INFO]  HTTP Request
+{
+  "method": "GET",
+  "url": "/",
+  "status": 200,
+  "duration": "14ms",
+  "userAgent": "Wget"
+}
+2025-08-23 14:53:40.160 [INFO]  Received SIGTERM, shutting down gracefully
+2025-08-23 14:53:40.457 [INFO]  Creating new LLM service instance
+{
+  "provider": "gemini",
+  "model": "gemini-2.5-pro",
+  "previousProvider": null
+}
+2025-08-23 14:53:40.458 [INFO]  Gemini service initialized
+{
+  "provider": "gemini",
+  "model": "gemini-2.5-pro",
+  "apiConfigured": true,
+  "temperature": 0.1,
+  "maxTokens": 8192
+}
+2025-08-23 14:53:40.458 [INFO]  Orchestrator initialized
+{
+  "llmProvider": "gemini",
+  "llmModel": "gemini-2.5-pro"
+}
+2025-08-23 14:53:40.462 [INFO]  IKAS AI Gateway started
+{
+  "port": 8005,
+  "environment": "development",
+  "keycloakMcp": "http://keycloak-mcp:8001",
+  "neo4jMcp": "http://neo4j-mcp:8002"
+}
+2025-08-23 14:53:40.463 [INFO]  Connecting to WebSocket server
+{
+  "url": "http://websocket-server:3001"
+}
+2025-08-23 14:53:40.480 [INFO]  Connected to WebSocket server
+{
+  "socketId": "_ZTcTapkbNzwIrnRAABb"
+}
+2025-08-23 14:53:40.480 [INFO]  WebSocket client connected successfully
+2025-08-23 14:53:40.480 [INFO]  WebSocket session established Welcome to IKAS! Connection established successfully.
+{
+  "sessionId": "23da64d7-51a8-4fcd-bd9a-7964a80e977f"
+}
+2025-08-23 14:53:40.481 [DEBUG]  Subscription confirmed
+{
+  "eventTypes": [
+    "voice:command",
+    "analysis:started",
+    "compliance:check"
+  ],
+  "room": "global"
+}
+2025-08-23 14:53:48.993 [INFO]  Received SIGTERM, shutting down gracefully
+2025-08-23 14:53:49.283 [INFO]  Creating new LLM service instance
+{
+  "provider": "gemini",
+  "model": "gemini-2.5-pro",
+  "previousProvider": null
+}
+2025-08-23 14:53:49.285 [INFO]  Gemini service initialized
+{
+  "provider": "gemini",
+  "model": "gemini-2.5-pro",
+  "apiConfigured": true,
+  "temperature": 0.1,
+  "maxTokens": 8192
+}
+2025-08-23 14:53:49.285 [INFO]  Orchestrator initialized
+{
+  "llmProvider": "gemini",
+  "llmModel": "gemini-2.5-pro"
+}
+2025-08-23 14:53:49.289 [INFO]  IKAS AI Gateway started
+{
+  "port": 8005,
+  "environment": "development",
+  "keycloakMcp": "http://keycloak-mcp:8001",
+  "neo4jMcp": "http://neo4j-mcp:8002"
+}
+2025-08-23 14:53:49.290 [INFO]  Connecting to WebSocket server
+{
+  "url": "http://websocket-server:3001"
+}
+2025-08-23 14:53:49.308 [INFO]  Connected to WebSocket server
+{
+  "socketId": "IAw7i5yWdW6KVDWiAABd"
+}
+2025-08-23 14:53:49.309 [INFO]  WebSocket client connected successfully
+2025-08-23 14:53:49.309 [INFO]  WebSocket session established Welcome to IKAS! Connection established successfully.
+{
+  "sessionId": "87104a2e-e5d2-4f74-970a-618a727d8596"
+}
+2025-08-23 14:53:49.309 [DEBUG]  Subscription confirmed
+{
+  "eventTypes": [
+    "voice:command",
+    "analysis:started",
+    "compliance:check"
+  ],
+  "room": "global"
+}
+2025-08-23 14:53:56.465 [INFO]  Received SIGTERM, shutting down gracefully
+2025-08-23 14:53:56.763 [INFO]  Creating new LLM service instance
+{
+  "provider": "gemini",
+  "model": "gemini-2.5-pro",
+  "previousProvider": null
+}
+2025-08-23 14:53:56.764 [INFO]  Gemini service initialized
+{
+  "provider": "gemini",
+  "model": "gemini-2.5-pro",
+  "apiConfigured": true,
+  "temperature": 0.1,
+  "maxTokens": 8192
+}
+2025-08-23 14:53:56.764 [INFO]  Orchestrator initialized
+{
+  "llmProvider": "gemini",
+  "llmModel": "gemini-2.5-pro"
+}
+2025-08-23 14:53:56.769 [INFO]  IKAS AI Gateway started
+{
+  "port": 8005,
+  "environment": "development",
+  "keycloakMcp": "http://keycloak-mcp:8001",
+  "neo4jMcp": "http://neo4j-mcp:8002"
+}
+2025-08-23 14:53:56.769 [INFO]  Connecting to WebSocket server
+{
+  "url": "http://websocket-server:3001"
+}
+2025-08-23 14:53:56.787 [INFO]  Connected to WebSocket server
+{
+  "socketId": "9qE2Xm5CgcFVjEq2AABf"
+}
+2025-08-23 14:53:56.787 [INFO]  WebSocket client connected successfully
+2025-08-23 14:53:56.788 [INFO]  WebSocket session established Welcome to IKAS! Connection established successfully.
+{
+  "sessionId": "0e4c7e7b-ddba-4bf4-8269-1d363832f4c2"
+}
+2025-08-23 14:53:56.788 [DEBUG]  Subscription confirmed
+{
+  "eventTypes": [
+    "voice:command",
+    "analysis:started",
+    "compliance:check"
+  ],
+  "room": "global"
+}
+2025-08-23 14:54:05.191 [INFO]  Received SIGTERM, shutting down gracefully
+2025-08-23 14:54:05.466 [INFO]  Creating new LLM service instance
+{
+  "provider": "gemini",
+  "model": "gemini-2.5-pro",
+  "previousProvider": null
+}
+2025-08-23 14:54:05.468 [INFO]  Gemini service initialized
+{
+  "provider": "gemini",
+  "model": "gemini-2.5-pro",
+  "apiConfigured": true,
+  "temperature": 0.1,
+  "maxTokens": 8192
+}
+2025-08-23 14:54:05.468 [INFO]  Orchestrator initialized
+{
+  "llmProvider": "gemini",
+  "llmModel": "gemini-2.5-pro"
+}
+2025-08-23 14:54:05.472 [INFO]  IKAS AI Gateway started
+{
+  "port": 8005,
+  "environment": "development",
+  "keycloakMcp": "http://keycloak-mcp:8001",
+  "neo4jMcp": "http://neo4j-mcp:8002"
+}
+2025-08-23 14:54:05.472 [INFO]  Connecting to WebSocket server
+{
+  "url": "http://websocket-server:3001"
+}
+2025-08-23 14:54:05.487 [INFO]  Connected to WebSocket server
+{
+  "socketId": "G0VpxK0aAJGR4ez2AABh"
+}
+2025-08-23 14:54:05.488 [INFO]  WebSocket client connected successfully
+2025-08-23 14:54:05.489 [INFO]  WebSocket session established Welcome to IKAS! Connection established successfully.
+{
+  "sessionId": "14476bab-0376-4696-9039-df3d7c4e8b32"
+}
+2025-08-23 14:54:05.491 [DEBUG]  Subscription confirmed
+{
+  "eventTypes": [
+    "voice:command",
+    "analysis:started",
+    "compliance:check"
+  ],
+  "room": "global"
+}
+2025-08-23 14:54:11.053 [INFO]  Received SIGTERM, shutting down gracefully
+2025-08-23 14:54:11.318 [INFO]  Creating new LLM service instance
+{
+  "provider": "gemini",
+  "model": "gemini-2.5-pro",
+  "previousProvider": null
+}
+2025-08-23 14:54:11.319 [INFO]  Gemini service initialized
+{
+  "provider": "gemini",
+  "model": "gemini-2.5-pro",
+  "apiConfigured": true,
+  "temperature": 0.1,
+  "maxTokens": 8192
+}
+2025-08-23 14:54:11.320 [INFO]  Orchestrator initialized
+{
+  "llmProvider": "gemini",
+  "llmModel": "gemini-2.5-pro"
+}
+2025-08-23 14:54:11.324 [INFO]  IKAS AI Gateway started
+{
+  "port": 8005,
+  "environment": "development",
+  "keycloakMcp": "http://keycloak-mcp:8001",
+  "neo4jMcp": "http://neo4j-mcp:8002"
+}
+2025-08-23 14:54:11.324 [INFO]  Connecting to WebSocket server
+{
+  "url": "http://websocket-server:3001"
+}
+2025-08-23 14:54:11.344 [INFO]  Connected to WebSocket server
+{
+  "socketId": "tSjtjxCD9W0g8E0WAABj"
+}
+2025-08-23 14:54:11.344 [INFO]  WebSocket client connected successfully
+2025-08-23 14:54:11.345 [INFO]  WebSocket session established Welcome to IKAS! Connection established successfully.
+{
+  "sessionId": "26656dfd-f668-4363-86f1-d4bd560120fd"
+}
+2025-08-23 14:54:11.345 [DEBUG]  Subscription confirmed
+{
+  "eventTypes": [
+    "voice:command",
+    "analysis:started",
+    "compliance:check"
+  ],
+  "room": "global"
+}
+2025-08-23 14:54:23.417 [INFO]  Received SIGTERM, shutting down gracefully
+2025-08-23 14:54:23.703 [INFO]  Creating new LLM service instance
+{
+  "provider": "gemini",
+  "model": "gemini-2.5-pro",
+  "previousProvider": null
+}
+2025-08-23 14:54:23.704 [INFO]  Gemini service initialized
+{
+  "provider": "gemini",
+  "model": "gemini-2.5-pro",
+  "apiConfigured": true,
+  "temperature": 0.1,
+  "maxTokens": 8192
+}
+2025-08-23 14:54:23.705 [INFO]  Orchestrator initialized
+{
+  "llmProvider": "gemini",
+  "llmModel": "gemini-2.5-pro"
+}
+2025-08-23 14:54:23.709 [INFO]  IKAS AI Gateway started
+{
+  "port": 8005,
+  "environment": "development",
+  "keycloakMcp": "http://keycloak-mcp:8001",
+  "neo4jMcp": "http://neo4j-mcp:8002"
+}
+2025-08-23 14:54:23.709 [INFO]  Connecting to WebSocket server
+{
+  "url": "http://websocket-server:3001"
+}
+2025-08-23 14:54:23.726 [INFO]  Connected to WebSocket server
+{
+  "socketId": "7NWpVOanULaCN_KsAABl"
+}
+2025-08-23 14:54:23.727 [INFO]  WebSocket client connected successfully
+2025-08-23 14:54:23.727 [INFO]  WebSocket session established Welcome to IKAS! Connection established successfully.
+{
+  "sessionId": "1b0847ca-92ef-4f21-8a4d-cdd043b87113"
+}
+2025-08-23 14:54:23.727 [DEBUG]  Subscription confirmed
+{
+  "eventTypes": [
+    "voice:command",
+    "analysis:started",
+    "compliance:check"
+  ],
+  "room": "global"
+}
+2025-08-23 14:54:28.950 [INFO]  Received SIGTERM, shutting down gracefully
+2025-08-23 14:54:29.241 [INFO]  Creating new LLM service instance
+{
+  "provider": "gemini",
+  "model": "gemini-2.5-pro",
+  "previousProvider": null
+}
+2025-08-23 14:54:29.243 [INFO]  Gemini service initialized
+{
+  "provider": "gemini",
+  "model": "gemini-2.5-pro",
+  "apiConfigured": true,
+  "temperature": 0.1,
+  "maxTokens": 8192
+}
+2025-08-23 14:54:29.243 [INFO]  Orchestrator initialized
+{
+  "llmProvider": "gemini",
+  "llmModel": "gemini-2.5-pro"
+}
+2025-08-23 14:54:29.247 [INFO]  IKAS AI Gateway started
+{
+  "port": 8005,
+  "environment": "development",
+  "keycloakMcp": "http://keycloak-mcp:8001",
+  "neo4jMcp": "http://neo4j-mcp:8002"
+}
+2025-08-23 14:54:29.248 [INFO]  Connecting to WebSocket server
+{
+  "url": "http://websocket-server:3001"
+}
+2025-08-23 14:54:29.264 [INFO]  Connected to WebSocket server
+{
+  "socketId": "jH9nmYfA1ve7NziIAABn"
+}
+2025-08-23 14:54:29.265 [INFO]  WebSocket client connected successfully
+2025-08-23 14:54:29.265 [INFO]  WebSocket session established Welcome to IKAS! Connection established successfully.
+{
+  "sessionId": "66b689b6-9d50-4b45-9b05-e7bbb89873c3"
+}
+2025-08-23 14:54:29.265 [DEBUG]  Subscription confirmed
+{
+  "eventTypes": [
+    "voice:command",
+    "analysis:started",
+    "compliance:check"
+  ],
+  "room": "global"
+}
+2025-08-23 14:54:34.755 [INFO]  Received SIGTERM, shutting down gracefully
+2025-08-23 14:54:35.043 [INFO]  Creating new LLM service instance
+{
+  "provider": "gemini",
+  "model": "gemini-2.5-pro",
+  "previousProvider": null
+}
+2025-08-23 14:54:35.045 [INFO]  Gemini service initialized
+{
+  "provider": "gemini",
+  "model": "gemini-2.5-pro",
+  "apiConfigured": true,
+  "temperature": 0.1,
+  "maxTokens": 8192
+}
+2025-08-23 14:54:35.045 [INFO]  Orchestrator initialized
+{
+  "llmProvider": "gemini",
+  "llmModel": "gemini-2.5-pro"
+}
+2025-08-23 14:54:35.049 [INFO]  IKAS AI Gateway started
+{
+  "port": 8005,
+  "environment": "development",
+  "keycloakMcp": "http://keycloak-mcp:8001",
+  "neo4jMcp": "http://neo4j-mcp:8002"
+}
+2025-08-23 14:54:35.050 [INFO]  Connecting to WebSocket server
+{
+  "url": "http://websocket-server:3001"
+}
+2025-08-23 14:54:35.066 [INFO]  Connected to WebSocket server
+{
+  "socketId": "MB6YokQjohqkyACyAABp"
+}
+2025-08-23 14:54:35.067 [INFO]  WebSocket client connected successfully
+2025-08-23 14:54:35.067 [INFO]  WebSocket session established Welcome to IKAS! Connection established successfully.
+{
+  "sessionId": "0939e936-596d-4581-ad1b-b89b0441871d"
+}
+2025-08-23 14:54:35.067 [DEBUG]  Subscription confirmed
+{
+  "eventTypes": [
+    "voice:command",
+    "analysis:started",
+    "compliance:check"
+  ],
+  "room": "global"
+}
+2025-08-23 14:54:37.672 [INFO]  HTTP Request
+{
+  "method": "GET",
+  "url": "/",
+  "status": 200,
+  "duration": "13ms",
+  "userAgent": "Wget"
+}
+2025-08-23 14:54:53.670 [INFO]  Received SIGTERM, shutting down gracefully
+2025-08-23 14:54:53.966 [INFO]  Creating new LLM service instance
+{
+  "provider": "gemini",
+  "model": "gemini-2.5-pro",
+  "previousProvider": null
+}
+2025-08-23 14:54:53.967 [INFO]  Gemini service initialized
+{
+  "provider": "gemini",
+  "model": "gemini-2.5-pro",
+  "apiConfigured": true,
+  "temperature": 0.1,
+  "maxTokens": 8192
+}
+2025-08-23 14:54:53.967 [INFO]  Orchestrator initialized
+{
+  "llmProvider": "gemini",
+  "llmModel": "gemini-2.5-pro"
+}
+2025-08-23 14:54:53.972 [INFO]  IKAS AI Gateway started
+{
+  "port": 8005,
+  "environment": "development",
+  "keycloakMcp": "http://keycloak-mcp:8001",
+  "neo4jMcp": "http://neo4j-mcp:8002"
+}
+2025-08-23 14:54:53.972 [INFO]  Connecting to WebSocket server
+{
+  "url": "http://websocket-server:3001"
+}
+2025-08-23 14:54:53.992 [INFO]  Connected to WebSocket server
+{
+  "socketId": "vZFUrEBGKIkCPBhYAABr"
+}
+2025-08-23 14:54:53.992 [INFO]  WebSocket client connected successfully
+2025-08-23 14:54:53.993 [INFO]  WebSocket session established Welcome to IKAS! Connection established successfully.
+{
+  "sessionId": "72e68519-19c8-40b3-9f27-b2c36d66b41d"
+}
+2025-08-23 14:54:53.993 [DEBUG]  Subscription confirmed
+{
+  "eventTypes": [
+    "voice:command",
+    "analysis:started",
+    "compliance:check"
+  ],
+  "room": "global"
+}
+2025-08-23 14:55:31.338 [INFO]  Received SIGTERM, shutting down gracefully
+2025-08-23 14:55:31.628 [INFO]  Creating new LLM service instance
+{
+  "provider": "gemini",
+  "model": "gemini-2.5-pro",
+  "previousProvider": null
+}
+2025-08-23 14:55:31.629 [INFO]  Gemini service initialized
+{
+  "provider": "gemini",
+  "model": "gemini-2.5-pro",
+  "apiConfigured": true,
+  "temperature": 0.1,
+  "maxTokens": 8192
+}
+2025-08-23 14:55:31.630 [INFO]  Orchestrator initialized
+{
+  "llmProvider": "gemini",
+  "llmModel": "gemini-2.5-pro"
+}
+2025-08-23 14:55:31.634 [INFO]  IKAS AI Gateway started
+{
+  "port": 8005,
+  "environment": "development",
+  "keycloakMcp": "http://keycloak-mcp:8001",
+  "neo4jMcp": "http://neo4j-mcp:8002"
+}
+2025-08-23 14:55:31.634 [INFO]  Connecting to WebSocket server
+{
+  "url": "http://websocket-server:3001"
+}
+2025-08-23 14:55:31.652 [INFO]  Connected to WebSocket server
+{
+  "socketId": "1xDJt1N5slYmdp9DAABt"
+}
+2025-08-23 14:55:31.653 [INFO]  WebSocket client connected successfully
+2025-08-23 14:55:31.653 [INFO]  WebSocket session established Welcome to IKAS! Connection established successfully.
+{
+  "sessionId": "64f0f4b8-9673-4c80-956a-385cecdec038"
+}
+2025-08-23 14:55:31.653 [DEBUG]  Subscription confirmed
+{
+  "eventTypes": [
+    "voice:command",
+    "analysis:started",
+    "compliance:check"
+  ],
+  "room": "global"
+}
+2025-08-23 14:55:37.711 [INFO]  HTTP Request
+{
+  "method": "GET",
+  "url": "/",
+  "status": 200,
+  "duration": "7ms",
+  "userAgent": "Wget"
+}
+2025-08-23 14:55:42.790 [INFO]  Received SIGTERM, shutting down gracefully
+2025-08-23 14:55:43.087 [INFO]  Creating new LLM service instance
+{
+  "provider": "gemini",
+  "model": "gemini-2.5-pro",
+  "previousProvider": null
+}
+2025-08-23 14:55:43.088 [INFO]  Gemini service initialized
+{
+  "provider": "gemini",
+  "model": "gemini-2.5-pro",
+  "apiConfigured": true,
+  "temperature": 0.1,
+  "maxTokens": 8192
+}
+2025-08-23 14:55:43.088 [INFO]  Orchestrator initialized
+{
+  "llmProvider": "gemini",
+  "llmModel": "gemini-2.5-pro"
+}
+2025-08-23 14:55:43.092 [INFO]  IKAS AI Gateway started
+{
+  "port": 8005,
+  "environment": "development",
+  "keycloakMcp": "http://keycloak-mcp:8001",
+  "neo4jMcp": "http://neo4j-mcp:8002"
+}
+2025-08-23 14:55:43.093 [INFO]  Connecting to WebSocket server
+{
+  "url": "http://websocket-server:3001"
+}
+2025-08-23 14:55:43.108 [INFO]  Connected to WebSocket server
+{
+  "socketId": "ZA2g11ewoRhYr7_hAABv"
+}
+2025-08-23 14:55:43.108 [INFO]  WebSocket client connected successfully
+2025-08-23 14:55:43.109 [INFO]  WebSocket session established Welcome to IKAS! Connection established successfully.
+{
+  "sessionId": "78a468c6-08b4-4666-8ceb-63221c56c488"
+}
+2025-08-23 14:55:43.109 [DEBUG]  Subscription confirmed
+{
+  "eventTypes": [
+    "voice:command",
+    "analysis:started",
+    "compliance:check"
+  ],
+  "room": "global"
+}
+2025-08-23 14:55:47.128 [INFO]  Received SIGTERM, shutting down gracefully
+2025-08-23 14:55:47.423 [INFO]  Creating new LLM service instance
+{
+  "provider": "gemini",
+  "model": "gemini-2.5-pro",
+  "previousProvider": null
+}
+2025-08-23 14:55:47.424 [INFO]  Gemini service initialized
+{
+  "provider": "gemini",
+  "model": "gemini-2.5-pro",
+  "apiConfigured": true,
+  "temperature": 0.1,
+  "maxTokens": 8192
+}
+2025-08-23 14:55:47.424 [INFO]  Orchestrator initialized
+{
+  "llmProvider": "gemini",
+  "llmModel": "gemini-2.5-pro"
+}
+2025-08-23 14:55:47.429 [INFO]  IKAS AI Gateway started
+{
+  "port": 8005,
+  "environment": "development",
+  "keycloakMcp": "http://keycloak-mcp:8001",
+  "neo4jMcp": "http://neo4j-mcp:8002"
+}
+2025-08-23 14:55:47.429 [INFO]  Connecting to WebSocket server
+{
+  "url": "http://websocket-server:3001"
+}
+2025-08-23 14:55:47.445 [INFO]  Connected to WebSocket server
+{
+  "socketId": "FBVIZQHei21Qv5EzAABx"
+}
+2025-08-23 14:55:47.446 [INFO]  WebSocket client connected successfully
+2025-08-23 14:55:47.446 [INFO]  WebSocket session established Welcome to IKAS! Connection established successfully.
+{
+  "sessionId": "2323b4c7-098f-4095-b4f3-fd958217fbd4"
+}
+2025-08-23 14:55:47.446 [DEBUG]  Subscription confirmed
+{
+  "eventTypes": [
+    "voice:command",
+    "analysis:started",
+    "compliance:check"
+  ],
+  "room": "global"
+}
+2025-08-23 14:56:14.580 [INFO]  Received SIGTERM, shutting down gracefully
+2025-08-23 14:56:14.870 [INFO]  Creating new LLM service instance
+{
+  "provider": "gemini",
+  "model": "gemini-2.5-pro",
+  "previousProvider": null
+}
+2025-08-23 14:56:14.872 [INFO]  Gemini service initialized
+{
+  "provider": "gemini",
+  "model": "gemini-2.5-pro",
+  "apiConfigured": true,
+  "temperature": 0.1,
+  "maxTokens": 8192
+}
+2025-08-23 14:56:14.872 [INFO]  Orchestrator initialized
+{
+  "llmProvider": "gemini",
+  "llmModel": "gemini-2.5-pro"
+}
+2025-08-23 14:56:14.876 [INFO]  IKAS AI Gateway started
+{
+  "port": 8005,
+  "environment": "development",
+  "keycloakMcp": "http://keycloak-mcp:8001",
+  "neo4jMcp": "http://neo4j-mcp:8002"
+}
+2025-08-23 14:56:14.877 [INFO]  Connecting to WebSocket server
+{
+  "url": "http://websocket-server:3001"
+}
+2025-08-23 14:56:14.896 [INFO]  Connected to WebSocket server
+{
+  "socketId": "qZVEuGSUbWSGVsqIAABz"
+}
+2025-08-23 14:56:14.896 [INFO]  WebSocket client connected successfully
+2025-08-23 14:56:14.897 [INFO]  WebSocket session established Welcome to IKAS! Connection established successfully.
+{
+  "sessionId": "889f3ff7-ac37-460e-a1fb-415ffe862b45"
+}
+2025-08-23 14:56:14.897 [DEBUG]  Subscription confirmed
+{
+  "eventTypes": [
+    "voice:command",
+    "analysis:started",
+    "compliance:check"
+  ],
+  "room": "global"
+}
+2025-08-23 14:56:37.781 [INFO]  HTTP Request
+{
+  "method": "GET",
+  "url": "/",
+  "status": 200,
+  "duration": "12ms",
+  "userAgent": "Wget"
+}
+2025-08-23 14:57:37.842 [INFO]  HTTP Request
+{
+  "method": "GET",
+  "url": "/",
+  "status": 200,
+  "duration": "6ms",
+  "userAgent": "Wget"
+}
+2025-08-23 14:58:37.878 [INFO]  HTTP Request
+{
+  "method": "GET",
+  "url": "/",
+  "status": 200,
+  "duration": "5ms",
+  "userAgent": "Wget"
+}
+2025-08-23 14:59:37.932 [INFO]  HTTP Request
+{
+  "method": "GET",
+  "url": "/",
+  "status": 200,
+  "duration": "6ms",
+  "userAgent": "Wget"
+}
+2025-08-23 15:00:37.977 [INFO]  HTTP Request
+{
+  "method": "GET",
+  "url": "/",
+  "status": 200,
+  "duration": "6ms",
+  "userAgent": "Wget"
+}
+2025-08-23 15:01:38.032 [INFO]  HTTP Request
+{
+  "method": "GET",
+  "url": "/",
+  "status": 200,
+  "duration": "5ms",
+  "userAgent": "Wget"
+}
+2025-08-23 15:02:38.080 [INFO]  HTTP Request
+{
+  "method": "GET",
+  "url": "/",
+  "status": 200,
+  "duration": "5ms",
+  "userAgent": "Wget"
+}
+2025-08-23 15:03:38.129 [INFO]  HTTP Request
+{
+  "method": "GET",
+  "url": "/",
+  "status": 200,
+  "duration": "5ms",
+  "userAgent": "Wget"
+}
+2025-08-23 15:04:38.182 [INFO]  HTTP Request
+{
+  "method": "GET",
+  "url": "/",
+  "status": 200,
+  "duration": "5ms",
+  "userAgent": "Wget"
+}
+2025-08-23 15:05:38.228 [INFO]  HTTP Request
+{
+  "method": "GET",
+  "url": "/",
+  "status": 200,
+  "duration": "7ms",
+  "userAgent": "Wget"
+}
+2025-08-23 15:06:38.285 [INFO]  HTTP Request
+{
+  "method": "GET",
+  "url": "/",
+  "status": 200,
+  "duration": "4ms",
+  "userAgent": "Wget"
+}
+2025-08-23 15:07:38.333 [INFO]  HTTP Request
+{
+  "method": "GET",
+  "url": "/",
+  "status": 200,
+  "duration": "4ms",
+  "userAgent": "Wget"
+}
+2025-08-23 15:08:38.373 [INFO]  HTTP Request
+{
+  "method": "GET",
+  "url": "/",
+  "status": 200,
+  "duration": "3ms",
+  "userAgent": "Wget"
+}
+2025-08-23 15:09:38.420 [INFO]  HTTP Request
+{
+  "method": "GET",
+  "url": "/",
+  "status": 200,
+  "duration": "4ms",
+  "userAgent": "Wget"
+}
+2025-08-23 15:10:38.448 [INFO]  HTTP Request
+{
+  "method": "GET",
+  "url": "/",
+  "status": 200,
+  "duration": "2ms",
+  "userAgent": "Wget"
+}
+2025-08-23 15:11:38.509 [INFO]  HTTP Request
+{
+  "method": "GET",
+  "url": "/",
+  "status": 200,
+  "duration": "4ms",
+  "userAgent": "Wget"
+}
+2025-08-23 15:12:38.550 [INFO]  HTTP Request
+{
+  "method": "GET",
+  "url": "/",
+  "status": 200,
+  "duration": "4ms",
+  "userAgent": "Wget"
+}
+2025-08-23 15:13:38.603 [INFO]  HTTP Request
+{
+  "method": "GET",
+  "url": "/",
+  "status": 200,
+  "duration": "3ms",
+  "userAgent": "Wget"
+}
+2025-08-23 15:14:38.650 [INFO]  HTTP Request
+{
+  "method": "GET",
+  "url": "/",
+  "status": 200,
+  "duration": "4ms",
+  "userAgent": "Wget"
+}
+2025-08-23 15:15:38.702 [INFO]  HTTP Request
+{
+  "method": "GET",
+  "url": "/",
+  "status": 200,
+  "duration": "3ms",
+  "userAgent": "Wget"
+}
+2025-08-23 15:16:38.757 [INFO]  HTTP Request
+{
+  "method": "GET",
+  "url": "/",
+  "status": 200,
+  "duration": "4ms",
+  "userAgent": "Wget"
+}
+2025-08-23 15:17:38.802 [INFO]  HTTP Request
+{
+  "method": "GET",
+  "url": "/",
+  "status": 200,
+  "duration": "4ms",
+  "userAgent": "Wget"
+}
+2025-08-23 15:18:38.847 [INFO]  HTTP Request
+{
+  "method": "GET",
+  "url": "/",
+  "status": 200,
+  "duration": "4ms",
+  "userAgent": "Wget"
+}
+2025-08-23 15:19:38.896 [INFO]  HTTP Request
+{
+  "method": "GET",
+  "url": "/",
+  "status": 200,
+  "duration": "4ms",
+  "userAgent": "Wget"
+}
+2025-08-23 15:20:38.948 [INFO]  HTTP Request
+{
+  "method": "GET",
+  "url": "/",
+  "status": 200,
+  "duration": "3ms",
+  "userAgent": "Wget"
+}
+2025-08-23 15:21:39.005 [INFO]  HTTP Request
+{
+  "method": "GET",
+  "url": "/",
+  "status": 200,
+  "duration": "4ms",
+  "userAgent": "Wget"
+}
+2025-08-23 15:22:39.065 [INFO]  HTTP Request
+{
+  "method": "GET",
+  "url": "/",
+  "status": 200,
+  "duration": "4ms",
+  "userAgent": "Wget"
+}
+2025-08-23 15:23:39.120 [INFO]  HTTP Request
+{
+  "method": "GET",
+  "url": "/",
+  "status": 200,
+  "duration": "4ms",
+  "userAgent": "Wget"
+}
+2025-08-23 15:24:39.163 [INFO]  HTTP Request
+{
+  "method": "GET",
+  "url": "/",
+  "status": 200,
+  "duration": "4ms",
+  "userAgent": "Wget"
+}
+2025-08-23 15:25:39.208 [INFO]  HTTP Request
+{
+  "method": "GET",
+  "url": "/",
+  "status": 200,
+  "duration": "4ms",
+  "userAgent": "Wget"
+}
+2025-08-23 15:26:39.263 [INFO]  HTTP Request
+{
+  "method": "GET",
+  "url": "/",
+  "status": 200,
+  "duration": "5ms",
+  "userAgent": "Wget"
+}
+2025-08-23 15:27:39.302 [INFO]  HTTP Request
+{
+  "method": "GET",
+  "url": "/",
+  "status": 200,
+  "duration": "3ms",
+  "userAgent": "Wget"
+}
+2025-08-23 15:28:39.357 [INFO]  HTTP Request
+{
+  "method": "GET",
+  "url": "/",
+  "status": 200,
+  "duration": "3ms",
+  "userAgent": "Wget"
+}
+2025-08-23 15:29:39.405 [INFO]  HTTP Request
+{
+  "method": "GET",
+  "url": "/",
+  "status": 200,
+  "duration": "3ms",
+  "userAgent": "Wget"
+}
+2025-08-23 15:30:39.442 [INFO]  HTTP Request
+{
+  "method": "GET",
+  "url": "/",
+  "status": 200,
+  "duration": "3ms",
+  "userAgent": "Wget"
+}
+2025-08-23 15:31:39.501 [INFO]  HTTP Request
+{
+  "method": "GET",
+  "url": "/",
+  "status": 200,
+  "duration": "4ms",
+  "userAgent": "Wget"
+}
+2025-08-23 15:32:39.554 [INFO]  HTTP Request
+{
+  "method": "GET",
+  "url": "/",
+  "status": 200,
+  "duration": "3ms",
+  "userAgent": "Wget"
+}
+2025-08-23 15:33:39.602 [INFO]  HTTP Request
+{
+  "method": "GET",
+  "url": "/",
+  "status": 200,
+  "duration": "4ms",
+  "userAgent": "Wget"
+}
+2025-08-23 15:34:39.656 [INFO]  HTTP Request
+{
+  "method": "GET",
+  "url": "/",
+  "status": 200,
+  "duration": "4ms",
+  "userAgent": "Wget"
+}
+2025-08-23 15:35:39.697 [INFO]  HTTP Request
+{
+  "method": "GET",
+  "url": "/",
+  "status": 200,
+  "duration": "3ms",
+  "userAgent": "Wget"
+}
+2025-08-23 15:36:39.746 [INFO]  HTTP Request
+{
+  "method": "GET",
+  "url": "/",
+  "status": 200,
+  "duration": "3ms",
+  "userAgent": "Wget"
+}
+2025-08-23 15:37:39.799 [INFO]  HTTP Request
+{
+  "method": "GET",
+  "url": "/",
+  "status": 200,
+  "duration": "5ms",
+  "userAgent": "Wget"
+}
+2025-08-23 15:38:39.843 [INFO]  HTTP Request
+{
+  "method": "GET",
+  "url": "/",
+  "status": 200,
+  "duration": "3ms",
+  "userAgent": "Wget"
+}
+2025-08-23 15:39:39.899 [INFO]  HTTP Request
+{
+  "method": "GET",
+  "url": "/",
+  "status": 200,
+  "duration": "4ms",
+  "userAgent": "Wget"
+}
+2025-08-23 15:40:39.948 [INFO]  HTTP Request
+{
+  "method": "GET",
+  "url": "/",
+  "status": 200,
+  "duration": "4ms",
+  "userAgent": "Wget"
+}
+2025-08-23 15:41:39.992 [INFO]  HTTP Request
+{
+  "method": "GET",
+  "url": "/",
+  "status": 200,
+  "duration": "4ms",
+  "userAgent": "Wget"
+}
+2025-08-23 15:42:40.038 [INFO]  HTTP Request
+{
+  "method": "GET",
+  "url": "/",
+  "status": 200,
+  "duration": "4ms",
+  "userAgent": "Wget"
+}
+2025-08-23 15:43:40.087 [INFO]  HTTP Request
+{
+  "method": "GET",
+  "url": "/",
+  "status": 200,
+  "duration": "3ms",
+  "userAgent": "Wget"
+}
+2025-08-23 15:44:40.134 [INFO]  HTTP Request
+{
+  "method": "GET",
+  "url": "/",
+  "status": 200,
+  "duration": "3ms",
+  "userAgent": "Wget"
+}
+2025-08-23 15:45:40.188 [INFO]  HTTP Request
+{
+  "method": "GET",
+  "url": "/",
+  "status": 200,
+  "duration": "4ms",
+  "userAgent": "Wget"
+}
+2025-08-23 15:46:40.247 [INFO]  HTTP Request
+{
+  "method": "GET",
+  "url": "/",
+  "status": 200,
+  "duration": "4ms",
+  "userAgent": "Wget"
+}
+2025-08-23 15:47:40.307 [INFO]  HTTP Request
+{
+  "method": "GET",
+  "url": "/",
+  "status": 200,
+  "duration": "4ms",
+  "userAgent": "Wget"
+}
+2025-08-23 15:48:40.332 [INFO]  HTTP Request
+{
+  "method": "GET",
+  "url": "/",
+  "status": 200,
+  "duration": "2ms",
+  "userAgent": "Wget"
+}
+2025-08-23 15:49:40.387 [INFO]  HTTP Request
+{
+  "method": "GET",
+  "url": "/",
+  "status": 200,
+  "duration": "5ms",
+  "userAgent": "Wget"
+}
+2025-08-23 15:50:40.439 [INFO]  HTTP Request
+{
+  "method": "GET",
+  "url": "/",
+  "status": 200,
+  "duration": "3ms",
+  "userAgent": "Wget"
+}
+2025-08-23 15:51:40.502 [INFO]  HTTP Request
+{
+  "method": "GET",
+  "url": "/",
+  "status": 200,
+  "duration": "3ms",
+  "userAgent": "Wget"
+}
+2025-08-23 15:52:40.555 [INFO]  HTTP Request
+{
+  "method": "GET",
+  "url": "/",
+  "status": 200,
+  "duration": "3ms",
+  "userAgent": "Wget"
+}
+2025-08-23 15:53:40.605 [INFO]  HTTP Request
+{
+  "method": "GET",
+  "url": "/",
+  "status": 200,
+  "duration": "4ms",
+  "userAgent": "Wget"
+}
+2025-08-23 15:54:40.661 [INFO]  HTTP Request
+{
+  "method": "GET",
+  "url": "/",
+  "status": 200,
+  "duration": "4ms",
+  "userAgent": "Wget"
+}
+2025-08-23 15:55:40.722 [INFO]  HTTP Request
+{
+  "method": "GET",
+  "url": "/",
+  "status": 200,
+  "duration": "3ms",
+  "userAgent": "Wget"
+}
+2025-08-23 15:56:40.772 [INFO]  HTTP Request
+{
+  "method": "GET",
+  "url": "/",
+  "status": 200,
+  "duration": "3ms",
+  "userAgent": "Wget"
+}
+2025-08-23 15:57:40.829 [INFO]  HTTP Request
+{
+  "method": "GET",
+  "url": "/",
+  "status": 200,
+  "duration": "5ms",
+  "userAgent": "Wget"
+}
+2025-08-23 15:58:40.885 [INFO]  HTTP Request
+{
+  "method": "GET",
+  "url": "/",
+  "status": 200,
+  "duration": "4ms",
+  "userAgent": "Wget"
+}
+2025-08-23 15:59:40.940 [INFO]  HTTP Request
+{
+  "method": "GET",
+  "url": "/",
+  "status": 200,
+  "duration": "4ms",
+  "userAgent": "Wget"
+}
+2025-08-23 16:00:40.986 [INFO]  HTTP Request
+{
+  "method": "GET",
+  "url": "/",
+  "status": 200,
+  "duration": "3ms",
+  "userAgent": "Wget"
+}
+2025-08-23 16:01:41.042 [INFO]  HTTP Request
+{
+  "method": "GET",
+  "url": "/",
+  "status": 200,
+  "duration": "3ms",
+  "userAgent": "Wget"
+}
+2025-08-23 16:02:41.099 [INFO]  HTTP Request
+{
+  "method": "GET",
+  "url": "/",
+  "status": 200,
+  "duration": "4ms",
+  "userAgent": "Wget"
+}
+2025-08-23 16:03:41.148 [INFO]  HTTP Request
+{
+  "method": "GET",
+  "url": "/",
+  "status": 200,
+  "duration": "3ms",
+  "userAgent": "Wget"
+}
+2025-08-23 16:04:41.197 [INFO]  HTTP Request
+{
+  "method": "GET",
+  "url": "/",
+  "status": 200,
+  "duration": "3ms",
+  "userAgent": "Wget"
+}
+2025-08-23 16:05:41.245 [INFO]  HTTP Request
+{
+  "method": "GET",
+  "url": "/",
+  "status": 200,
+  "duration": "4ms",
+  "userAgent": "Wget"
+}
+2025-08-23 16:06:41.275 [INFO]  HTTP Request
+{
+  "method": "GET",
+  "url": "/",
+  "status": 200,
+  "duration": "2ms",
+  "userAgent": "Wget"
+}
+2025-08-23 16:07:41.332 [INFO]  HTTP Request
+{
+  "method": "GET",
+  "url": "/",
+  "status": 200,
+  "duration": "4ms",
+  "userAgent": "Wget"
+}
+2025-08-23 16:08:41.387 [INFO]  HTTP Request
+{
+  "method": "GET",
+  "url": "/",
+  "status": 200,
+  "duration": "3ms",
+  "userAgent": "Wget"
+}
+2025-08-23 16:09:41.436 [INFO]  HTTP Request
+{
+  "method": "GET",
+  "url": "/",
+  "status": 200,
+  "duration": "4ms",
+  "userAgent": "Wget"
+}
+2025-08-23 16:10:41.469 [INFO]  HTTP Request
+{
+  "method": "GET",
+  "url": "/",
+  "status": 200,
+  "duration": "4ms",
+  "userAgent": "Wget"
+}
+2025-08-23 16:11:41.524 [INFO]  HTTP Request
+{
+  "method": "GET",
+  "url": "/",
+  "status": 200,
+  "duration": "3ms",
+  "userAgent": "Wget"
+}
+2025-08-23 16:12:41.592 [INFO]  HTTP Request
+{
+  "method": "GET",
+  "url": "/",
+  "status": 200,
+  "duration": "4ms",
+  "userAgent": "Wget"
+}
+2025-08-23 16:13:41.633 [INFO]  HTTP Request
+{
+  "method": "GET",
+  "url": "/",
+  "status": 200,
+  "duration": "4ms",
+  "userAgent": "Wget"
+}
+2025-08-23 16:14:41.677 [INFO]  HTTP Request
+{
+  "method": "GET",
+  "url": "/",
+  "status": 200,
+  "duration": "4ms",
+  "userAgent": "Wget"
+}
+2025-08-23 16:15:41.721 [INFO]  HTTP Request
+{
+  "method": "GET",
+  "url": "/",
+  "status": 200,
+  "duration": "3ms",
+  "userAgent": "Wget"
+}
+2025-08-23 16:16:41.776 [INFO]  HTTP Request
+{
+  "method": "GET",
+  "url": "/",
+  "status": 200,
+  "duration": "3ms",
+  "userAgent": "Wget"
+}
+2025-08-23 16:17:41.828 [INFO]  HTTP Request
+{
+  "method": "GET",
+  "url": "/",
+  "status": 200,
+  "duration": "4ms",
+  "userAgent": "Wget"
+}
+2025-08-23 16:18:41.888 [INFO]  HTTP Request
+{
+  "method": "GET",
+  "url": "/",
+  "status": 200,
+  "duration": "4ms",
+  "userAgent": "Wget"
+}
+2025-08-23 16:19:41.940 [INFO]  HTTP Request
+{
+  "method": "GET",
+  "url": "/",
+  "status": 200,
+  "duration": "4ms",
+  "userAgent": "Wget"
+}
+2025-08-23 16:20:41.988 [INFO]  HTTP Request
+{
+  "method": "GET",
+  "url": "/",
+  "status": 200,
+  "duration": "3ms",
+  "userAgent": "Wget"
+}
+2025-08-23 16:21:42.041 [INFO]  HTTP Request
+{
+  "method": "GET",
+  "url": "/",
+  "status": 200,
+  "duration": "5ms",
+  "userAgent": "Wget"
+}
+2025-08-23 16:22:42.090 [INFO]  HTTP Request
+{
+  "method": "GET",
+  "url": "/",
+  "status": 200,
+  "duration": "3ms",
+  "userAgent": "Wget"
+}
+2025-08-23 16:23:42.115 [INFO]  HTTP Request
+{
+  "method": "GET",
+  "url": "/",
+  "status": 200,
+  "duration": "2ms",
+  "userAgent": "Wget"
+}
+2025-08-23 16:24:42.133 [INFO]  HTTP Request
+{
+  "method": "GET",
+  "url": "/",
+  "status": 200,
+  "duration": "3ms",
+  "userAgent": "Wget"
+}
+2025-08-23 16:25:42.182 [INFO]  HTTP Request
+{
+  "method": "GET",
+  "url": "/",
+  "status": 200,
+  "duration": "4ms",
+  "userAgent": "Wget"
+}
+2025-08-23 16:26:42.229 [INFO]  HTTP Request
+{
+  "method": "GET",
+  "url": "/",
+  "status": 200,
+  "duration": "3ms",
+  "userAgent": "Wget"
+}
+2025-08-23 16:27:42.274 [INFO]  HTTP Request
+{
+  "method": "GET",
+  "url": "/",
+  "status": 200,
+  "duration": "4ms",
+  "userAgent": "Wget"
+}
+2025-08-23 16:28:42.328 [INFO]  HTTP Request
+{
+  "method": "GET",
+  "url": "/",
+  "status": 200,
+  "duration": "3ms",
+  "userAgent": "Wget"
+}
+2025-08-23 16:29:42.394 [INFO]  HTTP Request
+{
+  "method": "GET",
+  "url": "/",
+  "status": 200,
+  "duration": "4ms",
+  "userAgent": "Wget"
+}
+2025-08-23 16:30:42.452 [INFO]  HTTP Request
+{
+  "method": "GET",
+  "url": "/",
+  "status": 200,
+  "duration": "3ms",
+  "userAgent": "Wget"
+}
+2025-08-23 16:31:42.500 [INFO]  HTTP Request
+{
+  "method": "GET",
+  "url": "/",
+  "status": 200,
+  "duration": "2ms",
+  "userAgent": "Wget"
+}
+2025-08-23 16:32:42.552 [INFO]  HTTP Request
+{
+  "method": "GET",
+  "url": "/",
+  "status": 200,
+  "duration": "4ms",
+  "userAgent": "Wget"
+}
+2025-08-23 16:33:42.608 [INFO]  HTTP Request
+{
+  "method": "GET",
+  "url": "/",
+  "status": 200,
+  "duration": "5ms",
+  "userAgent": "Wget"
+}
+2025-08-23 16:34:42.668 [INFO]  HTTP Request
+{
+  "method": "GET",
+  "url": "/",
+  "status": 200,
+  "duration": "2ms",
+  "userAgent": "Wget"
+}
+2025-08-23 16:35:42.715 [INFO]  HTTP Request
+{
+  "method": "GET",
+  "url": "/",
+  "status": 200,
+  "duration": "3ms",
+  "userAgent": "Wget"
+}
+2025-08-23 16:36:42.776 [INFO]  HTTP Request
+{
+  "method": "GET",
+  "url": "/",
+  "status": 200,
+  "duration": "3ms",
+  "userAgent": "Wget"
+}
+2025-08-23 16:37:42.828 [INFO]  HTTP Request
+{
+  "method": "GET",
+  "url": "/",
+  "status": 200,
+  "duration": "4ms",
+  "userAgent": "Wget"
+}
+2025-08-23 16:38:42.867 [INFO]  HTTP Request
+{
+  "method": "GET",
+  "url": "/",
+  "status": 200,
+  "duration": "3ms",
+  "userAgent": "Wget"
+}
+2025-08-23 16:39:42.906 [INFO]  HTTP Request
+{
+  "method": "GET",
+  "url": "/",
+  "status": 200,
+  "duration": "4ms",
+  "userAgent": "Wget"
+}
+2025-08-23 16:40:42.950 [INFO]  HTTP Request
+{
+  "method": "GET",
+  "url": "/",
+  "status": 200,
+  "duration": "3ms",
+  "userAgent": "Wget"
+}
+2025-08-23 16:41:43.001 [INFO]  HTTP Request
+{
+  "method": "GET",
+  "url": "/",
+  "status": 200,
+  "duration": "4ms",
+  "userAgent": "Wget"
+}
+2025-08-23 16:42:43.045 [INFO]  HTTP Request
+{
+  "method": "GET",
+  "url": "/",
+  "status": 200,
+  "duration": "3ms",
+  "userAgent": "Wget"
+}
+2025-08-23 16:43:43.098 [INFO]  HTTP Request
+{
+  "method": "GET",
+  "url": "/",
+  "status": 200,
+  "duration": "4ms",
+  "userAgent": "Wget"
+}
+2025-08-23 17:01:57.040 [INFO]  HTTP Request
+{
+  "method": "GET",
+  "url": "/",
+  "status": 200,
+  "duration": "4ms",
+  "userAgent": "Wget"
+}
+2025-08-23 17:18:46.265 [INFO]  HTTP Request
+{
+  "method": "GET",
+  "url": "/",
+  "status": 200,
+  "duration": "3ms",
+  "userAgent": "Wget"
+}
+2025-08-23 17:34:45.681 [INFO]  HTTP Request
+{
+  "method": "GET",
+  "url": "/",
+  "status": 200,
+  "duration": "4ms",
+  "userAgent": "Wget"
+}
+2025-08-23 17:44:02.715 [INFO]  HTTP Request
+{
+  "method": "GET",
+  "url": "/",
+  "status": 200,
+  "duration": "3ms",
+  "userAgent": "Wget"
+}
+2025-08-23 17:45:02.756 [INFO]  HTTP Request
+{
+  "method": "GET",
+  "url": "/",
+  "status": 200,
+  "duration": "3ms",
+  "userAgent": "Wget"
+}
+2025-08-23 17:46:02.801 [INFO]  HTTP Request
+{
+  "method": "GET",
+  "url": "/",
+  "status": 200,
+  "duration": "3ms",
+  "userAgent": "Wget"
+}
+2025-08-23 17:47:02.853 [INFO]  HTTP Request
+{
+  "method": "GET",
+  "url": "/",
+  "status": 200,
+  "duration": "5ms",
+  "userAgent": "Wget"
+}
+2025-08-23 17:48:02.905 [INFO]  HTTP Request
+{
+  "method": "GET",
+  "url": "/",
+  "status": 200,
+  "duration": "4ms",
+  "userAgent": "Wget"
+}
+2025-08-23 17:49:02.958 [INFO]  HTTP Request
+{
+  "method": "GET",
+  "url": "/",
+  "status": 200,
+  "duration": "4ms",
+  "userAgent": "Wget"
+}
+2025-08-23 17:50:03.006 [INFO]  HTTP Request
+{
+  "method": "GET",
+  "url": "/",
+  "status": 200,
+  "duration": "4ms",
+  "userAgent": "Wget"
+}
+2025-08-23 17:51:03.049 [INFO]  HTTP Request
+{
+  "method": "GET",
+  "url": "/",
+  "status": 200,
+  "duration": "4ms",
+  "userAgent": "Wget"
+}
+2025-08-23 17:52:03.101 [INFO]  HTTP Request
+{
+  "method": "GET",
+  "url": "/",
+  "status": 200,
+  "duration": "5ms",
+  "userAgent": "Wget"
+}
+2025-08-23 17:53:03.154 [INFO]  HTTP Request
+{
+  "method": "GET",
+  "url": "/",
+  "status": 200,
+  "duration": "5ms",
+  "userAgent": "Wget"
+}

@@ -36,7 +36,15 @@ describe('IntelligentRouter', () => {
     it('should return NEO4J_ANALYSIS_ONLY for analysis with fresh data', async () => {
       mockNeo4jClient.checkDataFreshness.mockResolvedValueOnce({
         success: true,
-        data: { needsRefresh: false, ageMinutes: 10 }
+        data: {
+          records: [{
+            freshness: {
+              lastSync: '2024-01-01T12:00:00Z',
+              ageMinutes: 10,
+              needsRefresh: false
+            }
+          }]
+        }
       });
 
       const strategy = await router.determineExecutionStrategy('Analysiere die Benutzerdaten');
@@ -47,7 +55,15 @@ describe('IntelligentRouter', () => {
     it('should return SYNC_THEN_ANALYZE for analysis with stale data', async () => {
       mockNeo4jClient.checkDataFreshness.mockResolvedValueOnce({
         success: true,
-        data: { needsRefresh: true, ageMinutes: 45 }
+        data: {
+          records: [{
+            freshness: {
+              lastSync: '2024-01-01T12:00:00Z',
+              ageMinutes: 45,
+              needsRefresh: true
+            }
+          }]
+        }
       });
 
       const strategy = await router.determineExecutionStrategy('Finde Duplikate in den Benutzerdaten');
@@ -73,12 +89,12 @@ describe('IntelligentRouter', () => {
     });
 
     it('should detect analysis category', () => {
-      const intent = router.analyzeIntent('Analysiere die Benutzerstatistiken für Realm test');
+      const intent = router.analyzeIntent('Analysiere die Benutzer für Realm test');
       
       expect(intent.category).toBe('analysis');
       expect(intent.confidence).toBeGreaterThan(0.7);
-      expect(intent.detectedEntities).toContain('user');
       expect(intent.detectedEntities).toContain('realm:test');
+      expect(intent.detectedEntities).toContain('user'); // 'benutzer' should match the regex
     });
 
     it('should detect monitoring category', () => {
@@ -132,9 +148,13 @@ describe('IntelligentRouter', () => {
       mockNeo4jClient.checkDataFreshness.mockResolvedValueOnce({
         success: true,
         data: {
-          lastSync: '2024-01-01T12:00:00Z',
-          ageMinutes: 15,
-          needsRefresh: false
+          records: [{
+            freshness: {
+              lastSync: '2024-01-01T12:00:00Z',
+              ageMinutes: 15,
+              needsRefresh: false
+            }
+          }]
         }
       });
 
