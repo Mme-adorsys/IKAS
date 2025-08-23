@@ -37,7 +37,7 @@ const logger = winston.createLogger({
 const config = {
   PORT: parseInt(process.env.PORT || '3001', 10),
   REDIS_URL: process.env.REDIS_URL || 'redis://localhost:6379',
-  CORS_ORIGIN: process.env.CORS_ORIGIN?.split(',') || ['http://localhost:3000'],
+  CORS_ORIGIN: process.env.CORS_ORIGIN?.split(',') || ['http://localhost:3000', 'http://localhost:3002'],
   CORS_CREDENTIALS: process.env.CORS_CREDENTIALS === 'true',
   SESSION_TIMEOUT: parseInt(process.env.SESSION_TIMEOUT || '3600000', 10),
   AI_GATEWAY_URL: process.env.AI_GATEWAY_URL || 'http://localhost:8000'
@@ -53,8 +53,29 @@ class IKASWebSocketServer {
   private eventHandlers: EventHandlers;
 
   constructor() {
-    // Create HTTP server
-    this.httpServer = createServer();
+    // Create HTTP server with health endpoint handler
+    this.httpServer = createServer((req, res) => {
+      // Handle health check endpoint
+      if (req.method === 'GET' && req.url === '/health') {
+        res.writeHead(200, {
+          'Content-Type': 'application/json',
+          'Access-Control-Allow-Origin': '*',
+          'Access-Control-Allow-Methods': 'GET',
+          'Access-Control-Allow-Headers': 'Content-Type'
+        });
+        res.end(JSON.stringify({
+          status: 'healthy',
+          service: 'ikas-websocket-server',
+          version: '1.0.0',
+          timestamp: new Date().toISOString(),
+          connections: this.io.engine.clientsCount
+        }));
+        return;
+      }
+      
+      // For all other requests, let them fall through to Socket.IO
+      // This ensures Socket.IO still handles WebSocket upgrades properly
+    });
 
     // Configure Socket.IO
     this.io = new SocketIOServer(this.httpServer, {
@@ -110,7 +131,7 @@ class IKASWebSocketServer {
         socket.emit('connected', {
           sessionId: session.id,
           timestamp: new Date().toISOString(),
-          message: 'Willkommen bei IKAS! Verbindung erfolgreich hergestellt.'
+          message: 'Welcome to IKAS! Connection established successfully.'
         });
 
         // Handle voice commands
@@ -168,7 +189,7 @@ class IKASWebSocketServer {
     try {
       const session = await this.sessionManager.getSessionBySocket(socket.id);
       if (!session) {
-        socket.emit('error', { message: 'Session nicht gefunden' });
+        socket.emit('error', { message: 'Session not found' });
         return;
       }
 
@@ -201,7 +222,7 @@ class IKASWebSocketServer {
         data
       });
       socket.emit('error', { 
-        message: 'Fehler beim Verarbeiten des Sprachbefehls' 
+        message: 'Error processing voice command' 
       });
     }
   }
@@ -210,7 +231,7 @@ class IKASWebSocketServer {
     try {
       const session = await this.sessionManager.getSessionBySocket(socket.id);
       if (!session) {
-        socket.emit('error', { message: 'Session nicht gefunden' });
+        socket.emit('error', { message: 'Session not found' });
         return;
       }
 
@@ -243,7 +264,7 @@ class IKASWebSocketServer {
         data
       });
       socket.emit('error', { 
-        message: 'Fehler beim Erstellen der Subscription' 
+        message: 'Error creating subscription' 
       });
     }
   }
@@ -284,7 +305,7 @@ class IKASWebSocketServer {
     try {
       const session = await this.sessionManager.getSessionBySocket(socket.id);
       if (!session) {
-        socket.emit('error', { message: 'Session nicht gefunden' });
+        socket.emit('error', { message: 'Session not found' });
         return;
       }
 
@@ -299,7 +320,7 @@ class IKASWebSocketServer {
         });
       } else {
         socket.emit('error', { 
-          message: `Beitritt zum Room '${room}' nicht möglich` 
+          message: `Unable to join room '${room}'` 
         });
       }
 
@@ -341,7 +362,7 @@ class IKASWebSocketServer {
     try {
       const session = await this.sessionManager.getSessionBySocket(socket.id);
       if (!session) {
-        socket.emit('error', { message: 'Session nicht gefunden' });
+        socket.emit('error', { message: 'Session not found' });
         return;
       }
 
@@ -374,7 +395,7 @@ class IKASWebSocketServer {
         data
       });
       socket.emit('error', { 
-        message: 'Fehler beim Starten der Analyse' 
+        message: 'Error starting analysis' 
       });
     }
   }
@@ -439,7 +460,7 @@ class IKASWebSocketServer {
           event.sessionId,
           EventType.VOICE_RESPONSE,
           {
-            response: 'Befehl wird verarbeitet...',
+            response: 'Command is being processed...',
             executionTime: Math.random() * 1000 + 500
           }
         );
@@ -485,7 +506,7 @@ class IKASWebSocketServer {
           100,
           { 
             patterns: [],
-            summary: 'Analyse erfolgreich abgeschlossen'
+            summary: 'Analysis completed successfully'
           }
         );
 

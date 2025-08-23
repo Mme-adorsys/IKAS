@@ -65,6 +65,20 @@ interface DataState {
     enabled: boolean;
     realm: string;
   }>;
+  clients: Array<{
+    id: string;
+    clientId: string;
+    name?: string;
+    description?: string;
+    enabled: boolean;
+    realm: string;
+  }>;
+  realms: Array<{
+    id: string;
+    realm: string;
+    displayName?: string;
+    enabled: boolean;
+  }>;
   complianceIssues: Array<{
     id: string;
     severity: 'info' | 'warning' | 'error' | 'critical';
@@ -134,6 +148,9 @@ interface IKASStore {
   updateAnalysisProgress: (analysisId: string, progress: number, status?: string) => void;
   completeAnalysis: (analysisId: string, result: any, success: boolean) => void;
 
+  // Data sync actions
+  requestInitialDataSync: () => Promise<void>;
+
   // UI actions
   toggleDarkMode: () => void;
   toggleSidebar: () => void;
@@ -180,6 +197,8 @@ export const useIKASStore = create<IKASStore>()(
 
       data: {
         users: [],
+        clients: [],
+        realms: [],
         complianceIssues: [],
         graphData: {
           nodes: [],
@@ -224,6 +243,11 @@ export const useIKASStore = create<IKASStore>()(
             store.addEvent(event);
             store.handleIncomingEvent(event);
           });
+
+          // Request initial data sync after connection
+          setTimeout(() => {
+            get().requestInitialDataSync();
+          }, 1000);
 
           websocketService.on('voiceCommandReceived', (data) => {
             get().addNotification({
@@ -369,21 +393,12 @@ export const useIKASStore = create<IKASStore>()(
             }
           }));
 
-          // TODO: Add health checks for other services
-          // For now, we'll check if services are reachable via basic HTTP requests
-          // Frontend only checks services with CORS enabled
-          // AI Gateway reports Neo4j MCP status in its health response
-          const services = ['aiGateway', 'keycloakMcp'] as const;
+          // Check health of services via Next.js proxy to avoid CORS issues
+          const services = ['aiGateway', 'keycloakMcp', 'neo4jMcp'] as const;
           const healthUrls = {
-            aiGateway: process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8005',
-            keycloakMcp: 'http://localhost:8001',
-            neo4jMcp: 'http://localhost:8002'
-          };
-          
-          const healthPaths = {
-            aiGateway: '/health',
-            keycloakMcp: '/health', 
-            neo4jMcp: '/health'  // Neo4j MCP now uses standard health endpoint
+            aiGateway: '/api/ai-gateway/health',    // Proxied via Next.js
+            keycloakMcp: '/api/keycloak/health',    // Proxied via Next.js
+            neo4jMcp: '/api/neo4j/health'           // Proxied via Next.js
           };
 
           for (const service of services) {
@@ -392,10 +407,10 @@ export const useIKASStore = create<IKASStore>()(
               const controller = new AbortController();
               const timeoutId = setTimeout(() => controller.abort(), 5000);
               
-              const response = await fetch(`${healthUrls[service]}${healthPaths[service]}`, { 
+              const response = await fetch(healthUrls[service], { 
                 method: 'GET',
-                signal: controller.signal,
-                mode: 'cors'  // Handle CORS properly
+                signal: controller.signal
+                // No need for CORS mode since we're using Next.js proxy
               });
               
               clearTimeout(timeoutId);
@@ -433,11 +448,11 @@ export const useIKASStore = create<IKASStore>()(
 
         const voiceService = new VoiceService(
           {
-            language: 'de-DE',
+            language: 'en-US',
             continuous: false,
             interimResults: true,
             hotwordEnabled: true,
-            hotwords: ['hey keycloak', 'hallo keycloak']
+            hotwords: ['ikas', 'hey ikas']
           },
           {
             onResult: (transcript, isFinal, confidence) => {
@@ -591,6 +606,33 @@ export const useIKASStore = create<IKASStore>()(
             // Implementation depends on specific requirements
             break;
 
+          case EventType.DATA_UPDATE:
+            // Handle data updates from backend
+            const { dataType, data } = event.payload;
+            set((state) => {
+              const updatedData = { ...state.data };
+              
+              switch (dataType) {
+                case 'users':
+                  updatedData.users = Array.isArray(data) ? data : [];
+                  break;
+                case 'clients':
+                  updatedData.clients = Array.isArray(data) ? data : [];
+                  break;
+                case 'realms':
+                  updatedData.realms = Array.isArray(data) ? data : [];
+                  break;
+                case 'metrics':
+                  // Handle metrics update
+                  break;
+                default:
+                  console.warn('Unknown data type:', dataType);
+              }
+              
+              return { data: updatedData };
+            });
+            break;
+
           case EventType.COMPLIANCE_ALERT:
             // Add compliance issue
             set((state) => ({
@@ -737,6 +779,29 @@ export const useIKASStore = create<IKASStore>()(
             title: 'Analysis Completed',
             message: `${analysis.type} analysis ${success ? 'completed successfully' : 'failed'}`
           });
+        }
+      },
+
+      // Data sync actions
+      requestInitialDataSync: async () => {
+        try {
+          // Send voice command to sync initial data in background
+          await websocketService.sendVoiceCommand({
+            command: 'sync initial system data',
+            transcript: 'Load system data on startup',
+            confidence: 1.0,
+            language: 'en-US',
+            timestamp: new Date().toISOString()
+          });
+
+          get().addNotification({
+            type: 'info',
+            title: 'Data Sync',
+            message: 'Loading system data in background...'
+          });
+
+        } catch (error) {
+          console.warn('Failed to request initial data sync:', error);
         }
       },
 

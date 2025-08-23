@@ -1,5 +1,5 @@
 import axios, { AxiosInstance, AxiosResponse } from 'axios';
-import { logger } from '../utils/logger';
+import { logger, mcpLogger, RequestTracker } from '../utils/logger';
 import { config } from '../utils/config';
 import { MCPResponse, MCPToolCall, ToolDefinition, MCPResponseMetadata } from '../types';
 import { v4 as uuidv4 } from 'uuid';
@@ -59,15 +59,20 @@ export abstract class BaseMCPClient {
   }
 
   async callTool<T = any>(toolName: string, args: Record<string, any>): Promise<MCPResponse<T>> {
-    const startTime = Date.now();
-    const requestId = uuidv4();
+    const requestId = RequestTracker.startRequest({ 
+      server: this.serverName, 
+      tool: toolName, 
+      type: 'mcp_call' 
+    });
 
     try {
-      logger.info(`Calling MCP tool [${this.serverName}:${toolName}]`, {
+      mcpLogger.info(`🔧 Calling MCP tool [${this.serverName}:${toolName}]`, {
         requestId,
         toolName,
         server: this.serverName,
-        args: args
+        args: args,
+        argKeys: Object.keys(args),
+        argCount: Object.keys(args).length
       });
 
       let response: AxiosResponse;
@@ -86,7 +91,7 @@ export abstract class BaseMCPClient {
         });
       }
 
-      const duration = Date.now() - startTime;
+      const duration = RequestTracker.endRequest(requestId);
       const metadata: MCPResponseMetadata = {
         duration,
         source: this.serverName,
@@ -94,10 +99,20 @@ export abstract class BaseMCPClient {
         requestId
       };
 
-      logger.info(`MCP tool completed [${this.serverName}:${toolName}]`, {
+      mcpLogger.info(`✅ MCP tool completed [${this.serverName}:${toolName}]`, {
         requestId,
         duration: `${duration}ms`,
-        success: true
+        success: true,
+        statusCode: response.status,
+        responseSize: JSON.stringify(response.data).length,
+        hasData: !!response.data,
+        dataType: response.data ? (Array.isArray(response.data) ? 'array' : typeof response.data) : 'none'
+      });
+
+      mcpLogger.debug(`📊 MCP response details [${this.serverName}:${toolName}]`, {
+        requestId,
+        fullResponse: response.data,
+        responseHeaders: response.headers
       });
 
       // Both Neo4j and Keycloak now use REST API format
@@ -110,15 +125,20 @@ export abstract class BaseMCPClient {
       };
 
     } catch (error) {
-      const duration = Date.now() - startTime;
+      const duration = RequestTracker.endRequest(requestId);
       const errorMessage = error instanceof Error ? error.message : 'Unknown error';
 
-      logger.error(`MCP tool failed [${this.serverName}:${toolName}]`, {
+      mcpLogger.error(`❌ MCP tool failed [${this.serverName}:${toolName}]`, {
         requestId,
         duration: `${duration}ms`,
         error: errorMessage,
+        stack: error instanceof Error ? error.stack : undefined,
         toolName,
-        server: this.serverName
+        server: this.serverName,
+        status: error instanceof Error && 'response' in error ? (error as any).response?.status : undefined,
+        responseData: error instanceof Error && 'response' in error ? (error as any).response?.data : undefined,
+        requestUrl: `${this.baseUrl}/tools/${toolName}`,
+        requestArgs: args
       });
 
       const metadata: MCPResponseMetadata = {

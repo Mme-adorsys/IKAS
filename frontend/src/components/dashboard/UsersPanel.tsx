@@ -8,38 +8,9 @@ export function UsersPanel() {
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedRealm, setSelectedRealm] = useState('all');
 
-  // Sample users data - in real implementation this would come from Keycloak
-  const sampleUsers = [
-    {
-      id: '1',
-      username: 'admin',
-      email: 'admin@example.com',
-      firstName: 'System',
-      lastName: 'Administrator',
-      enabled: true,
-      realm: 'master'
-    },
-    {
-      id: '2', 
-      username: 'john.doe',
-      email: 'john.doe@company.com',
-      firstName: 'John',
-      lastName: 'Doe',
-      enabled: true,
-      realm: 'company-realm'
-    },
-    {
-      id: '3',
-      username: 'jane.smith',
-      email: 'jane.smith@company.com', 
-      firstName: 'Jane',
-      lastName: 'Smith',
-      enabled: false,
-      realm: 'company-realm'
-    }
-  ];
+  // Users data now comes from real Keycloak data via WebSocket
 
-  const users = data.users.length > 0 ? data.users : sampleUsers;
+  const users = data.users;
   const realms = ['all', ...new Set(users.map(u => u.realm))];
 
   const filteredUsers = users.filter(user => {
@@ -56,10 +27,10 @@ export function UsersPanel() {
   const handleRefreshUsers = async () => {
     try {
       await sendVoiceCommand({
-        command: 'zeige alle benutzer',
-        transcript: 'zeige alle benutzer', 
+        command: 'list all users',
+        transcript: 'list all users', 
         confidence: 1.0,
-        language: 'de-DE',
+        language: 'en-US',
         timestamp: new Date().toISOString()
       });
     } catch (error) {
@@ -108,7 +79,7 @@ export function UsersPanel() {
             >
               {realms.map((realm) => (
                 <option key={realm} value={realm}>
-                  {realm === 'all' ? 'Alle Realms' : realm}
+                  {realm === 'all' ? 'All Realms' : realm}
                 </option>
               ))}
             </select>
@@ -123,7 +94,7 @@ export function UsersPanel() {
               <svg className="mr-2 h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
               </svg>
-              Aktualisieren
+              Refresh
             </button>
 
             <button
@@ -133,7 +104,7 @@ export function UsersPanel() {
               <svg className="mr-2 h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
               </svg>
-              Duplikate finden
+              Find Duplicates
             </button>
           </div>
         </div>
@@ -151,7 +122,7 @@ export function UsersPanel() {
               </div>
             </div>
             <div className="ml-4">
-              <p className="text-sm font-medium text-gray-500 dark:text-gray-400">Gesamt</p>
+              <p className="text-sm font-medium text-gray-500 dark:text-gray-400">Total</p>
               <p className="text-2xl font-semibold text-gray-900 dark:text-white">{filteredUsers.length}</p>
             </div>
           </div>
@@ -167,7 +138,7 @@ export function UsersPanel() {
               </div>
             </div>
             <div className="ml-4">
-              <p className="text-sm font-medium text-gray-500 dark:text-gray-400">Aktiv</p>
+              <p className="text-sm font-medium text-gray-500 dark:text-gray-400">Active</p>
               <p className="text-2xl font-semibold text-gray-900 dark:text-white">
                 {filteredUsers.filter(u => u.enabled).length}
               </p>
@@ -185,7 +156,7 @@ export function UsersPanel() {
               </div>
             </div>
             <div className="ml-4">
-              <p className="text-sm font-medium text-gray-500 dark:text-gray-400">Deaktiviert</p>
+              <p className="text-sm font-medium text-gray-500 dark:text-gray-400">Disabled</p>
               <p className="text-2xl font-semibold text-gray-900 dark:text-white">
                 {filteredUsers.filter(u => !u.enabled).length}
               </p>
@@ -219,10 +190,10 @@ export function UsersPanel() {
             <thead className="bg-gray-50 dark:bg-gray-700">
               <tr>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
-                  Benutzer
+                  User
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
-                  E-Mail
+                  Email
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
                   Realm
@@ -231,7 +202,7 @@ export function UsersPanel() {
                   Status
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
-                  Aktionen
+                  Actions
                 </th>
               </tr>
             </thead>
@@ -271,19 +242,19 @@ export function UsersPanel() {
                         ? 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200'
                         : 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200'
                     }`}>
-                      {user.enabled ? 'Aktiv' : 'Deaktiviert'}
+                      {user.enabled ? 'Active' : 'Disabled'}
                     </span>
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
                     <button className="text-blue-600 hover:text-blue-900 dark:text-blue-400 dark:hover:text-blue-200 mr-3">
-                      Bearbeiten
+                      Edit
                     </button>
                     <button className={`${
                       user.enabled 
                         ? 'text-red-600 hover:text-red-900 dark:text-red-400 dark:hover:text-red-200'
                         : 'text-green-600 hover:text-green-900 dark:text-green-400 dark:hover:text-green-200'
                     }`}>
-                      {user.enabled ? 'Deaktivieren' : 'Aktivieren'}
+                      {user.enabled ? 'Disable' : 'Enable'}
                     </button>
                   </td>
                 </tr>
@@ -298,10 +269,10 @@ export function UsersPanel() {
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
             </svg>
             <p className="mt-2 text-sm text-gray-500 dark:text-gray-400">
-              Keine Benutzer gefunden
+              No users found
             </p>
             <p className="text-xs text-gray-400 dark:text-gray-500">
-              Versuche andere Suchbegriffe oder aktualisiere die Daten
+              Try different search terms or refresh the data
             </p>
           </div>
         )}
