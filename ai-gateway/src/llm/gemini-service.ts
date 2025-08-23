@@ -1,4 +1,4 @@
-import { GoogleGenerativeAI, GenerativeModel, SchemaType } from '@google/generative-ai';
+import { GoogleGenerativeAI, GenerativeModel, SchemaType, FunctionCallingMode } from '@google/generative-ai';
 import { logger, geminiLogger, RequestTracker } from '../utils/logger';
 import { config } from '../utils/config';
 import { ToolDefinition } from '../types';
@@ -27,6 +27,7 @@ export interface GeminiChatRequest {
     userId?: string;
     language?: string;
   };
+  functionCallingMode?: FunctionCallingMode;
 }
 
 export interface GeminiChatResponse {
@@ -50,43 +51,45 @@ export class GeminiService {
 
   constructor() {
     this.genAI = new GoogleGenerativeAI(config.GEMINI_API_KEY);
-    
+
     // Initialize the model with function calling support
-    this.model = this.genAI.getGenerativeModel({ 
-      model: 'gemini-1.5-pro',
+    this.model = this.genAI.getGenerativeModel({
+      model: 'gemini-2.5-pro',
       generationConfig: {
         temperature: 0.1, // Lower temperature for more consistent responses
         topK: 40,
         topP: 0.95,
         maxOutputTokens: 8192,
       },
-      systemInstruction: `You are IKAS (Intelligent Keycloak Admin System), an AI assistant for Keycloak administration.
+      toolConfig: {
+        functionCallingConfig: {
+          mode: FunctionCallingMode.ANY // Default mode, can be overridden per session
+        }
+      },
+      systemInstruction:  `You are IKAS, an intelligent assistant for managing 
+    Keycloak and Neo4j systems.
 
-IMPORTANT CHARACTERISTICS:
-- Respond in English unless explicitly requested otherwise
-- Help with Keycloak administration using natural language
-- You can manage users, perform analysis, and check compliance
-- You have access to Keycloak data and Neo4j graph analysis tools
+    When syncing data between systems, follow these steps SEQUENTIALLY:
+    1. FIRST: Call keycloak mcp to get the requested data - WAIT for the result
+    2. THEN: Call neo4j_get_neo4j_schema to understand the database structure - 
+    WAIT for the result  
+    3. FINALLY: Using the data from step 1 and schema from step 2, call 
+    neo4j_write_neo4j_cypher with a proper Cypher query
 
-AVAILABLE FUNCTIONS:
-- Keycloak MCP: User management, realm management, events, metrics
-- Neo4j MCP: Data analysis, duplicate detection, compliance reports
+    IMPORTANT: 
+    - Wait for each function's result before calling the next
+    - Use the results from previous calls to inform subsequent calls
+    - For neo4j_write_neo4j_cypher, you MUST provide a 'query' parameter with 
+    valid Cypher
 
-RESPONSE FORMAT:
-- Be precise and helpful
-- Use available tools for current data
-- Explain what you're doing before executing
-- Provide concrete recommendations
-
-For errors or problems:
-- Explain what went wrong
-- Offer alternative solutions
-- Ask for clarification when unclear`
+    Available tools:
+    - Keycloak MCP: User management, realm management, events, metrics
+    - Neo4j MCP: Schema discovery, read queries, write queries, data analysis`
     });
 
-    logger.info('Gemini service initialized', { 
-      model: 'gemini-1.5-pro',
-      apiConfigured: !!config.GEMINI_API_KEY 
+    logger.info('Gemini service initialized', {
+      model: 'gemini-2.5-pro',
+      apiConfigured: !!config.GEMINI_API_KEY
     });
   }
 
@@ -119,9 +122,9 @@ For errors or problems:
   }
 
   async chat(request: GeminiChatRequest): Promise<GeminiChatResponse> {
-    const { message, sessionId, tools, context } = request;
+    const { message, sessionId, tools, context, functionCallingMode = FunctionCallingMode.AUTO } = request;
     const requestId = RequestTracker.startRequest({ sessionId, type: 'gemini_chat' });
-    
+
     try {
       geminiLogger.info('🚀 Starting Gemini chat request', {
         requestId,
@@ -149,7 +152,12 @@ For errors or problems:
               required: tool.parameters.required
             }
           }))
-        }] : undefined
+        }] : undefined,
+        toolConfig: {
+          functionCallingConfig: {
+            mode: functionCallingMode
+          }
+        }
       });
 
       // Add context to the message if provided
@@ -194,7 +202,7 @@ For errors or problems:
 
       // Parse function calls if any
       const functionCalls: Array<{ name: string; args: Record<string, any> }> = [];
-      
+
       const candidates = response.candidates;
       if (candidates && candidates[0]?.content?.parts) {
         for (const part of candidates[0].content.parts) {
@@ -204,7 +212,7 @@ For errors or problems:
               args: part.functionCall.args || {}
             };
             functionCalls.push(functionCall);
-            
+
             geminiLogger.info('🔧 Gemini decided to call function', {
               requestId,
               sessionId,
@@ -230,12 +238,12 @@ For errors or problems:
         { role: 'user', parts: [{ text: contextualMessage }] },
         { role: 'model', parts: response.candidates?.[0]?.content?.parts || [] }
       );
-      
+
       // Keep only last 20 messages to avoid context window issues
       if (history.length > 20) {
         history = history.slice(-20);
       }
-      
+
       this.chatHistory.set(sessionId, history);
 
       const responseText = response.text() || 'Sorry, I could not generate a response.';
@@ -265,7 +273,7 @@ For errors or problems:
 
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : 'Unknown error';
-      
+
       logger.error('Gemini chat request failed', {
         sessionId,
         error: errorMessage,
@@ -280,12 +288,12 @@ For errors or problems:
   }
 
   async processFunctionCalls(
-    sessionId: string, 
+    sessionId: string,
     functionCalls: Array<{ name: string; args: Record<string, any> }>,
     functionExecutor: (call: { name: string; args: Record<string, any> }) => Promise<any>
-  ): Promise<string> {
+  ): Promise<{ response: string; additionalFunctionCalls?: Array<{ name: string; args: Record<string, any> }> }> {
     const requestId = RequestTracker.startRequest({ sessionId, type: 'function_processing' });
-    
+
     try {
       geminiLogger.info('🔄 Starting function call processing', {
         requestId,
@@ -295,7 +303,7 @@ For errors or problems:
       });
 
       const history = this.chatHistory.get(sessionId) || [];
-      
+
       // Get the last model response which should contain the function calls
       const lastModelMessage = history[history.length - 1];
       if (!lastModelMessage || lastModelMessage.role !== 'model') {
@@ -304,7 +312,7 @@ For errors or problems:
 
       // Execute function calls and collect results
       const functionResults: Array<{ name: string; response: any }> = [];
-      
+
       for (const functionCall of functionCalls) {
         geminiLogger.info('🛠️ Executing function call', {
           requestId,
@@ -312,11 +320,11 @@ For errors or problems:
           functionName: functionCall.name,
           args: functionCall.args
         });
-        
+
         const startTime = Date.now();
         const result = await functionExecutor(functionCall);
         const executionTime = Date.now() - startTime;
-        
+
         geminiLogger.debug('📊 Function call result', {
           requestId,
           sessionId,
@@ -327,7 +335,7 @@ For errors or problems:
           resultKeys: result && typeof result === 'object' ? Object.keys(result) : [],
           dataSize: result?.data ? (Array.isArray(result.data) ? result.data.length : Object.keys(result.data).length) : 0
         });
-        
+
         functionResults.push({
           name: functionCall.name,
           response: result
@@ -362,18 +370,41 @@ For errors or problems:
       const response = await result.response;
       const responseText = response.text();
 
-      geminiLogger.info('🎯 Final Gemini response after function processing', {
+      // Check if Gemini wants to call more functions
+      const additionalFunctionCalls: Array<{ name: string; args: Record<string, any> }> = [];
+      const candidates = response.candidates;
+      if (candidates && candidates[0]?.content?.parts) {
+        for (const part of candidates[0].content.parts) {
+          if (part.functionCall) {
+            const functionCall = {
+              name: part.functionCall.name,
+              args: part.functionCall.args || {}
+            };
+            additionalFunctionCalls.push(functionCall);
+
+            geminiLogger.info('🔧 Gemini wants to call another function', {
+              requestId,
+              sessionId,
+              functionName: functionCall.name,
+              functionArgs: functionCall.args
+            });
+          }
+        }
+      }
+
+      geminiLogger.info('🎯 Gemini response after function processing', {
         requestId,
         sessionId,
         finalResponse: responseText,
         responseLength: responseText.length,
-        finishReason: response.candidates?.[0]?.finishReason
+        finishReason: response.candidates?.[0]?.finishReason,
+        additionalFunctionCalls: additionalFunctionCalls.length
       });
 
       // Update history with function responses and final model response
       history.push(
-        { role: 'model', parts: functionResponseParts },
-        { role: 'model', parts: [{ text: responseText }] }
+        { role: 'user', parts: functionResponseParts },     // Function responses are user role
+        { role: 'model', parts: response.candidates?.[0]?.content?.parts || [] }
       );
 
       // Keep only last 20 messages to avoid context window issues
@@ -383,9 +414,9 @@ For errors or problems:
       } else {
         this.chatHistory.set(sessionId, history);
       }
-      
+
       const duration = RequestTracker.endRequest(requestId);
-      
+
       geminiLogger.info('✅ Function call processing completed', {
         requestId,
         sessionId,
@@ -393,12 +424,15 @@ For errors or problems:
         finalResponseLength: responseText.length
       });
 
-      return responseText;
+      return {
+        response: responseText,
+        additionalFunctionCalls: additionalFunctionCalls.length > 0 ? additionalFunctionCalls : undefined
+      };
 
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : 'Unknown error';
       const duration = RequestTracker.endRequest(requestId);
-      
+
       geminiLogger.error('❌ Function call processing failed', {
         requestId,
         sessionId,
@@ -408,7 +442,10 @@ For errors or problems:
         duration: `${duration}ms`
       });
 
-      return `Sorry, there was an error processing the function calls: ${errorMessage}`;
+      return {
+        response: `Sorry, there was an error processing the function calls: ${errorMessage}`,
+        additionalFunctionCalls: undefined
+      };
     }
   }
 
@@ -440,10 +477,11 @@ For errors or problems:
     }
 
     if (cleaned > 0) {
-      logger.info('Cleaned up old chat sessions', { 
+      logger.info('Cleaned up old chat sessions', {
         sessionsRemoved: cleaned,
-        remainingSessions: this.chatHistory.size 
+        remainingSessions: this.chatHistory.size
       });
     }
   }
+
 }

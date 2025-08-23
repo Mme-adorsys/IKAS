@@ -147,9 +147,10 @@ export class Neo4jMCPClient extends BaseMCPClient {
     const query = `
       // Clear existing users for this realm
       MATCH (n:User {realm: $realm}) DETACH DELETE n
+      WITH $realm as realm, $users as users
       
       // Import users
-      UNWIND $users as userData
+      UNWIND users as userData
       CREATE (u:User {
         id: userData.id,
         username: userData.username,
@@ -157,18 +158,19 @@ export class Neo4jMCPClient extends BaseMCPClient {
         firstName: userData.firstName,
         lastName: userData.lastName,
         enabled: userData.enabled,
-        realm: $realm,
+        realm: realm,
         createdTimestamp: userData.createdTimestamp,
         lastSync: datetime()
       })
       
       // Update sync metadata
-      MERGE (m:Metadata {type: 'sync', realm: $realm})
+      WITH realm, users, count(*) as createdCount
+      MERGE (m:Metadata {type: 'sync', realm: realm})
       SET m.lastUpdated = datetime(),
-          m.userCount = size($users),
+          m.userCount = size(users),
           m.syncVersion = randomUUID()
       
-      RETURN count(*) as syncedUsers, datetime() as syncTime
+      RETURN createdCount as syncedUsers, datetime() as syncTime
     `;
 
     return this.writeQuery({

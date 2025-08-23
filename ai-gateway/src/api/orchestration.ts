@@ -116,7 +116,7 @@ orchestrationRouter.post('/chat', async (req, res): Promise<any> => {
       sessionId,
       success: response.success,
       strategy: response.strategy,
-      toolsCalled: response.toolsCalled.length,
+      toolsCalled: response.toolsCalled,
       duration: response.duration,
       timestamp: new Date().toISOString(),
       data: response.data

@@ -1,7 +1,7 @@
 import { OrchestrationRequest, OrchestrationResponse, ExecutionStrategy, MCPToolCall } from '../types';
+import { FunctionCallingMode } from '@google/generative-ai';
 import { GeminiService, MCPToolDiscovery } from '../llm';
 import { IntelligentRouter } from './routing';
-import { DataSynchronizer } from './sync';
 import { getKeycloakClient, getNeo4jClient } from '../mcp';
 import { logger, RequestTracker } from '../utils/logger';
 import { v4 as uuidv4 } from 'uuid';
@@ -10,14 +10,12 @@ export class Orchestrator {
   private geminiService: GeminiService;
   private toolDiscovery: MCPToolDiscovery;
   private router: IntelligentRouter;
-  private synchronizer: DataSynchronizer;
   private toolResults: Map<string, any> = new Map();
 
   constructor() {
     this.geminiService = new GeminiService();
     this.toolDiscovery = new MCPToolDiscovery();
     this.router = new IntelligentRouter();
-    this.synchronizer = new DataSynchronizer();
 
     logger.info('Orchestrator initialized');
   }
@@ -74,12 +72,15 @@ export class Orchestrator {
       // 3. Execute pre-processing based on strategy
       await this.executePreProcessing(strategy, request.context?.realm || 'master');
 
-      // 4. Process with Gemini
+      // 4. Determine function calling mode based on request type
+      const functionCallingMode = this.determineFunctionCallingMode(request.userInput);
+      
       logger.info('🧠 Sending request to Gemini', {
         requestId,
         sessionId: request.sessionId,
         message: request.userInput,
         toolCount: availableTools.length,
+        functionCallingMode,
         context: {
           realm: request.context?.realm,
           language: request.context?.preferredLanguage || 'en'
@@ -93,7 +94,8 @@ export class Orchestrator {
         context: {
           realm: request.context?.realm,
           language: request.context?.preferredLanguage || 'en'
-        }
+        },
+        functionCallingMode
       });
 
       logger.info('🎭 Gemini response received', {
@@ -106,27 +108,31 @@ export class Orchestrator {
         functionNames: geminiResponse.functionCalls?.map(fc => fc.name) || []
       });
 
-      // 5. Execute function calls if any
+      // 5. Execute function calls in loop until Gemini stops requesting them
       const toolsCalled: MCPToolCall[] = [];
       let finalResponse = geminiResponse.response;
       let aggregatedData: any = {};
+      let currentResponse = geminiResponse;
+      let maxIterations = 5; // Safety limit to prevent infinite loops
+      let iteration = 0;
 
-      if (geminiResponse.functionCalls && geminiResponse.functionCalls.length > 0) {
-        logger.info('⚙️ Starting function call execution', {
+      // Clear previous tool results for this session
+      this.toolResults.clear();
+
+      while (currentResponse.functionCalls && currentResponse.functionCalls.length > 0 && iteration < maxIterations) {
+        logger.info(`⚙️ Starting function call execution (iteration ${iteration + 1})`, {
           requestId,
           sessionId: request.sessionId,
-          functionCount: geminiResponse.functionCalls.length,
-          functions: geminiResponse.functionCalls.map(fc => ({
+          iteration: iteration + 1,
+          functionCount: currentResponse.functionCalls.length,
+          functions: currentResponse.functionCalls.map(fc => ({
             name: fc.name,
             argKeys: Object.keys(fc.args || {})
           }))
         });
 
-        // Clear previous tool results for this session
-        this.toolResults.clear();
-
         // Track tools called for metadata
-        for (const functionCall of geminiResponse.functionCalls) {
+        for (const functionCall of currentResponse.functionCalls) {
           toolsCalled.push({
             server: this.extractServerFromToolName(functionCall.name),
             tool: this.extractToolFromToolName(functionCall.name),
@@ -139,28 +145,75 @@ export class Orchestrator {
           });
         }
 
-        // Process all function calls and get final response from Gemini
-        finalResponse = await this.geminiService.processFunctionCalls(
+        // Process function calls and get response from Gemini
+        const processResult = await this.geminiService.processFunctionCalls(
           request.sessionId,
-          geminiResponse.functionCalls,
+          currentResponse.functionCalls,
           (functionCall) => this.executeFunctionCall(functionCall, request.context?.realm)
         );
 
-        // Aggregate tool results for response
-        aggregatedData = this.aggregateToolResults(toolsCalled);
-        
-        logger.info('📊 Data aggregation completed', {
+        finalResponse = processResult.response;
+
+        // Check if Gemini wants to call more functions
+        if (processResult.additionalFunctionCalls && processResult.additionalFunctionCalls.length > 0) {
+          logger.info('🔧 Gemini requested more function calls', {
+            requestId,
+            sessionId: request.sessionId,
+            iteration: iteration + 1,
+            additionalFunctionCount: processResult.additionalFunctionCalls.length,
+            functions: processResult.additionalFunctionCalls.map(fc => fc.name)
+          });
+          
+          // Prepare for next iteration
+          currentResponse = {
+            response: processResult.response,
+            functionCalls: processResult.additionalFunctionCalls,
+            finishReason: 'CONTINUE'
+          };
+        } else {
+          logger.info('✅ Gemini finished calling functions', {
+            requestId,
+            sessionId: request.sessionId,
+            iteration: iteration + 1,
+            totalToolsCalled: toolsCalled.length
+          });
+          
+          // Clear function calls to exit loop
+          currentResponse = {
+            response: processResult.response,
+            functionCalls: undefined,
+            finishReason: 'STOP'
+          };
+        }
+
+        iteration++;
+      }
+
+      if (iteration >= maxIterations) {
+        logger.warn('⚠️ Function calling loop reached maximum iterations', {
           requestId,
           sessionId: request.sessionId,
-          toolResultsCount: this.toolResults.size,
-          aggregatedDataKeys: Object.keys(aggregatedData),
-          dataTypes: Object.entries(aggregatedData).map(([key, value]) => ({
-            type: key,
-            isArray: Array.isArray(value),
-            size: Array.isArray(value) ? value.length : (value && typeof value === 'object' ? Object.keys(value).length : 0)
-          }))
+          maxIterations,
+          totalToolsCalled: toolsCalled.length
         });
       }
+
+      // Aggregate tool results for response
+      aggregatedData = this.aggregateToolResults(toolsCalled);
+      
+      logger.info('📊 Data aggregation completed', {
+        requestId,
+        sessionId: request.sessionId,
+        totalIterations: iteration,
+        toolResultsCount: this.toolResults.size,
+        aggregatedDataKeys: Object.keys(aggregatedData),
+        totalToolsCalled: toolsCalled.length,
+        dataTypes: Object.entries(aggregatedData).map(([key, value]) => ({
+          type: key,
+          isArray: Array.isArray(value),
+          size: Array.isArray(value) ? value.length : (value && typeof value === 'object' ? Object.keys(value).length : 0)
+        }))
+      });
 
       // 6. Execute post-processing if needed
       await this.executePostProcessing(strategy, toolsCalled, request.context?.realm || 'master');
@@ -236,20 +289,8 @@ export class Orchestrator {
   }
 
   private async executePreProcessing(strategy: ExecutionStrategy, realm: string): Promise<void> {
-    switch (strategy) {
-      case ExecutionStrategy.SYNC_THEN_ANALYZE:
-        logger.debug('Executing sync pre-processing', { strategy, realm });
-        await this.synchronizer.syncKeycloakToNeo4j(realm);
-        break;
-      
-      case ExecutionStrategy.KEYCLOAK_WRITE_THEN_SYNC:
-        // No pre-processing needed for write operations
-        break;
-      
-      default:
-        // No pre-processing needed
-        break;
-    }
+    // No pre-processing needed - let Gemini orchestrate all operations
+    logger.debug('Skipping pre-processing - Gemini will handle orchestration', { strategy, realm });
   }
 
   private async executePostProcessing(
@@ -257,23 +298,12 @@ export class Orchestrator {
     toolsCalled: MCPToolCall[], 
     realm: string
   ): Promise<void> {
-    
-    // Check if any write operations were performed on Keycloak
-    const hasKeycloakWrites = toolsCalled.some(tool => 
-      tool.server === 'keycloak' && 
-      ['create-user', 'delete-user', 'update-user'].some(writeOp => tool.tool.includes(writeOp))
-    );
-
-    if (hasKeycloakWrites || strategy === ExecutionStrategy.KEYCLOAK_WRITE_THEN_SYNC) {
-      logger.debug('Executing sync post-processing after Keycloak writes', { 
-        strategy, 
-        realm,
-        toolsCalledCount: toolsCalled.length 
-      });
-      
-      // Sync changes to Neo4j
-      await this.synchronizer.syncKeycloakToNeo4j(realm);
-    }
+    // No post-processing needed - Gemini handles all synchronization
+    logger.debug('Skipping post-processing - Gemini orchestrates all operations', { 
+      strategy, 
+      realm,
+      toolsCalledCount: toolsCalled.length 
+    });
   }
 
   private async executeFunctionCall(functionCall: { name: string; args: Record<string, any> }, realm?: string): Promise<any> {
@@ -312,25 +342,6 @@ export class Orchestrator {
           dataType: response.data ? (Array.isArray(response.data) ? 'array' : typeof response.data) : 'none',
           dataSize: response.data ? (Array.isArray(response.data) ? response.data.length : Object.keys(response.data).length) : 0
         });
-        
-        // Auto-sync to Neo4j if this is a read operation with data
-        if (this.isReadOperation(toolName) && response.success && response.data) {
-          try {
-            await this.synchronizer.syncKeycloakToNeo4j(
-              functionCall.args.realm || realm || 'master',
-              false // Don't force if data is fresh
-            );
-            logger.debug('Auto-sync to Neo4j completed', { 
-              toolName, 
-              realm: functionCall.args.realm || realm 
-            });
-          } catch (syncError) {
-            logger.warn('Auto-sync to Neo4j failed', {
-              toolName,
-              error: syncError instanceof Error ? syncError.message : 'Unknown error'
-            });
-          }
-        }
         
         return response;
       } 
@@ -440,6 +451,28 @@ export class Orchestrator {
     if (toolName.includes('groups')) return 'groups';
     if (toolName.includes('metrics')) return 'metrics';
     return null;
+  }
+
+  private determineFunctionCallingMode(userInput: string): FunctionCallingMode {
+    const input = userInput.toLowerCase();
+    
+    // Force function calls for sync operations and multi-step workflows
+    const syncKeywords = ['sync', 'synchron', 'list all', 'get all', 'fetch all', 'migrate', 'copy', 'transfer'];
+    const actionKeywords = ['create', 'delete', 'update', 'add', 'remove', 'modify'];
+    
+    if (syncKeywords.some(keyword => input.includes(keyword)) || 
+        actionKeywords.some(keyword => input.includes(keyword))) {
+      return FunctionCallingMode.ANY; // Force function calls for operational tasks
+    }
+    
+    // Use AUTO for informational queries
+    const queryKeywords = ['what is', 'how many', 'show me', 'explain', 'describe'];
+    if (queryKeywords.some(keyword => input.includes(keyword))) {
+      return FunctionCallingMode.AUTO; // Let Gemini decide
+    }
+    
+    // Default to ANY for unknown patterns to ensure action
+    return FunctionCallingMode.ANY;
   }
 
   // Cleanup method for old chat sessions
