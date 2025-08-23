@@ -6,11 +6,11 @@ WORKDIR /app
 # Copy package files
 COPY package*.json ./
 
+# Copy source code first
+COPY . .
+
 # Install ALL dependencies (including dev dependencies for build)
 RUN npm ci && npm cache clean --force
-
-# Copy source code
-COPY . .
 
 # Build TypeScript
 RUN npm run build

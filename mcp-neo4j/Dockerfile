@@ -9,14 +9,18 @@ RUN pip install --no-cache-dir hatchling
 COPY pyproject.toml /app/
 
 # Install dependencies
-RUN pip install --no-cache-dir neo4j>=5.26.0 fastmcp>=2.10.5
+RUN pip install --no-cache-dir neo4j>=5.26.0 fastmcp>=2.10.5 fastapi uvicorn
 
 
 # Copy the source code
 COPY src /app/src/
 COPY README.md /app/
+COPY entrypoint.sh /app/
 
 RUN pip install --no-cache-dir -e .
+
+# Make entrypoint script executable
+RUN chmod +x /app/entrypoint.sh
 
 # adding comment to trigger Docker hub build
 
@@ -28,10 +32,13 @@ ENV NEO4J_DATABASE="neo4j"
 ENV NEO4J_NAMESPACE=""
 ENV NEO4J_TRANSPORT="http"
 ENV NEO4J_MCP_SERVER_HOST="0.0.0.0"
-ENV NEO4J_MCP_SERVER_PORT="8000"
+ENV NEO4J_MCP_SERVER_PORT="8002"
 ENV NEO4J_MCP_SERVER_PATH="/api/mcp/"
 
-EXPOSE 8000
+# Default mode - can be overridden in docker-compose
+ENV NEO4J_MCP_MODE="http-wrapper"
 
-# Command to run the server using the package entry point
-CMD ["sh", "-c", "mcp-neo4j-cypher"]
+EXPOSE 8002
+
+# Use the entrypoint script to choose server mode
+CMD ["./entrypoint.sh"]

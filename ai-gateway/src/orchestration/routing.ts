@@ -68,7 +68,10 @@ export class IntelligentRouter {
         };
       }
 
-      const freshness = response.data?.records[0]?.freshness || { lastSync: null, ageMinutes: null, needsRefresh: true };
+      // Safely access nested properties with null checks
+      const records = response.data?.records;
+      const firstRecord = Array.isArray(records) && records.length > 0 ? records[0] : null;
+      const freshness = firstRecord?.freshness || { lastSync: null, ageMinutes: null, needsRefresh: true };
       const { lastSync, ageMinutes, needsRefresh } = freshness;
 
       logger.debug('Data freshness check result', {

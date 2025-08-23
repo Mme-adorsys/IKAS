@@ -149,7 +149,9 @@ export class Orchestrator {
         const processResult = await this.geminiService.processFunctionCalls(
           request.sessionId,
           currentResponse.functionCalls,
-          (functionCall) => this.executeFunctionCall(functionCall, request.context?.realm)
+          (functionCall) => this.executeFunctionCall(functionCall, request.context?.realm),
+          availableTools,
+          functionCallingMode
         );
 
         finalResponse = processResult.response;
@@ -317,17 +319,23 @@ export class Orchestrator {
     });
 
     try {
+      // Validate function call arguments
+      const validatedArgs = this.validateAndSanitizeFunctionArgs(functionCall.args, toolName);
+      
       let response: any;
       
       if (serverName === 'keycloak') {
         const client = getKeycloakClient();
         
         // Add realm to args if not present and available from context
-        if (!functionCall.args.realm && realm) {
-          functionCall.args.realm = realm;
+        if (!validatedArgs.realm && realm) {
+          validatedArgs.realm = realm;
         }
         
-        response = await client.callTool(toolName, functionCall.args);
+        response = await client.callTool(toolName, validatedArgs);
+        
+        // Validate and sanitize response
+        response = this.validateToolResponse(response, serverName, toolName);
         
         // Store result for aggregation
         const resultKey = `${serverName}_${toolName}`;
@@ -347,7 +355,10 @@ export class Orchestrator {
       } 
       else if (serverName === 'neo4j') {
         const client = getNeo4jClient();
-        response = await client.callTool(toolName, functionCall.args);
+        response = await client.callTool(toolName, validatedArgs);
+        
+        // Validate and sanitize response
+        response = this.validateToolResponse(response, serverName, toolName);
         
         // Store result for aggregation
         const resultKey = `${serverName}_${toolName}`;
@@ -383,7 +394,8 @@ export class Orchestrator {
         success: false,
         error: errorMessage,
         toolName,
-        server: serverName
+        server: serverName,
+        data: null
       };
     }
   }
@@ -479,6 +491,123 @@ export class Orchestrator {
   cleanup(): void {
     this.geminiService.cleanupOldSessions();
     logger.debug('Orchestrator cleanup completed');
+  }
+
+  private validateAndSanitizeFunctionArgs(args: Record<string, any>, toolName: string): Record<string, any> {
+    if (!args || typeof args !== 'object') {
+      logger.warn('Invalid function arguments', { toolName, args: typeof args });
+      return {};
+    }
+
+    const sanitized: Record<string, any> = {};
+    
+    for (const [key, value] of Object.entries(args)) {
+      // Skip undefined values
+      if (value === undefined) {
+        continue;
+      }
+      
+      // Skip function values
+      if (typeof value === 'function') {
+        logger.warn('Function argument contains function value', { toolName, key });
+        continue;
+      }
+      
+      // Sanitize the value
+      try {
+        sanitized[key] = this.sanitizeValue(value);
+      } catch (error) {
+        logger.warn('Could not sanitize function argument', {
+          toolName,
+          key,
+          valueType: typeof value,
+          error: error instanceof Error ? error.message : String(error)
+        });
+      }
+    }
+    
+    return sanitized;
+  }
+  
+  private validateToolResponse(response: any, serverName: string, toolName: string): any {
+    // Ensure response has expected structure
+    if (!response || typeof response !== 'object') {
+      logger.warn('Tool response is not an object', {
+        serverName,
+        toolName,
+        responseType: typeof response
+      });
+      
+      return {
+        success: false,
+        error: 'Invalid response format',
+        data: null,
+        originalResponse: response
+      };
+    }
+    
+    // Ensure required properties exist
+    const validatedResponse = {
+      success: response.success === true,
+      data: response.data || null,
+      error: response.error || null,
+      ...response
+    };
+    
+    // Sanitize data if present
+    if (validatedResponse.data) {
+      try {
+        validatedResponse.data = this.sanitizeValue(validatedResponse.data);
+      } catch (error) {
+        logger.warn('Could not sanitize tool response data', {
+          serverName,
+          toolName,
+          error: error instanceof Error ? error.message : String(error)
+        });
+        
+        // If we can't sanitize the data, mark as error but preserve original
+        validatedResponse.success = false;
+        validatedResponse.error = 'Response data not serializable';
+        validatedResponse.originalData = validatedResponse.data;
+        validatedResponse.data = null;
+      }
+    }
+    
+    return validatedResponse;
+  }
+  
+  private sanitizeValue(value: any): any {
+    if (value === null || value === undefined) {
+      return value;
+    }
+    
+    if (typeof value === 'string' || typeof value === 'number' || typeof value === 'boolean') {
+      return value;
+    }
+    
+    if (Array.isArray(value)) {
+      return value.map(item => this.sanitizeValue(item));
+    }
+    
+    if (typeof value === 'object') {
+      const sanitized: any = {};
+      for (const [key, val] of Object.entries(value)) {
+        if (typeof val === 'function' || val === undefined) {
+          continue;
+        }
+        
+        if (typeof val === 'symbol') {
+          sanitized[key] = val.toString();
+          continue;
+        }
+        
+        sanitized[key] = this.sanitizeValue(val);
+      }
+      return sanitized;
+    }
+    
+    // Convert other types to string
+    return String(value);
   }
 
   // Get orchestrator status

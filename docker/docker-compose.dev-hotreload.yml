@@ -1,0 +1,65 @@
+# Docker Compose override for AI Gateway hot deployment
+# Usage: docker-compose -f docker-compose.dev.yml -f docker-compose.dev-hotreload.yml up ai-gateway
+
+services:
+  # AI Gateway with Hot Reload Configuration
+  ai-gateway:
+    build:
+      context: ../ai-gateway
+      dockerfile: Dockerfile.dev  # Use development Dockerfile
+    container_name: ikas-ai-gateway-dev
+    ports:
+      - "8005:8005"
+    environment:
+      # Development environment variables
+      GEMINI_API_KEY: ${GEMINI_API_KEY:-your-gemini-api-key-here}
+      REDIS_URL: redis://redis:6379
+      KEYCLOAK_MCP_URL: http://keycloak-mcp:8001
+      NEO4J_MCP_URL: http://neo4j-mcp:8002
+      WEBSOCKET_SERVER_URL: http://websocket-server:3001
+      NODE_ENV: development
+      PORT: 8005
+      # Development-specific settings
+      TSX_WATCH: "true"
+      DEBUG: "ikas:*"
+    volumes:
+      # Mount source code for hot reloading (cached for performance)
+      - ../ai-gateway/src:/app/src:cached
+      - ../ai-gateway/package.json:/app/package.json:ro
+      - ../ai-gateway/package-lock.json:/app/package-lock.json:ro
+      - ../ai-gateway/tsconfig.json:/app/tsconfig.json:ro
+      
+      # Mount logs directory for real-time log access
+      - ../ai-gateway/logs:/app/logs:delegated
+      
+      # Use named volume for node_modules to avoid host/container conflicts
+      - ai_gateway_node_modules:/app/node_modules
+      
+      # Mount test files if needed
+      - ../ai-gateway/tests:/app/tests:cached
+      
+      # Mount configuration files
+      - ../ai-gateway/.env:/app/.env:ro
+      - ../ai-gateway/.env.development:/app/.env.development:ro
+      
+    # Override health check for development (longer intervals during dev)
+    healthcheck:
+      test: ["CMD-SHELL", "wget --no-verbose --tries=1 --spider http://localhost:8005/health || exit 1"]
+      interval: 60s  # Longer interval during development
+      timeout: 15s   # Longer timeout for development builds
+      retries: 3
+      start_period: 30s  # Allow more time for initial startup
+    
+    # Development dependencies
+    depends_on:
+      keycloak-mcp:
+        condition: service_started
+      neo4j-mcp:
+        condition: service_started
+      redis:
+        condition: service_healthy
+
+# Named volumes for hot reload setup
+volumes:
+  ai_gateway_node_modules:
+    driver: local
