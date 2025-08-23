@@ -103,7 +103,16 @@ export class DataSynchronizer {
         };
       }
 
-      const data = response.data?.records[0]?.freshness || { needsRefresh: true, ageMinutes: null };
+      const records = response.data?.records || [];
+      const data = records.length > 0 ? records[0]?.freshness : null;
+      
+      if (!data) {
+        return {
+          needsRefresh: true,
+          reason: 'No freshness data available'
+        };
+      }
+      
       return {
         needsRefresh: data.needsRefresh,
         reason: data.needsRefresh ? 
