@@ -160,7 +160,7 @@ services:
       timeout: 10s
       retries: 3
 
-  # AI Gateway (TypeScript/Node.js with Express.js)
+  # AI Gateway (TypeScript/Node.js with Express.js) - Production Build
   ai-gateway:
     build:
       context: ../ai-gateway
@@ -188,6 +188,47 @@ services:
       interval: 30s
       timeout: 10s
       retries: 3
+
+  # AI Gateway with Hot Reload (Development) - Use with override file
+  ai-gateway-hot:
+    build:
+      context: ../ai-gateway
+      dockerfile: Dockerfile.dev
+    container_name: ikas-ai-gateway-hot
+    ports:
+      - "8006:8005"  # Different port to avoid conflicts
+    environment:
+      GEMINI_API_KEY: ${GEMINI_API_KEY:-AIzaSyDa1fNkc-LVV7EKhEBHm8VA7yyrpEitje4}
+      REDIS_URL: redis://redis:6379
+      KEYCLOAK_MCP_URL: http://keycloak-mcp:8001
+      NEO4J_MCP_URL: http://neo4j-mcp:8002
+      WEBSOCKET_SERVER_URL: http://websocket-server:3001
+      NODE_ENV: development
+      PORT: 8005
+      DEBUG: "ikas:*"
+    volumes:
+      # Hot reload volumes
+      - ../ai-gateway/src:/app/src:cached
+      - ../ai-gateway/package.json:/app/package.json:ro
+      - ../ai-gateway/package-lock.json:/app/package-lock.json:ro
+      - ../ai-gateway/tsconfig.json:/app/tsconfig.json:ro
+      - ../ai-gateway/logs:/app/logs:delegated
+      - ai_gateway_dev_node_modules:/app/node_modules
+    depends_on:
+      keycloak-mcp:
+        condition: service_started
+      neo4j-mcp:
+        condition: service_started
+      redis:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD-SHELL", "wget --no-verbose --tries=1 --spider http://localhost:8005/health || exit 1"]
+      interval: 60s
+      timeout: 15s
+      retries: 3
+      start_period: 30s
+    profiles:
+      - hot-reload  # Only start when hot-reload profile is specified
 
   # WebSocket Server (Real-time communication hub)
   websocket-server:
@@ -224,6 +265,8 @@ volumes:
   neo4j_plugins:
     driver: local
   redis_data:
+    driver: local
+  ai_gateway_dev_node_modules:
     driver: local
 
 networks:

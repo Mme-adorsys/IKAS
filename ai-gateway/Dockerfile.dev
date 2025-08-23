@@ -1,0 +1,46 @@
+# Development Dockerfile for hot reloading
+FROM node:18-alpine
+
+# Add non-root user for security
+RUN addgroup -g 1001 -S nodejs && \
+    adduser -S nodejs -u 1001
+
+# Set working directory
+WORKDIR /app
+
+# Install development tools globally
+RUN npm install -g tsx nodemon
+
+# Copy package files first for better Docker layer caching
+COPY package*.json ./
+COPY tsconfig.json ./
+
+# Install ALL dependencies (including devDependencies for development)
+RUN npm ci --silent
+
+# Create logs directory with proper permissions
+RUN mkdir -p logs && chown -R nodejs:nodejs /app
+
+# Switch to non-root user
+USER nodejs
+
+# Source code will be mounted as volumes in docker-compose
+# No need to COPY src/ here as it will be mounted
+
+# Expose port
+EXPOSE 8005
+
+# Health check (same as production but adapted for development)
+HEALTHCHECK --interval=30s --timeout=10s --start-period=10s --retries=3 \
+  CMD node -e "const http = require('http'); \
+    const options = { host: 'localhost', port: 8005, path: '/health', timeout: 2000 }; \
+    const request = http.request(options, (res) => { \
+      if (res.statusCode === 200) { process.exit(0); } \
+      else { process.exit(1); } \
+    }); \
+    request.on('error', () => process.exit(1)); \
+    request.end();"
+
+# Start application in development mode with hot reload
+# tsx watch will automatically restart on file changes
+CMD ["tsx", "watch", "--clear-screen=false", "src/main.ts"]

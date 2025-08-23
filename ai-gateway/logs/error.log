@@ -1,0 +1,152 @@
+2025-08-23 14:55:02.855 [ERROR]  WebSocket connection error
+{
+  "error": "xhr poll error",
+  "attempts": 1,
+  "maxAttempts": 10
+}
+2025-08-23 14:55:05.221 [ERROR]  WebSocket connection error
+{
+  "error": "xhr poll error",
+  "attempts": 2,
+  "maxAttempts": 10
+}
+2025-08-23 14:55:07.602 [ERROR]  WebSocket connection error
+{
+  "error": "xhr poll error",
+  "attempts": 3,
+  "maxAttempts": 10
+}
+2025-08-23 14:55:12.607 [ERROR]  WebSocket connection error
+{
+  "error": "xhr poll error",
+  "attempts": 4,
+  "maxAttempts": 10
+}
+2025-08-23 14:55:17.612 [ERROR]  WebSocket connection error
+{
+  "error": "xhr poll error",
+  "attempts": 5,
+  "maxAttempts": 10
+}
+2025-08-23 14:55:22.616 [ERROR]  WebSocket connection error
+{
+  "error": "xhr poll error",
+  "attempts": 6,
+  "maxAttempts": 10
+}
+2025-08-23 14:55:27.621 [ERROR]  WebSocket connection error
+{
+  "error": "xhr poll error",
+  "attempts": 7,
+  "maxAttempts": 10
+}
+2025-08-23 14:55:32.625 [ERROR]  WebSocket connection error
+{
+  "error": "xhr poll error",
+  "attempts": 8,
+  "maxAttempts": 10
+}
+2025-08-23 14:55:37.629 [ERROR]  WebSocket connection error
+{
+  "error": "xhr poll error",
+  "attempts": 9,
+  "maxAttempts": 10
+}
+2025-08-23 14:55:42.633 [ERROR]  WebSocket connection error
+{
+  "error": "xhr poll error",
+  "attempts": 10,
+  "maxAttempts": 10
+}
+2025-08-23 14:55:42.633 [ERROR]  Failed to connect WebSocket client
+{
+  "error": "Failed to connect after 10 attempts"
+}
+2025-08-23 14:55:47.640 [ERROR]  WebSocket connection error
+{
+  "error": "xhr poll error",
+  "attempts": 11,
+  "maxAttempts": 10
+}
+2025-08-23 14:58:20.597 [ERROR]  WebSocket connection error
+{
+  "error": "xhr poll error",
+  "attempts": 1,
+  "maxAttempts": 10
+}
+2025-08-23 14:58:22.524 [ERROR]  WebSocket connection error
+{
+  "error": "xhr poll error",
+  "attempts": 2,
+  "maxAttempts": 10
+}
+2025-08-23 14:58:27.528 [ERROR]  WebSocket connection error
+{
+  "error": "xhr poll error",
+  "attempts": 3,
+  "maxAttempts": 10
+}
+2025-08-23 14:58:32.534 [ERROR]  WebSocket connection error
+{
+  "error": "xhr poll error",
+  "attempts": 4,
+  "maxAttempts": 10
+}
+2025-08-23 14:58:37.542 [ERROR]  WebSocket connection error
+{
+  "error": "xhr poll error",
+  "attempts": 5,
+  "maxAttempts": 10
+}
+2025-08-23 14:58:42.549 [ERROR]  WebSocket connection error
+{
+  "error": "xhr poll error",
+  "attempts": 6,
+  "maxAttempts": 10
+}
+2025-08-23 14:58:47.557 [ERROR]  WebSocket connection error
+{
+  "error": "xhr poll error",
+  "attempts": 7,
+  "maxAttempts": 10
+}
+2025-08-23 14:58:52.563 [ERROR]  WebSocket connection error
+{
+  "error": "xhr poll error",
+  "attempts": 8,
+  "maxAttempts": 10
+}
+2025-08-23 14:58:57.571 [ERROR]  WebSocket connection error
+{
+  "error": "xhr poll error",
+  "attempts": 9,
+  "maxAttempts": 10
+}
+2025-08-23 14:59:02.578 [ERROR]  WebSocket connection error
+{
+  "error": "xhr poll error",
+  "attempts": 10,
+  "maxAttempts": 10
+}
+2025-08-23 14:59:02.579 [ERROR]  Failed to connect WebSocket client
+{
+  "error": "Failed to connect after 10 attempts"
+}
+2025-08-23 14:59:07.585 [ERROR]  WebSocket connection error
+{
+  "error": "xhr poll error",
+  "attempts": 11,
+  "maxAttempts": 10
+}
+2025-08-23 15:06:12.003 [ERROR]  Uncaught Exception: write EPIPE
+{
+  "errno": -32,
+  "code": "EPIPE",
+  "syscall": "write",
+  "stack": "Error: write EPIPE\n    at afterWriteDispatched (node:internal/stream_base_commons:159:15)\n    at writeGeneric (node:internal/stream_base_commons:150:3)\n    at Socket._writeGeneric (node:net:966:11)\n    at Socket._write (node:net:978:8)\n    at writeOrBuffer (node:internal/streams/writable:570:12)\n    at _write (node:internal/streams/writable:499:10)\n    at Writable.write (node:internal/streams/writable:508:10)\n    at Console.log (/Users/marcelmeyer/IdeaProjects/IKAS Project/IKAS/ai-gateway/node_modules/winston/lib/winston/transports/console.js:87:23)\n    at Console._write (/Users/marcelmeyer/IdeaProjects/IKAS Project/IKAS/ai-gateway/node_modules/winston-transport/modern.js:103:17)\n    at doWrite (/Users/marcelmeyer/IdeaProjects/IKAS Project/IKAS/ai-gateway/node_modules/readable-stream/lib/_stream_writable.js:390:139)"
+}
+2025-08-23 15:28:10.233 [ERROR]  Error checking graph data freshness
+{
+  "realm": "master",
+  "error": "Cannot read properties of undefined (reading '0')"
+}

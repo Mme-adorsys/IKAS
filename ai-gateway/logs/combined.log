@@ -64,3 +64,2400 @@
 [33m{"level":"warn","message":"Disconnected from WebSocket server","reason":"ping timeout","reconnectAttempts":0,"service":"ikas-ai-gateway","timestamp":"2025-08-21T23:13:06.573Z"}[39m
 [32m{"level":"info","message":"Connected to WebSocket server","service":"ikas-ai-gateway","socketId":"Nkxo-LBEfBPGRsYgAAAf","timestamp":"2025-08-21T23:13:08.979Z"}[39m
 [32m{"level":"info","message":"WebSocket session established Willkommen bei IKAS! Verbindung erfolgreich hergestellt.","service":"ikas-ai-gateway","sessionId":"0f8e735a-c987-4037-a2f7-239d965bc9bd","timestamp":"2025-08-21T23:13:09.138Z"}[39m
+2025-08-23 14:55:02.838 [INFO]  Gemini service initialized
+{
+  "model": "gemini-2.5-pro",
+  "apiConfigured": true
+}
+2025-08-23 14:55:02.840 [INFO]  Orchestrator initialized
+2025-08-23 14:55:02.842 [INFO]  IKAS AI Gateway started
+{
+  "port": 8005,
+  "environment": "development",
+  "keycloakMcp": "http://localhost:8001",
+  "neo4jMcp": "http://localhost:8002"
+}
+2025-08-23 14:55:02.842 [INFO]  Connecting to WebSocket server
+{
+  "url": "http://localhost:3001"
+}
+2025-08-23 14:55:02.855 [ERROR]  WebSocket connection error
+{
+  "error": "xhr poll error",
+  "attempts": 1,
+  "maxAttempts": 10
+}
+2025-08-23 14:55:05.221 [ERROR]  WebSocket connection error
+{
+  "error": "xhr poll error",
+  "attempts": 2,
+  "maxAttempts": 10
+}
+2025-08-23 14:55:07.602 [ERROR]  WebSocket connection error
+{
+  "error": "xhr poll error",
+  "attempts": 3,
+  "maxAttempts": 10
+}
+2025-08-23 14:55:12.607 [ERROR]  WebSocket connection error
+{
+  "error": "xhr poll error",
+  "attempts": 4,
+  "maxAttempts": 10
+}
+2025-08-23 14:55:17.612 [ERROR]  WebSocket connection error
+{
+  "error": "xhr poll error",
+  "attempts": 5,
+  "maxAttempts": 10
+}
+2025-08-23 14:55:22.616 [ERROR]  WebSocket connection error
+{
+  "error": "xhr poll error",
+  "attempts": 6,
+  "maxAttempts": 10
+}
+2025-08-23 14:55:27.621 [ERROR]  WebSocket connection error
+{
+  "error": "xhr poll error",
+  "attempts": 7,
+  "maxAttempts": 10
+}
+2025-08-23 14:55:32.625 [ERROR]  WebSocket connection error
+{
+  "error": "xhr poll error",
+  "attempts": 8,
+  "maxAttempts": 10
+}
+2025-08-23 14:55:37.629 [ERROR]  WebSocket connection error
+{
+  "error": "xhr poll error",
+  "attempts": 9,
+  "maxAttempts": 10
+}
+2025-08-23 14:55:42.633 [ERROR]  WebSocket connection error
+{
+  "error": "xhr poll error",
+  "attempts": 10,
+  "maxAttempts": 10
+}
+2025-08-23 14:55:42.633 [ERROR]  Failed to connect WebSocket client
+{
+  "error": "Failed to connect after 10 attempts"
+}
+2025-08-23 14:55:47.640 [ERROR]  WebSocket connection error
+{
+  "error": "xhr poll error",
+  "attempts": 11,
+  "maxAttempts": 10
+}
+2025-08-23 14:58:20.582 [INFO]  Gemini service initialized
+{
+  "model": "gemini-2.5-pro",
+  "apiConfigured": true
+}
+2025-08-23 14:58:20.583 [INFO]  Orchestrator initialized
+2025-08-23 14:58:20.586 [INFO]  IKAS AI Gateway started
+{
+  "port": 8005,
+  "environment": "development",
+  "keycloakMcp": "http://localhost:8001",
+  "neo4jMcp": "http://localhost:8002"
+}
+2025-08-23 14:58:20.586 [INFO]  Connecting to WebSocket server
+{
+  "url": "http://localhost:3001"
+}
+2025-08-23 14:58:20.597 [ERROR]  WebSocket connection error
+{
+  "error": "xhr poll error",
+  "attempts": 1,
+  "maxAttempts": 10
+}
+2025-08-23 14:58:22.524 [ERROR]  WebSocket connection error
+{
+  "error": "xhr poll error",
+  "attempts": 2,
+  "maxAttempts": 10
+}
+2025-08-23 14:58:27.528 [ERROR]  WebSocket connection error
+{
+  "error": "xhr poll error",
+  "attempts": 3,
+  "maxAttempts": 10
+}
+2025-08-23 14:58:32.534 [ERROR]  WebSocket connection error
+{
+  "error": "xhr poll error",
+  "attempts": 4,
+  "maxAttempts": 10
+}
+2025-08-23 14:58:37.542 [ERROR]  WebSocket connection error
+{
+  "error": "xhr poll error",
+  "attempts": 5,
+  "maxAttempts": 10
+}
+2025-08-23 14:58:42.549 [ERROR]  WebSocket connection error
+{
+  "error": "xhr poll error",
+  "attempts": 6,
+  "maxAttempts": 10
+}
+2025-08-23 14:58:47.557 [ERROR]  WebSocket connection error
+{
+  "error": "xhr poll error",
+  "attempts": 7,
+  "maxAttempts": 10
+}
+2025-08-23 14:58:52.563 [ERROR]  WebSocket connection error
+{
+  "error": "xhr poll error",
+  "attempts": 8,
+  "maxAttempts": 10
+}
+2025-08-23 14:58:57.571 [ERROR]  WebSocket connection error
+{
+  "error": "xhr poll error",
+  "attempts": 9,
+  "maxAttempts": 10
+}
+2025-08-23 14:59:02.578 [ERROR]  WebSocket connection error
+{
+  "error": "xhr poll error",
+  "attempts": 10,
+  "maxAttempts": 10
+}
+2025-08-23 14:59:02.579 [ERROR]  Failed to connect WebSocket client
+{
+  "error": "Failed to connect after 10 attempts"
+}
+2025-08-23 14:59:07.585 [ERROR]  WebSocket connection error
+{
+  "error": "xhr poll error",
+  "attempts": 11,
+  "maxAttempts": 10
+}
+2025-08-23 15:06:12.001 [INFO]  Received SIGTERM, shutting down gracefully
+2025-08-23 15:27:08.151 [INFO]  Gemini service initialized
+{
+  "model": "gemini-2.5-pro",
+  "apiConfigured": true
+}
+2025-08-23 15:27:08.153 [INFO]  Orchestrator initialized
+2025-08-23 15:27:08.155 [INFO]  IKAS AI Gateway started
+{
+  "port": 8000,
+  "environment": "development",
+  "keycloakMcp": "http://localhost:8001",
+  "neo4jMcp": "http://localhost:8002"
+}
+2025-08-23 15:27:08.155 [INFO]  Connecting to WebSocket server
+{
+  "url": "http://localhost:3001"
+}
+2025-08-23 15:27:08.178 [INFO]  Connected to WebSocket server
+{
+  "socketId": "yZfaW4FLdErU11U-AAAF"
+}
+2025-08-23 15:27:08.179 [INFO]  WebSocket client connected successfully
+2025-08-23 15:27:08.179 [INFO]  WebSocket session established Welcome to IKAS! Connection established successfully.
+{
+  "sessionId": "47d50cb7-3217-4361-9f27-4c0c0df074fb"
+}
+2025-08-23 15:27:08.180 [DEBUG]  Subscription confirmed
+{
+  "eventTypes": [
+    "voice:command",
+    "analysis:started",
+    "compliance:check"
+  ],
+  "room": "global"
+}
+2025-08-23 15:27:45.152 [INFO]  HTTP Request
+{
+  "method": "GET",
+  "url": "/",
+  "status": 200,
+  "duration": "9ms",
+  "userAgent": "axios/1.11.0"
+}
+2025-08-23 15:27:45.159 [WARN]  Invalid chat request
+{
+  "errors": [
+    {
+      "code": "invalid_type",
+      "expected": "string",
+      "received": "undefined",
+      "path": [
+        "message"
+      ],
+      "message": "Required"
+    }
+  ]
+}
+2025-08-23 15:27:45.160 [INFO]  HTTP Request
+{
+  "method": "POST",
+  "url": "/chat",
+  "status": 400,
+  "duration": "1ms",
+  "userAgent": "axios/1.11.0"
+}
+2025-08-23 15:27:47.164 [WARN]  Invalid chat request
+{
+  "errors": [
+    {
+      "code": "invalid_type",
+      "expected": "string",
+      "received": "undefined",
+      "path": [
+        "message"
+      ],
+      "message": "Required"
+    }
+  ]
+}
+2025-08-23 15:27:47.165 [INFO]  HTTP Request
+{
+  "method": "POST",
+  "url": "/chat",
+  "status": 400,
+  "duration": "1ms",
+  "userAgent": "axios/1.11.0"
+}
+2025-08-23 15:27:49.169 [WARN]  Invalid chat request
+{
+  "errors": [
+    {
+      "code": "invalid_type",
+      "expected": "string",
+      "received": "undefined",
+      "path": [
+        "message"
+      ],
+      "message": "Required"
+    }
+  ]
+}
+2025-08-23 15:27:49.169 [INFO]  HTTP Request
+{
+  "method": "POST",
+  "url": "/chat",
+  "status": 400,
+  "duration": "0ms",
+  "userAgent": "axios/1.11.0"
+}
+2025-08-23 15:28:05.748 [INFO]  HTTP Request
+{
+  "method": "GET",
+  "url": "/",
+  "status": 200,
+  "duration": "6ms",
+  "userAgent": "axios/1.11.0"
+}
+2025-08-23 15:28:05.751 [INFO]  Chat request received
+{
+  "sessionId": "test-session-1",
+  "messageLength": 44,
+  "realm": "master"
+}
+2025-08-23 15:28:05.754 [INFO] [483f6274] 🎯 Starting orchestration request
+{
+  "sessionId": "test-session-1",
+  "userInput": "Liste alle Benutzer aus dem master Realm auf",
+  "inputLength": 44,
+  "realm": "master",
+  "context": {
+    "realm": "master",
+    "preferredLanguage": "de"
+  }
+}
+2025-08-23 15:28:05.754 [DEBUG]  Determining execution strategy
+{
+  "userInput": "Liste alle Benutzer aus dem master Realm auf",
+  "inputLength": 44,
+  "realm": "master"
+}
+2025-08-23 15:28:05.755 [INFO]  Using default COORDINATED_MULTI_MCP strategy
+2025-08-23 15:28:05.755 [INFO] [483f6274] 📋 Strategy determined
+{
+  "sessionId": "test-session-1",
+  "strategy": "coordinated_multi_mcp",
+  "wasProvided": false,
+  "reasoning": "Auto-selected by router"
+}
+2025-08-23 15:28:05.755 [INFO]  Discovering MCP tools from servers
+2025-08-23 15:28:05.755 [INFO]  Keycloak MCP client initialized
+{
+  "url": "http://localhost:8001"
+}
+2025-08-23 15:28:05.755 [INFO]  Neo4j MCP client initialized
+{
+  "url": "http://localhost:8002"
+}
+2025-08-23 15:28:05.755 [DEBUG]  Listing tools for keycloak
+2025-08-23 15:28:05.755 [DEBUG]  Listing tools for neo4j
+2025-08-23 15:28:05.755 [DEBUG]  MCP Request [keycloak]
+{
+  "method": "GET",
+  "url": "/tools",
+  "baseURL": "http://localhost:8001"
+}
+2025-08-23 15:28:05.755 [DEBUG]  MCP Request [neo4j]
+{
+  "method": "GET",
+  "url": "/tools",
+  "baseURL": "http://localhost:8002"
+}
+2025-08-23 15:28:05.758 [DEBUG]  MCP Response [keycloak]
+{
+  "status": 200,
+  "url": "/tools"
+}
+2025-08-23 15:28:05.758 [DEBUG]  Keycloak tools discovered
+{
+  "count": 8
+}
+2025-08-23 15:28:05.758 [DEBUG]  MCP Response [neo4j]
+{
+  "status": 200,
+  "url": "/tools"
+}
+2025-08-23 15:28:05.758 [DEBUG]  Neo4j tools discovered
+{
+  "count": 3
+}
+2025-08-23 15:28:05.758 [DEBUG]  MCP Request [keycloak]
+{
+  "method": "GET",
+  "url": "/health",
+  "baseURL": "http://localhost:8001"
+}
+2025-08-23 15:28:05.758 [DEBUG]  MCP Request [neo4j]
+{
+  "method": "GET",
+  "url": "/health",
+  "baseURL": "http://localhost:8002"
+}
+2025-08-23 15:28:05.760 [DEBUG]  MCP Response [keycloak]
+{
+  "status": 200,
+  "url": "/health"
+}
+2025-08-23 15:28:05.760 [DEBUG]  MCP Response [neo4j]
+{
+  "status": 200,
+  "url": "/health"
+}
+2025-08-23 15:28:05.760 [INFO]  MCP tool discovery completed
+{
+  "keycloakTools": 8,
+  "neo4jTools": 3,
+  "totalTools": 11,
+  "keycloakHealthy": true,
+  "neo4jHealthy": true
+}
+2025-08-23 15:28:05.761 [INFO] [483f6274] 🛠️ Tools selected for request
+{
+  "sessionId": "test-session-1",
+  "strategy": "coordinated_multi_mcp",
+  "intent": "all",
+  "toolCount": 11,
+  "availableTools": [
+    {
+      "name": "keycloak_create-user",
+      "description": "Keycloak create-user tool Verwende dies für das Erstellen neuer Benutzer in Keycloak."
+    },
+    {
+      "name": "keycloak_list-users",
+      "description": "Keycloak list-users tool Verwende dies für aktuelle Live-Benutzerdaten aus Keycloak."
+    },
+    {
+      "name": "keycloak_delete-user",
+      "description": "Keycloak delete-user tool Verwende dies zum Löschen von Benutzern. Erfordert Bestätigung."
+    },
+    {
+      "name": "keycloak_get-user",
+      "description": "Keycloak get-user tool"
+    },
+    {
+      "name": "keycloak_list-realms",
+      "description": "Keycloak list-realms tool Zeigt verfügbare Keycloak-Realms."
+    },
+    {
+      "name": "keycloak_list-admin-events",
+      "description": "Keycloak list-admin-events tool Für aktuelle administrative Aktionen und Audit-Trails."
+    },
+    {
+      "name": "keycloak_get-event-details",
+      "description": "Keycloak get-event-details tool Für detaillierte Informationen zu spezifischen Events."
+    },
+    {
+      "name": "keycloak_get-metrics",
+      "description": "Keycloak get-metrics tool Für aktuelle System-Metriken und Statistiken."
+    },
+    {
+      "name": "neo4j_get_neo4j_schema",
+      "description": "Neo4j get_neo4j_schema tool Verwende dies um die Datenstruktur vor komplexen Abfragen zu verstehen."
+    },
+    {
+      "name": "neo4j_read_neo4j_cypher",
+      "description": "Neo4j read_neo4j_cypher tool Für Musteranalyse, Beziehungsabfragen und historische Datenanalyse."
+    },
+    {
+      "name": "neo4j_write_neo4j_cypher",
+      "description": "Neo4j write_neo4j_cypher tool Für Daten-Updates, Synchronisation und Strukturänderungen."
+    }
+  ]
+}
+2025-08-23 15:28:05.761 [DEBUG]  Skipping pre-processing - Gemini will handle orchestration
+{
+  "strategy": "coordinated_multi_mcp",
+  "realm": "master"
+}
+2025-08-23 15:28:05.761 [INFO] [483f6274] 🧠 Sending request to Gemini Liste alle Benutzer aus dem master Realm auf
+{
+  "sessionId": "test-session-1",
+  "toolCount": 11,
+  "functionCallingMode": "ANY",
+  "context": {
+    "realm": "master",
+    "language": "de"
+  }
+}
+2025-08-23 15:28:05.923 [INFO] [483f6274] 🎭 Gemini response received
+{
+  "sessionId": "test-session-1",
+  "hasResponse": true,
+  "responseLength": 556,
+  "hasFunctionCalls": false,
+  "functionCallCount": 0,
+  "functionNames": []
+}
+2025-08-23 15:28:05.923 [INFO] [483f6274] 📊 Data aggregation completed
+{
+  "sessionId": "test-session-1",
+  "totalIterations": 0,
+  "toolResultsCount": 0,
+  "aggregatedDataKeys": [],
+  "totalToolsCalled": 0,
+  "dataTypes": []
+}
+2025-08-23 15:28:05.923 [DEBUG]  Skipping post-processing - Gemini orchestrates all operations
+{
+  "strategy": "coordinated_multi_mcp",
+  "realm": "master",
+  "toolsCalledCount": 0
+}
+2025-08-23 15:28:05.923 [INFO] [483f6274] ✅ Orchestration request completed successfully
+{
+  "sessionId": "test-session-1",
+  "duration": "169ms",
+  "strategy": "coordinated_multi_mcp",
+  "toolsCalledCount": 0,
+  "finalResponseLength": 556,
+  "dataKeys": [],
+  "success": true
+}
+2025-08-23 15:28:05.923 [INFO]  Chat request processed
+{
+  "sessionId": "test-session-1",
+  "success": true,
+  "duration": "169ms",
+  "toolsUsed": 0,
+  "strategy": "coordinated_multi_mcp"
+}
+2025-08-23 15:28:05.924 [INFO]  HTTP Request
+{
+  "method": "POST",
+  "url": "/chat",
+  "status": 200,
+  "duration": "173ms",
+  "userAgent": "axios/1.11.0"
+}
+2025-08-23 15:28:07.929 [INFO]  Chat request received
+{
+  "sessionId": "test-session-2",
+  "messageLength": 33,
+  "realm": "master"
+}
+2025-08-23 15:28:07.937 [INFO] [e88799e0] 🎯 Starting orchestration request
+{
+  "sessionId": "test-session-2",
+  "userInput": "Create a user with malformed data",
+  "inputLength": 33,
+  "realm": "master",
+  "context": {
+    "realm": "master"
+  }
+}
+2025-08-23 15:28:07.937 [DEBUG]  Determining execution strategy
+{
+  "userInput": "Create a user with malformed data",
+  "inputLength": 33,
+  "realm": "master"
+}
+2025-08-23 15:28:07.937 [INFO]  Detected write operation, using KEYCLOAK_WRITE_THEN_SYNC strategy
+2025-08-23 15:28:07.937 [INFO] [e88799e0] 📋 Strategy determined
+{
+  "sessionId": "test-session-2",
+  "strategy": "keycloak_write_then_sync",
+  "wasProvided": false,
+  "reasoning": "Auto-selected by router"
+}
+2025-08-23 15:28:07.937 [DEBUG]  Returning cached MCP tools
+2025-08-23 15:28:07.937 [INFO] [e88799e0] 🛠️ Tools selected for request
+{
+  "sessionId": "test-session-2",
+  "strategy": "keycloak_write_then_sync",
+  "intent": "write",
+  "toolCount": 3,
+  "availableTools": [
+    {
+      "name": "keycloak_create-user",
+      "description": "Keycloak create-user tool Verwende dies für das Erstellen neuer Benutzer in Keycloak."
+    },
+    {
+      "name": "keycloak_delete-user",
+      "description": "Keycloak delete-user tool Verwende dies zum Löschen von Benutzern. Erfordert Bestätigung."
+    },
+    {
+      "name": "neo4j_write_neo4j_cypher",
+      "description": "Neo4j write_neo4j_cypher tool Für Daten-Updates, Synchronisation und Strukturänderungen."
+    }
+  ]
+}
+2025-08-23 15:28:07.938 [DEBUG]  Skipping pre-processing - Gemini will handle orchestration
+{
+  "strategy": "keycloak_write_then_sync",
+  "realm": "master"
+}
+2025-08-23 15:28:07.938 [INFO] [e88799e0] 🧠 Sending request to Gemini Create a user with malformed data
+{
+  "sessionId": "test-session-2",
+  "toolCount": 3,
+  "functionCallingMode": "ANY",
+  "context": {
+    "realm": "master",
+    "language": "en"
+  }
+}
+2025-08-23 15:28:07.976 [INFO] [e88799e0] 🎭 Gemini response received
+{
+  "sessionId": "test-session-2",
+  "hasResponse": true,
+  "responseLength": 556,
+  "hasFunctionCalls": false,
+  "functionCallCount": 0,
+  "functionNames": []
+}
+2025-08-23 15:28:07.976 [INFO] [e88799e0] 📊 Data aggregation completed
+{
+  "sessionId": "test-session-2",
+  "totalIterations": 0,
+  "toolResultsCount": 0,
+  "aggregatedDataKeys": [],
+  "totalToolsCalled": 0,
+  "dataTypes": []
+}
+2025-08-23 15:28:07.976 [DEBUG]  Skipping post-processing - Gemini orchestrates all operations
+{
+  "strategy": "keycloak_write_then_sync",
+  "realm": "master",
+  "toolsCalledCount": 0
+}
+2025-08-23 15:28:07.976 [INFO] [e88799e0] ✅ Orchestration request completed successfully
+{
+  "sessionId": "test-session-2",
+  "duration": "39ms",
+  "strategy": "keycloak_write_then_sync",
+  "toolsCalledCount": 0,
+  "finalResponseLength": 556,
+  "dataKeys": [],
+  "success": true
+}
+2025-08-23 15:28:07.976 [INFO]  Chat request processed
+{
+  "sessionId": "test-session-2",
+  "success": true,
+  "duration": "39ms",
+  "toolsUsed": 0,
+  "strategy": "keycloak_write_then_sync"
+}
+2025-08-23 15:28:07.977 [INFO]  HTTP Request
+{
+  "method": "POST",
+  "url": "/chat",
+  "status": 200,
+  "duration": "48ms",
+  "userAgent": "axios/1.11.0"
+}
+2025-08-23 15:28:09.983 [INFO]  Chat request received
+{
+  "sessionId": "test-session-3",
+  "messageLength": 63,
+  "realm": "master"
+}
+2025-08-23 15:28:09.990 [INFO] [4b5afac6] 🎯 Starting orchestration request
+{
+  "sessionId": "test-session-3",
+  "userInput": "Analysiere die Benutzer-Compliance und synchronisiere mit Neo4j",
+  "inputLength": 63,
+  "realm": "master",
+  "context": {
+    "realm": "master",
+    "preferredLanguage": "de"
+  }
+}
+2025-08-23 15:28:09.991 [DEBUG]  Determining execution strategy
+{
+  "userInput": "Analysiere die Benutzer-Compliance und synchronisiere mit Neo4j",
+  "inputLength": 63,
+  "realm": "master"
+}
+2025-08-23 15:28:09.992 [DEBUG]  MCP Request [neo4j]
+{
+  "method": "POST",
+  "url": "/tools/read_neo4j_cypher",
+  "baseURL": "http://localhost:8002"
+}
+2025-08-23 15:28:10.231 [DEBUG]  MCP Response [neo4j]
+{
+  "status": 200,
+  "url": "/tools/read_neo4j_cypher"
+}
+2025-08-23 15:28:10.233 [ERROR]  Error checking graph data freshness
+{
+  "realm": "master",
+  "error": "Cannot read properties of undefined (reading '0')"
+}
+2025-08-23 15:28:10.233 [INFO]  Analysis requested but data is stale, using SYNC_THEN_ANALYZE strategy
+{}
+2025-08-23 15:28:10.233 [INFO] [4b5afac6] 📋 Strategy determined
+{
+  "sessionId": "test-session-3",
+  "strategy": "sync_then_analyze",
+  "wasProvided": false,
+  "reasoning": "Auto-selected by router"
+}
+2025-08-23 15:28:10.233 [DEBUG]  Returning cached MCP tools
+2025-08-23 15:28:10.233 [INFO] [4b5afac6] 🛠️ Tools selected for request
+{
+  "sessionId": "test-session-3",
+  "strategy": "sync_then_analyze",
+  "intent": "all",
+  "toolCount": 11,
+  "availableTools": [
+    {
+      "name": "keycloak_create-user",
+      "description": "Keycloak create-user tool Verwende dies für das Erstellen neuer Benutzer in Keycloak."
+    },
+    {
+      "name": "keycloak_list-users",
+      "description": "Keycloak list-users tool Verwende dies für aktuelle Live-Benutzerdaten aus Keycloak."
+    },
+    {
+      "name": "keycloak_delete-user",
+      "description": "Keycloak delete-user tool Verwende dies zum Löschen von Benutzern. Erfordert Bestätigung."
+    },
+    {
+      "name": "keycloak_get-user",
+      "description": "Keycloak get-user tool"
+    },
+    {
+      "name": "keycloak_list-realms",
+      "description": "Keycloak list-realms tool Zeigt verfügbare Keycloak-Realms."
+    },
+    {
+      "name": "keycloak_list-admin-events",
+      "description": "Keycloak list-admin-events tool Für aktuelle administrative Aktionen und Audit-Trails."
+    },
+    {
+      "name": "keycloak_get-event-details",
+      "description": "Keycloak get-event-details tool Für detaillierte Informationen zu spezifischen Events."
+    },
+    {
+      "name": "keycloak_get-metrics",
+      "description": "Keycloak get-metrics tool Für aktuelle System-Metriken und Statistiken."
+    },
+    {
+      "name": "neo4j_get_neo4j_schema",
+      "description": "Neo4j get_neo4j_schema tool Verwende dies um die Datenstruktur vor komplexen Abfragen zu verstehen."
+    },
+    {
+      "name": "neo4j_read_neo4j_cypher",
+      "description": "Neo4j read_neo4j_cypher tool Für Musteranalyse, Beziehungsabfragen und historische Datenanalyse."
+    },
+    {
+      "name": "neo4j_write_neo4j_cypher",
+      "description": "Neo4j write_neo4j_cypher tool Für Daten-Updates, Synchronisation und Strukturänderungen."
+    }
+  ]
+}
+2025-08-23 15:28:10.234 [DEBUG]  Skipping pre-processing - Gemini will handle orchestration
+{
+  "strategy": "sync_then_analyze",
+  "realm": "master"
+}
+2025-08-23 15:28:10.234 [INFO] [4b5afac6] 🧠 Sending request to Gemini Analysiere die Benutzer-Compliance und synchronisiere mit Neo4j
+{
+  "sessionId": "test-session-3",
+  "toolCount": 11,
+  "functionCallingMode": "ANY",
+  "context": {
+    "realm": "master",
+    "language": "de"
+  }
+}
+2025-08-23 15:28:10.273 [INFO] [4b5afac6] 🎭 Gemini response received
+{
+  "sessionId": "test-session-3",
+  "hasResponse": true,
+  "responseLength": 556,
+  "hasFunctionCalls": false,
+  "functionCallCount": 0,
+  "functionNames": []
+}
+2025-08-23 15:28:10.274 [INFO] [4b5afac6] 📊 Data aggregation completed
+{
+  "sessionId": "test-session-3",
+  "totalIterations": 0,
+  "toolResultsCount": 0,
+  "aggregatedDataKeys": [],
+  "totalToolsCalled": 0,
+  "dataTypes": []
+}
+2025-08-23 15:28:10.274 [DEBUG]  Skipping post-processing - Gemini orchestrates all operations
+{
+  "strategy": "sync_then_analyze",
+  "realm": "master",
+  "toolsCalledCount": 0
+}
+2025-08-23 15:28:10.274 [INFO] [4b5afac6] ✅ Orchestration request completed successfully
+{
+  "sessionId": "test-session-3",
+  "duration": "284ms",
+  "strategy": "sync_then_analyze",
+  "toolsCalledCount": 0,
+  "finalResponseLength": 556,
+  "dataKeys": [],
+  "success": true
+}
+2025-08-23 15:28:10.274 [INFO]  Chat request processed
+{
+  "sessionId": "test-session-3",
+  "success": true,
+  "duration": "284ms",
+  "toolsUsed": 0,
+  "strategy": "sync_then_analyze"
+}
+2025-08-23 15:28:10.275 [INFO]  HTTP Request
+{
+  "method": "POST",
+  "url": "/chat",
+  "status": 200,
+  "duration": "292ms",
+  "userAgent": "axios/1.11.0"
+}
+2025-08-23 13:35:04.457 [INFO]  Gemini service initialized
+{
+  "model": "gemini-2.5-pro",
+  "apiConfigured": true
+}
+2025-08-23 13:35:04.459 [INFO]  Orchestrator initialized
+2025-08-23 13:35:04.462 [INFO]  IKAS AI Gateway started
+{
+  "port": 8005,
+  "environment": "development",
+  "keycloakMcp": "http://keycloak-mcp:8001",
+  "neo4jMcp": "http://neo4j-mcp:8002"
+}
+2025-08-23 13:35:04.463 [INFO]  Connecting to WebSocket server
+{
+  "url": "http://websocket-server:3001"
+}
+2025-08-23 13:35:04.482 [INFO]  Connected to WebSocket server
+{
+  "socketId": "_kS8Atj12w8a0GOZAAAH"
+}
+2025-08-23 13:35:04.483 [INFO]  WebSocket client connected successfully
+2025-08-23 13:35:04.483 [INFO]  WebSocket session established Welcome to IKAS! Connection established successfully.
+{
+  "sessionId": "1075050c-6670-4291-99c7-7dfb475e2b03"
+}
+2025-08-23 13:35:04.483 [DEBUG]  Subscription confirmed
+{
+  "eventTypes": [
+    "voice:command",
+    "analysis:started",
+    "compliance:check"
+  ],
+  "room": "global"
+}
+2025-08-23 13:35:09.037 [INFO]  HTTP Request
+{
+  "method": "GET",
+  "url": "/",
+  "status": 200,
+  "duration": "13ms",
+  "userAgent": "Wget"
+}
+2025-08-23 13:35:12.838 [INFO]  HTTP Request
+{
+  "method": "GET",
+  "url": "/",
+  "status": 200,
+  "duration": "7ms",
+  "userAgent": "curl/8.7.1"
+}
+2025-08-23 13:35:24.032 [INFO]  Received SIGTERM, shutting down gracefully
+2025-08-23 13:35:24.279 [INFO]  Gemini service initialized
+{
+  "model": "gemini-2.5-pro",
+  "apiConfigured": true
+}
+2025-08-23 13:35:24.280 [INFO]  Orchestrator initialized
+2025-08-23 13:35:24.284 [INFO]  IKAS AI Gateway started
+{
+  "port": 8005,
+  "environment": "development",
+  "keycloakMcp": "http://keycloak-mcp:8001",
+  "neo4jMcp": "http://neo4j-mcp:8002"
+}
+2025-08-23 13:35:24.284 [INFO]  Connecting to WebSocket server
+{
+  "url": "http://websocket-server:3001"
+}
+2025-08-23 13:35:24.301 [INFO]  Connected to WebSocket server
+{
+  "socketId": "_yhIFVA294hG0qCIAAAJ"
+}
+2025-08-23 13:35:24.302 [INFO]  WebSocket client connected successfully
+2025-08-23 13:35:24.302 [INFO]  WebSocket session established Welcome to IKAS! Connection established successfully.
+{
+  "sessionId": "f8c4a9fe-a5eb-4b6c-b3cf-8fa9f9eecc47"
+}
+2025-08-23 13:35:24.302 [DEBUG]  Subscription confirmed
+{
+  "eventTypes": [
+    "voice:command",
+    "analysis:started",
+    "compliance:check"
+  ],
+  "room": "global"
+}
+2025-08-23 13:35:48.298 [INFO]  HTTP Request
+{
+  "method": "GET",
+  "url": "/",
+  "status": 200,
+  "duration": "13ms",
+  "userAgent": "curl/8.7.1"
+}
+2025-08-23 13:35:54.607 [INFO]  Received SIGTERM, shutting down gracefully
+2025-08-23 13:35:54.854 [INFO]  Gemini service initialized
+{
+  "model": "gemini-2.5-pro",
+  "apiConfigured": true
+}
+2025-08-23 13:35:54.855 [INFO]  Orchestrator initialized
+2025-08-23 13:35:54.859 [INFO]  IKAS AI Gateway started
+{
+  "port": 8005,
+  "environment": "development",
+  "keycloakMcp": "http://keycloak-mcp:8001",
+  "neo4jMcp": "http://neo4j-mcp:8002"
+}
+2025-08-23 13:35:54.859 [INFO]  Connecting to WebSocket server
+{
+  "url": "http://websocket-server:3001"
+}
+2025-08-23 13:35:54.877 [INFO]  Connected to WebSocket server
+{
+  "socketId": "8m43JVG6NcHVd_mRAAAL"
+}
+2025-08-23 13:35:54.878 [INFO]  WebSocket session established Welcome to IKAS! Connection established successfully.
+{
+  "sessionId": "833f8f3e-9fde-4eca-b3b2-6211915d1405"
+}
+2025-08-23 13:35:54.878 [INFO]  WebSocket client connected successfully
+2025-08-23 13:35:54.879 [DEBUG]  Subscription confirmed
+{
+  "eventTypes": [
+    "voice:command",
+    "analysis:started",
+    "compliance:check"
+  ],
+  "room": "global"
+}
+2025-08-23 13:35:59.407 [INFO]  Received SIGTERM, shutting down gracefully
+2025-08-23 13:40:29.287 [INFO]  Gemini service initialized
+{
+  "model": "gemini-2.5-pro",
+  "apiConfigured": true
+}
+2025-08-23 13:40:29.288 [INFO]  Orchestrator initialized
+2025-08-23 13:40:29.292 [INFO]  IKAS AI Gateway started
+{
+  "port": 8005,
+  "environment": "development",
+  "keycloakMcp": "http://keycloak-mcp:8001",
+  "neo4jMcp": "http://neo4j-mcp:8002"
+}
+2025-08-23 13:40:29.293 [INFO]  Connecting to WebSocket server
+{
+  "url": "http://websocket-server:3001"
+}
+2025-08-23 13:40:29.311 [INFO]  Connected to WebSocket server
+{
+  "socketId": "dHP089FF_Ob3w66vAAAB"
+}
+2025-08-23 13:40:29.312 [INFO]  WebSocket client connected successfully
+2025-08-23 13:40:29.312 [INFO]  WebSocket session established Welcome to IKAS! Connection established successfully.
+{
+  "sessionId": "df352001-c63b-44b1-9847-e38152773a7b"
+}
+2025-08-23 13:40:29.312 [DEBUG]  Subscription confirmed
+{
+  "eventTypes": [
+    "voice:command",
+    "analysis:started",
+    "compliance:check"
+  ],
+  "room": "global"
+}
+2025-08-23 13:40:33.959 [INFO]  HTTP Request
+{
+  "method": "GET",
+  "url": "/",
+  "status": 200,
+  "duration": "14ms",
+  "userAgent": "Wget"
+}
+2025-08-23 13:40:53.837 [DEBUG]  Received WebSocket event
+{
+  "eventId": "2d7b18ea-e4b8-44db-bd5b-16f9e7b432ff",
+  "eventType": "voice:command",
+  "sessionId": "a5ba8397-fb60-4f2b-9512-3472323aded4"
+}
+2025-08-23 13:40:53.838 [INFO]  Processing voice command
+{
+  "command": "sync initial system data",
+  "sessionId": "a5ba8397-fb60-4f2b-9512-3472323aded4",
+  "confidence": 1
+}
+2025-08-23 13:40:53.850 [INFO]  Gemini service initialized
+{
+  "model": "gemini-2.5-pro",
+  "apiConfigured": true
+}
+2025-08-23 13:40:53.851 [INFO]  Orchestrator initialized
+2025-08-23 13:40:53.852 [INFO] [0f6902e1] 🎯 Starting orchestration request
+{
+  "sessionId": "a5ba8397-fb60-4f2b-9512-3472323aded4",
+  "userInput": "sync initial system data",
+  "inputLength": 24,
+  "context": {
+    "source": "voice",
+    "confidence": 1,
+    "language": "de-DE"
+  }
+}
+2025-08-23 13:40:53.852 [DEBUG]  Determining execution strategy
+{
+  "userInput": "sync initial system data",
+  "inputLength": 24
+}
+2025-08-23 13:40:53.852 [INFO]  Using default COORDINATED_MULTI_MCP strategy
+2025-08-23 13:40:53.853 [INFO] [0f6902e1] 📋 Strategy determined
+{
+  "sessionId": "a5ba8397-fb60-4f2b-9512-3472323aded4",
+  "strategy": "coordinated_multi_mcp",
+  "wasProvided": false,
+  "reasoning": "Auto-selected by router"
+}
+2025-08-23 13:40:53.853 [INFO]  Discovering MCP tools from servers
+2025-08-23 13:40:53.853 [INFO]  Keycloak MCP client initialized
+{
+  "url": "http://keycloak-mcp:8001"
+}
+2025-08-23 13:40:53.854 [INFO]  Neo4j MCP client initialized
+{
+  "url": "http://neo4j-mcp:8002"
+}
+2025-08-23 13:40:53.854 [DEBUG]  Listing tools for keycloak
+2025-08-23 13:40:53.854 [DEBUG]  Listing tools for neo4j
+2025-08-23 13:40:53.855 [DEBUG]  MCP Request [keycloak]
+{
+  "method": "GET",
+  "url": "/tools",
+  "baseURL": "http://keycloak-mcp:8001"
+}
+2025-08-23 13:40:53.855 [DEBUG]  MCP Request [neo4j]
+{
+  "method": "GET",
+  "url": "/tools",
+  "baseURL": "http://neo4j-mcp:8002"
+}
+2025-08-23 13:40:53.860 [DEBUG]  MCP Response [keycloak]
+{
+  "status": 200,
+  "url": "/tools"
+}
+2025-08-23 13:40:53.860 [DEBUG]  Keycloak tools discovered
+{
+  "count": 8
+}
+2025-08-23 13:40:53.861 [DEBUG]  MCP Response [neo4j]
+{
+  "status": 200,
+  "url": "/tools"
+}
+2025-08-23 13:40:53.861 [DEBUG]  Neo4j tools discovered
+{
+  "count": 3
+}
+2025-08-23 13:40:53.862 [DEBUG]  MCP Request [keycloak]
+{
+  "method": "GET",
+  "url": "/health",
+  "baseURL": "http://keycloak-mcp:8001"
+}
+2025-08-23 13:40:53.862 [DEBUG]  MCP Request [neo4j]
+{
+  "method": "GET",
+  "url": "/health",
+  "baseURL": "http://neo4j-mcp:8002"
+}
+2025-08-23 13:40:53.865 [DEBUG]  MCP Response [neo4j]
+{
+  "status": 200,
+  "url": "/health"
+}
+2025-08-23 13:40:53.866 [DEBUG]  MCP Response [keycloak]
+{
+  "status": 200,
+  "url": "/health"
+}
+2025-08-23 13:40:53.866 [INFO]  MCP tool discovery completed
+{
+  "keycloakTools": 8,
+  "neo4jTools": 3,
+  "totalTools": 11,
+  "keycloakHealthy": true,
+  "neo4jHealthy": true
+}
+2025-08-23 13:40:53.868 [INFO] [0f6902e1] 🛠️ Tools selected for request
+{
+  "sessionId": "a5ba8397-fb60-4f2b-9512-3472323aded4",
+  "strategy": "coordinated_multi_mcp",
+  "intent": "all",
+  "toolCount": 11,
+  "availableTools": [
+    {
+      "name": "keycloak_create-user",
+      "description": "Keycloak create-user tool Verwende dies für das Erstellen neuer Benutzer in Keycloak."
+    },
+    {
+      "name": "keycloak_list-users",
+      "description": "Keycloak list-users tool Verwende dies für aktuelle Live-Benutzerdaten aus Keycloak."
+    },
+    {
+      "name": "keycloak_delete-user",
+      "description": "Keycloak delete-user tool Verwende dies zum Löschen von Benutzern. Erfordert Bestätigung."
+    },
+    {
+      "name": "keycloak_get-user",
+      "description": "Keycloak get-user tool"
+    },
+    {
+      "name": "keycloak_list-realms",
+      "description": "Keycloak list-realms tool Zeigt verfügbare Keycloak-Realms."
+    },
+    {
+      "name": "keycloak_list-admin-events",
+      "description": "Keycloak list-admin-events tool Für aktuelle administrative Aktionen und Audit-Trails."
+    },
+    {
+      "name": "keycloak_get-event-details",
+      "description": "Keycloak get-event-details tool Für detaillierte Informationen zu spezifischen Events."
+    },
+    {
+      "name": "keycloak_get-metrics",
+      "description": "Keycloak get-metrics tool Für aktuelle System-Metriken und Statistiken."
+    },
+    {
+      "name": "neo4j_get_neo4j_schema",
+      "description": "Neo4j get_neo4j_schema tool Verwende dies um die Datenstruktur vor komplexen Abfragen zu verstehen."
+    },
+    {
+      "name": "neo4j_read_neo4j_cypher",
+      "description": "Neo4j read_neo4j_cypher tool Für Musteranalyse, Beziehungsabfragen und historische Datenanalyse."
+    },
+    {
+      "name": "neo4j_write_neo4j_cypher",
+      "description": "Neo4j write_neo4j_cypher tool Für Daten-Updates, Synchronisation und Strukturänderungen."
+    }
+  ]
+}
+2025-08-23 13:40:53.868 [DEBUG]  Skipping pre-processing - Gemini will handle orchestration
+{
+  "strategy": "coordinated_multi_mcp",
+  "realm": "master"
+}
+2025-08-23 13:40:53.869 [INFO] [0f6902e1] 🧠 Sending request to Gemini sync initial system data
+{
+  "sessionId": "a5ba8397-fb60-4f2b-9512-3472323aded4",
+  "toolCount": 11,
+  "functionCallingMode": "ANY",
+  "context": {
+    "language": "en"
+  }
+}
+2025-08-23 13:40:56.155 [INFO] [0f6902e1] 🎭 Gemini response received
+{
+  "sessionId": "a5ba8397-fb60-4f2b-9512-3472323aded4",
+  "hasResponse": true,
+  "responseLength": 39,
+  "hasFunctionCalls": false,
+  "functionCallCount": 0,
+  "functionNames": []
+}
+2025-08-23 13:40:56.156 [INFO] [0f6902e1] 📊 Data aggregation completed
+{
+  "sessionId": "a5ba8397-fb60-4f2b-9512-3472323aded4",
+  "totalIterations": 0,
+  "toolResultsCount": 0,
+  "aggregatedDataKeys": [],
+  "totalToolsCalled": 0,
+  "dataTypes": []
+}
+2025-08-23 13:40:56.156 [DEBUG]  Skipping post-processing - Gemini orchestrates all operations
+{
+  "strategy": "coordinated_multi_mcp",
+  "realm": "master",
+  "toolsCalledCount": 0
+}
+2025-08-23 13:40:56.156 [INFO] [0f6902e1] ✅ Orchestration request completed successfully
+{
+  "sessionId": "a5ba8397-fb60-4f2b-9512-3472323aded4",
+  "duration": "2304ms",
+  "strategy": "coordinated_multi_mcp",
+  "toolsCalledCount": 0,
+  "finalResponseLength": 39,
+  "dataKeys": [],
+  "success": true
+}
+2025-08-23 13:40:56.157 [DEBUG]  Sent voice response
+{
+  "sessionId": "a5ba8397-fb60-4f2b-9512-3472323aded4",
+  "success": true
+}
+2025-08-23 13:40:56.158 [INFO]  📤 Processing data updates from orchestration response
+{
+  "sessionId": "a5ba8397-fb60-4f2b-9512-3472323aded4",
+  "hasData": true,
+  "dataKeys": [
+    "usage",
+    "finishReason"
+  ],
+  "dataCount": 2
+}
+2025-08-23 13:40:56.158 [DEBUG]  ⏭️ Skipping data update
+{
+  "sessionId": "a5ba8397-fb60-4f2b-9512-3472323aded4",
+  "dataType": "usage",
+  "reason": "metadata type"
+}
+2025-08-23 13:40:56.158 [DEBUG]  ⏭️ Skipping data update
+{
+  "sessionId": "a5ba8397-fb60-4f2b-9512-3472323aded4",
+  "dataType": "finishReason",
+  "reason": "metadata type"
+}
+2025-08-23 13:41:07.751 [DEBUG]  Received WebSocket event
+{
+  "eventId": "c8cb8670-299b-4d0c-861d-bb8877f64669",
+  "eventType": "voice:command",
+  "sessionId": "a5ba8397-fb60-4f2b-9512-3472323aded4"
+}
+2025-08-23 13:41:07.752 [INFO]  Processing voice command
+{
+  "command": "write all users to the database",
+  "sessionId": "a5ba8397-fb60-4f2b-9512-3472323aded4",
+  "confidence": 0.9513001441955566
+}
+2025-08-23 13:41:07.759 [INFO]  Gemini service initialized
+{
+  "model": "gemini-2.5-pro",
+  "apiConfigured": true
+}
+2025-08-23 13:41:07.760 [INFO]  Orchestrator initialized
+2025-08-23 13:41:07.760 [INFO] [fc79541b] 🎯 Starting orchestration request
+{
+  "sessionId": "a5ba8397-fb60-4f2b-9512-3472323aded4",
+  "userInput": "write all users to the database",
+  "inputLength": 31,
+  "context": {
+    "source": "voice",
+    "confidence": 0.9513001441955566,
+    "language": "de-DE"
+  }
+}
+2025-08-23 13:41:07.760 [DEBUG]  Determining execution strategy
+{
+  "userInput": "write all users to the database",
+  "inputLength": 31
+}
+2025-08-23 13:41:07.761 [INFO]  Using default COORDINATED_MULTI_MCP strategy
+2025-08-23 13:41:07.761 [INFO] [fc79541b] 📋 Strategy determined
+{
+  "sessionId": "a5ba8397-fb60-4f2b-9512-3472323aded4",
+  "strategy": "coordinated_multi_mcp",
+  "wasProvided": false,
+  "reasoning": "Auto-selected by router"
+}
+2025-08-23 13:41:07.761 [INFO]  Discovering MCP tools from servers
+2025-08-23 13:41:07.762 [DEBUG]  Listing tools for keycloak
+2025-08-23 13:41:07.762 [DEBUG]  Listing tools for neo4j
+2025-08-23 13:41:07.763 [DEBUG]  MCP Request [keycloak]
+{
+  "method": "GET",
+  "url": "/tools",
+  "baseURL": "http://keycloak-mcp:8001"
+}
+2025-08-23 13:41:07.763 [DEBUG]  MCP Request [neo4j]
+{
+  "method": "GET",
+  "url": "/tools",
+  "baseURL": "http://neo4j-mcp:8002"
+}
+2025-08-23 13:41:07.772 [DEBUG]  MCP Response [neo4j]
+{
+  "status": 200,
+  "url": "/tools"
+}
+2025-08-23 13:41:07.773 [DEBUG]  Neo4j tools discovered
+{
+  "count": 3
+}
+2025-08-23 13:41:07.773 [DEBUG]  MCP Response [keycloak]
+{
+  "status": 200,
+  "url": "/tools"
+}
+2025-08-23 13:41:07.774 [DEBUG]  Keycloak tools discovered
+{
+  "count": 8
+}
+2025-08-23 13:41:07.774 [DEBUG]  MCP Request [keycloak]
+{
+  "method": "GET",
+  "url": "/health",
+  "baseURL": "http://keycloak-mcp:8001"
+}
+2025-08-23 13:41:07.774 [DEBUG]  MCP Request [neo4j]
+{
+  "method": "GET",
+  "url": "/health",
+  "baseURL": "http://neo4j-mcp:8002"
+}
+2025-08-23 13:41:07.781 [DEBUG]  MCP Response [neo4j]
+{
+  "status": 200,
+  "url": "/health"
+}
+2025-08-23 13:41:07.782 [DEBUG]  MCP Response [keycloak]
+{
+  "status": 200,
+  "url": "/health"
+}
+2025-08-23 13:41:07.782 [INFO]  MCP tool discovery completed
+{
+  "keycloakTools": 8,
+  "neo4jTools": 3,
+  "totalTools": 11,
+  "keycloakHealthy": true,
+  "neo4jHealthy": true
+}
+2025-08-23 13:41:07.782 [INFO] [fc79541b] 🛠️ Tools selected for request
+{
+  "sessionId": "a5ba8397-fb60-4f2b-9512-3472323aded4",
+  "strategy": "coordinated_multi_mcp",
+  "intent": "all",
+  "toolCount": 11,
+  "availableTools": [
+    {
+      "name": "keycloak_create-user",
+      "description": "Keycloak create-user tool Verwende dies für das Erstellen neuer Benutzer in Keycloak."
+    },
+    {
+      "name": "keycloak_list-users",
+      "description": "Keycloak list-users tool Verwende dies für aktuelle Live-Benutzerdaten aus Keycloak."
+    },
+    {
+      "name": "keycloak_delete-user",
+      "description": "Keycloak delete-user tool Verwende dies zum Löschen von Benutzern. Erfordert Bestätigung."
+    },
+    {
+      "name": "keycloak_get-user",
+      "description": "Keycloak get-user tool"
+    },
+    {
+      "name": "keycloak_list-realms",
+      "description": "Keycloak list-realms tool Zeigt verfügbare Keycloak-Realms."
+    },
+    {
+      "name": "keycloak_list-admin-events",
+      "description": "Keycloak list-admin-events tool Für aktuelle administrative Aktionen und Audit-Trails."
+    },
+    {
+      "name": "keycloak_get-event-details",
+      "description": "Keycloak get-event-details tool Für detaillierte Informationen zu spezifischen Events."
+    },
+    {
+      "name": "keycloak_get-metrics",
+      "description": "Keycloak get-metrics tool Für aktuelle System-Metriken und Statistiken."
+    },
+    {
+      "name": "neo4j_get_neo4j_schema",
+      "description": "Neo4j get_neo4j_schema tool Verwende dies um die Datenstruktur vor komplexen Abfragen zu verstehen."
+    },
+    {
+      "name": "neo4j_read_neo4j_cypher",
+      "description": "Neo4j read_neo4j_cypher tool Für Musteranalyse, Beziehungsabfragen und historische Datenanalyse."
+    },
+    {
+      "name": "neo4j_write_neo4j_cypher",
+      "description": "Neo4j write_neo4j_cypher tool Für Daten-Updates, Synchronisation und Strukturänderungen."
+    }
+  ]
+}
+2025-08-23 13:41:07.783 [DEBUG]  Skipping pre-processing - Gemini will handle orchestration
+{
+  "strategy": "coordinated_multi_mcp",
+  "realm": "master"
+}
+2025-08-23 13:41:07.783 [INFO] [fc79541b] 🧠 Sending request to Gemini write all users to the database
+{
+  "sessionId": "a5ba8397-fb60-4f2b-9512-3472323aded4",
+  "toolCount": 11,
+  "functionCallingMode": "ANY",
+  "context": {
+    "language": "en"
+  }
+}
+2025-08-23 13:41:10.169 [INFO] [fc79541b] 🎭 Gemini response received
+{
+  "sessionId": "a5ba8397-fb60-4f2b-9512-3472323aded4",
+  "hasResponse": true,
+  "responseLength": 39,
+  "hasFunctionCalls": false,
+  "functionCallCount": 0,
+  "functionNames": []
+}
+2025-08-23 13:41:10.169 [INFO] [fc79541b] 📊 Data aggregation completed
+{
+  "sessionId": "a5ba8397-fb60-4f2b-9512-3472323aded4",
+  "totalIterations": 0,
+  "toolResultsCount": 0,
+  "aggregatedDataKeys": [],
+  "totalToolsCalled": 0,
+  "dataTypes": []
+}
+2025-08-23 13:41:10.169 [DEBUG]  Skipping post-processing - Gemini orchestrates all operations
+{
+  "strategy": "coordinated_multi_mcp",
+  "realm": "master",
+  "toolsCalledCount": 0
+}
+2025-08-23 13:41:10.169 [INFO] [fc79541b] ✅ Orchestration request completed successfully
+{
+  "sessionId": "a5ba8397-fb60-4f2b-9512-3472323aded4",
+  "duration": "2409ms",
+  "strategy": "coordinated_multi_mcp",
+  "toolsCalledCount": 0,
+  "finalResponseLength": 39,
+  "dataKeys": [],
+  "success": true
+}
+2025-08-23 13:41:10.170 [DEBUG]  Sent voice response
+{
+  "sessionId": "a5ba8397-fb60-4f2b-9512-3472323aded4",
+  "success": true
+}
+2025-08-23 13:41:10.171 [INFO]  📤 Processing data updates from orchestration response
+{
+  "sessionId": "a5ba8397-fb60-4f2b-9512-3472323aded4",
+  "hasData": true,
+  "dataKeys": [
+    "usage",
+    "finishReason"
+  ],
+  "dataCount": 2
+}
+2025-08-23 13:41:10.171 [DEBUG]  ⏭️ Skipping data update
+{
+  "sessionId": "a5ba8397-fb60-4f2b-9512-3472323aded4",
+  "dataType": "usage",
+  "reason": "metadata type"
+}
+2025-08-23 13:41:10.171 [DEBUG]  ⏭️ Skipping data update
+{
+  "sessionId": "a5ba8397-fb60-4f2b-9512-3472323aded4",
+  "dataType": "finishReason",
+  "reason": "metadata type"
+}
+2025-08-23 13:41:34.007 [INFO]  HTTP Request
+{
+  "method": "GET",
+  "url": "/",
+  "status": 200,
+  "duration": "5ms",
+  "userAgent": "Wget"
+}
+2025-08-23 13:42:34.058 [INFO]  HTTP Request
+{
+  "method": "GET",
+  "url": "/",
+  "status": 200,
+  "duration": "5ms",
+  "userAgent": "Wget"
+}
+2025-08-23 13:43:34.112 [INFO]  HTTP Request
+{
+  "method": "GET",
+  "url": "/",
+  "status": 200,
+  "duration": "4ms",
+  "userAgent": "Wget"
+}
+2025-08-23 13:44:34.164 [INFO]  HTTP Request
+{
+  "method": "GET",
+  "url": "/",
+  "status": 200,
+  "duration": "6ms",
+  "userAgent": "Wget"
+}
+2025-08-23 13:45:34.216 [INFO]  HTTP Request
+{
+  "method": "GET",
+  "url": "/",
+  "status": 200,
+  "duration": "5ms",
+  "userAgent": "Wget"
+}
+2025-08-23 13:45:56.886 [INFO]  Received SIGTERM, shutting down gracefully
+2025-08-23 13:45:57.216 [INFO]  Gemini service initialized
+{
+  "model": "gemini-2.5-pro",
+  "apiConfigured": true
+}
+2025-08-23 13:45:57.217 [INFO]  Orchestrator initialized
+2025-08-23 13:45:57.222 [INFO]  IKAS AI Gateway started
+{
+  "port": 8005,
+  "environment": "development",
+  "keycloakMcp": "http://keycloak-mcp:8001",
+  "neo4jMcp": "http://neo4j-mcp:8002"
+}
+2025-08-23 13:45:57.222 [INFO]  Connecting to WebSocket server
+{
+  "url": "http://websocket-server:3001"
+}
+2025-08-23 13:45:57.241 [INFO]  Connected to WebSocket server
+{
+  "socketId": "3anamLLj4ci3D8rSAAAH"
+}
+2025-08-23 13:45:57.242 [INFO]  WebSocket client connected successfully
+2025-08-23 13:45:57.242 [INFO]  WebSocket session established Welcome to IKAS! Connection established successfully.
+{
+  "sessionId": "b33f6c58-65ac-47af-8334-054659643016"
+}
+2025-08-23 13:45:57.243 [DEBUG]  Subscription confirmed
+{
+  "eventTypes": [
+    "voice:command",
+    "analysis:started",
+    "compliance:check"
+  ],
+  "room": "global"
+}
+2025-08-23 13:46:28.704 [INFO]  Received SIGTERM, shutting down gracefully
+2025-08-23 13:46:29.003 [INFO]  Gemini service initialized
+{
+  "model": "gemini-2.5-pro",
+  "apiConfigured": true
+}
+2025-08-23 13:46:29.004 [INFO]  Orchestrator initialized
+2025-08-23 13:46:29.008 [INFO]  IKAS AI Gateway started
+{
+  "port": 8005,
+  "environment": "development",
+  "keycloakMcp": "http://keycloak-mcp:8001",
+  "neo4jMcp": "http://neo4j-mcp:8002"
+}
+2025-08-23 13:46:29.009 [INFO]  Connecting to WebSocket server
+{
+  "url": "http://websocket-server:3001"
+}
+2025-08-23 13:46:29.028 [INFO]  Connected to WebSocket server
+{
+  "socketId": "RwLucUfvdZ9WVv0UAAAJ"
+}
+2025-08-23 13:46:29.029 [INFO]  WebSocket client connected successfully
+2025-08-23 13:46:29.029 [INFO]  WebSocket session established Welcome to IKAS! Connection established successfully.
+{
+  "sessionId": "760d39ae-19de-4219-81e4-9fcfd4f06e45"
+}
+2025-08-23 13:46:29.029 [DEBUG]  Subscription confirmed
+{
+  "eventTypes": [
+    "voice:command",
+    "analysis:started",
+    "compliance:check"
+  ],
+  "room": "global"
+}
+2025-08-23 13:46:34.273 [INFO]  HTTP Request
+{
+  "method": "GET",
+  "url": "/",
+  "status": 200,
+  "duration": "13ms",
+  "userAgent": "Wget"
+}
+2025-08-23 13:46:56.469 [INFO]  Received SIGTERM, shutting down gracefully
+2025-08-23 13:46:56.745 [INFO]  Gemini service initialized
+{
+  "model": "gemini-2.5-pro",
+  "apiConfigured": true
+}
+2025-08-23 13:46:56.746 [INFO]  Orchestrator initialized
+2025-08-23 13:46:56.750 [INFO]  IKAS AI Gateway started
+{
+  "port": 8005,
+  "environment": "development",
+  "keycloakMcp": "http://keycloak-mcp:8001",
+  "neo4jMcp": "http://neo4j-mcp:8002"
+}
+2025-08-23 13:46:56.751 [INFO]  Connecting to WebSocket server
+{
+  "url": "http://websocket-server:3001"
+}
+2025-08-23 13:46:56.768 [INFO]  Connected to WebSocket server
+{
+  "socketId": "6yhwuOXYQKQIvGpJAAAL"
+}
+2025-08-23 13:46:56.769 [INFO]  WebSocket client connected successfully
+2025-08-23 13:46:56.769 [INFO]  WebSocket session established Welcome to IKAS! Connection established successfully.
+{
+  "sessionId": "ce87b79d-539e-4d07-b24d-ee353e8d028b"
+}
+2025-08-23 13:46:56.769 [DEBUG]  Subscription confirmed
+{
+  "eventTypes": [
+    "voice:command",
+    "analysis:started",
+    "compliance:check"
+  ],
+  "room": "global"
+}
+2025-08-23 13:47:19.366 [INFO]  Received SIGTERM, shutting down gracefully
+2025-08-23 13:47:25.400 [INFO]  Gemini service initialized
+{
+  "model": "gemini-2.5-pro",
+  "apiConfigured": true
+}
+2025-08-23 13:47:25.401 [INFO]  Orchestrator initialized
+2025-08-23 13:47:25.405 [INFO]  IKAS AI Gateway started
+{
+  "port": 8005,
+  "environment": "development",
+  "keycloakMcp": "http://keycloak-mcp:8001",
+  "neo4jMcp": "http://neo4j-mcp:8002"
+}
+2025-08-23 13:47:25.405 [INFO]  Connecting to WebSocket server
+{
+  "url": "http://websocket-server:3001"
+}
+2025-08-23 13:47:25.423 [INFO]  Connected to WebSocket server
+{
+  "socketId": "Ga9eE5pLGDsxQMBGAAAN"
+}
+2025-08-23 13:47:25.424 [INFO]  WebSocket client connected successfully
+2025-08-23 13:47:25.424 [INFO]  WebSocket session established Welcome to IKAS! Connection established successfully.
+{
+  "sessionId": "3b03c065-19b2-4848-b027-42ab36a504b0"
+}
+2025-08-23 13:47:25.425 [DEBUG]  Subscription confirmed
+{
+  "eventTypes": [
+    "voice:command",
+    "analysis:started",
+    "compliance:check"
+  ],
+  "room": "global"
+}
+2025-08-23 13:47:34.339 [INFO]  HTTP Request
+{
+  "method": "GET",
+  "url": "/",
+  "status": 200,
+  "duration": "14ms",
+  "userAgent": "Wget"
+}
+2025-08-23 13:48:34.380 [INFO]  HTTP Request
+{
+  "method": "GET",
+  "url": "/",
+  "status": 200,
+  "duration": "3ms",
+  "userAgent": "Wget"
+}
+2025-08-23 13:49:34.444 [INFO]  HTTP Request
+{
+  "method": "GET",
+  "url": "/",
+  "status": 200,
+  "duration": "7ms",
+  "userAgent": "Wget"
+}
+2025-08-23 13:50:34.502 [INFO]  HTTP Request
+{
+  "method": "GET",
+  "url": "/",
+  "status": 200,
+  "duration": "5ms",
+  "userAgent": "Wget"
+}
+2025-08-23 13:51:34.544 [INFO]  HTTP Request
+{
+  "method": "GET",
+  "url": "/",
+  "status": 200,
+  "duration": "5ms",
+  "userAgent": "Wget"
+}
+2025-08-23 13:52:34.603 [INFO]  HTTP Request
+{
+  "method": "GET",
+  "url": "/",
+  "status": 200,
+  "duration": "5ms",
+  "userAgent": "Wget"
+}
+2025-08-23 13:53:34.654 [INFO]  HTTP Request
+{
+  "method": "GET",
+  "url": "/",
+  "status": 200,
+  "duration": "4ms",
+  "userAgent": "Wget"
+}
+2025-08-23 13:54:34.717 [INFO]  HTTP Request
+{
+  "method": "GET",
+  "url": "/",
+  "status": 200,
+  "duration": "7ms",
+  "userAgent": "Wget"
+}
+2025-08-23 13:55:34.757 [INFO]  HTTP Request
+{
+  "method": "GET",
+  "url": "/",
+  "status": 200,
+  "duration": "4ms",
+  "userAgent": "Wget"
+}
+2025-08-23 13:56:11.512 [INFO]  Received SIGTERM, shutting down gracefully
+2025-08-23 13:56:11.807 [INFO]  Gemini service initialized
+{
+  "model": "gemini-2.5-pro",
+  "apiConfigured": true
+}
+2025-08-23 13:56:11.808 [INFO]  Orchestrator initialized
+2025-08-23 13:56:11.812 [INFO]  IKAS AI Gateway started
+{
+  "port": 8005,
+  "environment": "development",
+  "keycloakMcp": "http://keycloak-mcp:8001",
+  "neo4jMcp": "http://neo4j-mcp:8002"
+}
+2025-08-23 13:56:11.812 [INFO]  Connecting to WebSocket server
+{
+  "url": "http://websocket-server:3001"
+}
+2025-08-23 13:56:11.831 [INFO]  Connected to WebSocket server
+{
+  "socketId": "hntA2J_GfxwUYPN_AAAP"
+}
+2025-08-23 13:56:11.832 [INFO]  WebSocket client connected successfully
+2025-08-23 13:56:11.832 [INFO]  WebSocket session established Welcome to IKAS! Connection established successfully.
+{
+  "sessionId": "74f2a657-eddb-45ca-9f14-1cfbf3973b28"
+}
+2025-08-23 13:56:11.832 [DEBUG]  Subscription confirmed
+{
+  "eventTypes": [
+    "voice:command",
+    "analysis:started",
+    "compliance:check"
+  ],
+  "room": "global"
+}
+2025-08-23 13:56:27.371 [INFO]  Received SIGTERM, shutting down gracefully
+2025-08-23 13:56:27.659 [INFO]  Gemini service initialized
+{
+  "model": "gemini-2.5-pro",
+  "apiConfigured": true
+}
+2025-08-23 13:56:27.660 [INFO]  Orchestrator initialized
+2025-08-23 13:56:27.665 [INFO]  IKAS AI Gateway started
+{
+  "port": 8005,
+  "environment": "development",
+  "keycloakMcp": "http://keycloak-mcp:8001",
+  "neo4jMcp": "http://neo4j-mcp:8002"
+}
+2025-08-23 13:56:27.665 [INFO]  Connecting to WebSocket server
+{
+  "url": "http://websocket-server:3001"
+}
+2025-08-23 13:56:27.681 [INFO]  Connected to WebSocket server
+{
+  "socketId": "-35srO79Q0cMttdcAAAR"
+}
+2025-08-23 13:56:27.682 [INFO]  WebSocket client connected successfully
+2025-08-23 13:56:27.682 [INFO]  WebSocket session established Welcome to IKAS! Connection established successfully.
+{
+  "sessionId": "ddd819c5-3a3f-41a7-858c-770361293f3f"
+}
+2025-08-23 13:56:27.682 [DEBUG]  Subscription confirmed
+{
+  "eventTypes": [
+    "voice:command",
+    "analysis:started",
+    "compliance:check"
+  ],
+  "room": "global"
+}
+2025-08-23 13:56:34.813 [INFO]  HTTP Request
+{
+  "method": "GET",
+  "url": "/",
+  "status": 200,
+  "duration": "12ms",
+  "userAgent": "Wget"
+}
+2025-08-23 13:56:40.865 [INFO]  Received SIGTERM, shutting down gracefully
+2025-08-23 13:56:41.160 [INFO]  Gemini service initialized
+{
+  "model": "gemini-2.5-pro",
+  "apiConfigured": true
+}
+2025-08-23 13:56:41.161 [INFO]  Orchestrator initialized
+2025-08-23 13:56:41.165 [INFO]  IKAS AI Gateway started
+{
+  "port": 8005,
+  "environment": "development",
+  "keycloakMcp": "http://keycloak-mcp:8001",
+  "neo4jMcp": "http://neo4j-mcp:8002"
+}
+2025-08-23 13:56:41.166 [INFO]  Connecting to WebSocket server
+{
+  "url": "http://websocket-server:3001"
+}
+2025-08-23 13:56:41.184 [INFO]  Connected to WebSocket server
+{
+  "socketId": "aLSwSJUwRs0h71wkAAAT"
+}
+2025-08-23 13:56:41.185 [INFO]  WebSocket client connected successfully
+2025-08-23 13:56:41.185 [INFO]  WebSocket session established Welcome to IKAS! Connection established successfully.
+{
+  "sessionId": "cb4e571b-9f2b-4abd-85ca-5e82e98a06ac"
+}
+2025-08-23 13:56:41.185 [DEBUG]  Subscription confirmed
+{
+  "eventTypes": [
+    "voice:command",
+    "analysis:started",
+    "compliance:check"
+  ],
+  "room": "global"
+}
+2025-08-23 13:57:34.858 [INFO]  HTTP Request
+{
+  "method": "GET",
+  "url": "/",
+  "status": 200,
+  "duration": "10ms",
+  "userAgent": "Wget"
+}
+2025-08-23 13:57:44.519 [INFO]  Received SIGTERM, shutting down gracefully
+2025-08-23 13:57:44.812 [INFO]  Gemini service initialized
+{
+  "model": "gemini-2.5-pro",
+  "apiConfigured": true
+}
+2025-08-23 13:57:44.813 [INFO]  Orchestrator initialized
+2025-08-23 13:57:44.817 [INFO]  IKAS AI Gateway started
+{
+  "port": 8005,
+  "environment": "development",
+  "keycloakMcp": "http://keycloak-mcp:8001",
+  "neo4jMcp": "http://neo4j-mcp:8002"
+}
+2025-08-23 13:57:44.817 [INFO]  Connecting to WebSocket server
+{
+  "url": "http://websocket-server:3001"
+}
+2025-08-23 13:57:44.834 [INFO]  Connected to WebSocket server
+{
+  "socketId": "aoFBooFAL1_hrbGlAAAX"
+}
+2025-08-23 13:57:44.834 [INFO]  WebSocket client connected successfully
+2025-08-23 13:57:44.835 [INFO]  WebSocket session established Welcome to IKAS! Connection established successfully.
+{
+  "sessionId": "861101be-2f64-4e60-a592-872abb0b6adf"
+}
+2025-08-23 13:57:44.835 [DEBUG]  Subscription confirmed
+{
+  "eventTypes": [
+    "voice:command",
+    "analysis:started",
+    "compliance:check"
+  ],
+  "room": "global"
+}
+2025-08-23 13:57:50.946 [INFO]  Received SIGTERM, shutting down gracefully
+2025-08-23 13:57:51.232 [INFO]  Gemini service initialized
+{
+  "model": "gemini-2.5-pro",
+  "apiConfigured": true
+}
+2025-08-23 13:57:51.233 [INFO]  Orchestrator initialized
+2025-08-23 13:57:51.238 [INFO]  IKAS AI Gateway started
+{
+  "port": 8005,
+  "environment": "development",
+  "keycloakMcp": "http://keycloak-mcp:8001",
+  "neo4jMcp": "http://neo4j-mcp:8002"
+}
+2025-08-23 13:57:51.238 [INFO]  Connecting to WebSocket server
+{
+  "url": "http://websocket-server:3001"
+}
+2025-08-23 13:57:51.256 [INFO]  Connected to WebSocket server
+{
+  "socketId": "JjoC_93jQbuk-8CUAAAZ"
+}
+2025-08-23 13:57:51.257 [INFO]  WebSocket client connected successfully
+2025-08-23 13:57:51.257 [INFO]  WebSocket session established Welcome to IKAS! Connection established successfully.
+{
+  "sessionId": "bd4b84ca-b388-4bdf-b2ef-160397fa593b"
+}
+2025-08-23 13:57:51.257 [DEBUG]  Subscription confirmed
+{
+  "eventTypes": [
+    "voice:command",
+    "analysis:started",
+    "compliance:check"
+  ],
+  "room": "global"
+}
+2025-08-23 13:57:58.159 [INFO]  Received SIGTERM, shutting down gracefully
+2025-08-23 13:57:58.462 [INFO]  Gemini service initialized
+{
+  "model": "gemini-2.5-pro",
+  "apiConfigured": true
+}
+2025-08-23 13:57:58.463 [INFO]  Orchestrator initialized
+2025-08-23 13:57:58.467 [INFO]  IKAS AI Gateway started
+{
+  "port": 8005,
+  "environment": "development",
+  "keycloakMcp": "http://keycloak-mcp:8001",
+  "neo4jMcp": "http://neo4j-mcp:8002"
+}
+2025-08-23 13:57:58.467 [INFO]  Connecting to WebSocket server
+{
+  "url": "http://websocket-server:3001"
+}
+2025-08-23 13:57:58.484 [INFO]  Connected to WebSocket server
+{
+  "socketId": "cYt0f8_8RYupBDnfAAAb"
+}
+2025-08-23 13:57:58.484 [INFO]  WebSocket client connected successfully
+2025-08-23 13:57:58.485 [INFO]  WebSocket session established Welcome to IKAS! Connection established successfully.
+{
+  "sessionId": "eb926517-e799-4182-a552-2ce8ec8bda92"
+}
+2025-08-23 13:57:58.485 [DEBUG]  Subscription confirmed
+{
+  "eventTypes": [
+    "voice:command",
+    "analysis:started",
+    "compliance:check"
+  ],
+  "room": "global"
+}
+2025-08-23 13:58:34.901 [INFO]  HTTP Request
+{
+  "method": "GET",
+  "url": "/",
+  "status": 200,
+  "duration": "9ms",
+  "userAgent": "Wget"
+}
+2025-08-23 13:59:34.931 [INFO]  HTTP Request
+{
+  "method": "GET",
+  "url": "/",
+  "status": 200,
+  "duration": "3ms",
+  "userAgent": "Wget"
+}
+2025-08-23 14:00:34.982 [INFO]  HTTP Request
+{
+  "method": "GET",
+  "url": "/",
+  "status": 200,
+  "duration": "4ms",
+  "userAgent": "Wget"
+}
+2025-08-23 14:01:35.033 [INFO]  HTTP Request
+{
+  "method": "GET",
+  "url": "/",
+  "status": 200,
+  "duration": "6ms",
+  "userAgent": "Wget"
+}
+2025-08-23 14:02:35.063 [INFO]  HTTP Request
+{
+  "method": "GET",
+  "url": "/",
+  "status": 200,
+  "duration": "3ms",
+  "userAgent": "Wget"
+}
+2025-08-23 14:03:35.116 [INFO]  HTTP Request
+{
+  "method": "GET",
+  "url": "/",
+  "status": 200,
+  "duration": "5ms",
+  "userAgent": "Wget"
+}
+2025-08-23 14:04:35.165 [INFO]  HTTP Request
+{
+  "method": "GET",
+  "url": "/",
+  "status": 200,
+  "duration": "5ms",
+  "userAgent": "Wget"
+}
+2025-08-23 14:05:35.215 [INFO]  HTTP Request
+{
+  "method": "GET",
+  "url": "/",
+  "status": 200,
+  "duration": "5ms",
+  "userAgent": "Wget"
+}
+2025-08-23 14:06:35.264 [INFO]  HTTP Request
+{
+  "method": "GET",
+  "url": "/",
+  "status": 200,
+  "duration": "4ms",
+  "userAgent": "Wget"
+}
+2025-08-23 14:07:35.318 [INFO]  HTTP Request
+{
+  "method": "GET",
+  "url": "/",
+  "status": 200,
+  "duration": "4ms",
+  "userAgent": "Wget"
+}
+2025-08-23 14:08:35.363 [INFO]  HTTP Request
+{
+  "method": "GET",
+  "url": "/",
+  "status": 200,
+  "duration": "3ms",
+  "userAgent": "Wget"
+}
+2025-08-23 14:09:35.409 [INFO]  HTTP Request
+{
+  "method": "GET",
+  "url": "/",
+  "status": 200,
+  "duration": "4ms",
+  "userAgent": "Wget"
+}
+2025-08-23 14:10:35.459 [INFO]  HTTP Request
+{
+  "method": "GET",
+  "url": "/",
+  "status": 200,
+  "duration": "4ms",
+  "userAgent": "Wget"
+}
+2025-08-23 14:11:35.510 [INFO]  HTTP Request
+{
+  "method": "GET",
+  "url": "/",
+  "status": 200,
+  "duration": "6ms",
+  "userAgent": "Wget"
+}
+2025-08-23 14:11:42.030 [INFO]  Received SIGTERM, shutting down gracefully
+2025-08-23 14:11:42.318 [INFO]  Gemini service initialized
+{
+  "model": "gemini-2.5-pro",
+  "apiConfigured": true
+}
+2025-08-23 14:11:42.319 [INFO]  Orchestrator initialized
+2025-08-23 14:11:42.323 [INFO]  IKAS AI Gateway started
+{
+  "port": 8005,
+  "environment": "development",
+  "keycloakMcp": "http://keycloak-mcp:8001",
+  "neo4jMcp": "http://neo4j-mcp:8002"
+}
+2025-08-23 14:11:42.324 [INFO]  Connecting to WebSocket server
+{
+  "url": "http://websocket-server:3001"
+}
+2025-08-23 14:11:42.342 [INFO]  Connected to WebSocket server
+{
+  "socketId": "vPGHbOxuVDEIJyKtAAAf"
+}
+2025-08-23 14:11:42.343 [INFO]  WebSocket client connected successfully
+2025-08-23 14:11:42.343 [INFO]  WebSocket session established Welcome to IKAS! Connection established successfully.
+{
+  "sessionId": "60715a2f-6d8c-450b-87e0-0ad7d4eab0df"
+}
+2025-08-23 14:11:42.343 [DEBUG]  Subscription confirmed
+{
+  "eventTypes": [
+    "voice:command",
+    "analysis:started",
+    "compliance:check"
+  ],
+  "room": "global"
+}
+2025-08-23 14:11:51.230 [INFO]  Received SIGTERM, shutting down gracefully
+2025-08-23 14:11:51.691 [INFO]  Gemini service initialized
+{
+  "model": "gemini-2.5-pro",
+  "apiConfigured": true
+}
+2025-08-23 14:11:51.692 [INFO]  Orchestrator initialized
+2025-08-23 14:11:51.696 [INFO]  IKAS AI Gateway started
+{
+  "port": 8005,
+  "environment": "development",
+  "keycloakMcp": "http://keycloak-mcp:8001",
+  "neo4jMcp": "http://neo4j-mcp:8002"
+}
+2025-08-23 14:11:51.696 [INFO]  Connecting to WebSocket server
+{
+  "url": "http://websocket-server:3001"
+}
+2025-08-23 14:11:51.715 [INFO]  Connected to WebSocket server
+{
+  "socketId": "CZbt9KWz9VYseuF4AAAh"
+}
+2025-08-23 14:11:51.716 [INFO]  WebSocket client connected successfully
+2025-08-23 14:11:51.716 [INFO]  WebSocket session established Welcome to IKAS! Connection established successfully.
+{
+  "sessionId": "cfd86ca4-6918-4113-a99a-2968e438e74b"
+}
+2025-08-23 14:11:51.716 [DEBUG]  Subscription confirmed
+{
+  "eventTypes": [
+    "voice:command",
+    "analysis:started",
+    "compliance:check"
+  ],
+  "room": "global"
+}
+2025-08-23 14:12:04.985 [INFO]  Received SIGTERM, shutting down gracefully
+2025-08-23 14:12:05.302 [INFO]  Gemini service initialized
+{
+  "model": "gemini-2.5-pro",
+  "apiConfigured": true
+}
+2025-08-23 14:12:05.304 [INFO]  Orchestrator initialized
+2025-08-23 14:12:05.308 [INFO]  IKAS AI Gateway started
+{
+  "port": 8005,
+  "environment": "development",
+  "keycloakMcp": "http://keycloak-mcp:8001",
+  "neo4jMcp": "http://neo4j-mcp:8002"
+}
+2025-08-23 14:12:05.308 [INFO]  Connecting to WebSocket server
+{
+  "url": "http://websocket-server:3001"
+}
+2025-08-23 14:12:05.328 [INFO]  Connected to WebSocket server
+{
+  "socketId": "zdn9jwW6IP0_6VPQAAAj"
+}
+2025-08-23 14:12:05.328 [INFO]  WebSocket client connected successfully
+2025-08-23 14:12:05.329 [INFO]  WebSocket session established Welcome to IKAS! Connection established successfully.
+{
+  "sessionId": "f270659a-5b5d-43e7-83aa-e208c18abd4e"
+}
+2025-08-23 14:12:05.329 [DEBUG]  Subscription confirmed
+{
+  "eventTypes": [
+    "voice:command",
+    "analysis:started",
+    "compliance:check"
+  ],
+  "room": "global"
+}
+2025-08-23 14:12:15.999 [INFO]  Received SIGTERM, shutting down gracefully
+2025-08-23 14:12:16.293 [INFO]  Gemini service initialized
+{
+  "model": "gemini-2.5-pro",
+  "apiConfigured": true
+}
+2025-08-23 14:12:16.294 [INFO]  Orchestrator initialized
+2025-08-23 14:12:16.298 [INFO]  IKAS AI Gateway started
+{
+  "port": 8005,
+  "environment": "development",
+  "keycloakMcp": "http://keycloak-mcp:8001",
+  "neo4jMcp": "http://neo4j-mcp:8002"
+}
+2025-08-23 14:12:16.299 [INFO]  Connecting to WebSocket server
+{
+  "url": "http://websocket-server:3001"
+}
+2025-08-23 14:12:16.316 [INFO]  Connected to WebSocket server
+{
+  "socketId": "3J3hoVvkJrYmb3kEAAAl"
+}
+2025-08-23 14:12:16.317 [INFO]  WebSocket client connected successfully
+2025-08-23 14:12:16.318 [INFO]  WebSocket session established Welcome to IKAS! Connection established successfully.
+{
+  "sessionId": "721d55c4-c529-48e4-a96a-657463f1c57d"
+}
+2025-08-23 14:12:16.318 [DEBUG]  Subscription confirmed
+{
+  "eventTypes": [
+    "voice:command",
+    "analysis:started",
+    "compliance:check"
+  ],
+  "room": "global"
+}
+2025-08-23 14:12:21.802 [INFO]  Received SIGTERM, shutting down gracefully
+2025-08-23 14:12:22.142 [INFO]  Gemini service initialized
+{
+  "model": "gemini-2.5-pro",
+  "apiConfigured": true
+}
+2025-08-23 14:12:22.143 [INFO]  Orchestrator initialized
+2025-08-23 14:12:22.147 [INFO]  IKAS AI Gateway started
+{
+  "port": 8005,
+  "environment": "development",
+  "keycloakMcp": "http://keycloak-mcp:8001",
+  "neo4jMcp": "http://neo4j-mcp:8002"
+}
+2025-08-23 14:12:22.148 [INFO]  Connecting to WebSocket server
+{
+  "url": "http://websocket-server:3001"
+}
+2025-08-23 14:12:22.166 [INFO]  Connected to WebSocket server
+{
+  "socketId": "szJjIirhp7fuaqIvAAAn"
+}
+2025-08-23 14:12:22.167 [INFO]  WebSocket client connected successfully
+2025-08-23 14:12:22.167 [INFO]  WebSocket session established Welcome to IKAS! Connection established successfully.
+{
+  "sessionId": "ff09726d-c0f1-4649-ab8e-2bc31af2dd50"
+}
+2025-08-23 14:12:22.168 [DEBUG]  Subscription confirmed
+{
+  "eventTypes": [
+    "voice:command",
+    "analysis:started",
+    "compliance:check"
+  ],
+  "room": "global"
+}
+2025-08-23 14:12:28.881 [INFO]  Received SIGTERM, shutting down gracefully
+2025-08-23 14:12:29.184 [INFO]  Gemini service initialized
+{
+  "model": "gemini-2.5-pro",
+  "apiConfigured": true
+}
+2025-08-23 14:12:29.185 [INFO]  Orchestrator initialized
+2025-08-23 14:12:29.189 [INFO]  IKAS AI Gateway started
+{
+  "port": 8005,
+  "environment": "development",
+  "keycloakMcp": "http://keycloak-mcp:8001",
+  "neo4jMcp": "http://neo4j-mcp:8002"
+}
+2025-08-23 14:12:29.190 [INFO]  Connecting to WebSocket server
+{
+  "url": "http://websocket-server:3001"
+}
+2025-08-23 14:12:29.210 [INFO]  Connected to WebSocket server
+{
+  "socketId": "grwu6icOS3bYDKj4AAAp"
+}
+2025-08-23 14:12:29.210 [INFO]  WebSocket client connected successfully
+2025-08-23 14:12:29.211 [INFO]  WebSocket session established Welcome to IKAS! Connection established successfully.
+{
+  "sessionId": "106173a3-d0a1-4292-b928-1d2074b4616a"
+}
+2025-08-23 14:12:29.211 [DEBUG]  Subscription confirmed
+{
+  "eventTypes": [
+    "voice:command",
+    "analysis:started",
+    "compliance:check"
+  ],
+  "room": "global"
+}
+2025-08-23 14:12:35.569 [INFO]  HTTP Request
+{
+  "method": "GET",
+  "url": "/",
+  "status": 200,
+  "duration": "12ms",
+  "userAgent": "Wget"
+}
+2025-08-23 14:12:52.677 [INFO]  Received SIGTERM, shutting down gracefully
+2025-08-23 14:12:53.002 [INFO]  Gemini service initialized
+{
+  "model": "gemini-2.5-pro",
+  "apiConfigured": true
+}
+2025-08-23 14:12:53.003 [INFO]  Orchestrator initialized
+2025-08-23 14:12:53.007 [INFO]  IKAS AI Gateway started
+{
+  "port": 8005,
+  "environment": "development",
+  "keycloakMcp": "http://keycloak-mcp:8001",
+  "neo4jMcp": "http://neo4j-mcp:8002"
+}
+2025-08-23 14:12:53.008 [INFO]  Connecting to WebSocket server
+{
+  "url": "http://websocket-server:3001"
+}
+2025-08-23 14:12:53.025 [INFO]  Connected to WebSocket server
+{
+  "socketId": "MnI6vCVIj3COYiYJAAAr"
+}
+2025-08-23 14:12:53.025 [INFO]  WebSocket client connected successfully
+2025-08-23 14:12:53.026 [INFO]  WebSocket session established Welcome to IKAS! Connection established successfully.
+{
+  "sessionId": "a4617396-6995-4d95-99d7-a0179ff19535"
+}
+2025-08-23 14:12:53.026 [DEBUG]  Subscription confirmed
+{
+  "eventTypes": [
+    "voice:command",
+    "analysis:started",
+    "compliance:check"
+  ],
+  "room": "global"
+}
+2025-08-23 14:13:21.710 [INFO]  Received SIGTERM, shutting down gracefully
+2025-08-23 14:13:21.999 [INFO]  Gemini service initialized
+{
+  "model": "gemini-2.5-pro",
+  "apiConfigured": true
+}
+2025-08-23 14:13:22.000 [INFO]  Orchestrator initialized
+2025-08-23 14:13:22.004 [INFO]  IKAS AI Gateway started
+{
+  "port": 8005,
+  "environment": "development",
+  "keycloakMcp": "http://keycloak-mcp:8001",
+  "neo4jMcp": "http://neo4j-mcp:8002"
+}
+2025-08-23 14:13:22.005 [INFO]  Connecting to WebSocket server
+{
+  "url": "http://websocket-server:3001"
+}
+2025-08-23 14:13:22.024 [INFO]  Connected to WebSocket server
+{
+  "socketId": "l8TU2ztY4ehTE4VLAAAt"
+}
+2025-08-23 14:13:22.024 [INFO]  WebSocket client connected successfully
+2025-08-23 14:13:22.025 [INFO]  WebSocket session established Welcome to IKAS! Connection established successfully.
+{
+  "sessionId": "d938f09a-dfa1-49aa-b39f-16b34a13c4e9"
+}
+2025-08-23 14:13:22.025 [DEBUG]  Subscription confirmed
+{
+  "eventTypes": [
+    "voice:command",
+    "analysis:started",
+    "compliance:check"
+  ],
+  "room": "global"
+}
+2025-08-23 14:13:35.612 [INFO]  HTTP Request
+{
+  "method": "GET",
+  "url": "/",
+  "status": 200,
+  "duration": "7ms",
+  "userAgent": "Wget"
+}
+2025-08-23 14:14:35.660 [INFO]  HTTP Request
+{
+  "method": "GET",
+  "url": "/",
+  "status": 200,
+  "duration": "6ms",
+  "userAgent": "Wget"
+}
+2025-08-23 14:15:35.716 [INFO]  HTTP Request
+{
+  "method": "GET",
+  "url": "/",
+  "status": 200,
+  "duration": "5ms",
+  "userAgent": "Wget"
+}
+2025-08-23 14:16:35.796 [INFO]  HTTP Request
+{
+  "method": "GET",
+  "url": "/",
+  "status": 200,
+  "duration": "6ms",
+  "userAgent": "Wget"
+}
+2025-08-23 14:17:35.837 [INFO]  HTTP Request
+{
+  "method": "GET",
+  "url": "/",
+  "status": 200,
+  "duration": "4ms",
+  "userAgent": "Wget"
+}
+2025-08-23 14:18:35.885 [INFO]  HTTP Request
+{
+  "method": "GET",
+  "url": "/",
+  "status": 200,
+  "duration": "4ms",
+  "userAgent": "Wget"
+}

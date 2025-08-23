@@ -6,6 +6,7 @@
   "scripts": {
     "build": "tsc",
     "dev": "tsx watch src/main.ts",
+    "dev:docker": "tsx watch --clear-screen=false src/main.ts",
     "start": "node dist/main.js",
     "test": "jest",
     "test:integration": "jest --testPathPattern=integration",
@@ -14,7 +15,13 @@
     "lint": "eslint src --ext .ts",
     "lint:fix": "eslint src --ext .ts --fix",
     "format": "prettier --write 'src/**/*.ts'",
-    "type-check": "tsc --noEmit"
+    "type-check": "tsc --noEmit",
+    "docker:dev": "cd ../docker && docker-compose -f docker-compose.dev.yml --profile hot-reload up ai-gateway-hot",
+    "docker:dev:build": "cd ../docker && docker-compose -f docker-compose.dev.yml build ai-gateway-hot",
+    "docker:dev:logs": "cd ../docker && docker-compose -f docker-compose.dev.yml logs -f ai-gateway-hot",
+    "docker:dev:down": "cd ../docker && docker-compose -f docker-compose.dev.yml --profile hot-reload down",
+    "docker:dev:restart": "npm run docker:dev:down && npm run docker:dev",
+    "docker:hotreload": "cd ../docker && docker-compose -f docker-compose.dev.yml -f docker-compose.dev-hotreload.yml up ai-gateway"
   },
   "keywords": [
     "keycloak",

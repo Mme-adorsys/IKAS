@@ -1,0 +1,75 @@
+# .dockerignore for AI Gateway
+
+# Development files
+*.log
+logs/
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Dependencies (will be installed in container)
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Build artifacts (not needed for development Dockerfile)
+dist/
+build/
+*.tgz
+*.tar.gz
+
+# IDE and editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Git
+.git/
+.gitignore
+README.md
+
+# Testing
+coverage/
+.coverage
+.nyc_output
+
+# Temporary files
+tmp/
+temp/
+.tmp/
+
+# Docker files (except development)
+Dockerfile
+.dockerignore
+
+# Scripts that shouldn't be in container
+scripts/
+*.sh
+
+# TypeScript cache
+*.tsbuildinfo
+
+# ESLint cache
+.eslintcache
+
+# Prettier cache
+.prettierrc
+
+# Test files (unless specifically needed)
+tests/
+__tests__/
+*.test.ts
+*.spec.ts
