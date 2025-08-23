@@ -1,8 +1,10 @@
 import { GoogleGenerativeAI, GenerativeModel, SchemaType, FunctionCallingMode } from '@google/generative-ai';
 import { logger, geminiLogger, RequestTracker } from '../utils/logger';
-import { config } from '../utils/config';
+import { config, getProviderConfig } from '../utils/config';
 import { ToolDefinition } from '../types';
 import { withRetry, CircuitBreaker, GEMINI_RETRY_CONFIG, GEMINI_CIRCUIT_BREAKER_CONFIG, CircuitBreakerOpenError } from '../utils/retry';
+import { LLMService, LLMProvider, LLMChatRequest, LLMChatResponse, LLMFunctionProcessingResult, LLMFunction, LLMFunctionCall } from './llm-interface';
+import { LLMUtils, LLMError } from '../types/llm';
 
 export interface GeminiFunction {
   name: string;
@@ -40,29 +42,40 @@ export interface GeminiChatResponse {
   finishReason: string;
   usage?: {
     promptTokens: number;
-    candidatesTokens: number;
+    completionTokens: number;
     totalTokens: number;
   };
 }
 
-export class GeminiService {
+export class GeminiService extends LLMService {
+  readonly provider = LLMProvider.GEMINI;
+  readonly model: string;
+  
   private genAI: GoogleGenerativeAI;
-  private model: GenerativeModel;
+  private generativeModel: GenerativeModel;
   private chatHistory: Map<string, GeminiMessage[]> = new Map();
   private circuitBreaker: CircuitBreaker;
 
   constructor() {
-    this.genAI = new GoogleGenerativeAI(config.GEMINI_API_KEY);
+    super();
+    
+    const providerConfig = getProviderConfig();
+    if (!providerConfig.apiKey) {
+      throw new LLMError(LLMProvider.GEMINI, 'NO_API_KEY', 'Gemini API key is required');
+    }
+    
+    this.model = providerConfig.model;
+    this.genAI = new GoogleGenerativeAI(providerConfig.apiKey);
     this.circuitBreaker = new CircuitBreaker(GEMINI_CIRCUIT_BREAKER_CONFIG);
 
     // Initialize the model with function calling support
-    this.model = this.genAI.getGenerativeModel({
-      model: 'gemini-2.5-pro',
+    this.generativeModel = this.genAI.getGenerativeModel({
+      model: this.model,
       generationConfig: {
-        temperature: 0.1, // Lower temperature for more consistent responses
+        temperature: providerConfig.temperature,
         topK: 40,
-        topP: 0.95,
-        maxOutputTokens: 8192,
+        topP: providerConfig.topP,
+        maxOutputTokens: providerConfig.maxTokens,
       },
       toolConfig: {
         functionCallingConfig: {
@@ -99,9 +112,28 @@ IMPORTANT: When writing to Neo4j, always include a complete 'query' parameter wi
     });
 
     logger.info('Gemini service initialized', {
-      model: 'gemini-2.5-pro',
-      apiConfigured: !!config.GEMINI_API_KEY
+      provider: this.provider,
+      model: this.model,
+      apiConfigured: !!providerConfig.apiKey,
+      temperature: providerConfig.temperature,
+      maxTokens: providerConfig.maxTokens
     });
+  }
+
+  async isAvailable(): Promise<boolean> {
+    try {
+      // Try a simple request to check if the service is available
+      const testModel = this.genAI.getGenerativeModel({ model: this.model });
+      await testModel.generateContent('test');
+      return true;
+    } catch (error) {
+      geminiLogger.warn('Gemini service availability check failed', {
+        provider: this.provider,
+        model: this.model,
+        error: error instanceof Error ? error.message : String(error)
+      });
+      return false;
+    }
   }
 
   convertMcpToolsToGeminiFormat(mcpTools: Record<string, ToolDefinition[]>): GeminiFunction[] {
@@ -132,7 +164,28 @@ IMPORTANT: When writing to Neo4j, always include a complete 'query' parameter wi
     return geminiTools;
   }
 
-  async chat(request: GeminiChatRequest): Promise<GeminiChatResponse> {
+  private convertToGeminiTools(llmTools: LLMFunction[]): GeminiFunction[] {
+    return llmTools.map(tool => ({
+      name: tool.name,
+      description: tool.description,
+      parameters: tool.parameters
+    }));
+  }
+
+  async chat(request: LLMChatRequest): Promise<LLMChatResponse> {
+    // Convert LLM interface types to Gemini-specific types
+    const geminiRequest: GeminiChatRequest = {
+      message: request.message,
+      sessionId: request.sessionId,
+      tools: this.convertToGeminiTools(request.tools || []),
+      context: request.context,
+      functionCallingMode: FunctionCallingMode.AUTO
+    };
+    
+    return this.chatWithGeminiTypes(geminiRequest);
+  }
+
+  async chatWithGeminiTypes(request: GeminiChatRequest): Promise<LLMChatResponse> {
     const { message, sessionId, tools, context, functionCallingMode = FunctionCallingMode.AUTO } = request;
     const requestId = RequestTracker.startRequest({ sessionId, type: 'gemini_chat' });
 
@@ -151,7 +204,7 @@ IMPORTANT: When writing to Neo4j, always include a complete 'query' parameter wi
       let history = this.validateChatHistory(this.chatHistory.get(sessionId) || []);
 
       // Create chat session with tools
-      const chat = this.model.startChat({
+      const chat = this.generativeModel.startChat({
         history: history,
         tools: tools.length > 0 ? [{
           functionDeclarations: tools.map(tool => ({
@@ -368,7 +421,7 @@ IMPORTANT: When writing to Neo4j, always include a complete 'query' parameter wi
         finishReason: response.candidates?.[0]?.finishReason || 'STOP',
         usage: response.usageMetadata ? {
           promptTokens: response.usageMetadata.promptTokenCount,
-          candidatesTokens: response.usageMetadata.candidatesTokenCount,
+          completionTokens: response.usageMetadata.candidatesTokenCount,
           totalTokens: response.usageMetadata.totalTokenCount
         } : undefined
       };
@@ -405,11 +458,29 @@ IMPORTANT: When writing to Neo4j, always include a complete 'query' parameter wi
 
   async processFunctionCalls(
     sessionId: string,
+    functionCalls: LLMFunctionCall[],
+    functionExecutor: (call: LLMFunctionCall) => Promise<any>,
+    tools: LLMFunction[]
+  ): Promise<LLMFunctionProcessingResult> {
+    // Convert to Gemini types for internal processing
+    const geminiTools: GeminiFunction[] = this.convertToGeminiTools(tools);
+    const geminiCalls = functionCalls.map(call => ({ name: call.name, args: call.args }));
+    
+    return this.processFunctionCallsWithGeminiTypes(
+      sessionId, 
+      geminiCalls, 
+      functionExecutor as any, 
+      geminiTools
+    );
+  }
+
+  async processFunctionCallsWithGeminiTypes(
+    sessionId: string,
     functionCalls: Array<{ name: string; args: Record<string, any> }>,
     functionExecutor: (call: { name: string; args: Record<string, any> }) => Promise<any>,
     tools: GeminiFunction[],
     functionCallingMode: FunctionCallingMode = FunctionCallingMode.AUTO
-  ): Promise<{ response: string; additionalFunctionCalls?: Array<{ name: string; args: Record<string, any> }> }> {
+  ): Promise<LLMFunctionProcessingResult> {
     const requestId = RequestTracker.startRequest({ sessionId, type: 'function_processing' });
 
     try {
@@ -461,7 +532,7 @@ IMPORTANT: When writing to Neo4j, always include a complete 'query' parameter wi
       }
 
       // Create a new chat session with the updated history including function responses
-      const chat = this.model.startChat({
+      const chat = this.generativeModel.startChat({
         history: history,
         tools: tools.length > 0 ? [{
           functionDeclarations: tools.map(tool => ({
@@ -610,7 +681,8 @@ IMPORTANT: When writing to Neo4j, always include a complete 'query' parameter wi
 
       return {
         response: responseText,
-        additionalFunctionCalls: additionalFunctionCalls.length > 0 ? additionalFunctionCalls : undefined
+        additionalFunctionCalls: additionalFunctionCalls.length > 0 ? 
+          additionalFunctionCalls.map(call => ({ name: call.name, args: call.args })) : undefined
       };
 
     } catch (error) {
@@ -760,7 +832,7 @@ IMPORTANT: When writing to Neo4j, always include a complete 'query' parameter wi
     const oneHourAgo = Date.now() - (60 * 60 * 1000);
     let cleaned = 0;
 
-    for (const sessionId of this.chatHistory.keys()) {
+    for (const sessionId of Array.from(this.chatHistory.keys())) {
       // Simple heuristic: if sessionId looks like a timestamp and is old, remove it
       if (sessionId.includes('-') && parseInt(sessionId.split('-')[0]) < oneHourAgo) {
         this.chatHistory.delete(sessionId);

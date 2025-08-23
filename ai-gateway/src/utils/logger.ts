@@ -1,4 +1,4 @@
-import winston from 'winston';
+import * as winston from 'winston';
 import { v4 as uuidv4 } from 'uuid';
 
 // Custom formatter for development with pretty printing

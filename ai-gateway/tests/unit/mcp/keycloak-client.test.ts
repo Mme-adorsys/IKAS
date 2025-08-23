@@ -44,10 +44,7 @@ describe('KeycloakMCPClient', () => {
 
       expect(result.success).toBe(true);
       expect(result.data?.userId).toBeDefined();
-      expect((client as any).httpClient.post).toHaveBeenCalledWith('/call-tool', {
-        tool: 'create-user',
-        arguments: userData
-      });
+      expect((client as any).httpClient.post).toHaveBeenCalledWith('/tools/create-user', userData);
     });
 
     it('should handle creation errors', async () => {
@@ -95,10 +92,7 @@ describe('KeycloakMCPClient', () => {
 
       expect(result.success).toBe(true);
       expect(result.data).toHaveLength(2);
-      expect((client as any).httpClient.post).toHaveBeenCalledWith('/call-tool', {
-        tool: 'list-users',
-        arguments: { realm: 'master', max: 100 }
-      });
+      expect((client as any).httpClient.post).toHaveBeenCalledWith('/tools/list-users', { realm: 'master', max: 100 });
     });
   });
 
