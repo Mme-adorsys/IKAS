@@ -83,7 +83,9 @@ healthRouter.get('/', async (req, res) => {
       lastChecked: new Date().toISOString()
     };
     
-    const overallHealthy = keycloakHealth.status === 'healthy' && neo4jHealth.status === 'healthy' && websocketHealth.status === 'healthy';
+    // WebSocket is optional for basic API functionality - only require MCP services to be healthy
+    const mcpHealthy = keycloakHealth.status === 'healthy' && neo4jHealth.status === 'healthy';
+    const overallHealthy = mcpHealthy; // WebSocket connection is not required for basic operations
     
     const healthStatus: HealthStatus = {
       status: overallHealthy ? 'healthy' : 'unhealthy',

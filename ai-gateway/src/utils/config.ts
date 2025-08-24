@@ -102,7 +102,7 @@ export function getDefaultModel(provider: string): string {
   const modelDefaults: Record<string, string> = {
     'gemini': 'gemini-2.5-pro',
     'ollama': 'llama3',
-    'anthropic': 'claude-3-opus-20240229',
+    'anthropic': 'claude-3-sonnet-20240229',
     'openai': 'gpt-4-turbo'
   };
   

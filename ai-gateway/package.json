@@ -34,6 +34,7 @@
   "author": "IKAS Development Team",
   "license": "MIT",
   "dependencies": {
+    "@anthropic-ai/sdk": "^0.60.0",
     "@google/generative-ai": "^0.21.0",
     "axios": "^1.11.0",
     "cors": "^2.8.5",

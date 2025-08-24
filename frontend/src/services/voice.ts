@@ -245,7 +245,7 @@ export class VoiceService {
         resolve();
       };
 
-      utterance.onerror = (event) => {
+      utterance.onerror = (event: SpeechSynthesisErrorEvent) => {
         console.error('Speech synthesis error:', event);
         reject(new Error('Fehler bei der Sprachausgabe'));
       };

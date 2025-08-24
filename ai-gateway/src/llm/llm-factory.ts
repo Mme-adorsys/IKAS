@@ -12,9 +12,9 @@ import { logger } from '../utils/logger';
 
 // Import provider services
 import { GeminiService } from './gemini-service';
+import { AnthropicService } from './anthropic-service';
 // Note: These will be imported as we implement them
 // import { OllamaService } from './ollama-service';
-// import { AnthropicService } from './anthropic-service';
 // import { OpenAIService } from './openai-service';
 
 /**
@@ -167,16 +167,7 @@ export class LLMFactory {
         }
 
       case LLMProvider.ANTHROPIC:
-        try {
-          // eslint-disable-next-line @typescript-eslint/no-var-requires
-          const { AnthropicService } = require('./anthropic-service');
-          return new AnthropicService();
-        } catch (error) {
-          throw new LLMUnavailableError(
-            provider,
-            'AnthropicService not available. Run: npm install @anthropic-ai/sdk'
-          );
-        }
+        return new AnthropicService();
 
       case LLMProvider.OPENAI:
         try {
