@@ -506,3 +506,110 @@
   "attempts": 11,
   "maxAttempts": 10
 }
+2025-08-24 10:24:33.114 [ERROR] [980c45e8] Anthropic chat request failed
+{
+  "sessionId": "1756030956239",
+  "duration": 191,
+  "error": "400 {\"type\":\"error\",\"error\":{\"type\":\"invalid_request_error\",\"message\":\"messages.12: `tool_use` ids were found without `tool_result` blocks immediately after: toolu_012Uc9wNDVyDdQDHKTqsDvTy. Each `tool_use` block must have a corresponding `tool_result` block in the next message.\"},\"request_id\":\"req_011CSSNXQfRdykPeWzi4k9AK\"}"
+}
+2025-08-24 10:24:33.118 [ERROR] [ef5d98c3] ❌ Orchestration request failed
+{
+  "sessionId": "1756030956239",
+  "userInput": "check the users in the graph, find out which realm they belong to and sync the informationen to the graph.",
+  "duration": "197ms",
+  "error": "400 {\"type\":\"error\",\"error\":{\"type\":\"invalid_request_error\",\"message\":\"messages.12: `tool_use` ids were found without `tool_result` blocks immediately after: toolu_012Uc9wNDVyDdQDHKTqsDvTy. Each `tool_use` block must have a corresponding `tool_result` block in the next message.\"},\"request_id\":\"req_011CSSNXQfRdykPeWzi4k9AK\"}",
+  "stack": "LLMError: 400 {\"type\":\"error\",\"error\":{\"type\":\"invalid_request_error\",\"message\":\"messages.12: `tool_use` ids were found without `tool_result` blocks immediately after: toolu_012Uc9wNDVyDdQDHKTqsDvTy. Each `tool_use` block must have a corresponding `tool_result` block in the next message.\"},\"request_id\":\"req_011CSSNXQfRdykPeWzi4k9AK\"}\n    at AnthropicService.chat (/app/src/llm/anthropic-service.ts:182:13)\n    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)\n    at Orchestrator.processRequest (/app/src/orchestration/orchestrator.ts:122:27)\n    at <anonymous> (/app/src/api/orchestration.ts:102:22)",
+  "context": {
+    "realm": "master",
+    "preferredLanguage": "en",
+    "priority": "normal"
+  }
+}
+2025-08-24 10:28:28.724 [ERROR] [4876fa08] Anthropic chat request failed
+{
+  "sessionId": "1756031084948",
+  "duration": 212,
+  "error": "400 {\"type\":\"error\",\"error\":{\"type\":\"invalid_request_error\",\"message\":\"messages.12: `tool_use` ids were found without `tool_result` blocks immediately after: toolu_01XBDx9jjyRjWXSc6EsCNtyf. Each `tool_use` block must have a corresponding `tool_result` block in the next message.\"},\"request_id\":\"req_011CSSNpmyK7AUQ4KnfaRaRn\"}"
+}
+2025-08-24 10:28:28.729 [ERROR] [f136f16f] ❌ Orchestration request failed
+{
+  "sessionId": "1756031084948",
+  "userInput": "read the realm and user informationen from keycloak and write it to the graph. Create the connections between the realm and the user",
+  "duration": "229ms",
+  "error": "400 {\"type\":\"error\",\"error\":{\"type\":\"invalid_request_error\",\"message\":\"messages.12: `tool_use` ids were found without `tool_result` blocks immediately after: toolu_01XBDx9jjyRjWXSc6EsCNtyf. Each `tool_use` block must have a corresponding `tool_result` block in the next message.\"},\"request_id\":\"req_011CSSNpmyK7AUQ4KnfaRaRn\"}",
+  "stack": "LLMError: 400 {\"type\":\"error\",\"error\":{\"type\":\"invalid_request_error\",\"message\":\"messages.12: `tool_use` ids were found without `tool_result` blocks immediately after: toolu_01XBDx9jjyRjWXSc6EsCNtyf. Each `tool_use` block must have a corresponding `tool_result` block in the next message.\"},\"request_id\":\"req_011CSSNpmyK7AUQ4KnfaRaRn\"}\n    at AnthropicService.chat (/app/src/llm/anthropic-service.ts:182:13)\n    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)\n    at Orchestrator.processRequest (/app/src/orchestration/orchestrator.ts:122:27)\n    at <anonymous> (/app/src/api/orchestration.ts:102:22)",
+  "context": {
+    "realm": "master",
+    "preferredLanguage": "en",
+    "priority": "normal"
+  }
+}
+2025-08-24 10:38:40.434 [ERROR]  WebSocket connection error
+{
+  "error": "timeout",
+  "attempts": 1,
+  "maxAttempts": 10
+}
+2025-08-24 10:39:46.448 [ERROR]  WebSocket connection error
+{
+  "error": "timeout",
+  "attempts": 1,
+  "maxAttempts": 10
+}
+2025-08-24 10:40:08.824 [ERROR]  WebSocket connection error
+{
+  "error": "timeout",
+  "attempts": 2,
+  "maxAttempts": 10
+}
+2025-08-24 10:40:33.197 [ERROR]  WebSocket connection error
+{
+  "error": "timeout",
+  "attempts": 3,
+  "maxAttempts": 10
+}
+2025-08-24 10:40:58.210 [ERROR]  WebSocket connection error
+{
+  "error": "timeout",
+  "attempts": 4,
+  "maxAttempts": 10
+}
+2025-08-24 10:41:23.225 [ERROR]  WebSocket connection error
+{
+  "error": "timeout",
+  "attempts": 5,
+  "maxAttempts": 10
+}
+2025-08-24 10:41:48.237 [ERROR]  WebSocket connection error
+{
+  "error": "timeout",
+  "attempts": 6,
+  "maxAttempts": 10
+}
+2025-08-24 10:42:13.246 [ERROR]  WebSocket connection error
+{
+  "error": "timeout",
+  "attempts": 7,
+  "maxAttempts": 10
+}
+2025-08-24 10:42:38.259 [ERROR]  WebSocket connection error
+{
+  "error": "timeout",
+  "attempts": 8,
+  "maxAttempts": 10
+}
+esult` block must have a corresponding `tool_use` block in the previous message.\"},\"request_id\":\"req_011CSSPqbygk1DVTg44rnAi1\"}"
+}
+2025-08-24 12:41:46.808 [ERROR] [087c4a0d] ❌ Orchestration request failed
+{
+  "sessionId": "bcb1f16a-023c-453c-9ce4-f39f37d0fe4b",
+  "userInput": "sync initial system data",
+  "duration": "2978ms",
+  "error": "400 {\"type\":\"error\",\"error\":{\"type\":\"invalid_request_error\",\"message\":\"messages.2.content.0: unexpected `tool_use_id` found in `tool_result` blocks: toolu_01C8M4XQ46vPEstSvetkmoDV. Each `tool_result` block must have a corresponding `tool_use` block in the previous message.\"},\"request_id\":\"req_011CSSPqbygk1DVTg44rnAi1\"}",
+  "stack": "LLMError: 400 {\"type\":\"error\",\"error\":{\"type\":\"invalid_request_error\",\"message\":\"messages.2.content.0: unexpected `tool_use_id` found in `tool_result` blocks: toolu_01C8M4XQ46vPEstSvetkmoDV. Each `tool_result` block must have a corresponding `tool_use` block in the previous message.\"},\"request_id\":\"req_011CSSPqbygk1DVTg44rnAi1\"}\n    at AnthropicService.processFunctionCalls (/Users/marcelmeyer/IdeaProjects/IKAS Project/IKAS/ai-gateway/src/llm/anthropic-service.ts:313:13)\n    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)\n    at async Orchestrator.processRequest (/Users/marcelmeyer/IdeaProjects/IKAS Project/IKAS/ai-gateway/src/orchestration/orchestrator.ts:176:31)\n    at async WebSocketClient.processWithOrchestrator (/Users/marcelmeyer/IdeaProjects/IKAS Project/IKAS/ai-gateway/src/websocket/client.ts:325:12)\n    at async WebSocketClient.handleVoiceCommand (/Users/marcelmeyer/IdeaProjects/IKAS Project/IKAS/ai-gateway/src/websocket/client.ts:187:24)",
+  "context": {
+    "source": "voice",
+    "confidence": 1,
+    "language": "de-DE"
+  }
+}

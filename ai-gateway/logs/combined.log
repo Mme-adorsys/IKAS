@@ -19241,7 +19241,260 @@ allCount": 1,
   "duration": "4ms",
   "userAgent": "Wget"
 }
-oolCount": 11,
+2025-08-24 10:04:36.222 [INFO]  HTTP Request
+{
+  "method": "GET",
+  "url": "/",
+  "status": 200,
+  "duration": "4ms",
+  "userAgent": "Wget"
+}
+2025-08-24 10:05:36.297 [INFO]  HTTP Request
+{
+  "method": "GET",
+  "url": "/",
+  "status": 200,
+  "duration": "5ms",
+  "userAgent": "Wget"
+}
+2025-08-24 10:06:36.365 [INFO]  HTTP Request
+{
+  "method": "GET",
+  "url": "/",
+  "status": 200,
+  "duration": "4ms",
+  "userAgent": "Wget"
+}
+2025-08-24 10:07:36.412 [INFO]  HTTP Request
+{
+  "method": "GET",
+  "url": "/",
+  "status": 200,
+  "duration": "4ms",
+  "userAgent": "Wget"
+}
+2025-08-24 10:08:36.443 [INFO]  HTTP Request
+{
+  "method": "GET",
+  "url": "/",
+  "status": 200,
+  "duration": "3ms",
+  "userAgent": "Wget"
+}
+2025-08-24 10:09:36.493 [INFO]  HTTP Request
+{
+  "method": "GET",
+  "url": "/",
+  "status": 200,
+  "duration": "4ms",
+  "userAgent": "Wget"
+}
+2025-08-24 10:10:36.541 [INFO]  HTTP Request
+{
+  "method": "GET",
+  "url": "/",
+  "status": 200,
+  "duration": "3ms",
+  "userAgent": "Wget"
+}
+2025-08-24 10:11:36.593 [INFO]  HTTP Request
+{
+  "method": "GET",
+  "url": "/",
+  "status": 200,
+  "duration": "4ms",
+  "userAgent": "Wget"
+}
+2025-08-24 10:12:36.651 [INFO]  HTTP Request
+{
+  "method": "GET",
+  "url": "/",
+  "status": 200,
+  "duration": "4ms",
+  "userAgent": "Wget"
+}
+2025-08-24 10:13:36.701 [INFO]  HTTP Request
+{
+  "method": "GET",
+  "url": "/",
+  "status": 200,
+  "duration": "4ms",
+  "userAgent": "Wget"
+}
+2025-08-24 10:14:36.748 [INFO]  HTTP Request
+{
+  "method": "GET",
+  "url": "/",
+  "status": 200,
+  "duration": "3ms",
+  "userAgent": "Wget"
+}
+2025-08-24 10:15:36.796 [INFO]  HTTP Request
+{
+  "method": "GET",
+  "url": "/",
+  "status": 200,
+  "duration": "3ms",
+  "userAgent": "Wget"
+}
+2025-08-24 10:16:36.854 [INFO]  HTTP Request
+{
+  "method": "GET",
+  "url": "/",
+  "status": 200,
+  "duration": "4ms",
+  "userAgent": "Wget"
+}
+2025-08-24 10:17:36.906 [INFO]  HTTP Request
+{
+  "method": "GET",
+  "url": "/",
+  "status": 200,
+  "duration": "5ms",
+  "userAgent": "Wget"
+}
+2025-08-24 10:18:36.955 [INFO]  HTTP Request
+{
+  "method": "GET",
+  "url": "/",
+  "status": 200,
+  "duration": "3ms",
+  "userAgent": "Wget"
+}
+2025-08-24 10:19:37.011 [INFO]  HTTP Request
+{
+  "method": "GET",
+  "url": "/",
+  "status": 200,
+  "duration": "4ms",
+  "userAgent": "Wget"
+}
+2025-08-24 10:20:37.053 [INFO]  HTTP Request
+{
+  "method": "GET",
+  "url": "/",
+  "status": 200,
+  "duration": "3ms",
+  "userAgent": "Wget"
+}
+2025-08-24 10:21:37.105 [INFO]  HTTP Request
+{
+  "method": "GET",
+  "url": "/",
+  "status": 200,
+  "duration": "5ms",
+  "userAgent": "Wget"
+}
+2025-08-24 10:22:36.262 [INFO]  Chat request received
+{
+  "sessionId": "1756030956239",
+  "messageLength": 28,
+  "realm": "master",
+  "priority": "normal"
+}
+2025-08-24 10:22:36.267 [INFO] [d23221f6] 🎯 Starting orchestration request
+{
+  "sessionId": "1756030956239",
+  "userInput": "write all users to the graph",
+  "inputLength": 28,
+  "realm": "master",
+  "context": {
+    "realm": "master",
+    "preferredLanguage": "en",
+    "priority": "normal"
+  }
+}
+2025-08-24 10:22:36.268 [DEBUG]  Determining execution strategy
+{
+  "userInput": "write all users to the graph",
+  "inputLength": 28,
+  "realm": "master"
+}
+2025-08-24 10:22:36.268 [INFO]  Using default COORDINATED_MULTI_MCP strategy
+2025-08-24 10:22:36.268 [INFO] [d23221f6] 📋 Strategy determined
+{
+  "sessionId": "1756030956239",
+  "strategy": "coordinated_multi_mcp",
+  "wasProvided": false,
+  "reasoning": "Auto-selected by router"
+}
+2025-08-24 10:22:36.268 [INFO]  Discovering MCP tools from servers
+2025-08-24 10:22:36.269 [INFO]  Keycloak MCP client initialized
+{
+  "url": "http://keycloak-mcp:8001"
+}
+2025-08-24 10:22:36.269 [INFO]  Neo4j MCP client initialized
+{
+  "url": "http://neo4j-mcp:8002"
+}
+2025-08-24 10:22:36.269 [DEBUG]  Listing tools for keycloak
+2025-08-24 10:22:36.270 [DEBUG]  Listing tools for neo4j
+2025-08-24 10:22:36.270 [DEBUG]  MCP Request [keycloak]
+{
+  "method": "GET",
+  "url": "/tools",
+  "baseURL": "http://keycloak-mcp:8001"
+}
+2025-08-24 10:22:36.270 [DEBUG]  MCP Request [neo4j]
+{
+  "method": "GET",
+  "url": "/tools",
+  "baseURL": "http://neo4j-mcp:8002"
+}
+2025-08-24 10:22:36.273 [DEBUG]  MCP Response [keycloak]
+{
+  "status": 200,
+  "url": "/tools"
+}
+2025-08-24 10:22:36.273 [DEBUG]  Keycloak tools discovered
+{
+  "count": 8
+}
+2025-08-24 10:22:36.273 [DEBUG]  MCP Response [neo4j]
+{
+  "status": 200,
+  "url": "/tools"
+}
+2025-08-24 10:22:36.274 [DEBUG]  Neo4j tools discovered
+{
+  "count": 3
+}
+2025-08-24 10:22:36.274 [DEBUG]  MCP Request [keycloak]
+{
+  "method": "GET",
+  "url": "/health",
+  "baseURL": "http://keycloak-mcp:8001"
+}
+2025-08-24 10:22:36.274 [DEBUG]  MCP Request [neo4j]
+{
+  "method": "GET",
+  "url": "/health",
+  "baseURL": "http://neo4j-mcp:8002"
+}
+2025-08-24 10:22:36.276 [DEBUG]  MCP Response [keycloak]
+{
+  "status": 200,
+  "url": "/health"
+}
+2025-08-24 10:22:36.277 [DEBUG]  MCP Response [neo4j]
+{
+  "status": 200,
+  "url": "/health"
+}
+2025-08-24 10:22:36.277 [INFO]  MCP tool discovery completed
+{
+  "keycloakTools": 8,
+  "neo4jTools": 3,
+  "totalTools": 11,
+  "keycloakHealthy": true,
+  "neo4jHealthy": true
+}
+2025-08-24 10:22:36.278 [INFO] [d23221f6] 🛠️ Tools selected for request
+{
+  "sessionId": "1756030956239",
+  "strategy": "coordinated_multi_mcp",
+  "intent": "all",
+  "toolCount": 11,
   "availableTools": [
     {
       "name": "create-user",
@@ -19289,185 +19542,66 @@ oolCount": 11,
     }
   ]
 }
-2025-08-24 11:59:25.150 [DEBUG]  Skipping pre-processing - Gemini will handle orchestration
+2025-08-24 10:22:36.278 [DEBUG]  Skipping pre-processing - Gemini will handle orchestration
 {
   "strategy": "coordinated_multi_mcp",
   "realm": "master"
 }
-2025-08-24 11:59:25.150 [INFO] [c5f955d5] 🧠 Sending request to Gemini sync initial system data
+2025-08-24 10:22:36.278 [INFO] [d23221f6] 🧠 Sending request to Gemini write all users to the graph
 {
-  "sessionId": "e436080c-36b2-4f00-8f54-9c33f83d66d2",
+  "sessionId": "1756030956239",
   "toolCount": 11,
   "functionCallingMode": "ANY",
   "context": {
+    "realm": "master",
     "language": "en"
   }
 }
-2025-08-24 11:59:25.151 [DEBUG] [46dbf3de] Sending chat request to Anthropic
+2025-08-24 10:22:36.279 [DEBUG] [5fa4cc72] Sending chat request to Anthropic
 {
-  "sessionId": "e436080c-36b2-4f00-8f54-9c33f83d66d2",
-  "model": "claude-3-5-sonnet-20241022",
-  "messageLength": 24,
+  "sessionId": "1756030956239",
+  "model": "claude-opus-4-1-20250805",
+  "messageLength": 44,
   "toolsCount": 11,
   "historyLength": 1
 }
-2025-08-24 11:59:28.167 [INFO] [46dbf3de] Anthropic chat completed
+2025-08-24 10:22:37.153 [INFO]  HTTP Request
 {
-  "sessionId": "e436080c-36b2-4f00-8f54-9c33f83d66d2",
+  "method": "GET",
+  "url": "/",
+  "status": 200,
+  "duration": "4ms",
+  "userAgent": "Wget"
+}
+2025-08-24 10:22:43.240 [INFO] [5fa4cc72] Anthropic chat completed
+{
+  "sessionId": "1756030956239",
   "finishReason": "function_call",
   "functionCallsCount": 1,
-  "responseLength": 384,
+  "responseLength": 610,
   "usage": {
-    "promptTokens": 1985,
-    "completionTokens": 145,
-    "totalTokens": 2130
+    "promptTokens": 1993,
+    "completionTokens": 213,
+    "totalTokens": 2206
   }
 }
-2025-08-24 11:59:28.168 [INFO] [c5f955d5] 🎭 LLM response received
+2025-08-24 10:22:43.241 [INFO] [d23221f6] 🎭 LLM response received
 {
-  "sessionId": "e436080c-36b2-4f00-8f54-9c33f83d66d2",
+  "sessionId": "1756030956239",
   "provider": "anthropic",
-  "model": "claude-3-5-sonnet-20241022",
+  "model": "claude-opus-4-1-20250805",
   "hasResponse": true,
-  "responseLength": 384,
+  "responseLength": 610,
   "hasFunctionCalls": true,
   "functionCallCount": 1,
   "functionNames": [
-    "get_neo4j_schema"
-  ]
-}
-2025-08-24 11:59:28.168 [INFO] [c5f955d5] ⚙️ Starting function call execution (iteration 1)
-{
-  "sessionId": "e436080c-36b2-4f00-8f54-9c33f83d66d2",
-  "iteration": 1,
-  "functionCount": 1,
-  "functions": [
-    {
-      "name": "get_neo4j_schema",
-      "argKeys": []
-    }
-  ]
-}
-2025-08-24 11:59:28.168 [INFO] [dc7402e6] Processing function calls via Anthropic
-{
-  "sessionId": "e436080c-36b2-4f00-8f54-9c33f83d66d2",
-  "functionCallsCount": 1
-}
-2025-08-24 11:59:28.168 [DEBUG]  Executing function call
-{
-  "serverName": "neo4j",
-  "toolName": "get_neo4j_schema",
-  "args": {}
-}
-2025-08-24 11:59:28.169 [DEBUG]  MCP Request [neo4j]
-{
-  "method": "POST",
-  "url": "/tools/get_neo4j_schema",
-  "baseURL": "http://localhost:8002"
-}
-2025-08-24 11:59:28.346 [DEBUG]  MCP Response [neo4j]
-{
-  "status": 200,
-  "url": "/tools/get_neo4j_schema"
-}
-2025-08-24 11:59:28.348 [DEBUG]  🔗 Neo4j tool result stored
-{
-  "serverName": "neo4j",
-  "toolName": "get_neo4j_schema",
-  "resultKey": "neo4j_get_neo4j_schema",
-  "success": true,
-  "hasData": true,
-  "dataType": "object",
-  "dataSize": 3
-}
-2025-08-24 11:59:28.348 [DEBUG] [dc7402e6] Function call executed successfully
-{
-  "functionName": "get_neo4j_schema",
-  "resultLength": 1665
-}
-2025-08-24 11:59:29.888 [INFO] [dc7402e6] Function call processing completed
-{
-  "sessionId": "e436080c-36b2-4f00-8f54-9c33f83d66d2",
-  "duration": 1720,
-  "additionalFunctionCalls": 1
-}
-2025-08-24 11:59:29.889 [INFO] [c5f955d5] 🔧 Gemini requested more function calls
-{
-  "sessionId": "e436080c-36b2-4f00-8f54-9c33f83d66d2",
-  "iteration": 1,
-  "additionalFunctionCount": 1,
-  "functions": [
-    "list-realms"
-  ]
-}
-2025-08-24 11:59:29.889 [INFO] [c5f955d5] ⚙️ Starting function call execution (iteration 2)
-{
-  "sessionId": "e436080c-36b2-4f00-8f54-9c33f83d66d2",
-  "iteration": 2,
-  "functionCount": 1,
-  "functions": [
-    {
-      "name": "list-realms",
-      "argKeys": []
-    }
-  ]
-}
-2025-08-24 11:59:29.889 [INFO] [1f531d20] Processing function calls via Anthropic
-{
-  "sessionId": "e436080c-36b2-4f00-8f54-9c33f83d66d2",
-  "functionCallsCount": 1
-}
-2025-08-24 11:59:29.890 [DEBUG]  Executing function call
-{
-  "serverName": "keycloak",
-  "toolName": "list-realms",
-  "args": {}
-}
-2025-08-24 11:59:29.890 [DEBUG]  MCP Request [keycloak]
-{
-  "method": "POST",
-  "url": "/tools/list-realms",
-  "baseURL": "http://localhost:8001"
-}
-2025-08-24 11:59:30.619 [DEBUG]  MCP Response [keycloak]
-{
-  "status": 200,
-  "url": "/tools/list-realms"
-}
-2025-08-24 11:59:30.620 [DEBUG]  🔗 Keycloak tool result stored
-{
-  "serverName": "keycloak",
-  "toolName": "list-realms",
-  "resultKey": "keycloak_list-realms",
-  "success": true,
-  "hasData": true,
-  "dataType": "object",
-  "dataSize": 3
-}
-2025-08-24 11:59:30.620 [DEBUG] [1f531d20] Function call executed successfully
-{
-  "functionName": "list-realms",
-  "resultLength": 301
-}
-2025-08-24 11:59:31.811 [INFO] [1f531d20] Function call processing completed
-{
-  "sessionId": "e436080c-36b2-4f00-8f54-9c33f83d66d2",
-  "duration": 1922,
-  "additionalFunctionCalls": 1
-}
-2025-08-24 11:59:31.812 [INFO] [c5f955d5] 🔧 Gemini requested more function calls
-{
-  "sessionId": "e436080c-36b2-4f00-8f54-9c33f83d66d2",
-  "iteration": 2,
-  "additionalFunctionCount": 1,
-  "functions": [
     "list-users"
   ]
 }
-2025-08-24 11:59:31.812 [INFO] [c5f955d5] ⚙️ Starting function call execution (iteration 3)
+2025-08-24 10:22:43.242 [INFO] [d23221f6] ⚙️ Starting function call execution (iteration 1)
 {
-  "sessionId": "e436080c-36b2-4f00-8f54-9c33f83d66d2",
-  "iteration": 3,
+  "sessionId": "1756030956239",
+  "iteration": 1,
   "functionCount": 1,
   "functions": [
     {
@@ -19476,29 +19610,29 @@ oolCount": 11,
     }
   ]
 }
-2025-08-24 11:59:31.813 [INFO] [4cfea218] Processing function calls via Anthropic
+2025-08-24 10:22:43.243 [INFO] [77bc17e0] Processing function calls via Anthropic
 {
-  "sessionId": "e436080c-36b2-4f00-8f54-9c33f83d66d2",
+  "sessionId": "1756030956239",
   "functionCallsCount": 1
 }
-2025-08-24 11:59:31.813 [DEBUG]  Executing function call
+2025-08-24 10:22:43.245 [DEBUG]  Executing function call
 {
   "serverName": "keycloak",
   "toolName": "list-users",
   "args": {}
 }
-2025-08-24 11:59:31.814 [DEBUG]  MCP Request [keycloak]
+2025-08-24 10:22:43.246 [DEBUG]  MCP Request [keycloak]
 {
   "method": "POST",
   "url": "/tools/list-users",
-  "baseURL": "http://localhost:8001"
+  "baseURL": "http://keycloak-mcp:8001"
 }
-2025-08-24 11:59:32.044 [DEBUG]  MCP Response [keycloak]
+2025-08-24 10:22:43.455 [DEBUG]  MCP Response [keycloak]
 {
   "status": 200,
   "url": "/tools/list-users"
 }
-2025-08-24 11:59:32.045 [DEBUG]  🔗 Keycloak tool result stored
+2025-08-24 10:22:43.455 [DEBUG]  🔗 Keycloak tool result stored
 {
   "serverName": "keycloak",
   "toolName": "list-users",
@@ -19508,29 +19642,161 @@ oolCount": 11,
   "dataType": "object",
   "dataSize": 3
 }
-2025-08-24 11:59:32.046 [DEBUG] [4cfea218] Function call executed successfully
+2025-08-24 10:22:43.456 [DEBUG] [77bc17e0] Function call executed successfully
 {
   "functionName": "list-users",
   "resultLength": 549
 }
-2025-08-24 11:59:35.182 [INFO] [4cfea218] Function call processing completed
+2025-08-24 10:22:45.950 [INFO] [77bc17e0] Function call processing completed
 {
-  "sessionId": "e436080c-36b2-4f00-8f54-9c33f83d66d2",
-  "duration": 3369,
+  "sessionId": "1756030956239",
+  "duration": 2707,
   "additionalFunctionCalls": 1
 }
-2025-08-24 11:59:35.183 [INFO] [c5f955d5] 🔧 Gemini requested more function calls
+2025-08-24 10:22:45.951 [INFO] [d23221f6] 🔧 Gemini requested more function calls
 {
-  "sessionId": "e436080c-36b2-4f00-8f54-9c33f83d66d2",
+  "sessionId": "1756030956239",
+  "iteration": 1,
+  "additionalFunctionCount": 1,
+  "functions": [
+    "get_neo4j_schema"
+  ]
+}
+2025-08-24 10:22:45.951 [INFO] [d23221f6] ⚙️ Starting function call execution (iteration 2)
+{
+  "sessionId": "1756030956239",
+  "iteration": 2,
+  "functionCount": 1,
+  "functions": [
+    {
+      "name": "get_neo4j_schema",
+      "argKeys": []
+    }
+  ]
+}
+2025-08-24 10:22:45.952 [INFO] [a34214f2] Processing function calls via Anthropic
+{
+  "sessionId": "1756030956239",
+  "functionCallsCount": 1
+}
+2025-08-24 10:22:45.952 [DEBUG]  Executing function call
+{
+  "serverName": "neo4j",
+  "toolName": "get_neo4j_schema",
+  "args": {}
+}
+2025-08-24 10:22:45.953 [DEBUG]  MCP Request [neo4j]
+{
+  "method": "POST",
+  "url": "/tools/get_neo4j_schema",
+  "baseURL": "http://neo4j-mcp:8002"
+}
+2025-08-24 10:22:45.966 [DEBUG]  MCP Response [neo4j]
+{
+  "status": 200,
+  "url": "/tools/get_neo4j_schema"
+}
+2025-08-24 10:22:45.967 [DEBUG]  🔗 Neo4j tool result stored
+{
+  "serverName": "neo4j",
+  "toolName": "get_neo4j_schema",
+  "resultKey": "neo4j_get_neo4j_schema",
+  "success": true,
+  "hasData": true,
+  "dataType": "object",
+  "dataSize": 3
+}
+2025-08-24 10:22:45.967 [DEBUG] [a34214f2] Function call executed successfully
+{
+  "functionName": "get_neo4j_schema",
+  "resultLength": 201
+}
+2025-08-24 10:23:04.195 [INFO] [a34214f2] Function call processing completed
+{
+  "sessionId": "1756030956239",
+  "duration": 18243,
+  "additionalFunctionCalls": 1
+}
+2025-08-24 10:23:04.196 [INFO] [d23221f6] 🔧 Gemini requested more function calls
+{
+  "sessionId": "1756030956239",
+  "iteration": 2,
+  "additionalFunctionCount": 1,
+  "functions": [
+    "write_neo4j_cypher"
+  ]
+}
+2025-08-24 10:23:04.196 [INFO] [d23221f6] ⚙️ Starting function call execution (iteration 3)
+{
+  "sessionId": "1756030956239",
+  "iteration": 3,
+  "functionCount": 1,
+  "functions": [
+    {
+      "name": "write_neo4j_cypher",
+      "argKeys": [
+        "query"
+      ]
+    }
+  ]
+}
+2025-08-24 10:23:04.197 [INFO] [f2305627] Processing function calls via Anthropic
+{
+  "sessionId": "1756030956239",
+  "functionCallsCount": 1
+}
+2025-08-24 10:23:04.198 [DEBUG]  Executing function call
+{
+  "serverName": "neo4j",
+  "toolName": "write_neo4j_cypher",
+  "args": {
+    "query": "// Clear existing User nodes from master realm to ensure clean sync\nMATCH (u:User {realm: 'master'})\nDETACH DELETE u;\n\n// Create User nodes for all Keycloak users\nWITH [\n  {\n    id: 'f94ecd17-ce46-4663-98e4-0137fa8d82ae',\n    username: 'admin',\n    enabled: true,\n    emailVerified: false,\n    createdTimestamp: 1755611843167,\n    realm: 'master'\n  },\n  {\n    id: '6189b406-e03d-4db5-82d7-285b279cd243',\n    username: 'jane.smith.test',\n    email: 'jane.smith@ikas-test.com',\n    firstName: 'Jane',\n    lastName: 'Smith',\n    enabled: true,\n    emailVerified: false,\n    createdTimestamp: 1755976235457,\n    realm: 'master'\n  }\n] AS users\n\nUNWIND users AS userData\nCREATE (u:User:KeycloakUser)\nSET u = userData,\n    u.syncedAt = timestamp(),\n    u.source = 'keycloak'\nRETURN count(u) as usersCreated, collect(u.username) as usernames"
+  }
+}
+2025-08-24 10:23:04.199 [DEBUG]  MCP Request [neo4j]
+{
+  "method": "POST",
+  "url": "/tools/write_neo4j_cypher",
+  "baseURL": "http://neo4j-mcp:8002"
+}
+2025-08-24 10:23:04.211 [DEBUG]  MCP Response [neo4j]
+{
+  "status": 200,
+  "url": "/tools/write_neo4j_cypher"
+}
+2025-08-24 10:23:04.212 [DEBUG]  🔗 Neo4j tool result stored
+{
+  "serverName": "neo4j",
+  "toolName": "write_neo4j_cypher",
+  "resultKey": "neo4j_write_neo4j_cypher",
+  "success": true,
+  "hasData": true,
+  "dataType": "object",
+  "dataSize": 3
+}
+2025-08-24 10:23:04.212 [DEBUG] [f2305627] Function call executed successfully
+{
+  "functionName": "write_neo4j_cypher",
+  "resultLength": 399
+}
+2025-08-24 10:23:22.153 [INFO] [f2305627] Function call processing completed
+{
+  "sessionId": "1756030956239",
+  "duration": 17955,
+  "additionalFunctionCalls": 1
+}
+2025-08-24 10:23:22.153 [INFO] [d23221f6] 🔧 Gemini requested more function calls
+{
+  "sessionId": "1756030956239",
   "iteration": 3,
   "additionalFunctionCount": 1,
   "functions": [
     "write_neo4j_cypher"
   ]
 }
-2025-08-24 11:59:35.183 [INFO] [c5f955d5] ⚙️ Starting function call execution (iteration 4)
+2025-08-24 10:23:22.153 [INFO] [d23221f6] ⚙️ Starting function call execution (iteration 4)
 {
-  "sessionId": "e436080c-36b2-4f00-8f54-9c33f83d66d2",
+  "sessionId": "1756030956239",
   "iteration": 4,
   "functionCount": 1,
   "functions": [
@@ -19542,31 +19808,31 @@ oolCount": 11,
     }
   ]
 }
-2025-08-24 11:59:35.183 [INFO] [b9579d90] Processing function calls via Anthropic
+2025-08-24 10:23:22.154 [INFO] [79e68b21] Processing function calls via Anthropic
 {
-  "sessionId": "e436080c-36b2-4f00-8f54-9c33f83d66d2",
+  "sessionId": "1756030956239",
   "functionCallsCount": 1
 }
-2025-08-24 11:59:35.183 [DEBUG]  Executing function call
+2025-08-24 10:23:22.154 [DEBUG]  Executing function call
 {
   "serverName": "neo4j",
   "toolName": "write_neo4j_cypher",
   "args": {
-    "query": "MERGE (r:Realm {id: '6c618ad6-25b4-4db2-91fc-511035abcaa8'})\nSET r.name = 'master',\n    r.displayName = 'Keycloak',\n    r.enabled = true"
+    "query": "// Merge User nodes for all Keycloak users from master realm\nUNWIND [\n  {\n    id: 'f94ecd17-ce46-4663-98e4-0137fa8d82ae',\n    username: 'admin',\n    enabled: true,\n    emailVerified: false,\n    createdTimestamp: 1755611843167,\n    realm: 'master'\n  },\n  {\n    id: '6189b406-e03d-4db5-82d7-285b279cd243',\n    username: 'jane.smith.test',\n    email: 'jane.smith@ikas-test.com',\n    firstName: 'Jane',\n    lastName: 'Smith',\n    enabled: true,\n    emailVerified: false,\n    createdTimestamp: 1755976235457,\n    realm: 'master'\n  }\n] AS userData\nMERGE (u:User:KeycloakUser {id: userData.id})\nSET u = userData,\n    u.syncedAt = timestamp(),\n    u.source = 'keycloak'\nRETURN count(u) as usersCreated, collect(u.username) as usernames"
   }
 }
-2025-08-24 11:59:35.184 [DEBUG]  MCP Request [neo4j]
+2025-08-24 10:23:22.155 [DEBUG]  MCP Request [neo4j]
 {
   "method": "POST",
   "url": "/tools/write_neo4j_cypher",
-  "baseURL": "http://localhost:8002"
+  "baseURL": "http://neo4j-mcp:8002"
 }
-2025-08-24 11:59:35.317 [DEBUG]  MCP Response [neo4j]
+2025-08-24 10:23:22.292 [DEBUG]  MCP Response [neo4j]
 {
   "status": 200,
   "url": "/tools/write_neo4j_cypher"
 }
-2025-08-24 11:59:35.318 [DEBUG]  🔗 Neo4j tool result stored
+2025-08-24 10:23:22.292 [DEBUG]  🔗 Neo4j tool result stored
 {
   "serverName": "neo4j",
   "toolName": "write_neo4j_cypher",
@@ -19576,110 +19842,1352 @@ oolCount": 11,
   "dataType": "object",
   "dataSize": 3
 }
-2025-08-24 11:59:35.319 [DEBUG] [b9579d90] Function call executed successfully
-{
-  "functionName": "write_neo4j_cypher",
-  "resultLength": 339
-}
-2025-08-24 11:59:39.748 [INFO] [b9579d90] Function call processing completed
-{
-  "sessionId": "e436080c-36b2-4f00-8f54-9c33f83d66d2",
-  "duration": 4565,
-  "additionalFunctionCalls": 1
-}
-2025-08-24 11:59:39.749 [INFO] [c5f955d5] 🔧 Gemini requested more function calls
-{
-  "sessionId": "e436080c-36b2-4f00-8f54-9c33f83d66d2",
-  "iteration": 4,
-  "additionalFunctionCount": 1,
-  "functions": [
-    "write_neo4j_cypher"
-  ]
-}
-2025-08-24 11:59:39.749 [INFO] [c5f955d5] ⚙️ Starting function call execution (iteration 5)
-{
-  "sessionId": "e436080c-36b2-4f00-8f54-9c33f83d66d2",
-  "iteration": 5,
-  "functionCount": 1,
-  "functions": [
-    {
-      "name": "write_neo4j_cypher",
-      "argKeys": [
-        "query"
-      ]
-    }
-  ]
-}
-2025-08-24 11:59:39.750 [INFO] [0d982f8d] Processing function calls via Anthropic
-{
-  "sessionId": "e436080c-36b2-4f00-8f54-9c33f83d66d2",
-  "functionCallsCount": 1
-}
-2025-08-24 11:59:39.750 [DEBUG]  Executing function call
-{
-  "serverName": "neo4j",
-  "toolName": "write_neo4j_cypher",
-  "args": {
-    "query": "UNWIND [\n  {\n    id: 'f94ecd17-ce46-4663-98e4-0137fa8d82ae',\n    username: 'admin',\n    enabled: true,\n    emailVerified: false,\n    createdTimestamp: 1755611843167,\n    realm: 'master'\n  },\n  {\n    id: '6189b406-e03d-4db5-82d7-285b279cd243',\n    username: 'jane.smith.test',\n    email: 'jane.smith@ikas-test.com',\n    firstName: 'Jane',\n    lastName: 'Smith',\n    enabled: true,\n    emailVerified: false,\n    createdTimestamp: 1755976235457,\n    realm: 'master'\n  }\n] AS userData\nMERGE (u:User {id: userData.id})\nSET u += userData,\n    u.lastSync = timestamp()\nWITH u, userData\nMATCH (r:Realm {name: userData.realm})\nMERGE (u)-[:BELONGS_TO]->(r)"
-  }
-}
-2025-08-24 11:59:39.751 [DEBUG]  MCP Request [neo4j]
-{
-  "method": "POST",
-  "url": "/tools/write_neo4j_cypher",
-  "baseURL": "http://localhost:8002"
-}
-2025-08-24 11:59:39.962 [DEBUG]  MCP Response [neo4j]
-{
-  "status": 200,
-  "url": "/tools/write_neo4j_cypher"
-}
-2025-08-24 11:59:39.964 [DEBUG]  🔗 Neo4j tool result stored
-{
-  "serverName": "neo4j",
-  "toolName": "write_neo4j_cypher",
-  "resultKey": "neo4j_write_neo4j_cypher",
-  "success": true,
-  "hasData": true,
-  "dataType": "object",
-  "dataSize": 3
-}
-2025-08-24 11:59:39.964 [DEBUG] [0d982f8d] Function call executed successfully
+2025-08-24 10:23:22.292 [DEBUG] [79e68b21] Function call executed successfully
 {
   "functionName": "write_neo4j_cypher",
   "resultLength": 340
 }
-2025-08-24 11:59:42.120 [INFO] [0d982f8d] Function call processing completed
+2025-08-24 10:23:32.906 [INFO] [79e68b21] Function call processing completed
 {
-  "sessionId": "e436080c-36b2-4f00-8f54-9c33f83d66d2",
-  "duration": 2370,
+  "sessionId": "1756030956239",
+  "duration": 10752,
   "additionalFunctionCalls": 1
 }
-2025-08-24 11:59:42.121 [INFO] [c5f955d5] 🔧 Gemini requested more function calls
+2025-08-24 10:23:32.906 [INFO] [d23221f6] 🔧 Gemini requested more function calls
 {
-  "sessionId": "e436080c-36b2-4f00-8f54-9c33f83d66d2",
+  "sessionId": "1756030956239",
+  "iteration": 4,
+  "additionalFunctionCount": 1,
+  "functions": [
+    "read_neo4j_cypher"
+  ]
+}
+2025-08-24 10:23:32.907 [INFO] [d23221f6] ⚙️ Starting function call execution (iteration 5)
+{
+  "sessionId": "1756030956239",
+  "iteration": 5,
+  "functionCount": 1,
+  "functions": [
+    {
+      "name": "read_neo4j_cypher",
+      "argKeys": [
+        "query"
+      ]
+    }
+  ]
+}
+2025-08-24 10:23:32.907 [INFO] [1b22d297] Processing function calls via Anthropic
+{
+  "sessionId": "1756030956239",
+  "functionCallsCount": 1
+}
+2025-08-24 10:23:32.908 [DEBUG]  Executing function call
+{
+  "serverName": "neo4j",
+  "toolName": "read_neo4j_cypher",
+  "args": {
+    "query": "// Verify synchronized users\nMATCH (u:User:KeycloakUser {realm: 'master'})\nRETURN u.id as id, \n       u.username as username, \n       u.email as email,\n       u.firstName as firstName,\n       u.lastName as lastName,\n       u.enabled as enabled,\n       u.emailVerified as emailVerified,\n       datetime({epochMillis: u.createdTimestamp}) as createdAt,\n       datetime({epochMillis: u.syncedAt}) as syncedAt\nORDER BY u.createdTimestamp"
+  }
+}
+2025-08-24 10:23:32.910 [DEBUG]  MCP Request [neo4j]
+{
+  "method": "POST",
+  "url": "/tools/read_neo4j_cypher",
+  "baseURL": "http://neo4j-mcp:8002"
+}
+2025-08-24 10:23:32.917 [DEBUG]  MCP Response [neo4j]
+{
+  "status": 200,
+  "url": "/tools/read_neo4j_cypher"
+}
+2025-08-24 10:23:32.918 [DEBUG]  🔗 Neo4j tool result stored
+{
+  "serverName": "neo4j",
+  "toolName": "read_neo4j_cypher",
+  "resultKey": "neo4j_read_neo4j_cypher",
+  "success": true,
+  "hasData": true,
+  "dataType": "object",
+  "dataSize": 3
+}
+2025-08-24 10:23:32.918 [DEBUG] [1b22d297] Function call executed successfully
+{
+  "functionName": "read_neo4j_cypher",
+  "resultLength": 248
+}
+2025-08-24 10:23:37.192 [INFO]  HTTP Request
+{
+  "method": "GET",
+  "url": "/",
+  "status": 200,
+  "duration": "2ms",
+  "userAgent": "Wget"
+}
+2025-08-24 10:23:37.303 [INFO] [1b22d297] Function call processing completed
+{
+  "sessionId": "1756030956239",
+  "duration": 4396,
+  "additionalFunctionCalls": 1
+}
+2025-08-24 10:23:37.304 [INFO] [d23221f6] 🔧 Gemini requested more function calls
+{
+  "sessionId": "1756030956239",
   "iteration": 5,
   "additionalFunctionCount": 1,
   "functions": [
     "read_neo4j_cypher"
   ]
 }
-2025-08-24 11:59:42.121 [WARN] [c5f955d5] ⚠️ Function calling loop reached maximum iterations
+2025-08-24 10:23:37.304 [WARN] [d23221f6] ⚠️ Function calling loop reached maximum iterations
 {
-  "sessionId": "e436080c-36b2-4f00-8f54-9c33f83d66d2",
+  "sessionId": "1756030956239",
   "maxIterations": 5,
   "totalToolsCalled": 5
 }
-2025-08-24 11:59:42.121 [INFO] [c5f955d5] 📊 Data aggregation completed
+2025-08-24 10:23:37.304 [INFO] [d23221f6] 📊 Data aggregation completed
 {
-  "sessionId": "e436080c-36b2-4f00-8f54-9c33f83d66d2",
+  "sessionId": "1756030956239",
   "totalIterations": 5,
   "toolResultsCount": 4,
+  "aggregatedDataKeys": [
+    "users"
+  ],
+  "totalToolsCalled": 5,
+  "dataTypes": [
+    {
+      "type": "users",
+      "isArray": false,
+      "size": 3
+    }
+  ]
+}
+2025-08-24 10:23:37.304 [DEBUG]  Skipping post-processing - Gemini orchestrates all operations
+{
+  "strategy": "coordinated_multi_mcp",
+  "realm": "master",
+  "toolsCalledCount": 5
+}
+2025-08-24 10:23:37.304 [INFO] [d23221f6] ✅ Orchestration request completed successfully
+{
+  "sessionId": "1756030956239",
+  "duration": "61037ms",
+  "strategy": "coordinated_multi_mcp",
+  "toolsCalledCount": 5,
+  "finalResponseLength": 0,
+  "dataKeys": [
+    "users"
+  ],
+  "success": true
+}
+2025-08-24 10:23:37.304 [INFO]  Chat request processed
+{
+  "sessionId": "1756030956239",
+  "success": true,
+  "duration": "61037ms",
+  "toolsUsed": 5,
+  "strategy": "coordinated_multi_mcp"
+}
+2025-08-24 10:23:37.305 [INFO]  HTTP Request
+{
+  "method": "POST",
+  "url": "/chat",
+  "status": 200,
+  "duration": "61044ms",
+  "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36"
+}
+2025-08-24 10:24:32.912 [INFO]  Chat request received
+{
+  "sessionId": "1756030956239",
+  "messageLength": 106,
+  "realm": "master",
+  "priority": "normal"
+}
+2025-08-24 10:24:32.918 [INFO] [ef5d98c3] 🎯 Starting orchestration request
+{
+  "sessionId": "1756030956239",
+  "userInput": "check the users in the graph, find out which realm they belong to and sync the informationen to the graph.",
+  "inputLength": 106,
+  "realm": "master",
+  "context": {
+    "realm": "master",
+    "preferredLanguage": "en",
+    "priority": "normal"
+  }
+}
+2025-08-24 10:24:32.919 [DEBUG]  Determining execution strategy
+{
+  "userInput": "check the users in the graph, find out which realm they belong to and sync the informationen to the ",
+  "inputLength": 106,
+  "realm": "master"
+}
+2025-08-24 10:24:32.919 [INFO]  Using default COORDINATED_MULTI_MCP strategy
+2025-08-24 10:24:32.920 [INFO] [ef5d98c3] 📋 Strategy determined
+{
+  "sessionId": "1756030956239",
+  "strategy": "coordinated_multi_mcp",
+  "wasProvided": false,
+  "reasoning": "Auto-selected by router"
+}
+2025-08-24 10:24:32.920 [DEBUG]  Returning cached MCP tools
+2025-08-24 10:24:32.920 [INFO] [ef5d98c3] 🛠️ Tools selected for request
+{
+  "sessionId": "1756030956239",
+  "strategy": "coordinated_multi_mcp",
+  "intent": "all",
+  "toolCount": 11,
+  "availableTools": [
+    {
+      "name": "create-user",
+      "description": "Keycloak create-user tool Verwende dies für das Erstellen neuer Benutzer in Keycloak."
+    },
+    {
+      "name": "list-users",
+      "description": "Keycloak list-users tool Verwende dies für aktuelle Live-Benutzerdaten aus Keycloak."
+    },
+    {
+      "name": "delete-user",
+      "description": "Keycloak delete-user tool Verwende dies zum Löschen von Benutzern. Erfordert Bestätigung."
+    },
+    {
+      "name": "get-user",
+      "description": "Keycloak get-user tool"
+    },
+    {
+      "name": "list-realms",
+      "description": "Keycloak list-realms tool Zeigt verfügbare Keycloak-Realms."
+    },
+    {
+      "name": "list-admin-events",
+      "description": "Keycloak list-admin-events tool Für aktuelle administrative Aktionen und Audit-Trails."
+    },
+    {
+      "name": "get-event-details",
+      "description": "Keycloak get-event-details tool Für detaillierte Informationen zu spezifischen Events."
+    },
+    {
+      "name": "get-metrics",
+      "description": "Keycloak get-metrics tool Für aktuelle System-Metriken und Statistiken."
+    },
+    {
+      "name": "get_neo4j_schema",
+      "description": "Neo4j get_neo4j_schema tool Verwende dies um die Datenstruktur vor komplexen Abfragen zu verstehen."
+    },
+    {
+      "name": "read_neo4j_cypher",
+      "description": "Neo4j read_neo4j_cypher tool Für Musteranalyse, Beziehungsabfragen und historische Datenanalyse."
+    },
+    {
+      "name": "write_neo4j_cypher",
+      "description": "Neo4j write_neo4j_cypher tool Für Daten-Updates, Synchronisation und Strukturänderungen."
+    }
+  ]
+}
+2025-08-24 10:24:32.922 [DEBUG]  Skipping pre-processing - Gemini will handle orchestration
+{
+  "strategy": "coordinated_multi_mcp",
+  "realm": "master"
+}
+2025-08-24 10:24:32.922 [INFO] [ef5d98c3] 🧠 Sending request to Gemini check the users in the graph, find out which realm they belong to and sync the informationen to the graph.
+{
+  "sessionId": "1756030956239",
+  "toolCount": 11,
+  "functionCallingMode": "ANY",
+  "context": {
+    "realm": "master",
+    "language": "en"
+  }
+}
+2025-08-24 10:24:32.923 [DEBUG] [980c45e8] Sending chat request to Anthropic
+{
+  "sessionId": "1756030956239",
+  "model": "claude-opus-4-1-20250805",
+  "messageLength": 122,
+  "toolsCount": 11,
+  "historyLength": 13
+}
+2025-08-24 10:24:33.114 [ERROR] [980c45e8] Anthropic chat request failed
+{
+  "sessionId": "1756030956239",
+  "duration": 191,
+  "error": "400 {\"type\":\"error\",\"error\":{\"type\":\"invalid_request_error\",\"message\":\"messages.12: `tool_use` ids were found without `tool_result` blocks immediately after: toolu_012Uc9wNDVyDdQDHKTqsDvTy. Each `tool_use` block must have a corresponding `tool_result` block in the next message.\"},\"request_id\":\"req_011CSSNXQfRdykPeWzi4k9AK\"}"
+}
+2025-08-24 10:24:33.118 [ERROR] [ef5d98c3] ❌ Orchestration request failed
+{
+  "sessionId": "1756030956239",
+  "userInput": "check the users in the graph, find out which realm they belong to and sync the informationen to the graph.",
+  "duration": "197ms",
+  "error": "400 {\"type\":\"error\",\"error\":{\"type\":\"invalid_request_error\",\"message\":\"messages.12: `tool_use` ids were found without `tool_result` blocks immediately after: toolu_012Uc9wNDVyDdQDHKTqsDvTy. Each `tool_use` block must have a corresponding `tool_result` block in the next message.\"},\"request_id\":\"req_011CSSNXQfRdykPeWzi4k9AK\"}",
+  "stack": "LLMError: 400 {\"type\":\"error\",\"error\":{\"type\":\"invalid_request_error\",\"message\":\"messages.12: `tool_use` ids were found without `tool_result` blocks immediately after: toolu_012Uc9wNDVyDdQDHKTqsDvTy. Each `tool_use` block must have a corresponding `tool_result` block in the next message.\"},\"request_id\":\"req_011CSSNXQfRdykPeWzi4k9AK\"}\n    at AnthropicService.chat (/app/src/llm/anthropic-service.ts:182:13)\n    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)\n    at Orchestrator.processRequest (/app/src/orchestration/orchestrator.ts:122:27)\n    at <anonymous> (/app/src/api/orchestration.ts:102:22)",
+  "context": {
+    "realm": "master",
+    "preferredLanguage": "en",
+    "priority": "normal"
+  }
+}
+2025-08-24 10:24:33.119 [INFO]  Chat request processed
+{
+  "sessionId": "1756030956239",
+  "success": false,
+  "duration": "197ms",
+  "toolsUsed": 0,
+  "strategy": "coordinated_multi_mcp"
+}
+2025-08-24 10:24:33.120 [INFO]  HTTP Request
+{
+  "method": "POST",
+  "url": "/chat",
+  "status": 200,
+  "duration": "209ms",
+  "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36"
+}
+2025-08-24 10:24:37.255 [INFO]  HTTP Request
+{
+  "method": "GET",
+  "url": "/",
+  "status": 200,
+  "duration": "5ms",
+  "userAgent": "Wget"
+}
+2025-08-24 10:24:44.951 [INFO]  Chat request received
+{
+  "sessionId": "1756031084948",
+  "messageLength": 106,
+  "realm": "master",
+  "priority": "normal"
+}
+2025-08-24 10:24:44.953 [INFO] [9a892ab3] 🎯 Starting orchestration request
+{
+  "sessionId": "1756031084948",
+  "userInput": "check the users in the graph, find out which realm they belong to and sync the informationen to the graph.",
+  "inputLength": 106,
+  "realm": "master",
+  "context": {
+    "realm": "master",
+    "preferredLanguage": "en",
+    "priority": "normal"
+  }
+}
+2025-08-24 10:24:44.953 [DEBUG]  Determining execution strategy
+{
+  "userInput": "check the users in the graph, find out which realm they belong to and sync the informationen to the ",
+  "inputLength": 106,
+  "realm": "master"
+}
+2025-08-24 10:24:44.953 [INFO]  Using default COORDINATED_MULTI_MCP strategy
+2025-08-24 10:24:44.953 [INFO] [9a892ab3] 📋 Strategy determined
+{
+  "sessionId": "1756031084948",
+  "strategy": "coordinated_multi_mcp",
+  "wasProvided": false,
+  "reasoning": "Auto-selected by router"
+}
+2025-08-24 10:24:44.953 [DEBUG]  Returning cached MCP tools
+2025-08-24 10:24:44.954 [INFO] [9a892ab3] 🛠️ Tools selected for request
+{
+  "sessionId": "1756031084948",
+  "strategy": "coordinated_multi_mcp",
+  "intent": "all",
+  "toolCount": 11,
+  "availableTools": [
+    {
+      "name": "create-user",
+      "description": "Keycloak create-user tool Verwende dies für das Erstellen neuer Benutzer in Keycloak."
+    },
+    {
+      "name": "list-users",
+      "description": "Keycloak list-users tool Verwende dies für aktuelle Live-Benutzerdaten aus Keycloak."
+    },
+    {
+      "name": "delete-user",
+      "description": "Keycloak delete-user tool Verwende dies zum Löschen von Benutzern. Erfordert Bestätigung."
+    },
+    {
+      "name": "get-user",
+      "description": "Keycloak get-user tool"
+    },
+    {
+      "name": "list-realms",
+      "description": "Keycloak list-realms tool Zeigt verfügbare Keycloak-Realms."
+    },
+    {
+      "name": "list-admin-events",
+      "description": "Keycloak list-admin-events tool Für aktuelle administrative Aktionen und Audit-Trails."
+    },
+    {
+      "name": "get-event-details",
+      "description": "Keycloak get-event-details tool Für detaillierte Informationen zu spezifischen Events."
+    },
+    {
+      "name": "get-metrics",
+      "description": "Keycloak get-metrics tool Für aktuelle System-Metriken und Statistiken."
+    },
+    {
+      "name": "get_neo4j_schema",
+      "description": "Neo4j get_neo4j_schema tool Verwende dies um die Datenstruktur vor komplexen Abfragen zu verstehen."
+    },
+    {
+      "name": "read_neo4j_cypher",
+      "description": "Neo4j read_neo4j_cypher tool Für Musteranalyse, Beziehungsabfragen und historische Datenanalyse."
+    },
+    {
+      "name": "write_neo4j_cypher",
+      "description": "Neo4j write_neo4j_cypher tool Für Daten-Updates, Synchronisation und Strukturänderungen."
+    }
+  ]
+}
+2025-08-24 10:24:44.954 [DEBUG]  Skipping pre-processing - Gemini will handle orchestration
+{
+  "strategy": "coordinated_multi_mcp",
+  "realm": "master"
+}
+2025-08-24 10:24:44.954 [INFO] [9a892ab3] 🧠 Sending request to Gemini check the users in the graph, find out which realm they belong to and sync the informationen to the graph.
+{
+  "sessionId": "1756031084948",
+  "toolCount": 11,
+  "functionCallingMode": "ANY",
+  "context": {
+    "realm": "master",
+    "language": "en"
+  }
+}
+2025-08-24 10:24:44.954 [DEBUG] [92f15f88] Sending chat request to Anthropic
+{
+  "sessionId": "1756031084948",
+  "model": "claude-opus-4-1-20250805",
+  "messageLength": 122,
+  "toolsCount": 11,
+  "historyLength": 1
+}
+2025-08-24 10:24:51.540 [INFO] [92f15f88] Anthropic chat completed
+{
+  "sessionId": "1756031084948",
+  "finishReason": "function_call",
+  "functionCallsCount": 1,
+  "responseLength": 613,
+  "usage": {
+    "promptTokens": 2010,
+    "completionTokens": 195,
+    "totalTokens": 2205
+  }
+}
+2025-08-24 10:24:51.541 [INFO] [9a892ab3] 🎭 LLM response received
+{
+  "sessionId": "1756031084948",
+  "provider": "anthropic",
+  "model": "claude-opus-4-1-20250805",
+  "hasResponse": true,
+  "responseLength": 613,
+  "hasFunctionCalls": true,
+  "functionCallCount": 1,
+  "functionNames": [
+    "get_neo4j_schema"
+  ]
+}
+2025-08-24 10:24:51.542 [INFO] [9a892ab3] ⚙️ Starting function call execution (iteration 1)
+{
+  "sessionId": "1756031084948",
+  "iteration": 1,
+  "functionCount": 1,
+  "functions": [
+    {
+      "name": "get_neo4j_schema",
+      "argKeys": []
+    }
+  ]
+}
+2025-08-24 10:24:51.543 [INFO] [060b1566] Processing function calls via Anthropic
+{
+  "sessionId": "1756031084948",
+  "functionCallsCount": 1
+}
+2025-08-24 10:24:51.543 [DEBUG]  Executing function call
+{
+  "serverName": "neo4j",
+  "toolName": "get_neo4j_schema",
+  "args": {}
+}
+2025-08-24 10:24:51.545 [DEBUG]  MCP Request [neo4j]
+{
+  "method": "POST",
+  "url": "/tools/get_neo4j_schema",
+  "baseURL": "http://neo4j-mcp:8002"
+}
+2025-08-24 10:24:51.577 [DEBUG]  MCP Response [neo4j]
+{
+  "status": 200,
+  "url": "/tools/get_neo4j_schema"
+}
+2025-08-24 10:24:51.577 [DEBUG]  🔗 Neo4j tool result stored
+{
+  "serverName": "neo4j",
+  "toolName": "get_neo4j_schema",
+  "resultKey": "neo4j_get_neo4j_schema",
+  "success": true,
+  "hasData": true,
+  "dataType": "object",
+  "dataSize": 3
+}
+2025-08-24 10:24:51.578 [DEBUG] [060b1566] Function call executed successfully
+{
+  "functionName": "get_neo4j_schema",
+  "resultLength": 2088
+}
+2025-08-24 10:24:59.331 [INFO] [060b1566] Function call processing completed
+{
+  "sessionId": "1756031084948",
+  "duration": 7788,
+  "additionalFunctionCalls": 1
+}
+2025-08-24 10:24:59.331 [INFO] [9a892ab3] 🔧 Gemini requested more function calls
+{
+  "sessionId": "1756031084948",
+  "iteration": 1,
+  "additionalFunctionCount": 1,
+  "functions": [
+    "read_neo4j_cypher"
+  ]
+}
+2025-08-24 10:24:59.331 [INFO] [9a892ab3] ⚙️ Starting function call execution (iteration 2)
+{
+  "sessionId": "1756031084948",
+  "iteration": 2,
+  "functionCount": 1,
+  "functions": [
+    {
+      "name": "read_neo4j_cypher",
+      "argKeys": [
+        "query"
+      ]
+    }
+  ]
+}
+2025-08-24 10:24:59.331 [INFO] [b8ec8127] Processing function calls via Anthropic
+{
+  "sessionId": "1756031084948",
+  "functionCallsCount": 1
+}
+2025-08-24 10:24:59.331 [DEBUG]  Executing function call
+{
+  "serverName": "neo4j",
+  "toolName": "read_neo4j_cypher",
+  "args": {
+    "query": "MATCH (u)\nWHERE u:User OR u:KeycloakUser\nRETURN u.id as id, u.username as username, u.email as email, u.realm as realm, labels(u) as labels\nORDER BY u.username"
+  }
+}
+2025-08-24 10:24:59.332 [DEBUG]  MCP Request [neo4j]
+{
+  "method": "POST",
+  "url": "/tools/read_neo4j_cypher",
+  "baseURL": "http://neo4j-mcp:8002"
+}
+2025-08-24 10:24:59.401 [DEBUG]  MCP Response [neo4j]
+{
+  "status": 200,
+  "url": "/tools/read_neo4j_cypher"
+}
+2025-08-24 10:24:59.401 [DEBUG]  🔗 Neo4j tool result stored
+{
+  "serverName": "neo4j",
+  "toolName": "read_neo4j_cypher",
+  "resultKey": "neo4j_read_neo4j_cypher",
+  "success": true,
+  "hasData": true,
+  "dataType": "object",
+  "dataSize": 3
+}
+2025-08-24 10:24:59.401 [DEBUG] [b8ec8127] Function call executed successfully
+{
+  "functionName": "read_neo4j_cypher",
+  "resultLength": 489
+}
+2025-08-24 10:25:02.912 [INFO] [b8ec8127] Function call processing completed
+{
+  "sessionId": "1756031084948",
+  "duration": 3581,
+  "additionalFunctionCalls": 1
+}
+2025-08-24 10:25:02.912 [INFO] [9a892ab3] 🔧 Gemini requested more function calls
+{
+  "sessionId": "1756031084948",
+  "iteration": 2,
+  "additionalFunctionCount": 1,
+  "functions": [
+    "list-users"
+  ]
+}
+2025-08-24 10:25:02.912 [INFO] [9a892ab3] ⚙️ Starting function call execution (iteration 3)
+{
+  "sessionId": "1756031084948",
+  "iteration": 3,
+  "functionCount": 1,
+  "functions": [
+    {
+      "name": "list-users",
+      "argKeys": []
+    }
+  ]
+}
+2025-08-24 10:25:02.912 [INFO] [63ef158c] Processing function calls via Anthropic
+{
+  "sessionId": "1756031084948",
+  "functionCallsCount": 1
+}
+2025-08-24 10:25:02.912 [DEBUG]  Executing function call
+{
+  "serverName": "keycloak",
+  "toolName": "list-users",
+  "args": {}
+}
+2025-08-24 10:25:02.913 [DEBUG]  MCP Request [keycloak]
+{
+  "method": "POST",
+  "url": "/tools/list-users",
+  "baseURL": "http://keycloak-mcp:8001"
+}
+2025-08-24 10:25:03.100 [DEBUG]  MCP Response [keycloak]
+{
+  "status": 200,
+  "url": "/tools/list-users"
+}
+2025-08-24 10:25:03.101 [DEBUG]  🔗 Keycloak tool result stored
+{
+  "serverName": "keycloak",
+  "toolName": "list-users",
+  "resultKey": "keycloak_list-users",
+  "success": true,
+  "hasData": true,
+  "dataType": "object",
+  "dataSize": 3
+}
+2025-08-24 10:25:03.101 [DEBUG] [63ef158c] Function call executed successfully
+{
+  "functionName": "list-users",
+  "resultLength": 549
+}
+2025-08-24 10:25:09.469 [INFO] [63ef158c] Function call processing completed
+{
+  "sessionId": "1756031084948",
+  "duration": 6557,
+  "additionalFunctionCalls": 1
+}
+2025-08-24 10:25:09.470 [INFO] [9a892ab3] 🔧 Gemini requested more function calls
+{
+  "sessionId": "1756031084948",
+  "iteration": 3,
+  "additionalFunctionCount": 1,
+  "functions": [
+    "list-realms"
+  ]
+}
+2025-08-24 10:25:09.470 [INFO] [9a892ab3] ⚙️ Starting function call execution (iteration 4)
+{
+  "sessionId": "1756031084948",
+  "iteration": 4,
+  "functionCount": 1,
+  "functions": [
+    {
+      "name": "list-realms",
+      "argKeys": []
+    }
+  ]
+}
+2025-08-24 10:25:09.470 [INFO] [441ced36] Processing function calls via Anthropic
+{
+  "sessionId": "1756031084948",
+  "functionCallsCount": 1
+}
+2025-08-24 10:25:09.470 [DEBUG]  Executing function call
+{
+  "serverName": "keycloak",
+  "toolName": "list-realms",
+  "args": {}
+}
+2025-08-24 10:25:09.471 [DEBUG]  MCP Request [keycloak]
+{
+  "method": "POST",
+  "url": "/tools/list-realms",
+  "baseURL": "http://keycloak-mcp:8001"
+}
+2025-08-24 10:25:09.673 [DEBUG]  MCP Response [keycloak]
+{
+  "status": 200,
+  "url": "/tools/list-realms"
+}
+2025-08-24 10:25:09.674 [DEBUG]  🔗 Keycloak tool result stored
+{
+  "serverName": "keycloak",
+  "toolName": "list-realms",
+  "resultKey": "keycloak_list-realms",
+  "success": true,
+  "hasData": true,
+  "dataType": "object",
+  "dataSize": 3
+}
+2025-08-24 10:25:09.674 [DEBUG] [441ced36] Function call executed successfully
+{
+  "functionName": "list-realms",
+  "resultLength": 301
+}
+2025-08-24 10:25:33.328 [INFO] [441ced36] Function call processing completed
+{
+  "sessionId": "1756031084948",
+  "duration": 23857,
+  "additionalFunctionCalls": 1
+}
+2025-08-24 10:25:33.328 [INFO] [9a892ab3] 🔧 Gemini requested more function calls
+{
+  "sessionId": "1756031084948",
+  "iteration": 4,
+  "additionalFunctionCount": 1,
+  "functions": [
+    "write_neo4j_cypher"
+  ]
+}
+2025-08-24 10:25:33.329 [INFO] [9a892ab3] ⚙️ Starting function call execution (iteration 5)
+{
+  "sessionId": "1756031084948",
+  "iteration": 5,
+  "functionCount": 1,
+  "functions": [
+    {
+      "name": "write_neo4j_cypher",
+      "argKeys": [
+        "query"
+      ]
+    }
+  ]
+}
+2025-08-24 10:25:33.329 [INFO] [09bf927c] Processing function calls via Anthropic
+{
+  "sessionId": "1756031084948",
+  "functionCallsCount": 1
+}
+2025-08-24 10:25:33.330 [DEBUG]  Executing function call
+{
+  "serverName": "neo4j",
+  "toolName": "write_neo4j_cypher",
+  "args": {
+    "query": "// First, merge and update existing users with complete Keycloak data\nUNWIND [\n  {\n    id: \"f94ecd17-ce46-4663-98e4-0137fa8d82ae\",\n    username: \"admin\",\n    enabled: true,\n    emailVerified: false,\n    createdTimestamp: 1755611843167,\n    realm: \"master\"\n  },\n  {\n    id: \"6189b406-e03d-4db5-82d7-285b279cd243\",\n    username: \"jane.smith.test\",\n    email: \"jane.smith@ikas-test.com\",\n    firstName: \"Jane\",\n    lastName: \"Smith\",\n    enabled: true,\n    emailVerified: false,\n    createdTimestamp: 1755976235457,\n    realm: \"master\"\n  }\n] AS userData\n\nMERGE (u:User:KeycloakUser {id: userData.id})\nSET u.username = userData.username,\n    u.enabled = userData.enabled,\n    u.emailVerified = userData.emailVerified,\n    u.createdTimestamp = userData.createdTimestamp,\n    u.realm = userData.realm,\n    u.source = \"keycloak\",\n    u.syncedAt = timestamp()\n\n// Set optional properties if they exist\nWITH u, userData\nWHERE userData.email IS NOT NULL\nSET u.email = userData.email\n\nWITH u, userData\nWHERE userData.firstName IS NOT NULL\nSET u.firstName = userData.firstName\n\nWITH u, userData\nWHERE userData.lastName IS NOT NULL\nSET u.lastName = userData.lastName\n\nRETURN u.id as id, u.username as username, u.realm as realm, u.syncedAt as syncedAt"
+  }
+}
+2025-08-24 10:25:33.332 [DEBUG]  MCP Request [neo4j]
+{
+  "method": "POST",
+  "url": "/tools/write_neo4j_cypher",
+  "baseURL": "http://neo4j-mcp:8002"
+}
+2025-08-24 10:25:33.432 [DEBUG]  MCP Response [neo4j]
+{
+  "status": 200,
+  "url": "/tools/write_neo4j_cypher"
+}
+2025-08-24 10:25:33.432 [DEBUG]  🔗 Neo4j tool result stored
+{
+  "serverName": "neo4j",
+  "toolName": "write_neo4j_cypher",
+  "resultKey": "neo4j_write_neo4j_cypher",
+  "success": true,
+  "hasData": true,
+  "dataType": "object",
+  "dataSize": 3
+}
+2025-08-24 10:25:33.432 [DEBUG] [09bf927c] Function call executed successfully
+{
+  "functionName": "write_neo4j_cypher",
+  "resultLength": 340
+}
+2025-08-24 10:25:37.310 [INFO]  HTTP Request
+{
+  "method": "GET",
+  "url": "/",
+  "status": 200,
+  "duration": "4ms",
+  "userAgent": "Wget"
+}
+2025-08-24 10:25:41.622 [INFO] [09bf927c] Function call processing completed
+{
+  "sessionId": "1756031084948",
+  "duration": 8293,
+  "additionalFunctionCalls": 1
+}
+2025-08-24 10:25:41.623 [INFO] [9a892ab3] 🔧 Gemini requested more function calls
+{
+  "sessionId": "1756031084948",
+  "iteration": 5,
+  "additionalFunctionCount": 1,
+  "functions": [
+    "read_neo4j_cypher"
+  ]
+}
+2025-08-24 10:25:41.623 [WARN] [9a892ab3] ⚠️ Function calling loop reached maximum iterations
+{
+  "sessionId": "1756031084948",
+  "maxIterations": 5,
+  "totalToolsCalled": 5
+}
+2025-08-24 10:25:41.624 [INFO] [9a892ab3] 📊 Data aggregation completed
+{
+  "sessionId": "1756031084948",
+  "totalIterations": 5,
+  "toolResultsCount": 5,
+  "aggregatedDataKeys": [
+    "users",
+    "realms"
+  ],
+  "totalToolsCalled": 5,
+  "dataTypes": [
+    {
+      "type": "users",
+      "isArray": false,
+      "size": 3
+    },
+    {
+      "type": "realms",
+      "isArray": false,
+      "size": 3
+    }
+  ]
+}
+2025-08-24 10:25:41.625 [DEBUG]  Skipping post-processing - Gemini orchestrates all operations
+{
+  "strategy": "coordinated_multi_mcp",
+  "realm": "master",
+  "toolsCalledCount": 5
+}
+2025-08-24 10:25:41.626 [INFO] [9a892ab3] ✅ Orchestration request completed successfully
+{
+  "sessionId": "1756031084948",
+  "duration": "56672ms",
+  "strategy": "coordinated_multi_mcp",
+  "toolsCalledCount": 5,
+  "finalResponseLength": 78,
+  "dataKeys": [
+    "users",
+    "realms"
+  ],
+  "success": true
+}
+2025-08-24 10:25:41.626 [INFO]  Chat request processed
+{
+  "sessionId": "1756031084948",
+  "success": true,
+  "duration": "56672ms",
+  "toolsUsed": 5,
+  "strategy": "coordinated_multi_mcp"
+}
+2025-08-24 10:25:41.628 [INFO]  HTTP Request
+{
+  "method": "POST",
+  "url": "/chat",
+  "status": 200,
+  "duration": "56677ms",
+  "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36"
+}
+2025-08-24 10:26:37.376 [INFO]  HTTP Request
+{
+  "method": "GET",
+  "url": "/",
+  "status": 200,
+  "duration": "4ms",
+  "userAgent": "Wget"
+}
+2025-08-24 10:27:37.424 [INFO]  HTTP Request
+{
+  "method": "GET",
+  "url": "/",
+  "status": 200,
+  "duration": "3ms",
+  "userAgent": "Wget"
+}
+2025-08-24 10:28:28.488 [INFO]  Chat request received
+{
+  "sessionId": "1756031084948",
+  "messageLength": 132,
+  "realm": "master",
+  "priority": "normal"
+}
+2025-08-24 10:28:28.496 [INFO] [f136f16f] 🎯 Starting orchestration request
+{
+  "sessionId": "1756031084948",
+  "userInput": "read the realm and user informationen from keycloak and write it to the graph. Create the connections between the realm and the user",
+  "inputLength": 132,
+  "realm": "master",
+  "context": {
+    "realm": "master",
+    "preferredLanguage": "en",
+    "priority": "normal"
+  }
+}
+2025-08-24 10:28:28.497 [DEBUG]  Determining execution strategy
+{
+  "userInput": "read the realm and user informationen from keycloak and write it to the graph. Create the connection",
+  "inputLength": 132,
+  "realm": "master"
+}
+2025-08-24 10:28:28.497 [INFO]  Detected write operation, using KEYCLOAK_WRITE_THEN_SYNC strategy
+2025-08-24 10:28:28.497 [INFO] [f136f16f] 📋 Strategy determined
+{
+  "sessionId": "1756031084948",
+  "strategy": "keycloak_write_then_sync",
+  "wasProvided": false,
+  "reasoning": "Auto-selected by router"
+}
+2025-08-24 10:28:28.498 [INFO]  Discovering MCP tools from servers
+2025-08-24 10:28:28.498 [DEBUG]  Listing tools for keycloak
+2025-08-24 10:28:28.500 [DEBUG]  Listing tools for neo4j
+2025-08-24 10:28:28.501 [DEBUG]  MCP Request [keycloak]
+{
+  "method": "GET",
+  "url": "/tools",
+  "baseURL": "http://keycloak-mcp:8001"
+}
+2025-08-24 10:28:28.501 [DEBUG]  MCP Request [neo4j]
+{
+  "method": "GET",
+  "url": "/tools",
+  "baseURL": "http://neo4j-mcp:8002"
+}
+2025-08-24 10:28:28.505 [DEBUG]  MCP Response [keycloak]
+{
+  "status": 200,
+  "url": "/tools"
+}
+2025-08-24 10:28:28.505 [DEBUG]  Keycloak tools discovered
+{
+  "count": 8
+}
+2025-08-24 10:28:28.506 [DEBUG]  MCP Response [neo4j]
+{
+  "status": 200,
+  "url": "/tools"
+}
+2025-08-24 10:28:28.507 [DEBUG]  Neo4j tools discovered
+{
+  "count": 3
+}
+2025-08-24 10:28:28.508 [DEBUG]  MCP Request [keycloak]
+{
+  "method": "GET",
+  "url": "/health",
+  "baseURL": "http://keycloak-mcp:8001"
+}
+2025-08-24 10:28:28.508 [DEBUG]  MCP Request [neo4j]
+{
+  "method": "GET",
+  "url": "/health",
+  "baseURL": "http://neo4j-mcp:8002"
+}
+2025-08-24 10:28:28.510 [DEBUG]  MCP Response [keycloak]
+{
+  "status": 200,
+  "url": "/health"
+}
+2025-08-24 10:28:28.511 [DEBUG]  MCP Response [neo4j]
+{
+  "status": 200,
+  "url": "/health"
+}
+2025-08-24 10:28:28.511 [INFO]  MCP tool discovery completed
+{
+  "keycloakTools": 8,
+  "neo4jTools": 3,
+  "totalTools": 11,
+  "keycloakHealthy": true,
+  "neo4jHealthy": true
+}
+2025-08-24 10:28:28.511 [INFO] [f136f16f] 🛠️ Tools selected for request
+{
+  "sessionId": "1756031084948",
+  "strategy": "keycloak_write_then_sync",
+  "intent": "write",
+  "toolCount": 3,
+  "availableTools": [
+    {
+      "name": "create-user",
+      "description": "Keycloak create-user tool Verwende dies für das Erstellen neuer Benutzer in Keycloak."
+    },
+    {
+      "name": "delete-user",
+      "description": "Keycloak delete-user tool Verwende dies zum Löschen von Benutzern. Erfordert Bestätigung."
+    },
+    {
+      "name": "write_neo4j_cypher",
+      "description": "Neo4j write_neo4j_cypher tool Für Daten-Updates, Synchronisation und Strukturänderungen."
+    }
+  ]
+}
+2025-08-24 10:28:28.511 [DEBUG]  Skipping pre-processing - Gemini will handle orchestration
+{
+  "strategy": "keycloak_write_then_sync",
+  "realm": "master"
+}
+2025-08-24 10:28:28.511 [INFO] [f136f16f] 🧠 Sending request to Gemini read the realm and user informationen from keycloak and write it to the graph. Create the connections between the realm and the user
+{
+  "sessionId": "1756031084948",
+  "toolCount": 3,
+  "functionCallingMode": "ANY",
+  "context": {
+    "realm": "master",
+    "language": "en"
+  }
+}
+2025-08-24 10:28:28.512 [DEBUG] [4876fa08] Sending chat request to Anthropic
+{
+  "sessionId": "1756031084948",
+  "model": "claude-opus-4-1-20250805",
+  "messageLength": 148,
+  "toolsCount": 3,
+  "historyLength": 13
+}
+2025-08-24 10:28:28.724 [ERROR] [4876fa08] Anthropic chat request failed
+{
+  "sessionId": "1756031084948",
+  "duration": 212,
+  "error": "400 {\"type\":\"error\",\"error\":{\"type\":\"invalid_request_error\",\"message\":\"messages.12: `tool_use` ids were found without `tool_result` blocks immediately after: toolu_01XBDx9jjyRjWXSc6EsCNtyf. Each `tool_use` block must have a corresponding `tool_result` block in the next message.\"},\"request_id\":\"req_011CSSNpmyK7AUQ4KnfaRaRn\"}"
+}
+2025-08-24 10:28:28.729 [ERROR] [f136f16f] ❌ Orchestration request failed
+{
+  "sessionId": "1756031084948",
+  "userInput": "read the realm and user informationen from keycloak and write it to the graph. Create the connections between the realm and the user",
+  "duration": "229ms",
+  "error": "400 {\"type\":\"error\",\"error\":{\"type\":\"invalid_request_error\",\"message\":\"messages.12: `tool_use` ids were found without `tool_result` blocks immediately after: toolu_01XBDx9jjyRjWXSc6EsCNtyf. Each `tool_use` block must have a corresponding `tool_result` block in the next message.\"},\"request_id\":\"req_011CSSNpmyK7AUQ4KnfaRaRn\"}",
+  "stack": "LLMError: 400 {\"type\":\"error\",\"error\":{\"type\":\"invalid_request_error\",\"message\":\"messages.12: `tool_use` ids were found without `tool_result` blocks immediately after: toolu_01XBDx9jjyRjWXSc6EsCNtyf. Each `tool_use` block must have a corresponding `tool_result` block in the next message.\"},\"request_id\":\"req_011CSSNpmyK7AUQ4KnfaRaRn\"}\n    at AnthropicService.chat (/app/src/llm/anthropic-service.ts:182:13)\n    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)\n    at Orchestrator.processRequest (/app/src/orchestration/orchestrator.ts:122:27)\n    at <anonymous> (/app/src/api/orchestration.ts:102:22)",
+  "context": {
+    "realm": "master",
+    "preferredLanguage": "en",
+    "priority": "normal"
+  }
+}
+2025-08-24 10:28:28.730 [INFO]  Chat request processed
+{
+  "sessionId": "1756031084948",
+  "success": false,
+  "duration": "229ms",
+  "toolsUsed": 0,
+  "strategy": "coordinated_multi_mcp"
+}
+2025-08-24 10:28:28.731 [INFO]  HTTP Request
+{
+  "method": "POST",
+  "url": "/chat",
+  "status": 200,
+  "duration": "243ms",
+  "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36"
+}
+2025-08-24 10:28:35.497 [INFO]  Chat request received
+{
+  "sessionId": "1756031315493",
+  "messageLength": 132,
+  "realm": "master",
+  "priority": "normal"
+}
+2025-08-24 10:28:35.501 [INFO] [3251daa1] 🎯 Starting orchestration request
+{
+  "sessionId": "1756031315493",
+  "userInput": "read the realm and user informationen from keycloak and write it to the graph. Create the connections between the realm and the user",
+  "inputLength": 132,
+  "realm": "master",
+  "context": {
+    "realm": "master",
+    "preferredLanguage": "en",
+    "priority": "normal"
+  }
+}
+2025-08-24 10:28:35.509 [DEBUG]  Determining execution strategy
+{
+  "userInput": "read the realm and user informationen from keycloak and write it to the graph. Create the connection",
+  "inputLength": 132,
+  "realm": "master"
+}
+2025-08-24 10:28:35.509 [INFO]  Detected write operation, using KEYCLOAK_WRITE_THEN_SYNC strategy
+2025-08-24 10:28:35.509 [INFO] [3251daa1] 📋 Strategy determined
+{
+  "sessionId": "1756031315493",
+  "strategy": "keycloak_write_then_sync",
+  "wasProvided": false,
+  "reasoning": "Auto-selected by router"
+}
+2025-08-24 10:28:35.510 [DEBUG]  Returning cached MCP tools
+2025-08-24 10:28:35.510 [INFO] [3251daa1] 🛠️ Tools selected for request
+{
+  "sessionId": "1756031315493",
+  "strategy": "keycloak_write_then_sync",
+  "intent": "write",
+  "toolCount": 3,
+  "availableTools": [
+    {
+      "name": "create-user",
+      "description": "Keycloak create-user tool Verwende dies für das Erstellen neuer Benutzer in Keycloak."
+    },
+    {
+      "name": "delete-user",
+      "description": "Keycloak delete-user tool Verwende dies zum Löschen von Benutzern. Erfordert Bestätigung."
+    },
+    {
+      "name": "write_neo4j_cypher",
+      "description": "Neo4j write_neo4j_cypher tool Für Daten-Updates, Synchronisation und Strukturänderungen."
+    }
+  ]
+}
+2025-08-24 10:28:35.511 [DEBUG]  Skipping pre-processing - Gemini will handle orchestration
+{
+  "strategy": "keycloak_write_then_sync",
+  "realm": "master"
+}
+2025-08-24 10:28:35.511 [INFO] [3251daa1] 🧠 Sending request to Gemini read the realm and user informationen from keycloak and write it to the graph. Create the connections between the realm and the user
+{
+  "sessionId": "1756031315493",
+  "toolCount": 3,
+  "functionCallingMode": "ANY",
+  "context": {
+    "realm": "master",
+    "language": "en"
+  }
+}
+2025-08-24 10:28:35.511 [DEBUG] [e1d8b0d8] Sending chat request to Anthropic
+{
+  "sessionId": "1756031315493",
+  "model": "claude-opus-4-1-20250805",
+  "messageLength": 148,
+  "toolsCount": 3,
+  "historyLength": 1
+}
+2025-08-24 10:28:37.482 [INFO]  HTTP Request
+{
+  "method": "GET",
+  "url": "/",
+  "status": 200,
+  "duration": "4ms",
+  "userAgent": "Wget"
+}
+2025-08-24 10:28:45.331 [INFO] [e1d8b0d8] Anthropic chat completed
+{
+  "sessionId": "1756031315493",
+  "finishReason": "function_call",
+  "functionCallsCount": 1,
+  "responseLength": 638,
+  "usage": {
+    "promptTokens": 1469,
+    "completionTokens": 199,
+    "totalTokens": 1668
+  }
+}
+2025-08-24 10:28:45.331 [INFO] [3251daa1] 🎭 LLM response received
+{
+  "sessionId": "1756031315493",
+  "provider": "anthropic",
+  "model": "claude-opus-4-1-20250805",
+  "hasResponse": true,
+  "responseLength": 638,
+  "hasFunctionCalls": true,
+  "functionCallCount": 1,
+  "functionNames": [
+    "list-realms"
+  ]
+}
+2025-08-24 10:28:45.332 [INFO] [3251daa1] ⚙️ Starting function call execution (iteration 1)
+{
+  "sessionId": "1756031315493",
+  "iteration": 1,
+  "functionCount": 1,
+  "functions": [
+    {
+      "name": "list-realms",
+      "argKeys": []
+    }
+  ]
+}
+2025-08-24 10:28:45.332 [INFO] [ace2df3c] Processing function calls via Anthropic
+{
+  "sessionId": "1756031315493",
+  "functionCallsCount": 1
+}
+2025-08-24 10:28:45.333 [DEBUG]  Executing function call
+{
+  "serverName": "keycloak",
+  "toolName": "list-realms",
+  "args": {}
+}
+2025-08-24 10:28:45.335 [DEBUG]  MCP Request [keycloak]
+{
+  "method": "POST",
+  "url": "/tools/list-realms",
+  "baseURL": "http://keycloak-mcp:8001"
+}
+2025-08-24 10:28:45.535 [DEBUG]  MCP Response [keycloak]
+{
+  "status": 200,
+  "url": "/tools/list-realms"
+}
+2025-08-24 10:28:45.535 [DEBUG]  🔗 Keycloak tool result stored
+{
+  "serverName": "keycloak",
+  "toolName": "list-realms",
+  "resultKey": "keycloak_list-realms",
+  "success": true,
+  "hasData": true,
+  "dataType": "object",
+  "dataSize": 3
+}
+2025-08-24 10:28:45.536 [DEBUG] [ace2df3c] Function call executed successfully
+{
+  "functionName": "list-realms",
+  "resultLength": 301
+}
+2025-08-24 10:28:47.993 [INFO] [ace2df3c] Function call processing completed
+{
+  "sessionId": "1756031315493",
+  "duration": 2661,
+  "additionalFunctionCalls": 1
+}
+2025-08-24 10:28:47.993 [INFO] [3251daa1] 🔧 Gemini requested more function calls
+{
+  "sessionId": "1756031315493",
+  "iteration": 1,
+  "additionalFunctionCount": 1,
+  "functions": [
+    "list-users"
+  ]
+}
+2025-08-24 10:28:47.994 [INFO] [3251daa1] ⚙️ Starting function call execution (iteration 2)
+{
+  "sessionId": "1756031315493",
+  "iteration": 2,
+  "functionCount": 1,
+  "functions": [
+    {
+      "name": "list-users",
+      "argKeys": []
+    }
+  ]
+}
+2025-08-24 10:28:47.994 [INFO] [4398474a] Processing function calls via Anthropic
+{
+  "sessionId": "1756031315493",
+  "functionCallsCount": 1
+}
+2025-08-24 10:28:47.994 [DEBUG]  Executing function call
+{
+  "serverName": "keycloak",
+  "toolName": "list-users",
+  "args": {}
+}
+2025-08-24 10:28:47.996 [DEBUG]  MCP Request [keycloak]
+{
+  "method": "POST",
+  "url": "/tools/list-users",
+  "baseURL": "http://keycloak-mcp:8001"
+}
+2025-08-24 10:28:48.200 [DEBUG]  MCP Response [keycloak]
+{
+  "status": 200,
+  "url": "/tools/list-users"
+}
+2025-08-24 10:28:48.201 [DEBUG]  🔗 Keycloak tool result stored
+{
+  "serverName": "keycloak",
+  "toolName": "list-users",
+  "resultKey": "keycloak_list-users",
+  "success": true,
+  "hasData": true,
+  "dataType": "object",
+  "dataSize": 3
+}
+2025-08-24 10:28:48.201 [DEBUG] [4398474a] Function call executed successfully
+{
+  "functionName": "list-users",
+  "resultLength": 549
+}
+2025-08-24 10:29:15.439 [INFO] [4398474a] Function call processing completed
+{
+  "sessionId": "1756031315493",
+  "duration": 27445,
+  "additionalFunctionCalls": 1
+}
+2025-08-24 10:29:15.440 [INFO] [3251daa1] 🔧 Gemini requested more function calls
+{
+  "sessionId": "1756031315493",
+  "iteration": 2,
+  "additionalFunctionCount": 1,
+  "functions": [
+    "write_neo4j_cypher"
+  ]
+}
+2025-08-24 10:29:15.440 [INFO] [3251daa1] ⚙️ Starting function call execution (iteration 3)
+{
+  "sessionId": "1756031315493",
+  "iteration": 3,
+  "functionCount": 1,
+  "functions": [
+    {
+      "name": "write_neo4j_cypher",
+      "argKeys": [
+        "query"
+      ]
+    }
+  ]
+}
+2025-08-24 10:29:15.440 [INFO] [bdff2af7] Processing function calls via Anthropic
+{
+  "sessionId": "1756031315493",
+  "functionCallsCount": 1
+}
+2025-08-24 10:29:15.441 [DEBUG]  Executing function call
+{
+  "serverName": "neo4j",
+  "toolName": "write_neo4j_cypher",
+  "args": {
+    "query": "// First, create or update the realm node\nMERGE (r:Realm {id: '6c618ad6-25b4-4db2-91fc-511035abcaa8'})\nSET r.name = 'master',\n    r.displayName = 'Keycloak',\n    r.enabled = true,\n    r.lastUpdated = datetime()\n\n// Create or update user nodes and their relationships to the realm\nWITH r\n\n// User 1: admin\nMERGE (u1:User {id: 'f94ecd17-ce46-4663-98e4-0137fa8d82ae'})\nSET u1.username = 'admin',\n    u1.enabled = true,\n    u1.emailVerified = false,\n    u1.createdTimestamp = 1755611843167,\n    u1.lastUpdated = datetime()\nMERGE (u1)-[:BELONGS_TO]->(r)\n\nWITH r\n\n// User 2: jane.smith.test\nMERGE (u2:User {id: '6189b406-e03d-4db5-82d7-285b279cd243'})\nSET u2.username = 'jane.smith.test',\n    u2.email = 'jane.smith@ikas-test.com',\n    u2.firstName = 'Jane',\n    u2.lastName = 'Smith',\n    u2.enabled = true,\n    u2.emailVerified = false,\n    u2.createdTimestamp = 1755976235457,\n    u2.lastUpdated = datetime()\nMERGE (u2)-[:BELONGS_TO]->(r)\n\n// Return summary of created/updated nodes and relationships\nWITH r\nMATCH (u:User)-[:BELONGS_TO]->(r)\nRETURN r.name as realm, \n       r.displayName as realmDisplayName,\n       count(u) as userCount,\n       collect(u.username) as usernames"
+  }
+}
+2025-08-24 10:29:15.443 [DEBUG]  MCP Request [neo4j]
+{
+  "method": "POST",
+  "url": "/tools/write_neo4j_cypher",
+  "baseURL": "http://neo4j-mcp:8002"
+}
+2025-08-24 10:29:15.601 [DEBUG]  MCP Response [neo4j]
+{
+  "status": 200,
+  "url": "/tools/write_neo4j_cypher"
+}
+2025-08-24 10:29:15.602 [DEBUG]  🔗 Neo4j tool result stored
+{
+  "serverName": "neo4j",
+  "toolName": "write_neo4j_cypher",
+  "resultKey": "neo4j_write_neo4j_cypher",
+  "success": true,
+  "hasData": true,
+  "dataType": "object",
+  "dataSize": 3
+}
+2025-08-24 10:29:15.602 [DEBUG] [bdff2af7] Function call executed successfully
+{
+  "functionName": "write_neo4j_cypher",
+  "resultLength": 340
+}
+2025-08-24 10:29:34.690 [INFO] [bdff2af7] Function call processing completed
+{
+  "sessionId": "1756031315493",
+  "duration": 19250,
+  "additionalFunctionCalls": 0
+}
+2025-08-24 10:29:34.691 [INFO] [3251daa1] ✅ Gemini finished calling functions
+{
+  "sessionId": "1756031315493",
+  "iteration": 3,
+  "totalToolsCalled": 3
+}
+2025-08-24 10:29:34.691 [INFO] [3251daa1] 📊 Data aggregation completed
+{
+  "sessionId": "1756031315493",
+  "totalIterations": 3,
+  "toolResultsCount": 3,
   "aggregatedDataKeys": [
     "realms",
     "users"
   ],
-  "totalToolsCalled": 5,
+  "totalToolsCalled": 3,
   "dataTypes": [
     {
       "type": "realms",
@@ -19693,93 +21201,905 @@ oolCount": 11,
     }
   ]
 }
-2025-08-24 11:59:42.121 [DEBUG]  Skipping post-processing - Gemini orchestrates all operations
+2025-08-24 10:29:34.692 [DEBUG]  Skipping post-processing - Gemini orchestrates all operations
 {
-  "strategy": "coordinated_multi_mcp",
+  "strategy": "keycloak_write_then_sync",
   "realm": "master",
-  "toolsCalledCount": 5
+  "toolsCalledCount": 3
 }
-2025-08-24 11:59:42.121 [INFO] [c5f955d5] ✅ Orchestration request completed successfully
+2025-08-24 10:29:34.693 [INFO] [3251daa1] ✅ Orchestration request completed successfully
 {
-  "sessionId": "e436080c-36b2-4f00-8f54-9c33f83d66d2",
-  "duration": "16987ms",
+  "sessionId": "1756031315493",
+  "duration": "59192ms",
+  "strategy": "keycloak_write_then_sync",
+  "toolsCalledCount": 3,
+  "finalResponseLength": 1226,
+  "dataKeys": [
+    "realms",
+    "users"
+  ],
+  "success": true
+}
+2025-08-24 10:29:34.693 [INFO]  Chat request processed
+{
+  "sessionId": "1756031315493",
+  "success": true,
+  "duration": "59192ms",
+  "toolsUsed": 3,
+  "strategy": "keycloak_write_then_sync"
+}
+2025-08-24 10:29:34.695 [INFO]  HTTP Request
+{
+  "method": "POST",
+  "url": "/chat",
+  "status": 200,
+  "duration": "59198ms",
+  "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36"
+}
+2025-08-24 10:29:37.508 [INFO]  HTTP Request
+{
+  "method": "GET",
+  "url": "/",
+  "status": 200,
+  "duration": "3ms",
+  "userAgent": "Wget"
+}
+2025-08-24 10:30:37.549 [INFO]  HTTP Request
+{
+  "method": "GET",
+  "url": "/",
+  "status": 200,
+  "duration": "3ms",
+  "userAgent": "Wget"
+}
+2025-08-24 10:31:37.603 [INFO]  HTTP Request
+{
+  "method": "GET",
+  "url": "/",
+  "status": 200,
+  "duration": "3ms",
+  "userAgent": "Wget"
+}
+2025-08-24 10:32:37.645 [INFO]  HTTP Request
+{
+  "method": "GET",
+  "url": "/",
+  "status": 200,
+  "duration": "3ms",
+  "userAgent": "Wget"
+}
+2025-08-24 10:33:37.690 [INFO]  HTTP Request
+{
+  "method": "GET",
+  "url": "/",
+  "status": 200,
+  "duration": "2ms",
+  "userAgent": "Wget"
+}
+2025-08-24 10:34:37.734 [INFO]  HTTP Request
+{
+  "method": "GET",
+  "url": "/",
+  "status": 200,
+  "duration": "2ms",
+  "userAgent": "Wget"
+}
+2025-08-24 10:35:37.789 [INFO]  HTTP Request
+{
+  "method": "GET",
+  "url": "/",
+  "status": 200,
+  "duration": "3ms",
+  "userAgent": "Wget"
+}
+2025-08-24 10:36:37.833 [INFO]  HTTP Request
+{
+  "method": "GET",
+  "url": "/",
+  "status": 200,
+  "duration": "3ms",
+  "userAgent": "Wget"
+}
+2025-08-24 10:37:37.873 [INFO]  HTTP Request
+{
+  "method": "GET",
+  "url": "/",
+  "status": 200,
+  "duration": "2ms",
+  "userAgent": "Wget"
+}
+2025-08-24 10:38:14.595 [INFO]  Received SIGTERM, shutting down gracefully
+2025-08-24 12:38:14.743 [INFO]  Received SIGTERM, shutting down gracefully
+2025-08-24 10:38:14.889 [INFO]  Creating new LLM service instance
+{
+  "provider": "anthropic",
+  "model": "claude-opus-4-1-20250805",
+  "previousProvider": null
+}
+2025-08-24 10:38:14.891 [INFO]  Anthropic service initialized
+{
+  "provider": "anthropic",
+  "model": "claude-opus-4-1-20250805",
+  "apiKeyPresent": true
+}
+2025-08-24 10:38:14.891 [INFO]  Orchestrator initialized
+{
+  "llmProvider": "anthropic",
+  "llmModel": "claude-opus-4-1-20250805"
+}
+2025-08-24 10:38:14.896 [INFO]  IKAS AI Gateway started
+{
+  "port": 8005,
+  "environment": "development",
+  "keycloakMcp": "http://keycloak-mcp:8001",
+  "neo4jMcp": "http://neo4j-mcp:8002"
+}
+2025-08-24 10:38:14.896 [INFO]  Connecting to WebSocket server
+{
+  "url": "http://websocket-server:3001"
+}
+2025-08-24 10:38:20.085 [INFO]  Received SIGTERM, shutting down gracefully
+ider": "anthropic",
+  "model": "claude-3-5-sonnet-20241022",
+  "previousProvider": null
+}
+2025-08-24 12:38:15.100 [INFO]  Anthropic service initialized
+{
+  "provider": "anthropic",
+  "model": "claude-3-5-sonnet-20241022",
+  "apiKeyPresent": true
+}
+2025-08-24 12:38:15.100 [INFO]  Orchestrator initialized
+{
+  "llmProvider": "anthropic",
+  "llmModel": "claude-3-5-sonnet-20241022"
+}
+2025-08-24 12:38:15.102 [INFO]  IKAS AI Gateway started
+{
+  "port": 8007,
+  "environment": "development",
+  "keycloakMcp": "http://localhost:8001",
+  "neo4jMcp": "http://localhost:8002"
+}
+2025-08-24 12:38:15.103 [INFO]  Connecting to WebSocket server
+{
+  "url": "http://localhost:3001"
+}
+2025-08-24 12:38:15.124 [INFO]  Connected to WebSocket server
+{
+  "socketId": "yGUkITbI9nR6FrKeAAAX"
+}
+2025-08-24 12:38:15.125 [INFO]  WebSocket client connected successfully
+2025-08-24 12:38:15.125 [INFO]  WebSocket session established Welcome to IKAS! Connection established successfully.
+{
+  "sessionId": "3cf53870-baa5-4493-8214-3e3a4cd96808"
+}
+2025-08-24 12:38:15.125 [DEBUG]  Subscription confirmed
+{
+  "eventTypes": [
+    "voice:command",
+    "analysis:started",
+    "compliance:check"
+  ],
+  "room": "global"
+}
+2025-08-24 12:38:20.167 [INFO]  Received SIGTERM, shutting down gracefully
+2025-08-24 10:38:20.414 [INFO]  Creating new LLM service instance
+{
+  "provider": "anthropic",
+  "model": "claude-opus-4-1-20250805",
+  "previousProvider": null
+}
+2025-08-24 10:38:20.416 [INFO]  Anthropic service initialized
+{
+  "provider": "anthropic",
+  "model": "claude-opus-4-1-20250805",
+  "apiKeyPresent": true
+}
+2025-08-24 10:38:20.416 [INFO]  Orchestrator initialized
+{
+  "llmProvider": "anthropic",
+  "llmModel": "claude-opus-4-1-20250805"
+}
+2025-08-24 10:38:20.422 [INFO]  IKAS AI Gateway started
+{
+  "port": 8005,
+  "environment": "development",
+  "keycloakMcp": "http://keycloak-mcp:8001",
+  "neo4jMcp": "http://neo4j-mcp:8002"
+}
+2025-08-24 10:38:20.423 [INFO]  Connecting to WebSocket server
+{
+  "url": "http://websocket-server:3001"
+}
+2025-08-24 10:38:37.933 [INFO]  HTTP Request
+{
+  "method": "GET",
+  "url": "/",
+  "status": 200,
+  "duration": "13ms",
+  "userAgent": "Wget"
+}
+2025-08-24 10:38:40.434 [ERROR]  WebSocket connection error
+{
+  "error": "timeout",
+  "attempts": 1,
+  "maxAttempts": 10
+}
+2025-08-24 10:38:42.527 [INFO]  Received SIGTERM, shutting down gracefully
+"
+}
+2025-08-24 12:38:20.431 [DEBUG]  Subscription confirmed
+{
+  "eventTypes": [
+    "voice:command",
+    "analysis:started",
+    "compliance:check"
+  ],
+  "room": "global"
+}
+2025-08-24 12:38:42.710 [INFO]  Received SIGTERM, shutting down gracefully
+2025-08-24 10:38:42.844 [INFO]  Creating new LLM service instance
+{
+  "provider": "anthropic",
+  "model": "claude-opus-4-1-20250805",
+  "previousProvider": null
+}
+2025-08-24 10:38:42.846 [INFO]  Anthropic service initialized
+{
+  "provider": "anthropic",
+  "model": "claude-opus-4-1-20250805",
+  "apiKeyPresent": true
+}
+2025-08-24 10:38:42.846 [INFO]  Orchestrator initialized
+{
+  "llmProvider": "anthropic",
+  "llmModel": "claude-opus-4-1-20250805"
+}
+2025-08-24 10:38:42.852 [INFO]  IKAS AI Gateway started
+{
+  "port": 8005,
+  "environment": "development",
+  "keycloakMcp": "http://keycloak-mcp:8001",
+  "neo4jMcp": "http://neo4j-mcp:8002"
+}
+2025-08-24 10:38:42.852 [INFO]  Connecting to WebSocket server
+{
+  "url": "http://websocket-server:3001"
+}
+2025-08-24 10:38:59.708 [INFO]  Received SIGTERM, shutting down gracefully
+ider": "anthropic",
+  "model": "claude-3-5-sonnet-20241022",
+  "previousProvider": null
+}
+2025-08-24 12:38:42.960 [INFO]  Anthropic service initialized
+{
+  "provider": "anthropic",
+  "model": "claude-3-5-sonnet-20241022",
+  "apiKeyPresent": true
+}
+2025-08-24 12:38:42.961 [INFO]  Orchestrator initialized
+{
+  "llmProvider": "anthropic",
+  "llmModel": "claude-3-5-sonnet-20241022"
+}
+2025-08-24 12:38:42.963 [INFO]  IKAS AI Gateway started
+{
+  "port": 8007,
+  "environment": "development",
+  "keycloakMcp": "http://localhost:8001",
+  "neo4jMcp": "http://localhost:8002"
+}
+2025-08-24 12:38:42.963 [INFO]  Connecting to WebSocket server
+{
+  "url": "http://localhost:3001"
+}
+2025-08-24 12:38:42.980 [INFO]  Connected to WebSocket server
+{
+  "socketId": "mt7npIn_1hwDzzrUAAAb"
+}
+2025-08-24 12:38:42.980 [INFO]  WebSocket client connected successfully
+2025-08-24 12:38:42.983 [INFO]  WebSocket session established Welcome to IKAS! Connection established successfully.
+{
+  "sessionId": "dfb5601d-a8e6-4f22-adaa-9c0d7b5cc338"
+}
+2025-08-24 12:38:42.984 [DEBUG]  Subscription confirmed
+{
+  "eventTypes": [
+    "voice:command",
+    "analysis:started",
+    "compliance:check"
+  ],
+  "room": "global"
+}
+2025-08-24 12:38:59.839 [INFO]  Received SIGTERM, shutting down gracefully
+2025-08-24 10:39:00.067 [INFO]  Creating new LLM service instance
+{
+  "provider": "anthropic",
+  "model": "claude-opus-4-1-20250805",
+  "previousProvider": null
+}
+2025-08-24 10:39:00.069 [INFO]  Anthropic service initialized
+{
+  "provider": "anthropic",
+  "model": "claude-opus-4-1-20250805",
+  "apiKeyPresent": true
+}
+2025-08-24 10:39:00.070 [INFO]  Orchestrator initialized
+{
+  "llmProvider": "anthropic",
+  "llmModel": "claude-opus-4-1-20250805"
+}
+2025-08-24 10:39:00.075 [INFO]  IKAS AI Gateway started
+{
+  "port": 8005,
+  "environment": "development",
+  "keycloakMcp": "http://keycloak-mcp:8001",
+  "neo4jMcp": "http://neo4j-mcp:8002"
+}
+2025-08-24 10:39:00.075 [INFO]  Connecting to WebSocket server
+{
+  "url": "http://websocket-server:3001"
+}
+2025-08-24 10:39:07.702 [INFO]  Received SIGTERM, shutting down gracefully
+ider": "anthropic",
+  "model": "claude-3-5-sonnet-20241022",
+  "previousProvider": null
+}
+2025-08-24 12:39:00.120 [INFO]  Anthropic service initialized
+{
+  "provider": "anthropic",
+  "model": "claude-3-5-sonnet-20241022",
+  "apiKeyPresent": true
+}
+2025-08-24 12:39:00.120 [INFO]  Orchestrator initialized
+{
+  "llmProvider": "anthropic",
+  "llmModel": "claude-3-5-sonnet-20241022"
+}
+2025-08-24 12:39:00.122 [INFO]  IKAS AI Gateway started
+{
+  "port": 8007,
+  "environment": "development",
+  "keycloakMcp": "http://localhost:8001",
+  "neo4jMcp": "http://localhost:8002"
+}
+2025-08-24 12:39:00.122 [INFO]  Connecting to WebSocket server
+{
+  "url": "http://localhost:3001"
+}
+2025-08-24 12:39:00.139 [INFO]  Connected to WebSocket server
+{
+  "socketId": "_Cad44rx6IhLzh9MAAAd"
+}
+2025-08-24 12:39:00.139 [INFO]  WebSocket client connected successfully
+2025-08-24 12:39:00.142 [INFO]  WebSocket session established Welcome to IKAS! Connection established successfully.
+{
+  "sessionId": "52421938-58b8-42ee-9cd5-9490e51227de"
+}
+2025-08-24 12:39:00.142 [DEBUG]  Subscription confirmed
+{
+  "eventTypes": [
+    "voice:command",
+    "analysis:started",
+    "compliance:check"
+  ],
+  "room": "global"
+}
+2025-08-24 12:39:07.718 [INFO]  Received SIGTERM, shutting down gracefully
+2025-08-24 10:39:08.055 [INFO]  Creating new LLM service instance
+{
+  "provider": "anthropic",
+  "model": "claude-opus-4-1-20250805",
+  "previousProvider": null
+}
+2025-08-24 10:39:08.057 [INFO]  Anthropic service initialized
+{
+  "provider": "anthropic",
+  "model": "claude-opus-4-1-20250805",
+  "apiKeyPresent": true
+}
+2025-08-24 10:39:08.057 [INFO]  Orchestrator initialized
+{
+  "llmProvider": "anthropic",
+  "llmModel": "claude-opus-4-1-20250805"
+}
+2025-08-24 10:39:08.062 [INFO]  IKAS AI Gateway started
+{
+  "port": 8005,
+  "environment": "development",
+  "keycloakMcp": "http://keycloak-mcp:8001",
+  "neo4jMcp": "http://neo4j-mcp:8002"
+}
+2025-08-24 10:39:08.062 [INFO]  Connecting to WebSocket server
+{
+  "url": "http://websocket-server:3001"
+}
+2025-08-24 10:39:13.855 [INFO]  Received SIGTERM, shutting down gracefully
+d86M6HiDiET8NcrxAAAf"
+}
+2025-08-24 12:39:08.019 [INFO]  WebSocket client connected successfully
+2025-08-24 12:39:08.019 [INFO]  WebSocket session established Welcome to IKAS! Connection established successfully.
+{
+  "sessionId": "096924bf-d984-4670-b760-7ec1bde49c7f"
+}
+2025-08-24 12:39:08.019 [DEBUG]  Subscription confirmed
+{
+  "eventTypes": [
+    "voice:command",
+    "analysis:started",
+    "compliance:check"
+  ],
+  "room": "global"
+}
+2025-08-24 12:39:13.902 [INFO]  Received SIGTERM, shutting down gracefully
+2025-08-24 10:39:14.390 [INFO]  Creating new LLM service instance
+{
+  "provider": "anthropic",
+  "model": "claude-opus-4-1-20250805",
+  "previousProvider": null
+}
+2025-08-24 10:39:14.391 [INFO]  Anthropic service initialized
+{
+  "provider": "anthropic",
+  "model": "claude-opus-4-1-20250805",
+  "apiKeyPresent": true
+}
+2025-08-24 10:39:14.392 [INFO]  Orchestrator initialized
+{
+  "llmProvider": "anthropic",
+  "llmModel": "claude-opus-4-1-20250805"
+}
+2025-08-24 10:39:14.397 [INFO]  IKAS AI Gateway started
+{
+  "port": 8005,
+  "environment": "development",
+  "keycloakMcp": "http://keycloak-mcp:8001",
+  "neo4jMcp": "http://neo4j-mcp:8002"
+}
+2025-08-24 10:39:14.397 [INFO]  Connecting to WebSocket server
+{
+  "url": "http://websocket-server:3001"
+}
+2025-08-24 10:39:25.790 [INFO]  Received SIGTERM, shutting down gracefully
+qupdq7pD7HnU1F3KAAAh"
+}
+2025-08-24 12:39:14.290 [INFO]  WebSocket client connected successfully
+2025-08-24 12:39:14.298 [INFO]  WebSocket session established Welcome to IKAS! Connection established successfully.
+{
+  "sessionId": "3fc0a640-c737-47ec-a70b-4729b2200327"
+}
+2025-08-24 12:39:14.299 [DEBUG]  Subscription confirmed
+{
+  "eventTypes": [
+    "voice:command",
+    "analysis:started",
+    "compliance:check"
+  ],
+  "room": "global"
+}
+2025-08-24 10:39:26.422 [INFO]  Creating new LLM service instance
+{
+  "provider": "anthropic",
+  "model": "claude-opus-4-1-20250805",
+  "previousProvider": null
+}
+2025-08-24 10:39:26.423 [INFO]  Anthropic service initialized
+{
+  "provider": "anthropic",
+  "model": "claude-opus-4-1-20250805",
+  "apiKeyPresent": true
+}
+2025-08-24 10:39:26.424 [INFO]  Orchestrator initialized
+{
+  "llmProvider": "anthropic",
+  "llmModel": "claude-opus-4-1-20250805"
+}
+2025-08-24 10:39:26.428 [INFO]  IKAS AI Gateway started
+{
+  "port": 8005,
+  "environment": "development",
+  "keycloakMcp": "http://keycloak-mcp:8001",
+  "neo4jMcp": "http://neo4j-mcp:8002"
+}
+2025-08-24 10:39:26.428 [INFO]  Connecting to WebSocket server
+{
+  "url": "http://websocket-server:3001"
+}
+2025-08-24 10:39:31.077 [INFO]  HTTP Request
+{
+  "method": "GET",
+  "url": "/",
+  "status": 200,
+  "duration": "15ms",
+  "userAgent": "Wget"
+}
+2025-08-24 10:39:46.448 [ERROR]  WebSocket connection error
+{
+  "error": "timeout",
+  "attempts": 1,
+  "maxAttempts": 10
+}
+2025-08-24 10:40:08.824 [ERROR]  WebSocket connection error
+{
+  "error": "timeout",
+  "attempts": 2,
+  "maxAttempts": 10
+}
+2025-08-24 10:40:31.125 [INFO]  HTTP Request
+{
+  "method": "GET",
+  "url": "/",
+  "status": 200,
+  "duration": "5ms",
+  "userAgent": "Wget"
+}
+2025-08-24 10:40:33.197 [ERROR]  WebSocket connection error
+{
+  "error": "timeout",
+  "attempts": 3,
+  "maxAttempts": 10
+}
+2025-08-24 10:40:58.210 [ERROR]  WebSocket connection error
+{
+  "error": "timeout",
+  "attempts": 4,
+  "maxAttempts": 10
+}
+2025-08-24 10:41:23.225 [ERROR]  WebSocket connection error
+{
+  "error": "timeout",
+  "attempts": 5,
+  "maxAttempts": 10
+}
+2025-08-24 10:41:31.179 [INFO]  HTTP Request
+{
+  "method": "GET",
+  "url": "/",
+  "status": 200,
+  "duration": "6ms",
+  "userAgent": "Wget"
+}
+2025-08-24 10:41:40.121 [DEBUG]  Available models request received
+2025-08-24 10:41:40.123 [INFO]  Gemini service initialized
+{
+  "provider": "gemini",
+  "model": "claude-opus-4-1-20250805",
+  "apiConfigured": true,
+  "temperature": 0.1,
+  "maxTokens": 8192
+}
+2025-08-24 10:41:40.336 [INFO]  Ollama service initialized
+{
+  "provider": "ollama",
+  "model": "claude-opus-4-1-20250805",
+  "baseURL": "http://localhost:11434",
+  "temperature": 0.1,
+  "maxTokens": 8192
+}
+2025-08-24 10:41:40.396 [WARN]  Ollama service availability check failed
+{
+  "provider": "ollama",
+  "model": "claude-opus-4-1-20250805",
+  "baseURL": "http://localhost:11434",
+  "error": "connect ECONNREFUSED ::1:11434"
+}
+2025-08-24 10:41:40.397 [INFO]  Anthropic service initialized
+{
+  "provider": "anthropic",
+  "model": "claude-opus-4-1-20250805",
+  "apiKeyPresent": true
+}
+2025-08-24 10:41:42.774 [DEBUG]  Provider openai not available
+{
+  "error": "OPENAI_API_KEY is required"
+}
+2025-08-24 10:41:42.775 [INFO]  Models info retrieved
+{
+  "availableProviders": 1,
+  "currentProvider": "anthropic",
+  "currentModel": "claude-opus-4-1-20250805"
+}
+2025-08-24 10:41:42.777 [INFO]  HTTP Request
+{
+  "method": "GET",
+  "url": "/models",
+  "status": 200,
+  "duration": "2657ms",
+  "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36"
+}
+2025-08-24 10:41:48.237 [ERROR]  WebSocket connection error
+{
+  "error": "timeout",
+  "attempts": 6,
+  "maxAttempts": 10
+}
+2025-08-24 10:41:52.841 [INFO]  HTTP Request
+{
+  "method": "GET",
+  "url": "/",
+  "status": 200,
+  "duration": "9ms",
+  "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36"
+}
+2025-08-24 10:41:52.851 [INFO]  HTTP Request
+{
+  "method": "GET",
+  "url": "/",
+  "status": 200,
+  "duration": "5ms",
+  "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36"
+}
+2025-08-24 10:42:04.929 [DEBUG]  Available models request received
+2025-08-24 10:42:04.930 [INFO]  Gemini service initialized
+{
+  "provider": "gemini",
+  "model": "claude-opus-4-1-20250805",
+  "apiConfigured": true,
+  "temperature": 0.1,
+  "maxTokens": 8192
+}
+2025-08-24 10:42:05.026 [INFO]  Ollama service initialized
+{
+  "provider": "ollama",
+  "model": "claude-opus-4-1-20250805",
+  "baseURL": "http://localhost:11434",
+  "temperature": 0.1,
+  "maxTokens": 8192
+}
+2025-08-24 10:42:05.064 [WARN]  Ollama service availability check failed
+{
+  "provider": "ollama",
+  "model": "claude-opus-4-1-20250805",
+  "baseURL": "http://localhost:11434",
+  "error": "connect ECONNREFUSED ::1:11434"
+}
+2025-08-24 10:42:05.064 [INFO]  Anthropic service initialized
+{
+  "provider": "anthropic",
+  "model": "claude-opus-4-1-20250805",
+  "apiKeyPresent": true
+}
+2025-08-24 10:42:07.873 [DEBUG]  Provider openai not available
+{
+  "error": "OPENAI_API_KEY is required"
+}
+2025-08-24 10:42:07.874 [INFO]  Models info retrieved
+{
+  "availableProviders": 1,
+  "currentProvider": "anthropic",
+  "currentModel": "claude-opus-4-1-20250805"
+}
+2025-08-24 10:42:07.876 [INFO]  HTTP Request
+{
+  "method": "GET",
+  "url": "/models",
+  "status": 200,
+  "duration": "2947ms",
+  "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36"
+}
+2025-08-24 10:42:13.246 [ERROR]  WebSocket connection error
+{
+  "error": "timeout",
+  "attempts": 7,
+  "maxAttempts": 10
+}
+2025-08-24 10:42:31.224 [INFO]  HTTP Request
+{
+  "method": "GET",
+  "url": "/",
+  "status": 200,
+  "duration": "4ms",
+  "userAgent": "Wget"
+}
+2025-08-24 10:42:38.259 [ERROR]  WebSocket connection error
+{
+  "error": "timeout",
+  "attempts": 8,
+  "maxAttempts": 10
+}
+st [neo4j]
+{
+  "method": "GET",
+  "url": "/health",
+  "baseURL": "http://localhost:8002"
+}
+2025-08-24 12:41:43.847 [DEBUG]  MCP Response [neo4j]
+{
+  "status": 200,
+  "url": "/health"
+}
+2025-08-24 12:41:43.848 [DEBUG]  MCP Response [keycloak]
+{
+  "status": 200,
+  "url": "/health"
+}
+2025-08-24 12:41:43.848 [INFO]  MCP tool discovery completed
+{
+  "keycloakTools": 8,
+  "neo4jTools": 3,
+  "totalTools": 11,
+  "keycloakHealthy": true,
+  "neo4jHealthy": true
+}
+2025-08-24 12:41:43.849 [INFO] [087c4a0d] 🛠️ Tools selected for request
+{
+  "sessionId": "bcb1f16a-023c-453c-9ce4-f39f37d0fe4b",
   "strategy": "coordinated_multi_mcp",
-  "toolsCalledCount": 5,
-  "finalResponseLength": 60,
-  "dataKeys": [
-    "realms",
-    "users"
-  ],
-  "success": true
-}
-2025-08-24 11:59:42.122 [DEBUG]  Sent voice response
-{
-  "sessionId": "e436080c-36b2-4f00-8f54-9c33f83d66d2",
-  "success": true
-}
-2025-08-24 11:59:42.122 [INFO]  📤 Processing data updates from orchestration response
-{
-  "sessionId": "e436080c-36b2-4f00-8f54-9c33f83d66d2",
-  "hasData": true,
-  "dataKeys": [
-    "realms",
-    "users",
-    "usage",
-    "finishReason"
-  ],
-  "dataCount": 4
-}
-2025-08-24 11:59:42.122 [DEBUG]  📦 Sending data update
-{
-  "sessionId": "e436080c-36b2-4f00-8f54-9c33f83d66d2",
-  "dataType": "realms",
-  "hasData": true,
-  "dataPreview": "object"
-}
-2025-08-24 11:59:42.122 [INFO]  📡 Sent data update via WebSocket
-{
-  "sessionId": "e436080c-36b2-4f00-8f54-9c33f83d66d2",
-  "dataType": "realms",
-  "eventType": "data:update",
-  "recordCount": 3,
-  "dataSize": 140,
-  "isArray": false,
-  "sampleKeys": [
-    "success",
-    "count",
-    "realms"
+  "intent": "all",
+  "toolCount": 11,
+  "availableTools": [
+    {
+      "name": "create-user",
+      "description": "Keycloak create-user tool Verwende dies für das Erstellen neuer Benutzer in Keycloak."
+    },
+    {
+      "name": "list-users",
+      "description": "Keycloak list-users tool Verwende dies für aktuelle Live-Benutzerdaten aus Keycloak."
+    },
+    {
+      "name": "delete-user",
+      "description": "Keycloak delete-user tool Verwende dies zum Löschen von Benutzern. Erfordert Bestätigung."
+    },
+    {
+      "name": "get-user",
+      "description": "Keycloak get-user tool"
+    },
+    {
+      "name": "list-realms",
+      "description": "Keycloak list-realms tool Zeigt verfügbare Keycloak-Realms."
+    },
+    {
+      "name": "list-admin-events",
+      "description": "Keycloak list-admin-events tool Für aktuelle administrative Aktionen und Audit-Trails."
+    },
+    {
+      "name": "get-event-details",
+      "description": "Keycloak get-event-details tool Für detaillierte Informationen zu spezifischen Events."
+    },
+    {
+      "name": "get-metrics",
+      "description": "Keycloak get-metrics tool Für aktuelle System-Metriken und Statistiken."
+    },
+    {
+      "name": "get_neo4j_schema",
+      "description": "Neo4j get_neo4j_schema tool Verwende dies um die Datenstruktur vor komplexen Abfragen zu verstehen."
+    },
+    {
+      "name": "read_neo4j_cypher",
+      "description": "Neo4j read_neo4j_cypher tool Für Musteranalyse, Beziehungsabfragen und historische Datenanalyse."
+    },
+    {
+      "name": "write_neo4j_cypher",
+      "description": "Neo4j write_neo4j_cypher tool Für Daten-Updates, Synchronisation und Strukturänderungen."
+    }
   ]
 }
-2025-08-24 11:59:42.122 [DEBUG]  📦 Sending data update
+2025-08-24 12:41:43.849 [DEBUG]  Skipping pre-processing - Gemini will handle orchestration
 {
-  "sessionId": "e436080c-36b2-4f00-8f54-9c33f83d66d2",
-  "dataType": "users",
-  "hasData": true,
-  "dataPreview": "object"
+  "strategy": "coordinated_multi_mcp",
+  "realm": "master"
 }
-2025-08-24 11:59:42.122 [INFO]  📡 Sent data update via WebSocket
+2025-08-24 12:41:43.849 [INFO] [087c4a0d] 🧠 Sending request to anthropic sync initial system data
 {
-  "sessionId": "e436080c-36b2-4f00-8f54-9c33f83d66d2",
-  "dataType": "users",
-  "eventType": "data:update",
-  "recordCount": 3,
-  "dataSize": 389,
-  "isArray": false,
-  "sampleKeys": [
-    "success",
-    "count",
-    "users"
+  "sessionId": "bcb1f16a-023c-453c-9ce4-f39f37d0fe4b",
+  "provider": "anthropic",
+  "model": "claude-3-5-sonnet-20241022",
+  "toolCount": 11,
+  "functionCallingMode": "ANY",
+  "context": {
+    "language": "en"
+  }
+}
+2025-08-24 12:41:43.850 [DEBUG] [7a6b4859] Sending chat request to Anthropic
+{
+  "sessionId": "bcb1f16a-023c-453c-9ce4-f39f37d0fe4b",
+  "model": "claude-3-5-sonnet-20241022",
+  "messageLength": 24,
+  "toolsCount": 11,
+  "historyLength": 1
+}
+2025-08-24 12:41:46.552 [INFO] [7a6b4859] Anthropic chat completed
+{
+  "sessionId": "bcb1f16a-023c-453c-9ce4-f39f37d0fe4b",
+  "finishReason": "function_call",
+  "functionCallsCount": 1,
+  "responseLength": 394,
+  "usage": {
+    "promptTokens": 1985,
+    "completionTokens": 147,
+    "totalTokens": 2132
+  }
+}
+2025-08-24 12:41:46.553 [INFO] [087c4a0d] 🎭 LLM response received
+{
+  "sessionId": "bcb1f16a-023c-453c-9ce4-f39f37d0fe4b",
+  "provider": "anthropic",
+  "model": "claude-3-5-sonnet-20241022",
+  "hasResponse": true,
+  "responseLength": 394,
+  "hasFunctionCalls": true,
+  "functionCallCount": 1,
+  "functionNames": [
+    "get_neo4j_schema"
   ]
 }
-2025-08-24 11:59:42.123 [DEBUG]  ⏭️ Skipping data update
+2025-08-24 12:41:46.554 [INFO] [087c4a0d] ⚙️ Starting function call execution (iteration 1)
 {
-  "sessionId": "e436080c-36b2-4f00-8f54-9c33f83d66d2",
-  "dataType": "usage",
-  "reason": "metadata type"
+  "sessionId": "bcb1f16a-023c-453c-9ce4-f39f37d0fe4b",
+  "iteration": 1,
+  "functionCount": 1,
+  "functions": [
+    {
+      "name": "get_neo4j_schema",
+      "argKeys": []
+    }
+  ]
 }
-2025-08-24 11:59:42.123 [DEBUG]  ⏭️ Skipping data update
+2025-08-24 12:41:46.555 [INFO] [74378259] Processing function calls via Anthropic
 {
-  "sessionId": "e436080c-36b2-4f00-8f54-9c33f83d66d2",
-  "dataType": "finishReason",
-  "reason": "metadata type"
+  "sessionId": "bcb1f16a-023c-453c-9ce4-f39f37d0fe4b",
+  "functionCallsCount": 1
+}
+2025-08-24 12:41:46.556 [DEBUG]  Executing function call
+{
+  "serverName": "neo4j",
+  "toolName": "get_neo4j_schema",
+  "args": {}
+}
+2025-08-24 12:41:46.558 [DEBUG]  MCP Request [neo4j]
+{
+  "method": "POST",
+  "url": "/tools/get_neo4j_schema",
+  "baseURL": "http://localhost:8002"
+}
+2025-08-24 12:41:46.612 [DEBUG]  MCP Response [neo4j]
+{
+  "status": 200,
+  "url": "/tools/get_neo4j_schema"
+}
+2025-08-24 12:41:46.613 [DEBUG]  🔗 Neo4j tool result stored
+{
+  "serverName": "neo4j",
+  "toolName": "get_neo4j_schema",
+  "resultKey": "neo4j_get_neo4j_schema",
+  "success": true,
+  "hasData": true,
+  "dataType": "object",
+  "dataSize": 3
+}
+2025-08-24 12:41:46.614 [DEBUG] [74378259] Function call executed successfully
+{
+  "functionName": "get_neo4j_schema",
+  "resultLength": 3032
+}
+2025-08-24 12:41:46.796 [ERROR] [74378259] Function call processing failed
+{
+  "sessionId": "bcb1f16a-023c-453c-9ce4-f39f37d0fe4b",
+  "duration": 241,
+  "error": "400 {\"type\":\"error\",\"error\":{\"type\":\"invalid_request_error\",\"message\":\"messages.2.content.0: unexpected `tool_use_id` found in `tool_result` blocks: toolu_01C8M4XQ46vPEstSvetkmoDV. Each `tool_result` block must have a corresponding `tool_use` block in the previous message.\"},\"request_id\":\"req_011CSSPqbygk1DVTg44rnAi1\"}"
+}
+2025-08-24 12:41:46.808 [ERROR] [087c4a0d] ❌ Orchestration request failed
+{
+  "sessionId": "bcb1f16a-023c-453c-9ce4-f39f37d0fe4b",
+  "userInput": "sync initial system data",
+  "duration": "2978ms",
+  "error": "400 {\"type\":\"error\",\"error\":{\"type\":\"invalid_request_error\",\"message\":\"messages.2.content.0: unexpected `tool_use_id` found in `tool_result` blocks: toolu_01C8M4XQ46vPEstSvetkmoDV. Each `tool_result` block must have a corresponding `tool_use` block in the previous message.\"},\"request_id\":\"req_011CSSPqbygk1DVTg44rnAi1\"}",
+  "stack": "LLMError: 400 {\"type\":\"error\",\"error\":{\"type\":\"invalid_request_error\",\"message\":\"messages.2.content.0: unexpected `tool_use_id` found in `tool_result` blocks: toolu_01C8M4XQ46vPEstSvetkmoDV. Each `tool_result` block must have a corresponding `tool_use` block in the previous message.\"},\"request_id\":\"req_011CSSPqbygk1DVTg44rnAi1\"}\n    at AnthropicService.processFunctionCalls (/Users/marcelmeyer/IdeaProjects/IKAS Project/IKAS/ai-gateway/src/llm/anthropic-service.ts:313:13)\n    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)\n    at async Orchestrator.processRequest (/Users/marcelmeyer/IdeaProjects/IKAS Project/IKAS/ai-gateway/src/orchestration/orchestrator.ts:176:31)\n    at async WebSocketClient.processWithOrchestrator (/Users/marcelmeyer/IdeaProjects/IKAS Project/IKAS/ai-gateway/src/websocket/client.ts:325:12)\n    at async WebSocketClient.handleVoiceCommand (/Users/marcelmeyer/IdeaProjects/IKAS Project/IKAS/ai-gateway/src/websocket/client.ts:187:24)",
+  "context": {
+    "source": "voice",
+    "confidence": 1,
+    "language": "de-DE"
+  }
+}
+2025-08-24 12:41:46.809 [DEBUG]  Sent voice response
+{
+  "sessionId": "bcb1f16a-023c-453c-9ce4-f39f37d0fe4b",
+  "success": false
+}
+2025-08-24 12:41:46.810 [DEBUG]  📭 No data updates to send
+{
+  "sessionId": "bcb1f16a-023c-453c-9ce4-f39f37d0fe4b",
+  "success": false,
+  "hasData": false
 }
