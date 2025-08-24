@@ -133,11 +133,18 @@ export class AnthropicService extends LLMService {
       // Process the response
       const processedResponse = this.processAnthropicResponse(response, requestId);
 
-      // Add assistant response to history
-      messages.push({
-        role: 'assistant',
-        content: response.content as any
-      });
+      // Add assistant response to history - only store text content to avoid tool_use/tool_result mismatch
+      const assistantContent = response.content
+        .filter(block => block.type === 'text')
+        .map(block => block.type === 'text' ? block.text : '')
+        .join('');
+
+      if (assistantContent.trim()) {
+        messages.push({
+          role: 'assistant',
+          content: assistantContent
+        });
+      }
 
       // Trim history if too long
       if (messages.length > this.maxHistoryLength) {
@@ -263,11 +270,18 @@ export class AnthropicService extends LLMService {
       // Process the continued response
       const processedResponse = this.processAnthropicResponse(continueResponse, requestId);
 
-      // Add assistant response to history
-      messages.push({
-        role: 'assistant',
-        content: continueResponse.content as any
-      });
+      // Add assistant response to history - only store text content to avoid tool_use/tool_result mismatch
+      const assistantContent = continueResponse.content
+        .filter(block => block.type === 'text')
+        .map(block => block.type === 'text' ? block.text : '')
+        .join('');
+
+      if (assistantContent.trim()) {
+        messages.push({
+          role: 'assistant',
+          content: assistantContent
+        });
+      }
 
       // Update chat history
       this.chatHistory.set(sessionId, messages);

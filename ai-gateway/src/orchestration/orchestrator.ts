@@ -94,9 +94,11 @@ export class Orchestrator {
       // 4. Determine function calling mode based on request type
       const functionCallingMode = this.determineFunctionCallingMode(request.userInput);
       
-      logger.info('🧠 Sending request to Gemini', {
+      logger.info(`🧠 Sending request to ${this.llmService.provider}`, {
         requestId,
         sessionId: request.sessionId,
+        provider: this.llmService.provider,
+        model: this.llmService.model,
         message: request.userInput,
         toolCount: availableTools.length,
         functionCallingMode,
@@ -180,11 +182,12 @@ export class Orchestrator {
 
         finalResponse = processResult.response;
 
-        // Check if Gemini wants to call more functions
+        // Check if LLM wants to call more functions
         if (processResult.additionalFunctionCalls && processResult.additionalFunctionCalls.length > 0) {
-          logger.info('🔧 Gemini requested more function calls', {
+          logger.info(`🔧 ${this.llmService.provider} requested more function calls`, {
             requestId,
             sessionId: request.sessionId,
+            provider: this.llmService.provider,
             iteration: iteration + 1,
             additionalFunctionCount: processResult.additionalFunctionCalls.length,
             functions: processResult.additionalFunctionCalls.map(fc => fc.name)
@@ -197,9 +200,10 @@ export class Orchestrator {
             finishReason: 'CONTINUE'
           };
         } else {
-          logger.info('✅ Gemini finished calling functions', {
+          logger.info(`✅ ${this.llmService.provider} finished calling functions`, {
             requestId,
             sessionId: request.sessionId,
+            provider: this.llmService.provider,
             iteration: iteration + 1,
             totalToolsCalled: toolsCalled.length
           });
@@ -686,5 +690,16 @@ export class Orchestrator {
     this.toolResults.clear();
     
     logger.info('Session cleared successfully', { sessionId });
+  }
+
+  // Get orchestrator status
+  getStatus(): any {
+    return {
+      activeSessions: this.llmService.getActiveSessions().length,
+      toolCacheStatus: this.toolDiscovery.getCacheStatus(),
+      currentProvider: this.llmService.provider,
+      currentModel: this.llmService.model,
+      toolResultsCount: this.toolResults.size
+    };
   }
 }
