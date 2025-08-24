@@ -26,6 +26,46 @@ interface VoiceState {
   voiceSupported: boolean;
 }
 
+// Model and Chat state interfaces
+interface ModelInfo {
+  id: string;
+  name: string;
+  provider: string;
+  model: string;
+  capabilities: string[];
+  description: string;
+  available: boolean;
+  current: boolean;
+}
+
+interface ChatMessage {
+  id: string;
+  type: 'user' | 'assistant' | 'system';
+  content: string;
+  timestamp: Date;
+  model?: string;
+  sessionId?: string;
+  tokens?: {
+    prompt: number;
+    completion: number;
+    total: number;
+  };
+}
+
+interface ModelState {
+  availableModels: ModelInfo[];
+  currentModel: ModelInfo | null;
+  isLoading: boolean;
+  lastError: string | null;
+}
+
+interface ChatState {
+  messages: ChatMessage[];
+  isLoading: boolean;
+  textInput: string;
+  sessionId: string | null;
+}
+
 // Event state interfaces
 interface EventState {
   events: IKASEvent[];
@@ -114,6 +154,8 @@ interface IKASStore {
   // State
   system: SystemStatus;
   voice: VoiceState;
+  model: ModelState;
+  chat: ChatState;
   events: EventState;
   analysis: AnalysisState;
   data: DataState;
@@ -135,6 +177,17 @@ interface IKASStore {
   stopListening: () => void;
   toggleHotwordMode: () => void;
   sendVoiceCommand: (command: VoiceCommand) => Promise<void>;
+
+  // Model actions
+  loadAvailableModels: () => Promise<void>;
+  switchModel: (modelId: string) => Promise<void>;
+  getCurrentModel: () => Promise<void>;
+
+  // Chat actions
+  sendTextMessage: (message: string) => Promise<void>;
+  updateTextInput: (input: string) => void;
+  clearChatHistory: () => void;
+  addChatMessage: (message: Omit<ChatMessage, 'id' | 'timestamp'>) => void;
 
   // Event actions
   addEvent: (event: IKASEvent) => void;
@@ -184,6 +237,20 @@ export const useIKASStore = create<IKASStore>()(
         voiceSupported: false
       },
 
+      model: {
+        availableModels: [],
+        currentModel: null,
+        isLoading: false,
+        lastError: null
+      },
+
+      chat: {
+        messages: [],
+        isLoading: false,
+        textInput: '',
+        sessionId: null
+      },
+
       events: {
         events: [],
         unreadCount: 0,
@@ -218,8 +285,15 @@ export const useIKASStore = create<IKASStore>()(
 
       // Service initialization
       initializeServices: async () => {
-        const { initializeVoice } = get();
+        const { initializeVoice, loadAvailableModels } = get();
         initializeVoice();
+        
+        // Load available models on initialization
+        try {
+          await loadAvailableModels();
+        } catch (error) {
+          console.error('Failed to load models during initialization:', error);
+        }
       },
 
       connectWebSocket: async (userId?: string, realm?: string) => {
@@ -553,6 +627,281 @@ export const useIKASStore = create<IKASStore>()(
             message: error instanceof Error ? error.message : 'Unknown error'
           });
         }
+      },
+
+      // Model actions
+      loadAvailableModels: async () => {
+        set((state) => ({
+          model: {
+            ...state.model,
+            isLoading: true,
+            lastError: null
+          }
+        }));
+
+        try {
+          const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8005';
+          const response = await fetch(`${apiUrl}/api/models`);
+          
+          if (!response.ok) {
+            throw new Error(`Failed to load models: ${response.statusText}`);
+          }
+
+          const data = await response.json();
+
+          set((state) => ({
+            model: {
+              ...state.model,
+              availableModels: data.models || [],
+              currentModel: data.current ? data.models.find((m: ModelInfo) => m.current) || null : null,
+              isLoading: false
+            }
+          }));
+        } catch (error) {
+          const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+          set((state) => ({
+            model: {
+              ...state.model,
+              isLoading: false,
+              lastError: errorMessage
+            }
+          }));
+
+          get().addNotification({
+            type: 'error',
+            title: 'Failed to Load Models',
+            message: errorMessage
+          });
+        }
+      },
+
+      switchModel: async (modelId: string) => {
+        set((state) => ({
+          model: {
+            ...state.model,
+            isLoading: true,
+            lastError: null
+          }
+        }));
+
+        try {
+          const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8005';
+          const response = await fetch(`${apiUrl}/api/models/switch`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+              provider: modelId,
+              sessionId: get().chat.sessionId
+            })
+          });
+
+          if (!response.ok) {
+            const errorData = await response.json();
+            throw new Error(errorData.message || `Failed to switch model: ${response.statusText}`);
+          }
+
+          const data = await response.json();
+
+          // Update current model
+          set((state) => ({
+            model: {
+              ...state.model,
+              currentModel: state.model.availableModels.find(m => m.id === modelId) || null,
+              availableModels: state.model.availableModels.map(m => ({
+                ...m,
+                current: m.id === modelId
+              })),
+              isLoading: false
+            }
+          }));
+
+          // Clear chat if session was cleared
+          if (data.sessionCleared) {
+            get().clearChatHistory();
+          }
+
+          get().addNotification({
+            type: 'success',
+            title: 'Model Switched',
+            message: `Now using ${data.provider} (${data.model})`
+          });
+
+        } catch (error) {
+          const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+          set((state) => ({
+            model: {
+              ...state.model,
+              isLoading: false,
+              lastError: errorMessage
+            }
+          }));
+
+          get().addNotification({
+            type: 'error',
+            title: 'Failed to Switch Model',
+            message: errorMessage
+          });
+        }
+      },
+
+      getCurrentModel: async () => {
+        try {
+          const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8005';
+          const response = await fetch(`${apiUrl}/api/models`);
+          
+          if (!response.ok) {
+            throw new Error(`Failed to get current model: ${response.statusText}`);
+          }
+
+          const data = await response.json();
+
+          set((state) => ({
+            model: {
+              ...state.model,
+              currentModel: data.current ? data.models.find((m: ModelInfo) => m.current) || null : null,
+              availableModels: data.models || []
+            }
+          }));
+        } catch (error) {
+          console.error('Failed to get current model:', error);
+        }
+      },
+
+      // Chat actions
+      sendTextMessage: async (message: string) => {
+        if (!message.trim()) return;
+
+        const messageId = Date.now().toString();
+        const sessionId = get().chat.sessionId || Date.now().toString();
+
+        // Add user message to chat
+        get().addChatMessage({
+          type: 'user',
+          content: message.trim(),
+          sessionId
+        });
+
+        // Update session ID if needed
+        if (!get().chat.sessionId) {
+          set((state) => ({
+            chat: {
+              ...state.chat,
+              sessionId
+            }
+          }));
+        }
+
+        set((state) => ({
+          chat: {
+            ...state.chat,
+            isLoading: true,
+            textInput: ''
+          }
+        }));
+
+        try {
+          const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8005';
+          const response = await fetch(`${apiUrl}/api/chat`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+              message: message.trim(),
+              sessionId,
+              context: {
+                realm: 'master',
+                preferredLanguage: 'en',
+                priority: 'normal'
+              }
+            })
+          });
+
+          if (!response.ok) {
+            throw new Error(`Failed to send message: ${response.statusText}`);
+          }
+
+          const data = await response.json();
+
+          // Add assistant response to chat
+          get().addChatMessage({
+            type: 'assistant',
+            content: data.response || 'No response received',
+            sessionId,
+            model: get().model.currentModel?.name,
+            tokens: data.data?.usage ? {
+              prompt: data.data.usage.promptTokens,
+              completion: data.data.usage.completionTokens,
+              total: data.data.usage.totalTokens
+            } : undefined
+          });
+
+          set((state) => ({
+            chat: {
+              ...state.chat,
+              isLoading: false
+            }
+          }));
+
+        } catch (error) {
+          const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+          
+          // Add error message to chat
+          get().addChatMessage({
+            type: 'system',
+            content: `Error: ${errorMessage}`,
+            sessionId
+          });
+
+          set((state) => ({
+            chat: {
+              ...state.chat,
+              isLoading: false
+            }
+          }));
+
+          get().addNotification({
+            type: 'error',
+            title: 'Failed to Send Message',
+            message: errorMessage
+          });
+        }
+      },
+
+      updateTextInput: (input: string) => {
+        set((state) => ({
+          chat: {
+            ...state.chat,
+            textInput: input
+          }
+        }));
+      },
+
+      clearChatHistory: () => {
+        set((state) => ({
+          chat: {
+            ...state.chat,
+            messages: [],
+            sessionId: null
+          }
+        }));
+      },
+
+      addChatMessage: (message: Omit<ChatMessage, 'id' | 'timestamp'>) => {
+        const newMessage: ChatMessage = {
+          ...message,
+          id: Date.now().toString(),
+          timestamp: new Date()
+        };
+
+        set((state) => ({
+          chat: {
+            ...state.chat,
+            messages: [...state.chat.messages, newMessage]
+          }
+        }));
       },
 
       // Event handling

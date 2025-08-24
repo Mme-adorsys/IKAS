@@ -150,3 +150,359 @@
   "realm": "master",
   "error": "Cannot read properties of undefined (reading '0')"
 }
+2025-08-23 20:24:31.318 [ERROR] [85bfcab0] Anthropic chat request failed
+{
+  "sessionId": "test-session-anthropic-direct",
+  "duration": 188,
+  "error": "401 {\"type\":\"error\",\"error\":{\"type\":\"authentication_error\",\"message\":\"invalid x-api-key\"},\"request_id\":\"req_011CSR7KLJQpwuVNXPRWbBcH\"}"
+}
+2025-08-23 20:25:16.572 [ERROR] [2a6cc4bf] Anthropic chat request failed
+{
+  "sessionId": "comparison-test-1755973516352",
+  "duration": 189,
+  "error": "401 {\"type\":\"error\",\"error\":{\"type\":\"authentication_error\",\"message\":\"invalid x-api-key\"},\"request_id\":\"req_011CSR7NfnmAZbsYUknBaCKL\"}"
+}
+2025-08-23 20:25:16.577 [ERROR] [c6648542] ❌ Orchestration request failed
+{
+  "sessionId": "comparison-test-1755973516352",
+  "userInput": "write all users to the graph",
+  "duration": "196ms",
+  "error": "Authentication failed for anthropic",
+  "stack": "LLMError: Authentication failed for anthropic\n    at AnthropicService.chat (/Users/marcelmeyer/IdeaProjects/IKAS Project/IKAS/ai-gateway/src/llm/anthropic-service.ts:174:17)\n    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)\n    at async Orchestrator.processRequest (/Users/marcelmeyer/IdeaProjects/IKAS Project/IKAS/ai-gateway/src/orchestration/orchestrator.ts:122:27)\n    at async <anonymous> (/Users/marcelmeyer/IdeaProjects/IKAS Project/IKAS/ai-gateway/src/api/orchestration.ts:100:22)",
+  "context": {
+    "realm": "master",
+    "preferredLanguage": "en"
+  }
+}
+2025-08-23 20:43:39.266 [ERROR] [a197a522] Anthropic chat request failed
+{
+  "sessionId": "real-anthropic-test-1755974619013",
+  "duration": 201,
+  "error": "404 {\"type\":\"error\",\"error\":{\"type\":\"not_found_error\",\"message\":\"model: claude-3-sonnet-20240229\"},\"request_id\":\"req_011CSR8mx9GkNXUfcFL3Wd6j\"}"
+}
+2025-08-23 20:43:39.269 [ERROR] [3d680cc6] ❌ Orchestration request failed
+{
+  "sessionId": "real-anthropic-test-1755974619013",
+  "userInput": "write all users to the graph",
+  "duration": "207ms",
+  "error": "404 {\"type\":\"error\",\"error\":{\"type\":\"not_found_error\",\"message\":\"model: claude-3-sonnet-20240229\"},\"request_id\":\"req_011CSR8mx9GkNXUfcFL3Wd6j\"}",
+  "stack": "LLMError: 404 {\"type\":\"error\",\"error\":{\"type\":\"not_found_error\",\"message\":\"model: claude-3-sonnet-20240229\"},\"request_id\":\"req_011CSR8mx9GkNXUfcFL3Wd6j\"}\n    at AnthropicService.chat (/Users/marcelmeyer/IdeaProjects/IKAS Project/IKAS/ai-gateway/src/llm/anthropic-service.ts:180:13)\n    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)\n    at async Orchestrator.processRequest (/Users/marcelmeyer/IdeaProjects/IKAS Project/IKAS/ai-gateway/src/orchestration/orchestrator.ts:122:27)\n    at async <anonymous> (/Users/marcelmeyer/IdeaProjects/IKAS Project/IKAS/ai-gateway/src/api/orchestration.ts:100:22)",
+  "context": {
+    "realm": "master",
+    "preferredLanguage": "en",
+    "priority": "high"
+  }
+}
+2025-08-23 20:43:39.464 [ERROR] [31a2d418] Anthropic chat request failed
+{
+  "sessionId": "real-anthropic-test-1755974619013-verify",
+  "duration": 188,
+  "error": "404 {\"type\":\"error\",\"error\":{\"type\":\"not_found_error\",\"message\":\"model: claude-3-sonnet-20240229\"},\"request_id\":\"req_011CSR8my17bU9qPoeVLrCpT\"}"
+}
+2025-08-23 20:43:39.465 [ERROR] [a26d3b49] ❌ Orchestration request failed
+{
+  "sessionId": "real-anthropic-test-1755974619013-verify",
+  "userInput": "How many users are now in the Neo4j graph database?",
+  "duration": "190ms",
+  "error": "404 {\"type\":\"error\",\"error\":{\"type\":\"not_found_error\",\"message\":\"model: claude-3-sonnet-20240229\"},\"request_id\":\"req_011CSR8my17bU9qPoeVLrCpT\"}",
+  "stack": "LLMError: 404 {\"type\":\"error\",\"error\":{\"type\":\"not_found_error\",\"message\":\"model: claude-3-sonnet-20240229\"},\"request_id\":\"req_011CSR8my17bU9qPoeVLrCpT\"}\n    at AnthropicService.chat (/Users/marcelmeyer/IdeaProjects/IKAS Project/IKAS/ai-gateway/src/llm/anthropic-service.ts:180:13)\n    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)\n    at async Orchestrator.processRequest (/Users/marcelmeyer/IdeaProjects/IKAS Project/IKAS/ai-gateway/src/orchestration/orchestrator.ts:122:27)\n    at async <anonymous> (/Users/marcelmeyer/IdeaProjects/IKAS Project/IKAS/ai-gateway/src/api/orchestration.ts:100:22)",
+  "context": {
+    "realm": "master",
+    "preferredLanguage": "en",
+    "priority": "high"
+  }
+}
+2025-08-23 21:02:14.296 [ERROR] [853366c4] Anthropic chat request failed
+{
+  "sessionId": "advanced-anthropic-test-1755975733947",
+  "duration": 305,
+  "error": "400 {\"type\":\"error\",\"error\":{\"type\":\"invalid_request_error\",\"message\":\"disable_parallel_tool_use: Extra inputs are not permitted\"},\"request_id\":\"req_011CSRAC996fpru8F24CxwW1\"}"
+}
+2025-08-23 21:02:14.302 [ERROR] [e653cc16] ❌ Orchestration request failed
+{
+  "sessionId": "advanced-anthropic-test-1755975733947",
+  "userInput": "check which data you can access from keycloak, then sync all the data you can get to the graph. Check the graph schema before and think about how to structure the data before you write it to the neo4j",
+  "duration": "312ms",
+  "error": "400 {\"type\":\"error\",\"error\":{\"type\":\"invalid_request_error\",\"message\":\"disable_parallel_tool_use: Extra inputs are not permitted\"},\"request_id\":\"req_011CSRAC996fpru8F24CxwW1\"}",
+  "stack": "LLMError: 400 {\"type\":\"error\",\"error\":{\"type\":\"invalid_request_error\",\"message\":\"disable_parallel_tool_use: Extra inputs are not permitted\"},\"request_id\":\"req_011CSRAC996fpru8F24CxwW1\"}\n    at AnthropicService.chat (/Users/marcelmeyer/IdeaProjects/IKAS Project/IKAS/ai-gateway/src/llm/anthropic-service.ts:184:13)\n    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)\n    at async Orchestrator.processRequest (/Users/marcelmeyer/IdeaProjects/IKAS Project/IKAS/ai-gateway/src/orchestration/orchestrator.ts:122:27)\n    at async <anonymous> (/Users/marcelmeyer/IdeaProjects/IKAS Project/IKAS/ai-gateway/src/api/orchestration.ts:100:22)",
+  "context": {
+    "realm": "master",
+    "preferredLanguage": "en",
+    "priority": "high"
+  }
+}
+2025-08-23 21:10:19.789 [ERROR]  MCP Response Error [keycloak] Request failed with status code 500
+{
+  "status": 500,
+  "url": "/tools/create-user"
+}
+2025-08-23 19:32:11.876 [ERROR]  WebSocket connection error
+{
+  "error": "timeout",
+  "attempts": 1,
+  "maxAttempts": 10
+}
+2025-08-23 19:32:36.502 [ERROR]  WebSocket connection error
+{
+  "error": "timeout",
+  "attempts": 2,
+  "maxAttempts": 10
+}
+2025-08-23 19:33:01.536 [ERROR]  WebSocket connection error
+{
+  "error": "timeout",
+  "attempts": 3,
+  "maxAttempts": 10
+}
+2025-08-23 19:33:26.570 [ERROR]  WebSocket connection error
+{
+  "error": "timeout",
+  "attempts": 4,
+  "maxAttempts": 10
+}
+2025-08-23 19:33:51.601 [ERROR]  WebSocket connection error
+{
+  "error": "timeout",
+  "attempts": 5,
+  "maxAttempts": 10
+}
+2025-08-23 19:34:16.630 [ERROR]  WebSocket connection error
+{
+  "error": "timeout",
+  "attempts": 6,
+  "maxAttempts": 10
+}
+2025-08-23 19:34:41.654 [ERROR]  WebSocket connection error
+{
+  "error": "timeout",
+  "attempts": 7,
+  "maxAttempts": 10
+}
+2025-08-23 19:35:06.685 [ERROR]  WebSocket connection error
+{
+  "error": "timeout",
+  "attempts": 8,
+  "maxAttempts": 10
+}
+2025-08-23 19:35:31.701 [ERROR]  WebSocket connection error
+{
+  "error": "timeout",
+  "attempts": 9,
+  "maxAttempts": 10
+}
+2025-08-23 19:35:56.740 [ERROR]  WebSocket connection error
+{
+  "error": "timeout",
+  "attempts": 10,
+  "maxAttempts": 10
+}
+2025-08-24 09:09:02.748 [ERROR]  WebSocket connection error
+{
+  "error": "timeout",
+  "attempts": 1,
+  "maxAttempts": 10
+}
+2025-08-24 09:09:24.081 [ERROR]  WebSocket connection error
+{
+  "error": "timeout",
+  "attempts": 2,
+  "maxAttempts": 10
+}
+2025-08-24 09:09:49.105 [ERROR]  WebSocket connection error
+{
+  "error": "timeout",
+  "attempts": 3,
+  "maxAttempts": 10
+}
+2025-08-24 09:10:14.120 [ERROR]  WebSocket connection error
+{
+  "error": "timeout",
+  "attempts": 4,
+  "maxAttempts": 10
+}
+2025-08-24 09:10:39.145 [ERROR]  WebSocket connection error
+{
+  "error": "timeout",
+  "attempts": 5,
+  "maxAttempts": 10
+}
+2025-08-24 09:11:04.166 [ERROR]  WebSocket connection error
+{
+  "error": "timeout",
+  "attempts": 6,
+  "maxAttempts": 10
+}
+2025-08-24 09:11:29.185 [ERROR]  WebSocket connection error
+{
+  "error": "timeout",
+  "attempts": 7,
+  "maxAttempts": 10
+}
+2025-08-24 09:11:54.212 [ERROR]  WebSocket connection error
+{
+  "error": "timeout",
+  "attempts": 8,
+  "maxAttempts": 10
+}
+2025-08-24 09:12:19.222 [ERROR]  WebSocket connection error
+{
+  "error": "timeout",
+  "attempts": 9,
+  "maxAttempts": 10
+}
+2025-08-24 09:12:44.234 [ERROR]  WebSocket connection error
+{
+  "error": "timeout",
+  "attempts": 10,
+  "maxAttempts": 10
+}
+2025-08-24 09:12:44.237 [ERROR]  Failed to connect WebSocket client
+{
+  "error": "Failed to connect after 10 attempts"
+}
+2025-08-24 09:13:09.243 [ERROR]  WebSocket connection error
+{
+  "error": "timeout",
+  "attempts": 11,
+  "maxAttempts": 10
+}
+2025-08-24 09:17:54.779 [ERROR]  WebSocket connection error
+{
+  "error": "timeout",
+  "attempts": 1,
+  "maxAttempts": 10
+}
+2025-08-24 09:18:17.354 [ERROR]  WebSocket connection error
+{
+  "error": "timeout",
+  "attempts": 2,
+  "maxAttempts": 10
+}
+2025-08-24 09:18:42.369 [ERROR]  WebSocket connection error
+{
+  "error": "timeout",
+  "attempts": 3,
+  "maxAttempts": 10
+}
+2025-08-24 09:19:07.388 [ERROR]  WebSocket connection error
+{
+  "error": "timeout",
+  "attempts": 4,
+  "maxAttempts": 10
+}
+2025-08-24 09:19:32.398 [ERROR]  WebSocket connection error
+{
+  "error": "timeout",
+  "attempts": 5,
+  "maxAttempts": 10
+}
+2025-08-24 09:19:57.411 [ERROR]  WebSocket connection error
+{
+  "error": "timeout",
+  "attempts": 6,
+  "maxAttempts": 10
+}
+2025-08-24 09:20:22.423 [ERROR]  WebSocket connection error
+{
+  "error": "timeout",
+  "attempts": 7,
+  "maxAttempts": 10
+}
+2025-08-24 09:20:47.447 [ERROR]  WebSocket connection error
+{
+  "error": "timeout",
+  "attempts": 8,
+  "maxAttempts": 10
+}
+2025-08-24 09:21:12.451 [ERROR]  WebSocket connection error
+{
+  "error": "timeout",
+  "attempts": 9,
+  "maxAttempts": 10
+}
+2025-08-24 09:21:37.465 [ERROR]  WebSocket connection error
+{
+  "error": "timeout",
+  "attempts": 10,
+  "maxAttempts": 10
+}
+2025-08-24 09:21:37.466 [ERROR]  Failed to connect WebSocket client
+{
+  "error": "Failed to connect after 10 attempts"
+}
+2025-08-24 09:22:02.478 [ERROR]  WebSocket connection error
+{
+  "error": "timeout",
+  "attempts": 11,
+  "maxAttempts": 10
+}
+2025-08-24 09:54:51.196 [ERROR]  WebSocket connection error
+{
+  "error": "timeout",
+  "attempts": 1,
+  "maxAttempts": 10
+}
+2025-08-24 09:55:12.549 [ERROR]  WebSocket connection error
+{
+  "error": "timeout",
+  "attempts": 2,
+  "maxAttempts": 10
+}
+2025-08-24 09:55:34.840 [ERROR]  WebSocket connection error
+{
+  "error": "timeout",
+  "attempts": 3,
+  "maxAttempts": 10
+}
+2025-08-24 09:55:59.873 [ERROR]  WebSocket connection error
+{
+  "error": "timeout",
+  "attempts": 4,
+  "maxAttempts": 10
+}
+2025-08-24 09:56:24.897 [ERROR]  WebSocket connection error
+{
+  "error": "timeout",
+  "attempts": 5,
+  "maxAttempts": 10
+}
+2025-08-24 09:56:49.915 [ERROR]  WebSocket connection error
+{
+  "error": "timeout",
+  "attempts": 6,
+  "maxAttempts": 10
+}
+2025-08-24 09:57:14.944 [ERROR]  WebSocket connection error
+{
+  "error": "timeout",
+  "attempts": 7,
+  "maxAttempts": 10
+}
+2025-08-24 09:57:39.963 [ERROR]  WebSocket connection error
+{
+  "error": "timeout",
+  "attempts": 8,
+  "maxAttempts": 10
+}
+2025-08-24 09:58:04.986 [ERROR]  WebSocket connection error
+{
+  "error": "timeout",
+  "attempts": 9,
+  "maxAttempts": 10
+}
+2025-08-24 09:58:30.029 [ERROR]  WebSocket connection error
+{
+  "error": "timeout",
+  "attempts": 10,
+  "maxAttempts": 10
+}
+2025-08-24 09:58:30.030 [ERROR]  Failed to connect WebSocket client
+{
+  "error": "Failed to connect after 10 attempts"
+}
+2025-08-24 09:58:55.055 [ERROR]  WebSocket connection error
+{
+  "error": "timeout",
+  "attempts": 11,
+  "maxAttempts": 10
+}

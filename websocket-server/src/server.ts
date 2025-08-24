@@ -5,6 +5,7 @@ import cors from 'cors';
 import dotenv from 'dotenv';
 import winston from 'winston';
 import { randomUUID } from 'crypto';
+import fetch from 'node-fetch';
 
 import { SessionManager } from './rooms/session-manager';
 import { EventPublisher } from './redis/event-publisher';
@@ -40,7 +41,7 @@ const config = {
   CORS_ORIGIN: process.env.CORS_ORIGIN?.split(',') || ['http://localhost:3000', 'http://localhost:3002'],
   CORS_CREDENTIALS: process.env.CORS_CREDENTIALS === 'true',
   SESSION_TIMEOUT: parseInt(process.env.SESSION_TIMEOUT || '3600000', 10),
-  AI_GATEWAY_URL: process.env.AI_GATEWAY_URL || 'http://localhost:8000'
+  AI_GATEWAY_URL: process.env.AI_GATEWAY_URL || 'http://localhost:8005'
 };
 
 class IKASWebSocketServer {
@@ -139,6 +140,11 @@ class IKASWebSocketServer {
           await this.handleVoiceCommand(socket, data);
         });
 
+        // Handle text commands
+        socket.on('textCommand', async (data) => {
+          await this.handleTextCommand(socket, data);
+        });
+
         // Handle subscription requests
         socket.on('subscribe', async (data) => {
           await this.handleSubscription(socket, data);
@@ -223,6 +229,48 @@ class IKASWebSocketServer {
       });
       socket.emit('error', { 
         message: 'Error processing voice command' 
+      });
+    }
+  }
+
+  private async handleTextCommand(socket: any, data: any): Promise<void> {
+    try {
+      const session = await this.sessionManager.getSessionBySocket(socket.id);
+      if (!session) {
+        socket.emit('error', { message: 'Session not found' });
+        return;
+      }
+
+      // Create text command event (using VOICE_COMMAND type as it's processed the same way)
+      const textEvent = createVoiceEvent(
+        session.id,
+        EventType.VOICE_COMMAND,
+        {
+          command: data.message,
+          transcript: data.message,
+          confidence: 1.0
+        }
+      );
+
+      await this.eventPublisher.publishEvent(textEvent);
+
+      // Send acknowledgment
+      socket.emit('textCommandReceived', {
+        eventId: textEvent.id,
+        timestamp: textEvent.timestamp
+      });
+
+      // Forward to AI Gateway for processing
+      await this.forwardToAIGateway(textEvent, data.sessionId);
+
+    } catch (error) {
+      logger.error('Error handling text command', {
+        error: error instanceof Error ? error.message : 'Unknown error',
+        socketId: socket.id,
+        data
+      });
+      socket.emit('error', { 
+        message: 'Error processing text command' 
       });
     }
   }
@@ -444,35 +492,84 @@ class IKASWebSocketServer {
     }, 30000);
   }
 
-  private async forwardToAIGateway(event: IKASEvent): Promise<void> {
+  private async forwardToAIGateway(event: IKASEvent, sessionId?: string): Promise<void> {
     try {
-      // In a real implementation, this would make HTTP request to AI Gateway
-      // For now, just log the forwarding
       logger.debug('Forwarding event to AI Gateway', {
         eventId: event.id,
         eventType: event.type,
         aiGatewayUrl: config.AI_GATEWAY_URL
       });
 
-      // Simulate AI Gateway response after a delay
-      setTimeout(async () => {
-        const responseEvent = createVoiceEvent(
-          event.sessionId,
-          EventType.VOICE_RESPONSE,
-          {
-            response: 'Command is being processed...',
-            executionTime: Math.random() * 1000 + 500
-          }
-        );
+      // Extract command from event payload
+      const payload = event.payload as any;
+      const command = payload.command || payload.transcript;
+      const source = payload.source || 'voice';
 
-        await this.eventPublisher.publishEvent(responseEvent);
-      }, 1000);
+      if (!command) {
+        logger.warn('No command found in event payload', { eventId: event.id });
+        return;
+      }
+
+      // Make HTTP request to AI Gateway
+      const requestBody = {
+        message: command,
+        sessionId: sessionId || event.sessionId,
+        source: source
+      };
+
+      const response = await fetch(`${config.AI_GATEWAY_URL}/api/chat`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(requestBody),
+        timeout: 30000 // 30 second timeout
+      });
+
+      if (!response.ok) {
+        throw new Error(`AI Gateway responded with status ${response.status}: ${response.statusText}`);
+      }
+
+      const responseData = await response.json() as any;
+
+      // Create response event with AI Gateway's response
+      const responseEvent = createVoiceEvent(
+        event.sessionId,
+        EventType.VOICE_RESPONSE,
+        {
+          response: responseData.response || 'Processing completed',
+          executionTime: responseData.executionTime || 0,
+          confidence: responseData.confidence || 1.0
+        }
+      );
+
+      await this.eventPublisher.publishEvent(responseEvent);
+
+      logger.debug('AI Gateway response processed', {
+        eventId: event.id,
+        responseLength: responseData.response?.length || 0,
+        executionTime: responseData.executionTime
+      });
 
     } catch (error) {
       logger.error('Error forwarding to AI Gateway', {
         error: error instanceof Error ? error.message : 'Unknown error',
-        eventId: event.id
+        eventId: event.id,
+        stack: error instanceof Error ? error.stack : undefined
       });
+
+      // Create error response event
+      const errorEvent = createVoiceEvent(
+        event.sessionId,
+        EventType.VOICE_RESPONSE,
+        {
+          response: 'Sorry, I encountered an error processing your request. Please try again.',
+          executionTime: 0,
+          error: error instanceof Error ? error.message : 'Unknown error'
+        }
+      );
+
+      await this.eventPublisher.publishEvent(errorEvent);
     }
   }
 

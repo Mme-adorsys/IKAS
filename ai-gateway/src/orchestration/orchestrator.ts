@@ -657,4 +657,34 @@ export class Orchestrator {
       }
     }));
   }
+
+  // Model switching functionality
+  switchLLMProvider(provider: string): void {
+    logger.info('Switching LLM provider', {
+      currentProvider: this.llmService.provider,
+      newProvider: provider
+    });
+
+    // Create new LLM service instance with the requested provider
+    this.llmService = LLMFactory.createLLMService(provider);
+    
+    logger.info('LLM provider switched successfully', {
+      newProvider: this.llmService.provider,
+      newModel: this.llmService.model
+    });
+  }
+
+  // Clear specific session
+  clearSession(sessionId: string): void {
+    logger.info('Clearing session', { sessionId });
+    
+    // Clear session in LLM service
+    this.llmService.clearChatHistory(sessionId);
+    
+    // Clear any stored tool results for this session
+    // (Note: We could extend this to be session-specific if needed)
+    this.toolResults.clear();
+    
+    logger.info('Session cleared successfully', { sessionId });
+  }
 }

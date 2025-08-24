@@ -6,6 +6,8 @@ import { MCPToolDiscovery } from '../llm';
 import { checkAllMcpServices } from '../mcp';
 import { z } from 'zod';
 import axios from 'axios';
+import { LLMFactory } from '../llm/llm-factory';
+import { LLMProvider } from '../llm/llm-interface';
 
 // Reuse the health check method from health.ts
 async function checkMcpService(url: string, serviceName: string): Promise<{status: 'healthy' | 'unhealthy'; latency?: number; error?: string; lastChecked: string}> {
@@ -275,6 +277,165 @@ orchestrationRouter.post('/cleanup', async (req, res) => {
     res.status(500).json({
       error: 'Internal server error',
       message: error instanceof Error ? error.message : 'Unknown error'
+    });
+  }
+});
+
+// Model switching and info endpoints
+orchestrationRouter.get('/models', async (req, res) => {
+  try {
+    logger.debug('Available models request received');
+    
+    const availableProviders = await LLMFactory.getAvailableProviders();
+    const currentProvider = config.LLM_PROVIDER;
+    const currentModel = config.LLM_MODEL;
+    
+    const providerDetails: Record<LLMProvider, any> = {
+      [LLMProvider.ANTHROPIC]: {
+        name: 'Claude Opus 4.1',
+        provider: 'Anthropic',
+        model: 'claude-opus-4-1-20250805',
+        capabilities: ['text', 'tools', 'function_calling', 'analysis'],
+        description: 'Advanced reasoning with superior problem-solving capabilities'
+      },
+      [LLMProvider.GEMINI]: {
+        name: 'Gemini Pro',
+        provider: 'Google',
+        model: 'gemini-pro',
+        capabilities: ['text', 'tools', 'function_calling', 'analysis'],
+        description: 'Fast and efficient language model with strong reasoning'
+      },
+      [LLMProvider.OLLAMA]: {
+        name: 'Ollama Local',
+        provider: 'Ollama',
+        model: 'llama2',
+        capabilities: ['text', 'local'],
+        description: 'Local language model running via Ollama'
+      },
+      [LLMProvider.OPENAI]: {
+        name: 'GPT-4',
+        provider: 'OpenAI',
+        model: 'gpt-4',
+        capabilities: ['text', 'tools', 'function_calling', 'analysis'],
+        description: 'Advanced language model from OpenAI'
+      }
+    };
+    
+    const models = availableProviders.map(provider => ({
+      ...providerDetails[provider],
+      id: provider,
+      available: true,
+      current: provider === currentProvider
+    }));
+    
+    logger.info('Models info retrieved', {
+      availableProviders: availableProviders.length,
+      currentProvider,
+      currentModel
+    });
+
+    res.json({
+      models,
+      current: {
+        provider: currentProvider,
+        model: currentModel,
+        name: providerDetails[currentProvider as LLMProvider]?.name || currentProvider
+      },
+      timestamp: new Date().toISOString()
+    });
+    
+  } catch (error) {
+    logger.error('Models endpoint error:', error);
+    res.status(500).json({
+      error: 'Internal server error',
+      message: error instanceof Error ? error.message : 'Unknown error',
+      timestamp: new Date().toISOString()
+    });
+  }
+});
+
+// Switch model endpoint
+const switchModelSchema = z.object({
+  provider: z.enum(['anthropic', 'gemini', 'ollama', 'openai']),
+  sessionId: z.string().optional()
+});
+
+orchestrationRouter.post('/models/switch', async (req, res): Promise<any> => {
+  try {
+    // Validate request body
+    const validatedData = switchModelSchema.parse(req.body);
+    const { provider, sessionId } = validatedData;
+    
+    logger.info('Model switch request received', {
+      requestedProvider: provider,
+      currentProvider: config.LLM_PROVIDER,
+      sessionId
+    });
+
+    // Check if the requested provider is available
+    const availableProviders = await LLMFactory.getAvailableProviders();
+    const providerEnum = provider.toUpperCase() as LLMProvider;
+    
+    if (!availableProviders.includes(providerEnum)) {
+      return res.status(400).json({
+        error: 'Provider not available',
+        message: `The ${provider} provider is not currently available or configured`,
+        availableProviders
+      });
+    }
+
+    // Create new LLM service instance for the requested provider
+    const newService = LLMFactory.createLLMService(provider);
+    
+    // Verify the service is actually available
+    const isAvailable = await newService.isAvailable();
+    if (!isAvailable) {
+      return res.status(503).json({
+        error: 'Provider unavailable',
+        message: `The ${provider} provider is currently unavailable`
+      });
+    }
+
+    // Update the orchestrator to use the new provider
+    orchestrator.switchLLMProvider(provider);
+    
+    // If sessionId is provided, clear the session to start fresh with new model
+    if (sessionId) {
+      orchestrator.clearSession(sessionId);
+    }
+
+    logger.info('Model switched successfully', {
+      newProvider: provider,
+      previousProvider: config.LLM_PROVIDER,
+      sessionCleared: !!sessionId
+    });
+
+    res.json({
+      message: 'Model switched successfully',
+      provider: provider,
+      model: newService.model,
+      sessionCleared: !!sessionId,
+      timestamp: new Date().toISOString()
+    });
+    
+  } catch (error) {
+    if (error instanceof z.ZodError) {
+      logger.warn('Invalid model switch request', {
+        errors: error.errors
+      });
+      
+      return res.status(400).json({
+        error: 'Invalid request',
+        message: 'Request validation failed',
+        details: error.errors
+      });
+    }
+
+    logger.error('Model switch error:', error);
+    res.status(500).json({
+      error: 'Internal server error',
+      message: error instanceof Error ? error.message : 'Unknown error',
+      timestamp: new Date().toISOString()
     });
   }
 });

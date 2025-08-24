@@ -196,15 +196,21 @@ services:
       dockerfile: Dockerfile.dev
     container_name: ikas-ai-gateway-hot
     ports:
-      - "8006:8005"  # Different port to avoid conflicts
+      - "8005:8005"  # Same port as regular ai-gateway (services are mutually exclusive)
     environment:
       GEMINI_API_KEY: ${GEMINI_API_KEY:-AIzaSyDa1fNkc-LVV7EKhEBHm8VA7yyrpEitje4}
+      ANTHROPIC_API_KEY: ${ANTHROPIC_API_KEY}
       REDIS_URL: redis://redis:6379
       KEYCLOAK_MCP_URL: http://keycloak-mcp:8001
       NEO4J_MCP_URL: http://neo4j-mcp:8002
       WEBSOCKET_SERVER_URL: http://websocket-server:3001
       NODE_ENV: development
       PORT: 8005
+      # LLM Configuration
+      LLM_PROVIDER: ${LLM_PROVIDER:-anthropic}
+      LLM_MODEL: ${LLM_MODEL:-claude-opus-4-1-20250805}
+      LLM_TEMPERATURE: ${LLM_TEMPERATURE:-0.1}
+      LLM_MAX_TOKENS: ${LLM_MAX_TOKENS:-8192}
       DEBUG: "ikas:*"
     volumes:
       # Hot reload volumes
