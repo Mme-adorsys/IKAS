@@ -47,24 +47,48 @@ export class VoiceService {
   }
 
   private initializeSpeechRecognition(): void {
-    if (!('webkitSpeechRecognition' in window) && !('SpeechRecognition' in window)) {
-      console.warn('Speech Recognition not supported in this browser');
-      this.handlers.onError?.('Speech Recognition wird nicht unterstützt');
-      return;
+    try {
+      // Check for browser support with more comprehensive detection
+      const hasWebkitRecognition = 'webkitSpeechRecognition' in window;
+      const hasSpeechRecognition = 'SpeechRecognition' in window;
+      
+      if (!hasWebkitRecognition && !hasSpeechRecognition) {
+        console.warn('Speech Recognition not supported in this browser');
+        this.handlers.onError?.('Speech Recognition not supported in this browser');
+        return;
+      }
+
+      // Get the constructor - prefer standard API over webkit
+      const SpeechRecognitionClass = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
+      
+      if (!SpeechRecognitionClass) {
+        console.error('SpeechRecognition constructor not available');
+        this.handlers.onError?.('SpeechRecognition constructor not available');
+        return;
+      }
+
+      this.recognition = new SpeechRecognitionClass();
+
+      // Configure recognition with error handling
+      if (this.recognition) {
+        this.recognition.lang = this.config.language!;
+        this.recognition.continuous = this.config.continuous!;
+        this.recognition.interimResults = this.config.interimResults!;
+        this.recognition.maxAlternatives = this.config.maxAlternatives!;
+        
+        console.log('✅ Speech Recognition initialized successfully', {
+          language: this.config.language,
+          continuous: this.config.continuous,
+          interimResults: this.config.interimResults
+        });
+      }
+
+      this.setupRecognitionHandlers();
+    } catch (error) {
+      console.error('Failed to initialize speech recognition:', error);
+      this.handlers.onError?.('Failed to initialize speech recognition');
+      this.recognition = null;
     }
-
-    const SpeechRecognitionClass = window.SpeechRecognition || window.webkitSpeechRecognition;
-    this.recognition = new SpeechRecognitionClass();
-
-    // Configure recognition
-    if (this.recognition) {
-      this.recognition.lang = this.config.language!;
-      this.recognition.continuous = this.config.continuous!;
-      this.recognition.interimResults = this.config.interimResults!;
-      this.recognition.maxAlternatives = this.config.maxAlternatives!;
-    }
-
-    this.setupRecognitionHandlers();
   }
 
   private initializeSpeechSynthesis(): void {

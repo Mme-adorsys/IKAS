@@ -98,7 +98,7 @@ interface DataState {
 interface UIState {
   darkMode: boolean;
   sidebarOpen: boolean;
-  activeView: 'dashboard' | 'users' | 'compliance' | 'analysis' | 'voice';
+  activeView: 'dashboard' | 'users' | 'compliance' | 'analysis' | 'voice' | 'chat';
   notifications: Array<{
     id: string;
     type: 'info' | 'success' | 'warning' | 'error';

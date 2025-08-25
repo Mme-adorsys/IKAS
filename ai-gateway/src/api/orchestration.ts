@@ -74,24 +74,21 @@ orchestrationRouter.post('/chat', async (req, res): Promise<any> => {
       priority: context?.priority
     });
 
-    // Check if MCP services are healthy using the same method as main health endpoint
-    const [keycloakHealth, neo4jHealth] = await Promise.all([
-      checkMcpService(config.KEYCLOAK_MCP_URL, 'keycloak-mcp'),
-      checkMcpService(config.NEO4J_MCP_URL, 'neo4j-mcp')
-    ]);
+    // Check if Keycloak MCP service is healthy (Neo4j is optional for now)
+    const keycloakHealth = await checkMcpService(config.KEYCLOAK_MCP_URL, 'keycloak-mcp');
     
     const serviceHealth = {
       keycloak: keycloakHealth.status === 'healthy',
-      neo4j: neo4jHealth.status === 'healthy', 
-      overall: keycloakHealth.status === 'healthy' && neo4jHealth.status === 'healthy'
+      neo4j: 'optional', // Neo4j is optional for now
+      overall: keycloakHealth.status === 'healthy'
     };
 
     if (!serviceHealth.overall) {
-      logger.warn('MCP services are not fully healthy', serviceHealth);
+      logger.warn('Keycloak MCP service is not healthy', serviceHealth);
       
       return res.status(503).json({
         error: 'Service temporarily unavailable',
-        message: 'Some backend services are currently unavailable. Please try again later.',
+        message: 'Keycloak service is currently unavailable. Please try again later.',
         serviceStatus: serviceHealth
       });
     }

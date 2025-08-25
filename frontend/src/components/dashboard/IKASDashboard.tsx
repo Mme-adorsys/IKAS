@@ -9,6 +9,7 @@ import { UsersPanel } from './UsersPanel';
 import { CompliancePanel } from './CompliancePanel';
 import { AnalysisPanel } from './AnalysisPanel';
 import { NotificationsPanel } from './NotificationsPanel';
+import { ChatPanel } from './ChatPanel';
 
 export function IKASDashboard() {
   const {
@@ -223,18 +224,40 @@ export function IKASDashboard() {
                       <div className="ml-auto w-2 h-2 bg-blue-400 rounded-full animate-pulse"></div>
                     )}
                   </button>
+
+                  <button
+                    onClick={() => setActiveView('chat')}
+                    className={`w-full flex items-center px-3 py-2 text-sm font-medium rounded-md ${
+                      ui.activeView === 'chat'
+                        ? 'bg-blue-100 text-blue-700 dark:bg-blue-900 dark:text-blue-200'
+                        : 'text-gray-600 hover:text-gray-900 hover:bg-gray-50 dark:text-gray-300 dark:hover:text-white dark:hover:bg-gray-700'
+                    }`}
+                  >
+                    <svg className="mr-3 h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+                    </svg>
+                    Chat Interface
+                    {system.websocketConnected && (
+                      <div className="ml-auto w-2 h-2 bg-green-400 rounded-full"></div>
+                    )}
+                  </button>
                 </div>
               </div>
             </nav>
           )}
 
           {/* Main Content */}
-          <main className="flex-1 p-6">
+          <main className={`flex-1 ${ui.activeView === 'chat' ? 'p-0' : 'p-6'}`}>
             {ui.activeView === 'dashboard' && <DashboardOverview />}
             {ui.activeView === 'voice' && <VoicePanel />}
             {ui.activeView === 'users' && <UsersPanel />}
             {ui.activeView === 'compliance' && <CompliancePanel />}
             {ui.activeView === 'analysis' && <AnalysisPanel />}
+            {ui.activeView === 'chat' && (
+              <div className="h-full">
+                <ChatPanel />
+              </div>
+            )}
           </main>
         </div>
 

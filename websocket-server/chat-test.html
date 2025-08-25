@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IKAS Chat Test Interface</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            min-height: 100vh;
+        }
+        
+        .container {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+        }
+        
+        h1 {
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 2.5em;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        
+        .status {
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            font-weight: bold;
+        }
+        
+        .status.connected {
+            background: rgba(76, 175, 80, 0.3);
+            border: 1px solid rgba(76, 175, 80, 0.6);
+        }
+        
+        .status.disconnected {
+            background: rgba(244, 67, 54, 0.3);
+            border: 1px solid rgba(244, 67, 54, 0.6);
+        }
+        
+        .chat-input {
+            display: flex;
+            gap: 10px;
+            margin: 20px 0;
+        }
+        
+        .chat-input input {
+            flex: 1;
+            padding: 15px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            background: rgba(255, 255, 255, 0.9);
+            color: #333;
+        }
+        
+        .chat-input button {
+            padding: 15px 25px;
+            border: none;
+            border-radius: 8px;
+            background: linear-gradient(45deg, #ff6b6b, #ee5a24);
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .chat-input button:hover {
+            background: linear-gradient(45deg, #ee5a24, #ff6b6b);
+            transform: translateY(-2px);
+        }
+        
+        .chat-input button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        
+        .quick-commands {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 10px;
+            margin: 20px 0;
+        }
+        
+        .quick-cmd {
+            padding: 10px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+        
+        .quick-cmd:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-2px);
+        }
+        
+        .response-area {
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 10px;
+            padding: 20px;
+            min-height: 300px;
+            font-family: 'Courier New', monospace;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            overflow-y: auto;
+            max-height: 500px;
+        }
+        
+        .message {
+            margin: 10px 0;
+            padding: 10px;
+            border-radius: 8px;
+            border-left: 4px solid;
+        }
+        
+        .message.user {
+            background: rgba(33, 150, 243, 0.2);
+            border-left-color: #2196f3;
+        }
+        
+        .message.system {
+            background: rgba(76, 175, 80, 0.2);
+            border-left-color: #4caf50;
+        }
+        
+        .message.error {
+            background: rgba(244, 67, 54, 0.2);
+            border-left-color: #f44336;
+        }
+        
+        .timestamp {
+            font-size: 0.8em;
+            opacity: 0.7;
+            margin-bottom: 5px;
+        }
+    </style>
+    <script src="https://cdn.socket.io/4.7.4/socket.io.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <h1>💬 IKAS Chat Test Interface</h1>
+        
+        <div id="status" class="status disconnected">
+            Not connected
+        </div>
+        
+        <div class="chat-input">
+            <input type="text" id="messageInput" placeholder="Enter your command or question..." />
+            <button id="sendButton" onclick="sendMessage()" disabled>Send</button>
+        </div>
+        
+        <div class="quick-commands">
+            <div class="quick-cmd" onclick="quickCommand('list all users')">📋 List Users</div>
+            <div class="quick-cmd" onclick="quickCommand('show metrics')">📊 Show Metrics</div>
+            <div class="quick-cmd" onclick="quickCommand('list realms')">🏰 List Realms</div>
+            <div class="quick-cmd" onclick="quickCommand('create user test.user')">➕ Create Test User</div>
+            <div class="quick-cmd" onclick="quickCommand('analyze compliance')">🔍 Analyze Compliance</div>
+            <div class="quick-cmd" onclick="quickCommand('help')">❓ Help</div>
+        </div>
+        
+        <div class="response-area" id="responses">
+            <div class="message system">
+                <div class="timestamp">System</div>
+                Waiting for connection...
+            </div>
+        </div>
+    </div>
+
+    <script>
+        class IKASChatClient {
+            constructor() {
+                this.socket = null;
+                this.sessionId = null;
+                this.initWebSocket();
+            }
+            
+            initWebSocket() {
+                // Connect to WebSocket server with better error handling
+                this.socket = io('http://localhost:3001', {
+                    auth: {
+                        userId: 'chat-test-user',
+                        realm: 'master'
+                    },
+                    timeout: 5000,
+                    reconnection: true,
+                    reconnectionDelay: 1000,
+                    reconnectionAttempts: 5
+                });
+                
+                this.socket.on('connect', () => {
+                    this.updateStatus('Connected', true);
+                    this.addMessage('system', 'WebSocket connected successfully');
+                    document.getElementById('sendButton').disabled = false;
+                });
+                
+                this.socket.on('connected', (data) => {
+                    this.sessionId = data.sessionId;
+                    this.addMessage('system', `Session created: ${data.sessionId}`);
+                    this.addMessage('system', `Welcome: ${data.message}`);
+                });
+                
+                this.socket.on('disconnect', () => {
+                    this.updateStatus('Not connected', false);
+                    this.addMessage('error', 'WebSocket disconnected');
+                    document.getElementById('sendButton').disabled = true;
+                });
+                
+                // Listen for various event types
+                this.socket.on('event', (event) => {
+                    this.addMessage('system', `Event: ${event.type}`, JSON.stringify(event.payload, null, 2));
+                });
+                
+                this.socket.on('chatResponse', (data) => {
+                    this.addMessage('system', 'Chat Response', JSON.stringify(data, null, 2));
+                });
+                
+                this.socket.on('voiceCommandReceived', (data) => {
+                    this.addMessage('system', `Command processed: ${data.eventId}`);
+                });
+                
+                this.socket.on('analysisProgress', (data) => {
+                    this.addMessage('system', `Analysis Progress: ${data.progress}%`);
+                });
+                
+                this.socket.on('connect_error', (error) => {
+                    this.addMessage('error', `Connection Error: ${error.message || error}`);
+                    console.error('WebSocket connection error:', error);
+                });
+                
+                this.socket.on('error', (error) => {
+                    this.addMessage('error', `Error: ${error.message || error}`);
+                    console.error('WebSocket error:', error);
+                });
+                
+                this.socket.on('reconnect', (attemptNumber) => {
+                    this.addMessage('system', `Reconnected after ${attemptNumber} attempts`);
+                });
+                
+                this.socket.on('reconnect_error', (error) => {
+                    this.addMessage('error', `Reconnection failed: ${error.message || error}`);
+                });
+            }
+            
+            sendChatMessage(message) {
+                if (!this.socket || !this.socket.connected) {
+                    this.addMessage('error', 'Not connected to WebSocket server');
+                    return;
+                }
+                
+                // Try multiple event types to test different endpoints
+                const chatData = {
+                    message: message,
+                    userId: 'chat-test-user',
+                    timestamp: new Date().toISOString(),
+                    sessionId: this.sessionId
+                };
+                
+                // Send as voice command (which should work with current system)
+                this.socket.emit('voiceCommand', {
+                    command: message,
+                    transcript: message,
+                    confidence: 1.0,
+                    language: 'en-US',
+                    timestamp: new Date().toISOString()
+                });
+                
+                // Also try as chat message
+                this.socket.emit('chatMessage', chatData);
+                
+                this.addMessage('user', message);
+            }
+            
+            updateStatus(message, connected) {
+                const statusEl = document.getElementById('status');
+                statusEl.textContent = message;
+                statusEl.className = `status ${connected ? 'connected' : 'disconnected'}`;
+            }
+            
+            addMessage(type, content, details = null) {
+                const responsesEl = document.getElementById('responses');
+                const messageEl = document.createElement('div');
+                messageEl.className = `message ${type}`;
+                
+                const timestamp = new Date().toLocaleTimeString();
+                let messageContent = `<div class="timestamp">${timestamp} - ${type.toUpperCase()}</div>${content}`;
+                
+                if (details) {
+                    messageContent += `<pre style="margin-top: 10px; font-size: 0.9em; opacity: 0.8;">${details}</pre>`;
+                }
+                
+                messageEl.innerHTML = messageContent;
+                responsesEl.insertBefore(messageEl, responsesEl.firstChild);
+                
+                // Keep only last 50 messages
+                while (responsesEl.children.length > 50) {
+                    responsesEl.removeChild(responsesEl.lastChild);
+                }
+            }
+        }
+        
+        // Global functions
+        let chatClient = null;
+        
+        function sendMessage() {
+            const input = document.getElementById('messageInput');
+            const message = input.value.trim();
+            
+            if (!message) return;
+            
+            if (chatClient) {
+                chatClient.sendChatMessage(message);
+                input.value = '';
+            }
+        }
+        
+        function quickCommand(command) {
+            document.getElementById('messageInput').value = command;
+            sendMessage();
+        }
+        
+        // Handle Enter key
+        document.getElementById('messageInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                sendMessage();
+            }
+        });
+        
+        // Initialize when page loads
+        window.addEventListener('load', () => {
+            chatClient = new IKASChatClient();
+        });
+    </script>
+</body>
+</html>

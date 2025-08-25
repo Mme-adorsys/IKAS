@@ -1,16 +1,17 @@
 FROM node:18-alpine
 
 # Set working directory
-WORKDIR /app
+WORKDIR /keycloak-mcp-server
 
 # Copy package files
 COPY package*.json ./
-
-# Install ALL dependencies (including dev dependencies for build)
-RUN npm ci && npm cache clean --force
-
 # Copy source code
 COPY . .
+
+# Install ALL dependencies (including dev dependencies for build)
+#RUN npm ci && npm cache clean --force
+RUN npm install --include=dev --no-audit --no-fund && npm cache clean --force
+
 
 # Build TypeScript
 RUN npm run build

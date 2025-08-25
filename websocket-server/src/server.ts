@@ -37,7 +37,7 @@ const logger = winston.createLogger({
 const config = {
   PORT: parseInt(process.env.PORT || '3001', 10),
   REDIS_URL: process.env.REDIS_URL || 'redis://localhost:6379',
-  CORS_ORIGIN: process.env.CORS_ORIGIN?.split(',') || ['http://localhost:3000', 'http://localhost:3002'],
+  CORS_ORIGIN: process.env.CORS_ORIGIN?.split(',') || ['http://localhost:3000', 'http://localhost:3001', 'http://localhost:3002', 'http://localhost:8080', 'http://localhost:8081'],
   CORS_CREDENTIALS: process.env.CORS_CREDENTIALS === 'true',
   SESSION_TIMEOUT: parseInt(process.env.SESSION_TIMEOUT || '3600000', 10),
   AI_GATEWAY_URL: process.env.AI_GATEWAY_URL || 'http://localhost:8000'
