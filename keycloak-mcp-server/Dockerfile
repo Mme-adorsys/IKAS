@@ -31,5 +31,5 @@ HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \
     process.exit(res.statusCode === 200 ? 0 : 1); \
   }).on('error', () => process.exit(1));"
 
-# Start the HTTP server
-CMD ["node", "dist/simple-http-server.js"]
+# Start the HTTP server with full modular architecture (all 63 tools)
+CMD ["node", "dist/http-server.js"]

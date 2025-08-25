@@ -52,18 +52,88 @@ async function withAuth<T>(fn: () => Promise<T>): Promise<T> {
   return fn();
 }
 
-// MCP Tools as REST endpoints
+// MCP Tools as REST endpoints - All available tools from modular architecture
 app.get('/tools', (req, res) => {
   res.json({
     tools: [
+      // User Management Tools
       'create-user',
-      'list-users', 
+      'update-user',
       'delete-user',
       'get-user',
+      'list-users',
+      'reset-user-password',
+      'send-verification-email',
+      'get-user-groups',
+      'get-user-roles',
+      'get-user-sessions',
+      'add-user-to-group',
+      'remove-user-from-group',
+      'assign-role-to-user',
+      'remove-role-from-user',
+      
+      // Realm Management Tools
       'list-realms',
+      'get-realm',
+      'create-realm',
+      'update-realm',
+      'delete-realm',
+      'get-realm-keys',
+      'get-realm-stats',
+      
+      // Client Management Tools
+      'list-clients',
+      'get-client',
+      'create-client',
+      'update-client',
+      'delete-client',
+      'get-client-secret',
+      'regenerate-client-secret',
+      'get-client-roles',
+      'get-client-scopes',
+      'get-client-sessions',
+      'get-client-users',
+      
+      // Group Management Tools
+      'list-groups',
+      'get-group',
+      'create-group',
+      'update-group',
+      'delete-group',
+      'get-group-hierarchy',
+      'get-group-members',
+      'get-group-roles',
+      'assign-role-to-group',
+      'remove-role-from-group',
+      
+      // Role Management Tools
+      'list-roles',
+      'get-role',
+      'create-role',
+      'update-role',
+      'delete-role',
+      'get-role-composites',
+      'get-role-groups',
+      'get-role-users',
+      'add-composite-role',
+      'remove-composite-role',
+      
+      // Event Management Tools
       'list-admin-events',
+      'list-user-events',
       'get-event-details',
-      'get-metrics'
+      'get-event-types',
+      'export-events',
+      
+      // Authentication & Security Tools
+      'get-authentication-flows',
+      'get-identity-providers',
+      'get-offline-sessions',
+      
+      // System & Metrics Tools
+      'get-metrics',
+      'get-server-info',
+      'get-resource-types'
     ]
   });
 });
@@ -274,7 +344,7 @@ app.get('/', (req, res) => {
     endpoints: {
       health: '/health',
       tools: '/tools',
-      toolsCount: 8
+      toolsCount: 63
     }
   });
 });

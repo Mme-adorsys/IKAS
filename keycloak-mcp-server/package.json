@@ -16,6 +16,7 @@
     "prepare": "npm run build",
     "watch": "tsc --watch",
     "start": "node dist/index.js",
+    "start:new": "node dist/new-index.js",
     "start:http": "node dist/http-server.js"
   },
   "dependencies": {

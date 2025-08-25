@@ -269,9 +269,9 @@ npm run watch
 
 ### Important: Shebang Line
 
-The project requires a [shebang line](https://en.wikipedia.org/wiki/Shebang_(Unix)) (`#!/usr/bin/env node`) at the top of the main entry file (`src/index.ts`) for proper execution via npx. This line tells the system to use Node.js to run the script.
+The project requires a [shebang line](https://en.wikipedia.org/wiki/Shebang_(Unix)) (`#!/usr/bin/env node`) at the top of the main entry file (`src/old_index.ts`) for proper execution via npx. This line tells the system to use Node.js to run the script.
 
-**The shebang is already included** in the source file, but if you encounter issues, ensure the first line of `src/index.ts` is:
+**The shebang is already included** in the source file, but if you encounter issues, ensure the first line of `src/old_index.ts` is:
 ```typescript
 #!/usr/bin/env node
 ```
@@ -318,7 +318,7 @@ If you encounter errors like:
 **Cause**: The executable script is missing the shebang line (`#!/usr/bin/env node`) or it's incorrect.
 
 **Solution**:
-1. Ensure the first line of `src/index.ts` contains: `#!/usr/bin/env node`
+1. Ensure the first line of `src/old_index.ts` contains: `#!/usr/bin/env node`
 2. Rebuild the project: `npm run build`
 3. If using the NPM package, update to the latest version:
    ```bash
@@ -448,4 +448,3 @@ This project is automatically published to [NPM](https://www.npmjs.com/package/k
 - Node.js 18 or higher (LTS recommended)
 - Running Keycloak instance
 - Docker and Docker Compose (for Docker setup)
-

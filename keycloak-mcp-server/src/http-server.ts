@@ -30,8 +30,8 @@ app.use(express.json({ limit: '10mb' }));
 // Initialize Keycloak client
 const REALM_NAME = process.env.KEYCLOAK_REALM_NAME || 'master';
 const KEYCLOAK_URL = process.env.KEYCLOAK_URL || 'http://localhost:8080';
-const KEYCLOAK_USERNAME = process.env.KEYCLOAK_USERNAME;
-const KEYCLOAK_PASSWORD = process.env.KEYCLOAK_PASSWORD;
+const KEYCLOAK_USERNAME = process.env.KEYCLOAK_USERNAME || process.env.KEYCLOAK_ADMIN;
+const KEYCLOAK_PASSWORD = process.env.KEYCLOAK_PASSWORD || process.env.KEYCLOAK_ADMIN_PASSWORD;
 const KEYCLOAK_CLIENT_ID = process.env.KEYCLOAK_CLIENT_ID;
 const KEYCLOAK_CLIENT_SECRET = process.env.KEYCLOAK_CLIENT_SECRET;
 
