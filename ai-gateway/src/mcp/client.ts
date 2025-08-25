@@ -163,16 +163,29 @@ export abstract class BaseMCPClient {
       let response: AxiosResponse;
 
       if (this.serverName === 'keycloak') {
-        // Keycloak MCP returns simple list of tool names
+        // Keycloak MCP returns full tool objects with schema
         response = await this.httpClient.get('/tools');
-        const toolNames = response.data.tools || [];
+        const toolsData = response.data.tools || [];
         
-        // Convert tool names to ToolDefinition format
-        return toolNames.map((name: string) => ({
-          name,
-          description: `Keycloak ${name} tool`,
-          inputSchema: { type: 'object', properties: {} }
-        }));
+        // Handle both old format (strings) and new format (objects)
+        if (Array.isArray(toolsData) && toolsData.length > 0) {
+          if (typeof toolsData[0] === 'string') {
+            // Old format: array of strings
+            return toolsData.map((name: string) => ({
+              name,
+              description: `Keycloak ${name} tool`,
+              inputSchema: { type: 'object', properties: {} }
+            }));
+          } else {
+            // New format: array of tool objects
+            return toolsData.map((tool: any) => ({
+              name: tool.name,
+              description: tool.description || `Keycloak ${tool.name} tool`,
+              inputSchema: tool.inputSchema || { type: 'object', properties: {} }
+            }));
+          }
+        }
+        return [];
       } else if (this.serverName === 'neo4j') {
         // Neo4j MCP now uses REST API like Keycloak
         response = await this.httpClient.get('/tools');

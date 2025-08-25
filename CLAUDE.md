@@ -545,7 +545,7 @@ npm run dev  # Port 3000 - Ready for use
 - **Capabilities**: User management, realm administration, event monitoring
 - **Environment**: KEYCLOAK_URL, KEYCLOAK_ADMIN, KEYCLOAK_ADMIN_PASSWORD
 - **Key Tools**: create-user, list-users, list-admin-events, get-metrics
-- **Entry Point**: `src/index.ts`
+- **Entry Point**: `src/old_index.ts`
 
 ### 2. Neo4j MCP Server (To Migrate 🚧)  
 - **Framework**: @modelcontextprotocol/sdk + Neo4j JavaScript driver
@@ -553,7 +553,7 @@ npm run dev  # Port 3000 - Ready for use
 - **Transport**: stdio, http, sse modes
 - **Environment**: NEO4J_URI, NEO4J_USERNAME, NEO4J_PASSWORD
 - **Key Tools**: get_neo4j_schema, query_read, query_write
-- **Entry Point**: `src/index.ts`
+- **Entry Point**: `src/old_index.ts`
 
 ### 3. AI Gateway (Existing ✅)
 - **Framework**: Express.js/TypeScript + Multi-LLM Support (Anthropic Claude Opus 4.1 & Google Gemini)

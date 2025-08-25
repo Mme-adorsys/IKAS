@@ -87,7 +87,9 @@ services:
 
   # Keycloak MCP Server (HTTP mode for development)
   keycloak-mcp:
-    image: ikas-keycloak-mcp:latest
+    build:
+      context: ../keycloak-mcp-server/
+      dockerfile: Dockerfile
     container_name: ikas-keycloak-mcp
     ports:
       - "8001:8001"

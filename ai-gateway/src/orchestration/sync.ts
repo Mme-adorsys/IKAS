@@ -144,7 +144,7 @@ export class DataSynchronizer {
       // Find user in Keycloak
       const usersResponse = await keycloakClient.listUsers(realm, { 
         max: 1, 
-        search: userId 
+        username: userId 
       });
 
       if (!usersResponse.success) {
@@ -310,17 +310,17 @@ export class DataSynchronizer {
       const neo4jClient = getNeo4jClient();
 
       // Get user count from both systems
-      const [keycloakMetrics, neo4jCount] = await Promise.all([
-        keycloakClient.getMetrics(realm),
+      const [keycloakStats, neo4jCount] = await Promise.all([
+        keycloakClient.getRealmStats(realm),
         this.getNeo4jUserCount(neo4jClient, realm)
       ]);
 
-      const keycloakCount = keycloakMetrics.success ? (keycloakMetrics.data?.userCount || 0) : 0;
+      const keycloakCount = keycloakStats.success ? (keycloakStats.data?.userCount || 0) : 0;
       const discrepancy = Math.abs(keycloakCount - neo4jCount);
       const issues: string[] = [];
 
-      if (!keycloakMetrics.success) {
-        issues.push('Failed to get Keycloak metrics');
+      if (!keycloakStats.success) {
+        issues.push('Failed to get Keycloak stats');
       }
 
       if (discrepancy > 0) {

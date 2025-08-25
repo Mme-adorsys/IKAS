@@ -128,7 +128,7 @@ frontend/
 │   │       └── websocket.test.ts
 │   │
 │   ├── store/                        # State management
-│   │   └── index.ts                  # Zustand store configuration
+│   │   └── old_index.ts                  # Zustand store configuration
 │   │
 │   └── types/                        # TypeScript type definitions
 │       ├── events.ts                 # WebSocket event types

@@ -99,7 +99,7 @@ src/
 │   ├── voice.ts            # Speech Recognition/Synthesis
 │   └── websocket.ts        # Real-time WebSocket client
 ├── store/                  # Zustand state management
-│   └── index.ts            # Global application state
+│   └── old_index.ts            # Global application state
 └── types/                  # TypeScript definitions
     ├── events.ts           # WebSocket event types
     └── speech-recognition.ts # Speech API types

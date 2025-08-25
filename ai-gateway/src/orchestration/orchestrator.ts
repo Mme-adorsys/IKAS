@@ -435,10 +435,18 @@ export class Orchestrator {
       return 'neo4j';
     }
     
-    // Fallback - try to determine from tool name patterns
-    if (toolName.includes('user') || toolName.includes('realm') || toolName.includes('event')) {
+    // Fallback - try to determine from tool name patterns for Keycloak
+    if (toolName.includes('user') || toolName.includes('realm') || toolName.includes('event') || 
+        toolName.includes('client') || toolName.includes('group') || toolName.includes('role') ||
+        toolName.includes('server-info') || toolName.includes('metrics') || toolName.includes('admin') ||
+        toolName.startsWith('list-') || toolName.startsWith('create-') || toolName.startsWith('update-') ||
+        toolName.startsWith('delete-') || toolName.startsWith('get-') || toolName.includes('keycloak')) {
       return 'keycloak';
-    } else if (toolName.includes('cypher') || toolName.includes('neo4j') || toolName.includes('schema')) {
+    }
+    
+    // Fallback - try to determine from tool name patterns for Neo4j
+    if (toolName.includes('cypher') || toolName.includes('neo4j') || toolName.includes('schema') ||
+        toolName.includes('graph') || toolName.includes('node') || toolName.includes('relationship')) {
       return 'neo4j';
     }
     
@@ -639,16 +647,6 @@ export class Orchestrator {
     return String(value);
   }
 
-  // Get orchestrator status
-  getStatus(): {
-    activeSessions: number;
-    toolCacheStatus: any;
-  } {
-    return {
-      activeSessions: this.llmService.getActiveSessions().length,
-      toolCacheStatus: this.toolDiscovery.getCacheStatus()
-    };
-  }
 
   private convertToolsToLLMFormat(mcpTools: ToolDefinition[]): LLMFunction[] {
     return mcpTools.map(tool => ({
