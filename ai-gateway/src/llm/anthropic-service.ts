@@ -17,7 +17,7 @@ import {
   LLMFunctionProcessingResult
 } from './llm-interface';
 import { LLMError, LLMRateLimitError, LLMAuthError, LLMUnavailableError } from '../types/llm';
-import { config, getProviderConfig } from '../utils/config';
+import { config, getProviderConfig, getAllSupportedAnthropicModels } from '../utils/config';
 import { logger } from '../utils/logger';
 import { RequestTracker } from '../utils/request-tracker';
 
@@ -48,7 +48,18 @@ export class AnthropicService extends LLMService {
     }
 
     const providerConfig = getProviderConfig();
-    this.model = providerConfig.model || 'claude-opus-4-1-20250805';
+    this.model = providerConfig.model;
+    
+    // Validate model is supported
+    const supportedModels = getAllSupportedAnthropicModels();
+    
+    if (!supportedModels.includes(this.model)) {
+      logger.warn('Unsupported Anthropic model, falling back to default', {
+        requestedModel: this.model,
+        supportedModels
+      });
+      this.model = 'claude-opus-4-1-20250805';
+    }
     
     // Initialize Anthropic client
     this.client = new Anthropic({
@@ -56,9 +67,14 @@ export class AnthropicService extends LLMService {
       timeout: providerConfig.timeout || 30000
     });
 
+    const modelName = this.model.includes('opus') ? 'Opus 4.1' : 
+                     this.model.includes('sonnet-4') ? 'Sonnet 4' : 
+                     'Legacy Sonnet';
+
     logger.info('Anthropic service initialized', {
       provider: this.provider,
       model: this.model,
+      modelName,
       apiKeyPresent: !!config.ANTHROPIC_API_KEY
     });
   }
@@ -83,13 +99,24 @@ export class AnthropicService extends LLMService {
     }
   }
 
-  async chat(request: LLMChatRequest): Promise<LLMChatResponse> {
+  async chat(request: LLMChatRequest, isRetry: boolean = false): Promise<LLMChatResponse> {
     const requestId = RequestTracker.startRequest();
     
     try {
       // Get or initialize chat history
       let messages = this.chatHistory.get(request.sessionId) || [];
       const isNewSession = messages.length === 0;
+      
+      // Reset conversation history if it becomes too long to prevent tool_result corruption
+      if (messages.length > 20) {
+        logger.warn('Conversation history too long, resetting to prevent tool_result errors', {
+          requestId,
+          sessionId: request.sessionId,
+          messageCount: messages.length
+        });
+        messages = [];
+        this.chatHistory.set(request.sessionId, messages);
+      }
 
       // Add user message (with context if provided)
       const userContent = request.context?.realm
@@ -170,7 +197,19 @@ export class AnthropicService extends LLMService {
       });
 
       if (error instanceof Error) {
-        // Handle specific Anthropic errors
+        // Handle tool_result mismatch error by clearing history and retrying
+        if (error.message.includes('unexpected `tool_use_id` found in `tool_result` blocks') && !isRetry) {
+          logger.warn('Tool result mismatch detected, clearing conversation history and retrying', {
+            requestId,
+            sessionId: request.sessionId
+          });
+          
+          // Clear conversation history and retry once
+          this.chatHistory.delete(request.sessionId);
+          return await this.chat(request, true);
+        }
+        
+        // Handle other specific Anthropic errors
         if (error.message.includes('rate_limit')) {
           throw new LLMRateLimitError(this.provider);
         } else if (error.message.includes('authentication') || error.message.includes('api_key')) {

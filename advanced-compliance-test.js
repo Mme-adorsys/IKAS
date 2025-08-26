@@ -66,7 +66,7 @@ class ComplianceTestRunner {
       if (expectedTools.length > 0) {
         const calledTools = result.toolsCalled || [];
         const missingTools = expectedTools.filter(tool => 
-          !calledTools.some(called => called.includes(tool))
+          !calledTools.some(called => called.tool && called.tool.includes(tool))
         );
         
         if (missingTools.length > 0) {
@@ -312,7 +312,9 @@ class ComplianceTestRunner {
 }
 
 // Run the test if executed directly
-if (import.meta.url === `file://${process.argv[1]}`) {
+import { fileURLToPath } from 'url';
+
+if (fileURLToPath(import.meta.url) === process.argv[1]) {
   const runner = new ComplianceTestRunner();
   runner.runCompleteTest()
     .then(report => {

@@ -12,13 +12,17 @@
     "test:coverage": "jest --coverage"
   },
   "dependencies": {
+    "@tailwindcss/typography": "^0.5.16",
     "@types/d3": "^7.4.3",
+    "@uiw/react-md-editor": "^4.0.8",
     "d3": "^7.9.0",
     "framer-motion": "^12.23.12",
     "lucide-react": "^0.540.0",
     "next": "15.5.0",
     "react": "19.1.0",
     "react-dom": "19.1.0",
+    "react-markdown": "^10.1.0",
+    "react-tag-input": "^6.10.6",
     "socket.io-client": "^4.8.1",
     "zustand": "^5.0.8"
   },

@@ -29,8 +29,10 @@ services:
       start_period: 90s
 
   # PostgreSQL Database for Keycloak
+  # Note: If authentication issues persist, you can use postgres:13-alpine instead
+  # which defaults to MD5 authentication and is more compatible with older JDBC drivers
   postgres:
-    image: postgres:15-alpine
+    image: postgres:13-alpine
     container_name: ikas-postgres
     ports:
       - "5432:5432"
@@ -38,8 +40,14 @@ services:
       POSTGRES_DB: keycloak
       POSTGRES_USER: keycloak
       POSTGRES_PASSWORD: keycloak
+      POSTGRES_INITDB_ARGS: "--auth-host=md5"
+      POSTGRES_HOST_AUTH_METHOD: md5
+      PGPASSWORD: keycloak
     volumes:
       - postgres_data:/var/lib/postgresql/data
+      - ./postgres-config/postgresql.conf:/etc/postgresql/postgresql.conf:ro
+      - ./postgres-config/pg_hba.conf:/etc/postgresql/pg_hba.conf:ro
+    command: postgres -c 'password_encryption=md5' -c 'config_file=/etc/postgresql/postgresql.conf' -c 'hba_file=/etc/postgresql/pg_hba.conf'
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U keycloak"]
       interval: 5s
@@ -213,6 +221,7 @@ services:
       LLM_MODEL: ${LLM_MODEL:-claude-opus-4-1-20250805}
       LLM_TEMPERATURE: ${LLM_TEMPERATURE:-0.1}
       LLM_MAX_TOKENS: ${LLM_MAX_TOKENS:-8192}
+      MAX_FUNCTION_ITERATIONS: ${MAX_FUNCTION_ITERATIONS:-10}
       DEBUG: "ikas:*"
     volumes:
       # Hot reload volumes

@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import { logger } from '../utils/logger';
-import { config } from '../utils/config';
+import { config, getAvailableAnthropicModels } from '../utils/config';
 import { Orchestrator } from '../orchestration';
 import { MCPToolDiscovery } from '../llm';
 import { checkAllMcpServices } from '../mcp';
@@ -290,9 +290,12 @@ orchestrationRouter.get('/models', async (req, res) => {
     const currentProvider = config.LLM_PROVIDER;
     const currentModel = config.LLM_MODEL;
     
+    // Get available Anthropic models
+    const anthropicModels = getAvailableAnthropicModels();
+    
     const providerDetails: Record<LLMProvider, any> = {
       [LLMProvider.ANTHROPIC]: {
-        name: 'Claude Opus 4.1',
+        name: 'Claude Models',
         provider: 'Anthropic',
         model: 'claude-opus-4-1-20250805',
         capabilities: ['text', 'tools', 'function_calling', 'analysis'],
@@ -321,12 +324,40 @@ orchestrationRouter.get('/models', async (req, res) => {
       }
     };
     
-    const models = availableProviders.map(provider => ({
-      ...providerDetails[provider],
-      id: provider,
-      available: true,
-      current: provider === currentProvider
-    }));
+    // Build models array with individual Anthropic models
+    const models: any[] = [];
+    
+    // Add Anthropic models individually
+    if (availableProviders.includes(LLMProvider.ANTHROPIC)) {
+      anthropicModels.forEach(anthropicModel => {
+        models.push({
+          id: `anthropic-${anthropicModel.displayName.toLowerCase().replace(/\s+/g, '-')}`,
+          name: anthropicModel.name,
+          displayName: anthropicModel.displayName,
+          provider: 'Anthropic',
+          model: anthropicModel.id,
+          capabilities: anthropicModel.capabilities,
+          description: anthropicModel.description,
+          speed: anthropicModel.speed,
+          cost: anthropicModel.cost,
+          recommended: anthropicModel.recommended,
+          available: true,
+          current: currentProvider === LLMProvider.ANTHROPIC && currentModel === anthropicModel.id
+        });
+      });
+    }
+    
+    // Add other providers
+    availableProviders
+      .filter(provider => provider !== LLMProvider.ANTHROPIC)
+      .forEach(provider => {
+        models.push({
+          ...providerDetails[provider],
+          id: provider,
+          available: true,
+          current: provider === currentProvider
+        });
+      });
     
     logger.info('Models info retrieved', {
       availableProviders: availableProviders.length,
@@ -356,64 +387,115 @@ orchestrationRouter.get('/models', async (req, res) => {
 
 // Switch model endpoint
 const switchModelSchema = z.object({
-  provider: z.enum(['anthropic', 'gemini', 'ollama', 'openai']),
+  provider: z.enum(['anthropic', 'gemini', 'ollama', 'openai']).optional(),
+  model: z.string().optional(), // For specific model selection (e.g., claude-sonnet-4-20250514)
+  modelId: z.string().optional(), // For UI model IDs (e.g., anthropic-sonnet-4)
   sessionId: z.string().optional()
+}).refine(data => data.provider || data.model || data.modelId, {
+  message: "Either provider, model, or modelId must be provided"
 });
 
 orchestrationRouter.post('/models/switch', async (req, res): Promise<any> => {
   try {
     // Validate request body
     const validatedData = switchModelSchema.parse(req.body);
-    const { provider, sessionId } = validatedData;
+    const { provider, model, modelId, sessionId } = validatedData;
+    
+    let targetProvider = provider;
+    let targetModel = model;
+    
+    // Handle model ID to provider/model mapping
+    if (modelId && !provider && !model) {
+      const anthropicModels = getAvailableAnthropicModels();
+      
+      if (modelId.startsWith('anthropic-')) {
+        targetProvider = 'anthropic';
+        const modelName = modelId.replace('anthropic-', '').replace(/-/g, ' ');
+        const foundModel = anthropicModels.find(m => 
+          m.displayName.toLowerCase().replace(/\s+/g, ' ') === modelName
+        );
+        if (foundModel) {
+          targetModel = foundModel.id;
+        }
+      } else {
+        // Handle other providers by model ID
+        targetProvider = modelId as 'anthropic' | 'gemini' | 'ollama' | 'openai';
+      }
+    }
     
     logger.info('Model switch request received', {
       requestedProvider: provider,
+      requestedModel: model,
+      requestedModelId: modelId,
+      resolvedProvider: targetProvider,
+      resolvedModel: targetModel,
       currentProvider: config.LLM_PROVIDER,
       sessionId
     });
 
     // Check if the requested provider is available
     const availableProviders = await LLMFactory.getAvailableProviders();
-    const providerEnum = provider.toUpperCase() as LLMProvider;
+    const providerEnum = targetProvider?.toUpperCase() as LLMProvider;
     
     if (!availableProviders.includes(providerEnum)) {
       return res.status(400).json({
         error: 'Provider not available',
-        message: `The ${provider} provider is not currently available or configured`,
+        message: `The ${targetProvider} provider is not currently available or configured`,
         availableProviders
       });
     }
 
+    // For Anthropic, temporarily set the model configuration
+    let originalModel = process.env.ANTHROPIC_MODEL;
+    if (targetProvider === 'anthropic' && targetModel) {
+      process.env.ANTHROPIC_MODEL = targetModel;
+    }
+
     // Create new LLM service instance for the requested provider
-    const newService = LLMFactory.createLLMService(provider);
+    const newService = LLMFactory.createLLMService(targetProvider);
     
     // Verify the service is actually available
     const isAvailable = await newService.isAvailable();
     if (!isAvailable) {
+      // Restore original model config if switch fails
+      if (originalModel !== undefined) {
+        process.env.ANTHROPIC_MODEL = originalModel;
+      }
+      
       return res.status(503).json({
         error: 'Provider unavailable',
-        message: `The ${provider} provider is currently unavailable`
+        message: `The ${targetProvider} provider is currently unavailable`
       });
     }
 
     // Update the orchestrator to use the new provider
-    orchestrator.switchLLMProvider(provider);
+    orchestrator.switchLLMProvider(targetProvider);
     
     // If sessionId is provided, clear the session to start fresh with new model
     if (sessionId) {
       orchestrator.clearSession(sessionId);
     }
 
+    // Get model display name
+    let modelDisplayName = targetModel;
+    if (targetProvider === 'anthropic' && targetModel) {
+      const anthropicModels = getAvailableAnthropicModels();
+      const foundModel = anthropicModels.find(m => m.id === targetModel);
+      modelDisplayName = foundModel?.name || targetModel;
+    }
+
     logger.info('Model switched successfully', {
-      newProvider: provider,
+      newProvider: targetProvider,
+      newModel: targetModel,
       previousProvider: config.LLM_PROVIDER,
       sessionCleared: !!sessionId
     });
 
     res.json({
       message: 'Model switched successfully',
-      provider: provider,
-      model: newService.model,
+      provider: targetProvider,
+      model: targetModel,
+      modelName: modelDisplayName,
       sessionCleared: !!sessionId,
       timestamp: new Date().toISOString()
     });

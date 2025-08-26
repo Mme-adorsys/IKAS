@@ -1,6 +1,7 @@
 import { create } from 'zustand';
 import { subscribeWithSelector, devtools } from 'zustand/middleware';
 import { IKASEvent, EventType, VoiceCommand } from '@/types/events';
+import { PromptTemplate, PromptCategory, PromptFilter, PromptExecution, DEFAULT_PROMPT_TEMPLATES } from '@/types/prompts';
 import { VoiceService } from '@/services/voice';
 import { websocketService } from '@/services/websocket';
 
@@ -138,7 +139,7 @@ interface DataState {
 interface UIState {
   darkMode: boolean;
   sidebarOpen: boolean;
-  activeView: 'dashboard' | 'users' | 'compliance' | 'analysis' | 'voice';
+  activeView: 'dashboard' | 'users' | 'compliance' | 'analysis' | 'voice' | 'prompts';
   notifications: Array<{
     id: string;
     type: 'info' | 'success' | 'warning' | 'error';
@@ -147,6 +148,18 @@ interface UIState {
     timestamp: Date;
     read: boolean;
   }>;
+}
+
+// Prompt management state
+interface PromptState {
+  prompts: PromptTemplate[];
+  categories: PromptCategory[];
+  filter: PromptFilter;
+  selectedPrompt: PromptTemplate | null;
+  isLoading: boolean;
+  isLibraryOpen: boolean;
+  executionHistory: PromptExecution[];
+  searchQuery: string;
 }
 
 // Combined store interface
@@ -160,6 +173,7 @@ interface IKASStore {
   analysis: AnalysisState;
   data: DataState;
   ui: UIState;
+  prompts: PromptState;
 
   // Voice service instance
   voiceService: VoiceService | null;
@@ -201,8 +215,23 @@ interface IKASStore {
   updateAnalysisProgress: (analysisId: string, progress: number, status?: string) => void;
   completeAnalysis: (analysisId: string, result: any, success: boolean) => void;
 
-  // Data sync actions
-  requestInitialDataSync: () => Promise<void>;
+
+  // Prompt management actions
+  loadPrompts: () => void;
+  savePrompt: (prompt: Omit<PromptTemplate, 'id' | 'createdAt' | 'updatedAt' | 'usageCount'>) => string;
+  updatePrompt: (id: string, updates: Partial<PromptTemplate>) => void;
+  deletePrompt: (id: string) => void;
+  toggleFavorite: (id: string) => void;
+  setFilter: (filter: Partial<PromptFilter>) => void;
+  setSearchQuery: (query: string) => void;
+  selectPrompt: (prompt: PromptTemplate | null) => void;
+  loadPromptToChat: (id: string, variables?: Record<string, string>) => void;
+  executePrompt: (id: string, variables?: Record<string, string>) => Promise<void>;
+  togglePromptLibrary: () => void;
+  exportPrompts: () => void;
+  importPrompts: (prompts: PromptTemplate[]) => void;
+  getFilteredPrompts: () => PromptTemplate[];
+  getFavoritePrompts: () => PromptTemplate[];
 
   // UI actions
   toggleDarkMode: () => void;
@@ -281,19 +310,37 @@ export const useIKASStore = create<IKASStore>()(
         notifications: []
       },
 
+      prompts: {
+        prompts: [],
+        categories: ['sync', 'compliance', 'analysis', 'management', 'monitoring', 'reporting', 'custom'],
+        filter: {},
+        selectedPrompt: null,
+        isLoading: false,
+        isLibraryOpen: false,
+        executionHistory: [],
+        searchQuery: ''
+      },
+
       voiceService: null,
 
       // Service initialization
       initializeServices: async () => {
-        const { initializeVoice, loadAvailableModels } = get();
+        const { initializeVoice, loadAvailableModels, loadPrompts } = get();
         initializeVoice();
         
-        // Load available models on initialization
-        try {
-          await loadAvailableModels();
-        } catch (error) {
-          console.error('Failed to load models during initialization:', error);
-        }
+        // Load available models on initialization (non-blocking)
+        loadAvailableModels().catch((error) => {
+          console.warn('Models not available during initialization:', error);
+          // Add a notification instead of blocking
+          get().addNotification({
+            type: 'warning',
+            title: 'Models Unavailable',
+            message: 'AI Gateway not connected. Some features may be limited.'
+          });
+        });
+        
+        // Load saved prompts
+        loadPrompts();
       },
 
       connectWebSocket: async (userId?: string, realm?: string) => {
@@ -317,11 +364,6 @@ export const useIKASStore = create<IKASStore>()(
             store.addEvent(event);
             store.handleIncomingEvent(event);
           });
-
-          // Request initial data sync after connection
-          setTimeout(() => {
-            get().requestInitialDataSync();
-          }, 1000);
 
           websocketService.on('voiceCommandReceived', (data) => {
             get().addNotification({
@@ -1131,28 +1173,6 @@ export const useIKASStore = create<IKASStore>()(
         }
       },
 
-      // Data sync actions
-      requestInitialDataSync: async () => {
-        try {
-          // Send voice command to sync initial data in background
-          await websocketService.sendVoiceCommand({
-            command: 'sync initial system data',
-            transcript: 'Load system data on startup',
-            confidence: 1.0,
-            language: 'en-US',
-            timestamp: new Date().toISOString()
-          });
-
-          get().addNotification({
-            type: 'info',
-            title: 'Data Sync',
-            message: 'Loading system data in background...'
-          });
-
-        } catch (error) {
-          console.warn('Failed to request initial data sync:', error);
-        }
-      },
 
       // UI actions
       toggleDarkMode: () => {
@@ -1216,6 +1236,366 @@ export const useIKASStore = create<IKASStore>()(
             notifications: []
           }
         }));
+      },
+
+      // Prompt management actions
+      loadPrompts: () => {
+        try {
+          const storedPrompts = localStorage.getItem('ikas-prompts');
+          let prompts: PromptTemplate[] = [];
+          
+          if (storedPrompts) {
+            const parsed = JSON.parse(storedPrompts);
+            prompts = parsed.map((p: any) => ({
+              ...p,
+              createdAt: new Date(p.createdAt),
+              updatedAt: new Date(p.updatedAt),
+              lastUsed: p.lastUsed ? new Date(p.lastUsed) : undefined
+            }));
+          } else {
+            // Initialize with default prompts on first load
+            prompts = DEFAULT_PROMPT_TEMPLATES.map((template, index) => ({
+              ...template,
+              id: `default-${index}`,
+              createdAt: new Date(),
+              updatedAt: new Date(),
+              usageCount: 0
+            }));
+            
+            // Save default prompts to localStorage
+            localStorage.setItem('ikas-prompts', JSON.stringify(prompts));
+          }
+          
+          set((state) => ({
+            prompts: {
+              ...state.prompts,
+              prompts
+            }
+          }));
+        } catch (error) {
+          console.error('Failed to load prompts:', error);
+        }
+      },
+
+      savePrompt: (promptData) => {
+        const id = `prompt-${Date.now()}`;
+        const newPrompt: PromptTemplate = {
+          ...promptData,
+          id,
+          createdAt: new Date(),
+          updatedAt: new Date(),
+          usageCount: 0
+        };
+
+        set((state) => {
+          const updatedPrompts = [...state.prompts.prompts, newPrompt];
+          
+          // Save to localStorage
+          localStorage.setItem('ikas-prompts', JSON.stringify(updatedPrompts));
+          
+          return {
+            prompts: {
+              ...state.prompts,
+              prompts: updatedPrompts
+            }
+          };
+        });
+
+        get().addNotification({
+          type: 'success',
+          title: 'Prompt Saved',
+          message: `"${promptData.title}" has been saved successfully`
+        });
+
+        return id;
+      },
+
+      updatePrompt: (id, updates) => {
+        set((state) => {
+          const updatedPrompts = state.prompts.prompts.map(prompt =>
+            prompt.id === id 
+              ? { ...prompt, ...updates, updatedAt: new Date() }
+              : prompt
+          );
+          
+          // Save to localStorage
+          localStorage.setItem('ikas-prompts', JSON.stringify(updatedPrompts));
+          
+          return {
+            prompts: {
+              ...state.prompts,
+              prompts: updatedPrompts
+            }
+          };
+        });
+      },
+
+      deletePrompt: (id) => {
+        set((state) => {
+          const updatedPrompts = state.prompts.prompts.filter(p => p.id !== id);
+          
+          // Save to localStorage
+          localStorage.setItem('ikas-prompts', JSON.stringify(updatedPrompts));
+          
+          return {
+            prompts: {
+              ...state.prompts,
+              prompts: updatedPrompts,
+              selectedPrompt: state.prompts.selectedPrompt?.id === id ? null : state.prompts.selectedPrompt
+            }
+          };
+        });
+
+        get().addNotification({
+          type: 'info',
+          title: 'Prompt Deleted',
+          message: 'Prompt has been removed'
+        });
+      },
+
+      toggleFavorite: (id) => {
+        const { updatePrompt } = get();
+        const prompt = get().prompts.prompts.find(p => p.id === id);
+        
+        if (prompt) {
+          updatePrompt(id, { isFavorite: !prompt.isFavorite });
+          
+          get().addNotification({
+            type: 'success',
+            title: prompt.isFavorite ? 'Removed from Favorites' : 'Added to Favorites',
+            message: `"${prompt.title}" ${prompt.isFavorite ? 'removed from' : 'added to'} favorites`
+          });
+        }
+      },
+
+      setFilter: (filter) => {
+        set((state) => ({
+          prompts: {
+            ...state.prompts,
+            filter: { ...state.prompts.filter, ...filter }
+          }
+        }));
+      },
+
+      setSearchQuery: (query) => {
+        set((state) => ({
+          prompts: {
+            ...state.prompts,
+            searchQuery: query
+          }
+        }));
+      },
+
+      selectPrompt: (prompt) => {
+        set((state) => ({
+          prompts: {
+            ...state.prompts,
+            selectedPrompt: prompt
+          }
+        }));
+      },
+
+      loadPromptToChat: (id, variables = {}) => {
+        const prompt = get().prompts.prompts.find(p => p.id === id);
+        if (!prompt) return;
+
+        // Process template variables
+        let content = prompt.content;
+        Object.entries(variables).forEach(([key, value]) => {
+          content = content.replace(new RegExp(`{{${key}}}`, 'g'), value);
+        });
+
+        // Update chat input with the processed content
+        get().updateTextInput(content);
+
+        // Update usage stats
+        get().updatePrompt(id, {
+          usageCount: prompt.usageCount + 1,
+          lastUsed: new Date()
+        });
+
+        get().addNotification({
+          type: 'success',
+          title: 'Prompt Loaded',
+          message: `"${prompt.title}" loaded to chat`
+        });
+      },
+
+      executePrompt: async (id, variables = {}) => {
+        const prompt = get().prompts.prompts.find(p => p.id === id);
+        if (!prompt) return;
+
+        // Process template variables
+        let content = prompt.content;
+        Object.entries(variables).forEach(([key, value]) => {
+          content = content.replace(new RegExp(`{{${key}}}`, 'g'), value);
+        });
+
+        // Record execution start
+        const executionId = `exec-${Date.now()}`;
+        const execution: PromptExecution = {
+          id: executionId,
+          promptId: id,
+          executedAt: new Date(),
+          variables,
+          success: false
+        };
+
+        set((state) => ({
+          prompts: {
+            ...state.prompts,
+            executionHistory: [execution, ...state.prompts.executionHistory.slice(0, 49)]
+          }
+        }));
+
+        try {
+          // Execute the prompt through sendTextMessage
+          await get().sendTextMessage(content);
+
+          // Update execution record
+          set((state) => ({
+            prompts: {
+              ...state.prompts,
+              executionHistory: state.prompts.executionHistory.map(exec =>
+                exec.id === executionId 
+                  ? { ...exec, success: true, duration: Date.now() - exec.executedAt.getTime() }
+                  : exec
+              )
+            }
+          }));
+
+          // Update usage stats
+          get().updatePrompt(id, {
+            usageCount: prompt.usageCount + 1,
+            lastUsed: new Date()
+          });
+
+        } catch (error) {
+          // Update execution record with error
+          set((state) => ({
+            prompts: {
+              ...state.prompts,
+              executionHistory: state.prompts.executionHistory.map(exec =>
+                exec.id === executionId 
+                  ? { 
+                      ...exec, 
+                      success: false, 
+                      error: error instanceof Error ? error.message : 'Unknown error',
+                      duration: Date.now() - exec.executedAt.getTime()
+                    }
+                  : exec
+              )
+            }
+          }));
+        }
+      },
+
+      togglePromptLibrary: () => {
+        set((state) => ({
+          prompts: {
+            ...state.prompts,
+            isLibraryOpen: !state.prompts.isLibraryOpen
+          }
+        }));
+      },
+
+      exportPrompts: () => {
+        const prompts = get().prompts.prompts;
+        const dataStr = JSON.stringify(prompts, null, 2);
+        const dataUri = 'data:application/json;charset=utf-8,'+ encodeURIComponent(dataStr);
+        
+        const exportFileDefaultName = `ikas-prompts-${new Date().toISOString().split('T')[0]}.json`;
+        
+        const linkElement = document.createElement('a');
+        linkElement.setAttribute('href', dataUri);
+        linkElement.setAttribute('download', exportFileDefaultName);
+        linkElement.click();
+
+        get().addNotification({
+          type: 'success',
+          title: 'Prompts Exported',
+          message: `${prompts.length} prompts exported successfully`
+        });
+      },
+
+      importPrompts: (importedPrompts) => {
+        set((state) => {
+          // Add unique IDs to imported prompts and mark as imported
+          const newPrompts = importedPrompts.map(prompt => ({
+            ...prompt,
+            id: `imported-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
+            createdAt: new Date(),
+            updatedAt: new Date(),
+            usageCount: 0
+          }));
+          
+          const allPrompts = [...state.prompts.prompts, ...newPrompts];
+          
+          // Save to localStorage
+          localStorage.setItem('ikas-prompts', JSON.stringify(allPrompts));
+          
+          return {
+            prompts: {
+              ...state.prompts,
+              prompts: allPrompts
+            }
+          };
+        });
+
+        get().addNotification({
+          type: 'success',
+          title: 'Prompts Imported',
+          message: `${importedPrompts.length} prompts imported successfully`
+        });
+      },
+
+      getFilteredPrompts: () => {
+        const { prompts: promptsState } = get();
+        const { prompts, filter, searchQuery } = promptsState;
+        
+        return prompts.filter(prompt => {
+          // Search query filter
+          if (searchQuery && !prompt.title.toLowerCase().includes(searchQuery.toLowerCase()) &&
+              !prompt.description?.toLowerCase().includes(searchQuery.toLowerCase()) &&
+              !prompt.content.toLowerCase().includes(searchQuery.toLowerCase()) &&
+              !prompt.tags.some(tag => tag.toLowerCase().includes(searchQuery.toLowerCase()))) {
+            return false;
+          }
+          
+          // Category filter
+          if (filter.category && prompt.category !== filter.category) {
+            return false;
+          }
+          
+          // Tags filter
+          if (filter.tags && filter.tags.length > 0 && 
+              !filter.tags.some(tag => prompt.tags.includes(tag))) {
+            return false;
+          }
+          
+          // Favorites filter
+          if (filter.favoritesOnly && !prompt.isFavorite) {
+            return false;
+          }
+          
+          return true;
+        }).sort((a, b) => {
+          // Sort favorites first, then by usage, then by recent updates
+          if (a.isFavorite !== b.isFavorite) {
+            return a.isFavorite ? -1 : 1;
+          }
+          if (a.usageCount !== b.usageCount) {
+            return b.usageCount - a.usageCount;
+          }
+          return b.updatedAt.getTime() - a.updatedAt.getTime();
+        });
+      },
+
+      getFavoritePrompts: () => {
+        return get().prompts.prompts
+          .filter(prompt => prompt.isFavorite)
+          .sort((a, b) => b.usageCount - a.usageCount)
+          .slice(0, 6); // Limit to top 6 favorites for dashboard
       }
     })),
     { name: 'ikas-store' }

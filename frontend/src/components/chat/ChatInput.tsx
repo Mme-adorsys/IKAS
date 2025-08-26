@@ -2,6 +2,7 @@
 
 import React, { useState, useRef, useEffect } from 'react';
 import { useIKASStore } from '@/store';
+import { PromptLibrary } from '@/components/prompts/PromptLibrary';
 
 interface ChatInputProps {
   placeholder?: string;
@@ -12,16 +13,19 @@ interface ChatInputProps {
 export function ChatInput({ 
   placeholder = "Type your message...", 
   disabled = false, 
-  maxLength = 1000 
+  maxLength = 2000 
 }: ChatInputProps) {
   const { 
     chat, 
     model,
+    prompts,
     sendTextMessage, 
-    updateTextInput 
+    updateTextInput,
+    togglePromptLibrary
   } = useIKASStore();
 
   const [isFocused, setIsFocused] = useState(false);
+  const [showPromptLibrary, setShowPromptLibrary] = useState(false);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
   // Auto-resize textarea
@@ -51,6 +55,12 @@ export function ChatInput({
     if (e.key === 'Enter' && !e.shiftKey) {
       e.preventDefault();
       handleSubmit(e);
+    }
+    
+    // Ctrl/Cmd + P to open prompt library
+    if ((e.ctrlKey || e.metaKey) && e.key === 'p') {
+      e.preventDefault();
+      setShowPromptLibrary(true);
     }
   };
 
@@ -95,6 +105,18 @@ export function ChatInput({
               </div>
             )}
           </div>
+
+          {/* Prompt Library Button */}
+          <button
+            type="button"
+            onClick={() => setShowPromptLibrary(true)}
+            className="flex-shrink-0 p-2 rounded-lg text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
+            title="Open Prompt Library (Ctrl/Cmd + P)"
+          >
+            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+            </svg>
+          </button>
 
           {/* Send Button */}
           <button
@@ -145,6 +167,12 @@ export function ChatInput({
           </div>
         </div>
       </form>
+
+      {/* Prompt Library */}
+      <PromptLibrary 
+        isOpen={showPromptLibrary}
+        onClose={() => setShowPromptLibrary(false)}
+      />
     </div>
   );
 }

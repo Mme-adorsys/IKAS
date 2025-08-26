@@ -12,6 +12,9 @@ const configSchema = z.object({
   // LLM Provider Configuration
   LLM_PROVIDER: z.enum(['gemini', 'ollama', 'anthropic', 'openai']).default('gemini'),
   LLM_MODEL: z.string().optional(),
+  
+  // Anthropic Model Selection (validated at service level)
+  ANTHROPIC_MODEL: z.string().optional(),
   LLM_TEMPERATURE: z.coerce.number().min(0).max(2).default(0.1),
   LLM_MAX_TOKENS: z.coerce.number().min(1).max(200000).default(8192),
   LLM_TOP_P: z.coerce.number().min(0).max(1).default(0.95),
@@ -103,7 +106,7 @@ export function getDefaultModel(provider: string): string {
   const modelDefaults: Record<string, string> = {
     'gemini': 'gemini-2.5-pro',
     'ollama': 'llama3',
-    'anthropic': 'claude-3-sonnet-20240229',
+    'anthropic': 'claude-opus-4-1-20250805', // Default to Opus 4.1
     'openai': 'gpt-4-turbo'
   };
   
@@ -114,6 +117,11 @@ export function getDefaultModel(provider: string): string {
  * Get the configured model for the current provider
  */
 export function getConfiguredModel(): string {
+  // For Anthropic, use ANTHROPIC_MODEL if specified
+  if (config.LLM_PROVIDER === 'anthropic' && config.ANTHROPIC_MODEL) {
+    return config.ANTHROPIC_MODEL;
+  }
+  
   return config.LLM_MODEL || getDefaultModel(config.LLM_PROVIDER);
 }
 
@@ -154,6 +162,45 @@ function getApiKeyForProvider(provider: string): string | undefined {
     default:
       return undefined;
   }
+}
+
+/**
+ * Get available Anthropic models with metadata
+ */
+export function getAvailableAnthropicModels() {
+  return [
+    {
+      id: 'claude-opus-4-1-20250805',
+      name: 'Claude Opus 4.1',
+      displayName: 'Opus 4.1',
+      description: 'Superior reasoning and problem-solving capabilities',
+      capabilities: ['text', 'tools', 'function_calling', 'analysis', 'deep_reasoning'],
+      speed: 'moderate',
+      cost: 'high',
+      recommended: 'Complex reasoning, analysis, multi-step problems'
+    },
+    {
+      id: 'claude-sonnet-4-20250514',
+      name: 'Claude Sonnet 4',
+      displayName: 'Sonnet 4',
+      description: 'Fast and efficient with excellent capabilities',
+      capabilities: ['text', 'tools', 'function_calling', 'analysis'],
+      speed: 'fast',
+      cost: 'moderate',
+      recommended: 'General tasks, quick responses, balanced performance'
+    }
+  ];
+}
+
+/**
+ * Get all supported Anthropic models (including legacy for backward compatibility)
+ */
+export function getAllSupportedAnthropicModels() {
+  return [
+    'claude-opus-4-1-20250805',     // Opus 4.1 - Superior reasoning
+    'claude-sonnet-4-20250514',     // Sonnet 4 - Faster, efficient  
+    'claude-3-sonnet-20240229'      // Legacy support
+  ];
 }
 
 export { config };

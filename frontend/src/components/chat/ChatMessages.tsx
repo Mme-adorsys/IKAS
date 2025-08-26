@@ -1,7 +1,83 @@
 'use client';
 
 import React, { useEffect, useRef } from 'react';
+import ReactMarkdown from 'react-markdown';
 import { useIKASStore } from '@/store';
+
+interface MessageContentProps {
+  content: string;
+  messageType: 'user' | 'assistant' | 'system';
+}
+
+function MessageContent({ content, messageType }: MessageContentProps) {
+  // Check if content contains markdown syntax
+  const hasMarkdown = /[*_#`\[\]()>-]/.test(content) || content.includes('\n\n');
+
+  if (!hasMarkdown) {
+    return (
+      <div className="text-sm whitespace-pre-wrap break-words">
+        {content}
+      </div>
+    );
+  }
+
+  return (
+    <div className="text-sm max-w-none break-words">
+      <ReactMarkdown
+        components={{
+          // Custom styling for different elements
+          h1: ({ children }) => <h1 className="text-lg font-bold mb-3 mt-4 first:mt-0 text-current">{children}</h1>,
+          h2: ({ children }) => <h2 className="text-base font-bold mb-2 mt-3 first:mt-0 text-current">{children}</h2>,
+          h3: ({ children }) => <h3 className="text-sm font-bold mb-2 mt-3 first:mt-0 text-current">{children}</h3>,
+          p: ({ children }) => <p className="mb-3 last:mb-0 leading-relaxed">{children}</p>,
+          ul: ({ children }) => <ul className="ml-4 mb-3 list-disc space-y-1">{children}</ul>,
+          ol: ({ children }) => <ol className="ml-4 mb-3 list-decimal space-y-1">{children}</ol>,
+          li: ({ children }) => <li className="leading-relaxed">{children}</li>,
+          code: ({ children, className }) => {
+            const isInline = !className;
+            if (isInline) {
+              return (
+                <code className="bg-black/10 dark:bg-white/10 px-1.5 py-0.5 rounded text-xs font-mono border">
+                  {children}
+                </code>
+              );
+            }
+            return (
+              <code className="block bg-black/10 dark:bg-white/10 p-3 rounded text-xs font-mono overflow-x-auto border">
+                {children}
+              </code>
+            );
+          },
+          pre: ({ children }) => (
+            <pre className="bg-black/10 dark:bg-white/10 p-3 rounded overflow-x-auto mb-3 border">
+              {children}
+            </pre>
+          ),
+          blockquote: ({ children }) => (
+            <blockquote className="border-l-4 border-current/30 pl-4 italic mb-3 opacity-80">
+              {children}
+            </blockquote>
+          ),
+          strong: ({ children }) => <strong className="font-semibold">{children}</strong>,
+          em: ({ children }) => <em className="italic">{children}</em>,
+          hr: () => <hr className="border-current/20 my-4" />,
+          a: ({ children, href }) => (
+            <a 
+              href={href} 
+              className="text-blue-600 dark:text-blue-400 hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              {children}
+            </a>
+          ),
+        }}
+      >
+        {content}
+      </ReactMarkdown>
+    </div>
+  );
+}
 
 export function ChatMessages() {
   const { chat } = useIKASStore();
@@ -48,9 +124,10 @@ export function ChatMessages() {
             }`}
           >
             {/* Message Content */}
-            <div className="text-sm whitespace-pre-wrap break-words">
-              {message.content}
-            </div>
+            <MessageContent 
+              content={message.content}
+              messageType={message.type}
+            />
 
             {/* Message Metadata */}
             <div

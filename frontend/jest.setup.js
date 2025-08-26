@@ -1,5 +1,13 @@
 import '@testing-library/jest-dom'
 
+// Mock react-markdown to avoid ES module issues in tests
+jest.mock('react-markdown', () => {
+  const React = require('react');
+  return function ReactMarkdown({ children }) {
+    return React.createElement('div', { 'data-testid': 'markdown-content' }, children);
+  };
+});
+
 // Mock Next.js router
 jest.mock('next/navigation', () => ({
   useRouter() {

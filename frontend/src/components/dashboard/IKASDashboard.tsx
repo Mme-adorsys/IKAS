@@ -9,6 +9,8 @@ import { UsersPanel } from './UsersPanel';
 import { CompliancePanel } from './CompliancePanel';
 import { AnalysisPanel } from './AnalysisPanel';
 import { NotificationsPanel } from './NotificationsPanel';
+import { QuickActions } from './QuickActions';
+import { PromptManagementView } from '@/components/prompts/PromptManagementView';
 
 export function IKASDashboard() {
   const {
@@ -17,6 +19,7 @@ export function IKASDashboard() {
     voice,
     data,
     analysis,
+    prompts,
     initializeServices,
     connectWebSocket,
     setActiveView,
@@ -223,6 +226,23 @@ export function IKASDashboard() {
                       <div className="ml-auto w-2 h-2 bg-blue-400 rounded-full animate-pulse"></div>
                     )}
                   </button>
+
+                  <button
+                    onClick={() => setActiveView('prompts')}
+                    className={`w-full flex items-center px-3 py-2 text-sm font-medium rounded-md ${
+                      ui.activeView === 'prompts'
+                        ? 'bg-blue-100 text-blue-700 dark:bg-blue-900 dark:text-blue-200'
+                        : 'text-gray-600 hover:text-gray-900 hover:bg-gray-50 dark:text-gray-300 dark:hover:text-white dark:hover:bg-gray-700'
+                    }`}
+                  >
+                    <svg className="mr-3 h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                    </svg>
+                    Prompts
+                    <span className="ml-auto text-xs bg-gray-200 dark:bg-gray-600 px-2 py-1 rounded-full">
+                      {prompts.prompts.length}
+                    </span>
+                  </button>
                 </div>
               </div>
             </nav>
@@ -235,6 +255,7 @@ export function IKASDashboard() {
             {ui.activeView === 'users' && <UsersPanel />}
             {ui.activeView === 'compliance' && <CompliancePanel />}
             {ui.activeView === 'analysis' && <AnalysisPanel />}
+            {ui.activeView === 'prompts' && <PromptManagementView />}
           </main>
         </div>
 
@@ -266,55 +287,7 @@ function DashboardOverview() {
         <EventsPanel />
         
         {/* Quick Actions */}
-        <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
-          <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-4">
-            Schnellaktionen
-          </h3>
-          
-          <div className="space-y-3">
-            <button className="w-full flex items-center justify-between p-3 text-left bg-blue-50 dark:bg-blue-900/20 rounded-lg hover:bg-blue-100 dark:hover:bg-blue-900/30 transition-colors">
-              <div className="flex items-center">
-                <svg className="h-5 w-5 text-blue-600 dark:text-blue-400 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197m13.5-9a2.5 2.5 0 11-5 0 2.5 2.5 0 015 0z" />
-                </svg>
-                <span className="text-sm font-medium text-gray-900 dark:text-white">
-                  Benutzer anzeigen
-                </span>
-              </div>
-              <svg className="h-4 w-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-              </svg>
-            </button>
-
-            <button className="w-full flex items-center justify-between p-3 text-left bg-green-50 dark:bg-green-900/20 rounded-lg hover:bg-green-100 dark:hover:bg-green-900/30 transition-colors">
-              <div className="flex items-center">
-                <svg className="h-5 w-5 text-green-600 dark:text-green-400 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
-                </svg>
-                <span className="text-sm font-medium text-gray-900 dark:text-white">
-                  Compliance prüfen
-                </span>
-              </div>
-              <svg className="h-4 w-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-              </svg>
-            </button>
-
-            <button className="w-full flex items-center justify-between p-3 text-left bg-purple-50 dark:bg-purple-900/20 rounded-lg hover:bg-purple-100 dark:hover:bg-purple-900/30 transition-colors">
-              <div className="flex items-center">
-                <svg className="h-5 w-5 text-purple-600 dark:text-purple-400 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z" />
-                </svg>
-                <span className="text-sm font-medium text-gray-900 dark:text-white">
-                  Sprachsteuerung
-                </span>
-              </div>
-              <svg className="h-4 w-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-              </svg>
-            </button>
-          </div>
-        </div>
+        <QuickActions />
       </div>
     </div>
   );

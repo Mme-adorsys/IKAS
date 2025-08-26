@@ -140,13 +140,17 @@ export class Orchestrator {
       let finalResponse = llmResponse.response;
       let aggregatedData: any = {};
       let currentResponse = llmResponse;
-      let maxIterations = 5; // Safety limit to prevent infinite loops
+      let maxIterations = parseInt(process.env.MAX_FUNCTION_ITERATIONS || '10'); // Safety limit to prevent infinite loops
       let iteration = 0;
 
       // Clear previous tool results for this session
       this.toolResults.clear();
 
-      while (currentResponse.functionCalls && currentResponse.functionCalls.length > 0 && iteration < maxIterations) {
+      // Track function call history to detect circular patterns
+      const functionCallHistory = new Map<string, number>();
+      let circularPatternDetected = false;
+
+      while (currentResponse.functionCalls && currentResponse.functionCalls.length > 0 && iteration < maxIterations && !circularPatternDetected) {
         logger.info(`⚙️ Starting function call execution (iteration ${iteration + 1})`, {
           requestId,
           sessionId: request.sessionId,
@@ -157,6 +161,30 @@ export class Orchestrator {
             argKeys: Object.keys(fc.args || {})
           }))
         });
+
+        // Check for circular patterns before processing
+        for (const functionCall of currentResponse.functionCalls) {
+          const callKey = `${functionCall.name}:${JSON.stringify(functionCall.args)}`;
+          const callCount = functionCallHistory.get(callKey) || 0;
+          
+          if (callCount >= 2) { // Same call more than twice indicates circular pattern
+            logger.warn('🔄 Circular function calling pattern detected', {
+              requestId,
+              sessionId: request.sessionId,
+              functionName: functionCall.name,
+              callCount: callCount + 1,
+              iteration: iteration + 1
+            });
+            circularPatternDetected = true;
+            break;
+          }
+          
+          functionCallHistory.set(callKey, callCount + 1);
+        }
+
+        if (circularPatternDetected) {
+          break;
+        }
 
         // Track tools called for metadata
         for (const functionCall of currentResponse.functionCalls) {
@@ -224,6 +252,13 @@ export class Orchestrator {
           requestId,
           sessionId: request.sessionId,
           maxIterations,
+          totalToolsCalled: toolsCalled.length
+        });
+      } else if (circularPatternDetected) {
+        logger.warn('🔄 Function calling stopped due to circular pattern detection', {
+          requestId,
+          sessionId: request.sessionId,
+          stoppedAtIteration: iteration + 1,
           totalToolsCalled: toolsCalled.length
         });
       }
