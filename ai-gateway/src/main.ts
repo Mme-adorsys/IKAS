@@ -13,11 +13,11 @@ const server = createServer(app);
 
 // Middleware
 app.use(cors({
-  origin: process.env.NODE_ENV === 'test' 
+  origin: process.env.NODE_ENV === 'test'
     ? true // Allow all origins in test environment
-    : process.env.NODE_ENV === 'production' 
-      ? ['https://your-production-domain.com'] 
-      : ['http://localhost:3000', 'http://localhost:3001'],
+    : process.env.NODE_ENV === 'production'
+      ? ['https://your-production-domain.com']
+      : (process.env.CORS_ORIGINS?.split(',') || ['http://localhost:3000', 'http://localhost:3001', 'http://localhost:3002']),
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization'],

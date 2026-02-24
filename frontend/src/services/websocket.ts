@@ -133,6 +133,11 @@ export class WebSocketService {
           this.callHandler('voiceCommandReceived', data);
         });
 
+        this.socket.on('analysisStarted', (data) => {
+          console.log('🔬 Analysis started', data);
+          this.callHandler('analysisStarted', data);
+        });
+
         this.socket.on('subscriptionConfirmed', (data) => {
           console.log('📢 Subscription confirmed', data);
           this.callHandler('subscriptionConfirmed', data);
@@ -307,13 +312,17 @@ export class WebSocketService {
 
     return new Promise((resolve) => {
       const timeout = setTimeout(() => {
+        this.socket?.off('pong', onPong);
         resolve(false);
       }, 5000);
 
-      this.socket!.emit('ping', (response: any) => {
+      const onPong = () => {
         clearTimeout(timeout);
-        resolve(response === 'pong');
-      });
+        resolve(true);
+      };
+
+      this.socket!.once('pong', onPong);
+      this.socket!.emit('ping');
     });
   }
 
