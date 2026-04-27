@@ -31,17 +31,18 @@ async function checkMcpService(url: string, serviceName: string): Promise<Servic
   const startTime = Date.now();
   
   try {
-    // Both MCP servers now have standard /health endpoints
+    // Keycloak MCP has /health; neo4j-mcp only exposes /api/mcp/ (SSE), so check /health
+    // and treat any response (including 404) as "alive" — a 5xx or connection error means down
     const healthPath = '/health';
     const response = await axios.get(`${url}${healthPath}`, {
       timeout: config.HEALTH_CHECK_TIMEOUT,
-      validateStatus: (status) => status < 400 // Standard health check for all services
+      validateStatus: (status) => status < 500 // Accept 4xx too — server is up if it responds
     });
-    
+
     const latency = Date.now() - startTime;
-    
-    // Standard health check for all services
-    const isHealthy = response.status < 400;
+
+    // Consider any response < 500 as healthy (server is reachable and responding)
+    const isHealthy = response.status < 500;
     
     return {
       status: isHealthy ? 'healthy' : 'unhealthy',

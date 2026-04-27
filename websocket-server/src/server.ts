@@ -414,14 +414,30 @@ class IKASWebSocketServer {
         return;
       }
 
-      const { analysisType, parameters } = data;
+      const { analysisType: rawAnalysisType, parameters } = data;
       const analysisId = randomUUID();
+
+      // Normalize frontend kebab-case IDs to valid Zod enum values
+      const analysisTypeMap: Record<string, 'user_patterns' | 'compliance_check' | 'security_audit' | 'usage_statistics'> = {
+        'duplicate-users': 'user_patterns',
+        'inactive-users': 'user_patterns',
+        'role-analysis': 'user_patterns',
+        'security-audit': 'security_audit',
+        'usage-patterns': 'usage_statistics',
+        'compliance-check': 'compliance_check',
+        // Pass through values that are already valid
+        'user_patterns': 'user_patterns',
+        'compliance_check': 'compliance_check',
+        'security_audit': 'security_audit',
+        'usage_statistics': 'usage_statistics',
+      };
+      const analysisType = analysisTypeMap[rawAnalysisType] || 'user_patterns';
 
       // Create analysis started event
       const analysisEvent = createAnalysisEvent(
         session.id,
         analysisId,
-        analysisType || 'user_patterns',
+        analysisType,
         'started'
       );
 

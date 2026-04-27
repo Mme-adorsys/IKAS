@@ -373,6 +373,21 @@ export const useIKASStore = create<IKASStore>()(
             });
           });
 
+          // Register analysis with server-assigned UUID when confirmed
+          websocketService.on('analysisStarted', (data: { analysisId: string; type: string; timestamp: string }) => {
+            const activeAnalyses = new Map(get().analysis.activeAnalyses);
+            activeAnalyses.set(data.analysisId, {
+              id: data.analysisId,
+              type: data.type,
+              progress: 0,
+              status: 'started',
+              startTime: new Date(data.timestamp)
+            });
+            set((state) => ({
+              analysis: { ...state.analysis, activeAnalyses }
+            }));
+          });
+
           // Handle connection retry events
           websocketService.on('connectionRetrying', (data) => {
             get().addNotification({
@@ -974,9 +989,28 @@ export const useIKASStore = create<IKASStore>()(
             }
             break;
 
+          case EventType.ANALYSIS_STARTED: {
+            // Fallback: create entry if the direct 'analysisStarted' socket event was missed
+            const payload = event.payload as any;
+            const activeAnalyses = new Map(get().analysis.activeAnalyses);
+            if (!activeAnalyses.has(payload.analysisId)) {
+              activeAnalyses.set(payload.analysisId, {
+                id: payload.analysisId,
+                type: payload.analysisType,
+                progress: 0,
+                status: 'started',
+                startTime: new Date(event.timestamp)
+              });
+              set((state) => ({
+                analysis: { ...state.analysis, activeAnalyses }
+              }));
+            }
+            break;
+          }
+
           case EventType.ANALYSIS_PROGRESS:
             get().updateAnalysisProgress(
-              event.payload.analysisId, 
+              event.payload.analysisId,
               event.payload.progress || 0,
               event.payload.status
             );
@@ -1094,24 +1128,7 @@ export const useIKASStore = create<IKASStore>()(
       startAnalysis: async (type: string, parameters: Record<string, any> = {}) => {
         try {
           await websocketService.startAnalysis(type, parameters);
-          
-          const analysisId = `analysis-${Date.now()}`;
-          const activeAnalyses = new Map(get().analysis.activeAnalyses);
-          activeAnalyses.set(analysisId, {
-            id: analysisId,
-            type,
-            progress: 0,
-            status: 'started',
-            startTime: new Date()
-          });
-
-          set((state) => ({
-            analysis: {
-              ...state.analysis,
-              activeAnalyses
-            }
-          }));
-
+          // Analysis tracking is initialized when the server confirms via 'analysisStarted' event
         } catch (error) {
           get().addNotification({
             type: 'error',

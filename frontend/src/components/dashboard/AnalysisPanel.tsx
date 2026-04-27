@@ -6,6 +6,7 @@ import { useIKASStore } from '@/store';
 export function AnalysisPanel() {
   const { analysis, startAnalysis } = useIKASStore();
   const [selectedAnalysisType, setSelectedAnalysisType] = useState('duplicate-users');
+  const [expandedResultId, setExpandedResultId] = useState<string | null>(null);
   const [analysisParams, setAnalysisParams] = useState({
     realm: 'all',
     includeDisabled: false,
@@ -350,16 +351,61 @@ export function AnalysisPanel() {
                       </p>
                     </div>
                   </div>
-                  
+
                   <div className="flex items-center space-x-4">
                     <span className="text-xs text-gray-500 dark:text-gray-400">
                       {Math.round(item.duration / 1000)}s
                     </span>
-                    <button className="text-sm text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-200 font-medium">
-                      Ergebnisse anzeigen
+                    <button
+                      onClick={() => setExpandedResultId(expandedResultId === item.id ? null : item.id)}
+                      className="text-sm text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-200 font-medium"
+                    >
+                      {expandedResultId === item.id ? 'Verbergen' : 'Ergebnisse anzeigen'}
                     </button>
                   </div>
                 </div>
+
+                {expandedResultId === item.id && (
+                  <div className="mt-4 p-4 bg-gray-50 dark:bg-gray-900 rounded-lg border border-gray-200 dark:border-gray-700">
+                    {item.result ? (
+                      <div className="space-y-3">
+                        {item.result.summary && (
+                          <p className="text-sm text-gray-700 dark:text-gray-300">{item.result.summary}</p>
+                        )}
+                        {item.result.patterns && item.result.patterns.length > 0 ? (
+                          <div>
+                            <h5 className="text-xs font-semibold text-gray-600 dark:text-gray-400 uppercase tracking-wide mb-2">
+                              Gefundene Muster ({item.result.patterns.length})
+                            </h5>
+                            <ul className="space-y-1">
+                              {item.result.patterns.map((p: any, i: number) => (
+                                <li key={i} className="text-sm text-gray-700 dark:text-gray-300">
+                                  {typeof p === 'string' ? p : JSON.stringify(p)}
+                                </li>
+                              ))}
+                            </ul>
+                          </div>
+                        ) : item.result.patterns ? (
+                          <p className="text-sm text-gray-500 dark:text-gray-400 italic">Keine Muster gefunden.</p>
+                        ) : null}
+                        {/* Render any other top-level keys */}
+                        {Object.entries(item.result)
+                          .filter(([k]) => k !== 'summary' && k !== 'patterns')
+                          .map(([k, v]) => (
+                            <div key={k}>
+                              <h5 className="text-xs font-semibold text-gray-600 dark:text-gray-400 uppercase tracking-wide mb-1">{k}</h5>
+                              <pre className="text-xs text-gray-700 dark:text-gray-300 whitespace-pre-wrap break-all">
+                                {typeof v === 'string' ? v : JSON.stringify(v, null, 2)}
+                              </pre>
+                            </div>
+                          ))
+                        }
+                      </div>
+                    ) : (
+                      <p className="text-sm text-gray-500 dark:text-gray-400 italic">Keine Ergebnisdaten verfügbar.</p>
+                    )}
+                  </div>
+                )}
               </div>
             ))
           )}
