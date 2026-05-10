@@ -102,7 +102,6 @@ async function tryKeycloakRest(baseUrl: string, timeoutMs: number): Promise<Disc
     const data = (await res.json()) as { tools?: unknown };
     if (!Array.isArray(data.tools)) return null;
     const toolNames = data.tools.filter((t): t is string => typeof t === 'string');
-    if (toolNames.length === 0) return null;
     const tools: ToolDefinition[] = toolNames.map((name) => ({
       name,
       description: KEYCLOAK_TOOL_DESCRIPTIONS[name],
@@ -146,7 +145,8 @@ async function tryMcpJsonRpcAtPath(baseUrl: string, path: string, timeoutMs: num
         inputSchema: (t.inputSchema as Record<string, unknown>) ?? undefined,
         annotations: (t.annotations as Record<string, unknown>) ?? undefined,
       }));
-    if (tools.length === 0) return null;
+    // Note: servers with zero tools are still returned — let classifyShadowServers decide relevance.
+    // A shadow server in bootstrapping mode (empty tool list) must not escape detection.
     return {
       baseUrl: normalizeBaseUrl(baseUrl),
       transport: 'mcp-jsonrpc',
