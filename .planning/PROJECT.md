@@ -25,10 +25,10 @@ A security engineer runs `agentshield scan <target>` and receives a prioritized,
 - [x] INFRA-01: `agentshield/` directory with CLI entrypoint (`agentshield scan <target>`) — Validated in Phase 01
 - [x] INFRA-02: Configuration schema (target MCP URL, auth, output format) — Validated in Phase 01
 - [x] INFRA-03: Shared result types and severity model (critical/high/medium/low) — Validated in Phase 01
-- [ ] DISC-01: Enumerate all MCP servers connected to a target system
-- [ ] DISC-02: List all tool definitions, resource endpoints, and transport configs
-- [ ] DISC-03: Detect shadow MCP servers and over-permissioned integrations
-- [ ] DISC-04: Cross-reference against CVE-2025-6514, CVE-2025-49596, OWASP MCP Top 10
+- [x] DISC-01: Enumerate all MCP servers connected to a target system — Validated in Phase 02
+- [x] DISC-02: List all tool definitions, resource endpoints, and transport configs — Validated in Phase 02
+- [x] DISC-03: Detect shadow MCP servers and over-permissioned integrations — Validated in Phase 02
+- [x] DISC-04: Cross-reference against CVE-2025-6514, CVE-2025-49596, OWASP MCP Top 10 — Validated in Phase 02
 - [ ] STAT-01: Scan tool descriptions for hidden prompt injection payloads
 - [ ] STAT-02: Detect tool poisoning patterns (shadowing, name-squatting, rug-pull)
 - [ ] STAT-03: Audit configuration files for hardcoded credentials and excessive permissions
@@ -102,4 +102,4 @@ This document evolves at phase transitions and milestone boundaries.
 4. Update Context with current state
 
 ---
-*Last updated: 2026-04-29 after initialization*
+*Last updated: 2026-05-10 after Phase 02 completion*
