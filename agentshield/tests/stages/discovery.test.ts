@@ -21,7 +21,7 @@ beforeEach(() => {
 function makeKeycloakFetchResponse(toolNames: string[]) {
   return {
     ok: true,
-    headers: { get: (k: string) => (k.toLowerCase() === 'content-type' ? 'application/json' : null) },
+    headers: { get: (k: string): string | null => (k.toLowerCase() === 'content-type' ? 'application/json' : null) },
     json: async () => ({ tools: toolNames }),
     text: async () => JSON.stringify({ tools: toolNames }),
   };
@@ -37,7 +37,7 @@ function makeSseFetchResponse(tools: Array<{ name: string; description?: string 
   const sseBody = `event: message\ndata: ${payload}\n\n`;
   return {
     ok: true,
-    headers: { get: (k: string) => (k.toLowerCase() === 'content-type' ? 'text/event-stream' : null) },
+    headers: { get: (k: string): string | null => (k.toLowerCase() === 'content-type' ? 'text/event-stream' : null) },
     text: async () => sseBody,
     json: async () => {
       throw new Error('Should not call .json() on SSE response');
@@ -49,8 +49,8 @@ describe('probeMcpServer (Keycloak REST)', () => {
   it('returns DiscoveredServer with rest-keycloak transport from /tools endpoint', async () => {
     // probeMcpServer tries /mcp/ (MCP JSON-RPC) first — mock it as 404
     (global.fetch as jest.Mock)
-      .mockResolvedValueOnce({ ok: false, headers: { get: () => null }, status: 404 })  // POST /mcp/
-      .mockResolvedValueOnce({ ok: false, headers: { get: () => null }, status: 404 })  // POST /api/mcp/
+      .mockResolvedValueOnce({ ok: false, headers: { get: (_k: string): string | null => null }, status: 404 })  // POST /mcp/
+      .mockResolvedValueOnce({ ok: false, headers: { get: (_k: string): string | null => null }, status: 404 })  // POST /api/mcp/
       .mockResolvedValueOnce(makeKeycloakFetchResponse(['list-users', 'create-user']));  // GET /tools
 
     const result = await probeMcpServer('http://localhost:8001', 2000);
@@ -65,9 +65,9 @@ describe('probeMcpServer (Keycloak REST)', () => {
 
   it('returns null when /tools returns non-ok status', async () => {
     (global.fetch as jest.Mock)
-      .mockResolvedValueOnce({ ok: false, headers: { get: () => null }, status: 404 })  // POST /mcp/
-      .mockResolvedValueOnce({ ok: false, headers: { get: () => null }, status: 404 })  // POST /api/mcp/
-      .mockResolvedValueOnce({ ok: false, headers: { get: () => null }, status: 404 }); // GET /tools
+      .mockResolvedValueOnce({ ok: false, headers: { get: (_k: string): string | null => null }, status: 404 })  // POST /mcp/
+      .mockResolvedValueOnce({ ok: false, headers: { get: (_k: string): string | null => null }, status: 404 })  // POST /api/mcp/
+      .mockResolvedValueOnce({ ok: false, headers: { get: (_k: string): string | null => null }, status: 404 }); // GET /tools
 
     const result = await probeMcpServer('http://localhost:8001', 2000);
     expect(result).toBeNull();
@@ -93,7 +93,7 @@ describe('probeMcpServer (Neo4j JSON-RPC + SSE)', () => {
   it('falls back to /api/mcp/ when /mcp/ returns 404', async () => {
     const sseMock = makeSseFetchResponse([{ name: 'get_neo4j_schema', description: 'Schema' }]);
     (global.fetch as jest.Mock)
-      .mockResolvedValueOnce({ ok: false, headers: { get: () => null }, status: 404 })  // POST /mcp/ → 404
+      .mockResolvedValueOnce({ ok: false, headers: { get: (_k: string): string | null => null }, status: 404 })  // POST /mcp/ → 404
       .mockResolvedValueOnce(sseMock); // POST /api/mcp/ → success
 
     const result = await probeMcpServer('http://localhost:8002', 2000);
@@ -128,7 +128,7 @@ describe('parseJsonRpcResponse', () => {
   it('calls res.json() for non-SSE responses', async () => {
     const payload = { tools: ['list-users'] };
     const mockResponse = {
-      headers: { get: (k: string) => (k.toLowerCase() === 'content-type' ? 'application/json' : null) },
+      headers: { get: (k: string): string | null => (k.toLowerCase() === 'content-type' ? 'application/json' : null) },
       json: async () => payload,
     } as unknown as Response;
 
@@ -147,7 +147,7 @@ describe('enumerateServers (port sweep)', () => {
 
       if (urlStr.includes(':8001')) {
         if (urlStr.includes('/mcp/') || urlStr.includes('/api/mcp/')) {
-          return Promise.resolve({ ok: false, headers: { get: () => null }, status: 404 });
+          return Promise.resolve({ ok: false, headers: { get: (_k: string): string | null => null }, status: 404 });
         }
         if (urlStr.includes('/tools')) {
           return Promise.resolve(makeKeycloakFetchResponse(['list-users', 'create-user']));
@@ -168,8 +168,8 @@ describe('enumerateServers (port sweep)', () => {
     const results = await enumerateServers('http://localhost:8001');
 
     expect(results.length).toBeGreaterThanOrEqual(2);
-    const keycloak = results.find((s) => s.transport === 'rest-keycloak');
-    const neo4j = results.find((s) => s.transport === 'mcp-jsonrpc');
+    const keycloak = results.find((s: DiscoveredServer) => s.transport === 'rest-keycloak');
+    const neo4j = results.find((s: DiscoveredServer) => s.transport === 'mcp-jsonrpc');
     expect(keycloak).toBeDefined();
     expect(neo4j).toBeDefined();
   });

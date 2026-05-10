@@ -27,12 +27,16 @@ describe('Stage stubs', () => {
     expect(ids).toEqual([...STAGE_IDS].sort());
   });
 
-  it.each(allStages)('stage $name returns a valid empty StageReport', async (stage) => {
+  it.each(allStages)('stage $name returns a valid StageReport', async (stage) => {
     const report = await stage.run('http://localhost:8001', minimalConfig);
     expect(report.stageId).toBe(stage.id);
     expect(report.stageName).toBe(stage.name);
-    expect(report.findings).toEqual([]);
-    expect(report.error).toBeNull();
+    expect(Array.isArray(report.findings)).toBe(true);
+    // DiscoveryStage performs real network probes; other stubs return empty findings
+    if (stage.id !== 'discovery') {
+      expect(report.findings).toEqual([]);
+      expect(report.error).toBeNull();
+    }
     expect(typeof report.duration).toBe('number');
   });
 
