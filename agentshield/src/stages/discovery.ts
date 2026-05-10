@@ -21,6 +21,12 @@ const KEYCLOAK_TOOL_DESCRIPTIONS: Record<string, string> = {
   'get-metrics': 'Fetch Keycloak runtime metrics',
 };
 
+/**
+ * Normalise a raw URL string into `protocol//host:port` canonical form.
+ * IPv4 loopback (127.0.0.1) is rewritten to `localhost` for consistent key usage.
+ *
+ * @throws {TypeError} if `rawUrl` is not a parseable URL — callers must handle.
+ */
 export function normalizeBaseUrl(rawUrl: string): string {
   const u = new URL(rawUrl);
   const host = u.hostname === '127.0.0.1' ? 'localhost' : u.hostname;
