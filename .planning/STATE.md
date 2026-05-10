@@ -5,12 +5,12 @@ milestone_name: milestone
 status: executing
 stopped_at: Phase 1 context gathered
 last_updated: "2026-05-04T09:12:54.560Z"
-last_activity: 2026-05-10 -- Phase 02 Plan 01 completed (DiscoveryStage real probe logic)
+last_activity: 2026-05-10 -- Phase 02 Plan 02 completed (shadow server detection, classifyShadowServers)
 progress:
   total_phases: 7
   completed_phases: 1
   total_plans: 7
-  completed_plans: 5
+  completed_plans: 6
   percent: 57
 ---
 
@@ -26,9 +26,9 @@ See: .planning/PROJECT.md (updated 2026-04-29)
 ## Current Position
 
 Phase: 02 (discovery-inventory) — EXECUTING
-Plan: 2 of 3
+Plan: 3 of 3
 Status: Executing Phase 02
-Last activity: 2026-05-10 -- Phase 02 Plan 01 completed (DiscoveryStage real probe logic)
+Last activity: 2026-05-10 -- Phase 02 Plan 02 completed (shadow server detection, classifyShadowServers)
 
 Progress: [░░░░░░░░░░] 0%
 
@@ -67,6 +67,9 @@ Recent decisions affecting current work:
 - 02-01: probeMcpServer probes /mcp/ (JSON-RPC) before /tools (REST) — Neo4j is the primary target for SSE parsing
 - 02-01: normalizeBaseUrl converts 127.0.0.1 → localhost for canonical deduplication
 - 02-01: inventoryServer is identity function for Phase 2 — enrichment deferred to later phases
+- 02-02: canonicalizeForAllowList wraps normalizeBaseUrl with lowercase + fallback for malformed URLs
+- 02-02: Set-based allow-list lookup (O(1) per server, O(m) setup) in classifyShadowServers
+- 02-02: Integration tests use URL-based mockImplementation to survive parallel port sweep
 
 ### Pending Todos
 
@@ -79,6 +82,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-05-10T19:04:53Z
-Stopped at: Completed 02-01-PLAN.md (DiscoveryStage real probe logic)
+Last session: 2026-05-10T19:11:50Z
+Stopped at: Completed 02-02-PLAN.md (shadow server detection)
 Resume file: None

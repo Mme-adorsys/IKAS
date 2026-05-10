@@ -15,7 +15,7 @@
 
 - [x] **DISC-01**: System enumerates all MCP servers connected to a target agentic system
 - [x] **DISC-02**: System lists all tool definitions, resource endpoints, and transport configurations for each discovered MCP server
-- [ ] **DISC-03**: System detects shadow MCP servers (unregistered servers) and over-permissioned tool integrations
+- [x] **DISC-03**: System detects shadow MCP servers (unregistered servers) and over-permissioned tool integrations
 - [ ] **DISC-04**: System cross-references discovered tools and endpoints against known vulnerabilities (CVE-2025-6514, CVE-2025-49596) and OWASP MCP Top 10
 
 ### Static Analysis (Stage 2)
@@ -90,7 +90,7 @@
 | INFRA-03 | Phase 1 | Foundation & CLI | Pending |
 | DISC-01 | Phase 2 | Discovery & Inventory | Pending |
 | DISC-02 | Phase 2 | Discovery & Inventory | Pending |
-| DISC-03 | Phase 2 | Discovery & Inventory | Pending |
+| DISC-03 | Phase 2 | Discovery & Inventory | Complete |
 | DISC-04 | Phase 2 | Discovery & Inventory | Pending |
 | STAT-01 | Phase 3 | Static Analysis | Pending |
 | STAT-02 | Phase 3 | Static Analysis | Pending |

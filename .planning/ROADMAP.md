@@ -143,7 +143,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6 → 7
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 1. Foundation & CLI | 4/4 | Complete | 2026-04-29 |
-| 2. Discovery & Inventory | 1/3 | In Progress | - |
+| 2. Discovery & Inventory | 2/3 | In Progress | - |
 | 3. Static Analysis | 0/4 | Not started | - |
 | 4. Dynamic Adversarial Testing | 0/4 | Not started | - |
 | 5. Runtime Behavioral Monitoring | 0/3 | Not started | - |
