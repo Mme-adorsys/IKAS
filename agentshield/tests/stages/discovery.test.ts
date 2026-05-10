@@ -307,3 +307,102 @@ describe('DiscoveryStage.run (shadow integration)', () => {
     expect(shadowFindings).toHaveLength(0);
   });
 });
+
+describe('DiscoveryStage.run with CVE lookup', () => {
+  it('Keycloak server in allowedServers still produces CVE-2025-49596 and KEYCLOAK-REST-NOAUTH CVE findings', async () => {
+    // Mock: 8001 responds as rest-keycloak with list-users
+    (global.fetch as jest.Mock).mockImplementation((url: string) => {
+      const urlStr = url.toString();
+      if (urlStr.includes(':8001')) {
+        if (urlStr.includes('/mcp/') || urlStr.includes('/api/mcp/')) {
+          return Promise.resolve({ ok: false, headers: { get: (_k: string): string | null => null }, status: 404 });
+        }
+        if (urlStr.includes('/tools')) {
+          return Promise.resolve(makeKeycloakFetchResponse(['list-users', 'create-user']));
+        }
+      }
+      return Promise.reject(new DOMException('Aborted', 'AbortError'));
+    });
+
+    // allowedServers includes 8001 — no shadow finding, but CVE findings still apply
+    const config: AgentShieldConfig = { ...baseConfig, allowedServers: ['http://localhost:8001'] };
+    const stage = new DiscoveryStage();
+    const report = await stage.run('http://localhost:8001', config);
+
+    // No shadow finding (server is in allow-list)
+    const shadowFindings = report.findings.filter((f) => f.owaspCategory === 'MCP09:2025');
+    expect(shadowFindings).toHaveLength(0);
+
+    // CVE-2025-49596 must be present (localhost server)
+    expect(report.findings.some((f) => f.cveId === 'CVE-2025-49596')).toBe(true);
+
+    // KEYCLOAK-REST-NOAUTH must be present (rest-keycloak transport, no auth)
+    const keycloakRow = report.findings.find((f) => !f.cveId && f.owaspCategory === 'MCP07:2025');
+    expect(keycloakRow).toBeDefined();
+
+    // At least 2 CVE-related findings
+    expect(report.findings.length).toBeGreaterThanOrEqual(2);
+  });
+
+  it('Neo4j mcp-jsonrpc with write_neo4j_cypher produces CVE-2025-6514 and MCP05:2025 findings', async () => {
+    // Mock: 8002 responds as mcp-jsonrpc with write_neo4j_cypher tool
+    (global.fetch as jest.Mock).mockImplementation((url: string) => {
+      const urlStr = url.toString();
+      if (urlStr.includes(':8002') && urlStr.includes('/mcp/')) {
+        return Promise.resolve(makeSseFetchResponse([
+          { name: 'write_neo4j_cypher', description: 'Execute a Cypher write query' },
+          { name: 'read_neo4j_cypher', description: 'Execute a Cypher read query' },
+        ]));
+      }
+      return Promise.reject(new DOMException('Aborted', 'AbortError'));
+    });
+
+    const config: AgentShieldConfig = { ...baseConfig, allowedServers: [], target: 'http://localhost:8002' };
+    const stage = new DiscoveryStage();
+    const report = await stage.run('http://localhost:8002', config);
+
+    // CVE-2025-6514: mcp-jsonrpc + unauthenticated
+    expect(report.findings.some((f) => f.cveId === 'CVE-2025-6514')).toBe(true);
+
+    // MCP05:2025: write_neo4j_cypher tool
+    expect(report.findings.some((f) => f.owaspCategory === 'MCP05:2025')).toBe(true);
+  });
+
+  it('all CVE findings have required Finding fields, at least one has cveId matching CVE pattern', async () => {
+    (global.fetch as jest.Mock).mockImplementation((url: string) => {
+      const urlStr = url.toString();
+      if (urlStr.includes(':8001')) {
+        if (urlStr.includes('/mcp/') || urlStr.includes('/api/mcp/')) {
+          return Promise.resolve({ ok: false, headers: { get: (_k: string): string | null => null }, status: 404 });
+        }
+        if (urlStr.includes('/tools')) {
+          return Promise.resolve(makeKeycloakFetchResponse(['list-users']));
+        }
+      }
+      return Promise.reject(new DOMException('Aborted', 'AbortError'));
+    });
+
+    const stage = new DiscoveryStage();
+    const report = await stage.run('http://localhost:8001', { ...baseConfig, allowedServers: [] });
+
+    expect(report.findings.length).toBeGreaterThan(0);
+
+    // All findings must have required fields
+    for (const f of report.findings) {
+      expect(typeof f.id).toBe('string');
+      expect(f.id.length).toBeGreaterThan(0);
+      expect(typeof f.title).toBe('string');
+      expect(typeof f.description).toBe('string');
+      expect(['critical', 'high', 'medium', 'low', 'info']).toContain(f.severity);
+      expect(typeof f.component).toBe('string');
+      expect(typeof f.score).toBe('number');
+    }
+
+    // At least one finding with a valid CVE id
+    const cveFindings = report.findings.filter((f) => f.cveId !== undefined);
+    expect(cveFindings.length).toBeGreaterThan(0);
+    for (const f of cveFindings) {
+      expect(f.cveId).toMatch(/^CVE-\d{4}-\d+$/);
+    }
+  });
+});

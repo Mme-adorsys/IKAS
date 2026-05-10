@@ -4,6 +4,7 @@ import { StageReport } from '../types/report';
 import { StageRunner } from './stage.interface';
 import { DiscoveredServer, ToolDefinition } from '../types/discovery';
 import { Finding, SeverityLevel } from '../types/findings';
+import { applyCveLookup } from '../data/cve-lookup';
 
 const DEFAULT_PROBE_TIMEOUT_MS = 2000;
 const DEFAULT_SWEEP_PORTS = [8000, 8001, 8002, 8003, 8004, 8005, 8006, 8007, 8008, 8009, 8010];
@@ -209,10 +210,11 @@ export class DiscoveryStage implements StageRunner {
       const discovered = await enumerateServers(target);
       const inventoried = await Promise.all(discovered.map(inventoryServer));
       const shadowFindings = classifyShadowServers(inventoried, config.allowedServers);
+      const cveFindings = applyCveLookup(inventoried);
       return {
         stageId: this.id,
         stageName: this.name,
-        findings: shadowFindings,
+        findings: [...shadowFindings, ...cveFindings],
         duration: Date.now() - start,
         error: null,
         metadata: { discoveredServers: inventoried },
