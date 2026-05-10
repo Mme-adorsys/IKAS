@@ -64,13 +64,15 @@ Plans:
   2. A tool whose name or description shadows another tool is flagged as a tool-poisoning finding with evidence
   3. A configuration file containing a hardcoded credential or insecure transport setting generates a HIGH or CRITICAL finding
   4. Tool definition hashes are written to a scan artifact file; re-running a scan against a modified tool description produces a rug-pull change-detection finding
-**Plans**: 4 plans
+**Plans**: 6 plans
 
 Plans:
-- [ ] 03-01: Implement prompt injection scanner: regex + keyword pattern library against tool names and descriptions; flag matches with evidence snippet
-- [ ] 03-02: Implement tool poisoning detector: name-squatting similarity check (Levenshtein distance), shadowing detection (duplicate tool names across servers), cross-server hijacking patterns
-- [ ] 03-03: Implement config auditor: parse IKAS `.env` and Docker Compose files for hardcoded credentials, missing auth, insecure transport (HTTP vs HTTPS), excessive permission scopes
-- [ ] 03-04: Implement tool hash recorder: SHA-256 hash of each tool definition at scan time; compare against previous scan artifact; emit rug-pull findings on mismatch
+- [ ] 03-01-PLAN.md — Phase 3 foundations: extend StageRunner.run with previousReports, promote `leven` to direct dep, add `configPaths` to AgentShieldConfig, create PROMPT_INJECTION_PATTERNS data file (Wave 1, unblocks all sub-scanners)
+- [ ] 03-02-PLAN.md — STAT-01 scanPromptInjection: regex-and-keyword pattern library scanner over tool name+description with full-description evidence (Wave 2)
+- [ ] 03-03-PLAN.md — STAT-02 detectToolPoisoning: cross-server shadow detection (D-07) and Levenshtein name-squatting (D-06/D-08, threshold ≤ 2, names ≥ 4 chars) (Wave 2)
+- [ ] 03-04-PLAN.md — STAT-03 auditConfigFiles: two-factor credential scan (key-name keyword + Shannon entropy > 3.5) and http:// insecure-transport detection across env/yaml/json files (Wave 2)
+- [ ] 03-05-PLAN.md — STAT-04 recordToolHashes: SHA-256 baseline at `{outputDir}/tool-hashes.json`, first-scan INFO + rug-pull HIGH findings on re-scan (Wave 2)
+- [ ] 03-06-PLAN.md — StaticAnalysisStage orchestrator: merge all four sub-scanners, extract DiscoveredServer[] from previousReports, expose toolsScanned + hashBaselineWritten metadata (Wave 3)
 
 ### Phase 4: Dynamic Adversarial Testing
 **Goal**: AgentShield executes controlled attacks in a sandboxed context and produces an Attack Success Rate per attack type mapped to MCPSecBench taxonomy
@@ -144,7 +146,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6 → 7
 |-------|----------------|--------|-----------|
 | 1. Foundation & CLI | 4/4 | Complete | 2026-04-29 |
 | 2. Discovery & Inventory | 3/3 | Complete | 2026-05-10 |
-| 3. Static Analysis | 0/4 | Not started | - |
+| 3. Static Analysis | 0/6 | Not started | - |
 | 4. Dynamic Adversarial Testing | 0/4 | Not started | - |
 | 5. Runtime Behavioral Monitoring | 0/3 | Not started | - |
 | 6. Remediation Report | 0/3 | Not started | - |

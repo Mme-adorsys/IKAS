@@ -573,21 +573,24 @@ const distance = leven('create-user', 'createuser');  // returns 1
 
 ---
 
-## Open Questions
+## Open Questions (RESOLVED)
 
 1. **How does `StaticAnalysisStage` receive `DiscoveredServer[]` from Phase 2?**
    - What we know: `StageRunner.run(target, config)` has no `previousReports` parameter. `ScanRunner` sequences stages.
    - What's unclear: Does the runner pass metadata between stages? Does Phase 3 re-run discovery internally?
    - Recommendation: Inspect `agentshield/src/runner/runner.ts` before creating the plan. The cleanest solution is to have the runner call stages with `previousReports?: StageReport[]` and let Phase 3 extract `metadata.discoveredServers`.
+   - **RESOLVED: Plan 03-01 Task 2 extends `StageRunner.run()` to accept `previousReports?: StageReport[]`. Plan 03-06 extracts `DiscoveredServer[]` via `extractDiscoveredServers(previousReports)` helper.**
 
 2. **Should name-squatting check compare tools within the same server?**
    - What we know: D-08 says name-squatting is cross-server (suspicious tool resembles legitimate tool on another server). D-07 shadow detection covers same-server duplicates.
    - What's unclear: Are within-server similar names meaningful in a single-server scan scenario (no cross-server comparison possible)?
    - Recommendation: For single-server scans, still run name-squatting but compare against a built-in "known-safe MCP tool name" list. Defer to planner.
+   - **RESOLVED: Plan 03-03 skips same-server pairs in name-squatting — D-08 cross-server only. For single-server scans with no other servers, name-squatting produces no findings by design.**
 
 3. **Deduplication of findings across sub-scanners**
    - What we know: CONTEXT.md leaves this to Claude's discretion.
    - Recommendation: If a tool triggers both PI-ROLE-TAKEOVER-01 (STAT-01) AND has a changed hash (STAT-04), emit both — they are different finding types. Only deduplicate within the same scanner when a single tool matches multiple patterns at the same severity tier (emit highest only).
+   - **RESOLVED: Plan 03-06 emits all findings from all sub-scanners without cross-scanner deduplication. Within-scanner deduplication (highest severity for same tool+pattern) is handled inside each sub-scanner.**
 
 ---
 
