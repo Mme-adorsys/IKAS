@@ -118,7 +118,7 @@ async function tryKeycloakRest(baseUrl: string, timeoutMs: number): Promise<Disc
       endpoint: '/tools',
       tools,
       healthEndpoint: '/health',
-      hasAuth: false,
+      hasAuth: res.headers.get('www-authenticate') !== null,
       responseTimeMs: Date.now() - start,
     };
   } catch {
@@ -158,7 +158,7 @@ async function tryMcpJsonRpcAtPath(baseUrl: string, path: string, timeoutMs: num
       transport: 'mcp-jsonrpc',
       endpoint: path,
       tools,
-      hasAuth: false,
+      hasAuth: res.headers.get('www-authenticate') !== null,
       responseTimeMs: Date.now() - start,
     };
   } catch {
