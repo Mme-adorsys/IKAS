@@ -11,6 +11,7 @@ export interface StageReport {
   findings: Finding[];
   duration: number;
   error: string | null;
+  metadata?: Record<string, unknown>;
 }
 
 export interface ScanResult {
