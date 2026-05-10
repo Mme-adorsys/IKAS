@@ -195,7 +195,7 @@ class IKASWebSocketServer {
     try {
       const session = await this.sessionManager.getSessionBySocket(socket.id);
       if (!session) {
-        socket.emit('error', { message: 'Session not found' });
+        socket.emit('serverError', { message: 'Session not found' });
         return;
       }
 
@@ -227,7 +227,7 @@ class IKASWebSocketServer {
         socketId: socket.id,
         data
       });
-      socket.emit('error', { 
+      socket.emit('serverError', { 
         message: 'Error processing voice command' 
       });
     }
@@ -237,7 +237,7 @@ class IKASWebSocketServer {
     try {
       const session = await this.sessionManager.getSessionBySocket(socket.id);
       if (!session) {
-        socket.emit('error', { message: 'Session not found' });
+        socket.emit('serverError', { message: 'Session not found' });
         return;
       }
 
@@ -269,7 +269,7 @@ class IKASWebSocketServer {
         socketId: socket.id,
         data
       });
-      socket.emit('error', { 
+      socket.emit('serverError', { 
         message: 'Error processing text command' 
       });
     }
@@ -279,7 +279,7 @@ class IKASWebSocketServer {
     try {
       const session = await this.sessionManager.getSessionBySocket(socket.id);
       if (!session) {
-        socket.emit('error', { message: 'Session not found' });
+        socket.emit('serverError', { message: 'Session not found' });
         return;
       }
 
@@ -311,7 +311,7 @@ class IKASWebSocketServer {
         socketId: socket.id,
         data
       });
-      socket.emit('error', { 
+      socket.emit('serverError', { 
         message: 'Error creating subscription' 
       });
     }
@@ -353,7 +353,7 @@ class IKASWebSocketServer {
     try {
       const session = await this.sessionManager.getSessionBySocket(socket.id);
       if (!session) {
-        socket.emit('error', { message: 'Session not found' });
+        socket.emit('serverError', { message: 'Session not found' });
         return;
       }
 
@@ -367,7 +367,7 @@ class IKASWebSocketServer {
           timestamp: new Date().toISOString()
         });
       } else {
-        socket.emit('error', { 
+        socket.emit('serverError', { 
           message: `Unable to join room '${room}'` 
         });
       }
@@ -410,7 +410,7 @@ class IKASWebSocketServer {
     try {
       const session = await this.sessionManager.getSessionBySocket(socket.id);
       if (!session) {
-        socket.emit('error', { message: 'Session not found' });
+        socket.emit('serverError', { message: 'Session not found' });
         return;
       }
 
@@ -458,7 +458,7 @@ class IKASWebSocketServer {
         socketId: socket.id,
         data
       });
-      socket.emit('error', { 
+      socket.emit('serverError', { 
         message: 'Error starting analysis' 
       });
     }

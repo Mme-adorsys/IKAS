@@ -179,13 +179,18 @@ services:
     ports:
       - "8005:8005"
     environment:
-      GEMINI_API_KEY: AIzaSyDa1fNkc-LVV7EKhEBHm8VA7yyrpEitje4
+      GEMINI_API_KEY: ${GEMINI_API_KEY:-AIzaSyDa1fNkc-LVV7EKhEBHm8VA7yyrpEitje4}
+      ANTHROPIC_API_KEY: ${ANTHROPIC_API_KEY}
       REDIS_URL: redis://redis:6379
       KEYCLOAK_MCP_URL: http://keycloak-mcp:8001
       NEO4J_MCP_URL: http://neo4j-mcp:8002
       WEBSOCKET_SERVER_URL: http://websocket-server:3001
       NODE_ENV: development
       PORT: 8005
+      LLM_PROVIDER: ${LLM_PROVIDER:-anthropic}
+      LLM_MODEL: ${LLM_MODEL:-claude-sonnet-4-20250514}
+      LLM_TEMPERATURE: ${LLM_TEMPERATURE:-0.1}
+      LLM_MAX_TOKENS: ${LLM_MAX_TOKENS:-8192}
     depends_on:
       keycloak-mcp:
         condition: service_started

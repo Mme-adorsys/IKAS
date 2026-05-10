@@ -417,6 +417,20 @@ export const useIKASStore = create<IKASStore>()(
             });
           });
 
+          // Handle application-level errors sent by the server (session not found,
+          // analysis failures, etc.). Payload is { message: string }.
+          websocketService.on('serverError', (payload: { message?: string } | unknown) => {
+            const msg =
+              payload && typeof payload === 'object' && 'message' in payload
+                ? String((payload as { message: unknown }).message)
+                : 'An error occurred on the server';
+            get().addNotification({
+              type: 'error',
+              title: 'Server Error',
+              message: msg
+            });
+          });
+
           // Subscribe to all event types
           await websocketService.subscribe({
             eventTypes: Object.values(EventType),
