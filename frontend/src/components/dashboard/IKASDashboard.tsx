@@ -28,23 +28,21 @@ export function IKASDashboard() {
   } = useIKASStore();
 
   const [isInitialized, setIsInitialized] = useState(false);
+  const [initError, setInitError] = useState<string | null>(null);
 
   useEffect(() => {
     const initializeApp = async () => {
       try {
         console.log('🚀 Initializing IKAS Dashboard...');
-        
-        // Initialize services
         await initializeServices();
-        
-        // Connect to WebSocket
         await connectWebSocket('dashboard-user', 'master');
-        
         setIsInitialized(true);
         console.log('✅ IKAS Dashboard initialized successfully');
       } catch (error) {
-        console.error('❌ Failed to initialize IKAS Dashboard:', error);
-        setIsInitialized(false);
+        const msg = error instanceof Error ? error.message : String(error);
+        console.error('❌ Failed to initialize IKAS Dashboard:', msg);
+        setInitError(msg);
+        setIsInitialized(true); // show dashboard anyway so user isn't stuck
       }
     };
 
@@ -69,6 +67,11 @@ export function IKASDashboard() {
 
   return (
     <div className={`min-h-screen ${ui.darkMode ? 'dark' : ''}`}>
+      {initError && (
+        <div className="bg-yellow-50 dark:bg-yellow-900/30 border-b border-yellow-200 dark:border-yellow-700 px-6 py-2 text-sm text-yellow-800 dark:text-yellow-200">
+          WebSocket connection failed: {initError} — some real-time features may be unavailable.
+        </div>
+      )}
       <div className="bg-gray-50 dark:bg-gray-900 transition-colors duration-200">
         {/* Header */}
         <header className="bg-white dark:bg-gray-800 shadow-sm border-b border-gray-200 dark:border-gray-700">

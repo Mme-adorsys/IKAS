@@ -15,10 +15,10 @@ export class WebSocketService {
 
   constructor(url?: string) {
     // Use environment variables with fallbacks
-    this.url = url || 
-               process.env.NEXT_PUBLIC_WS_URL || 
+    this.url = url ||
+               process.env.NEXT_PUBLIC_WS_URL ||
                'ws://localhost:3001';
-    
+
     this.maxReconnectAttempts = parseInt(process.env.NEXT_PUBLIC_WS_RECONNECT_ATTEMPTS || '5');
     this.reconnectDelay = parseInt(process.env.NEXT_PUBLIC_WS_RECONNECT_DELAY || '1000');
     this.connectionTimeout = parseInt(process.env.NEXT_PUBLIC_WS_TIMEOUT || '10000');
@@ -76,7 +76,7 @@ export class WebSocketService {
         this.socket.on('connect', () => {
           this.isConnected = true;
           this.reconnectAttempts = 0;
-          
+
           console.log('✅ Connected to IKAS WebSocket server', {
             socketId: this.socket?.id
           });
@@ -99,7 +99,7 @@ export class WebSocketService {
 
         this.socket.on('connect_error', (error) => {
           this.reconnectAttempts++;
-          
+
           const errorDetails = {
             error: error.message,
             attempts: this.reconnectAttempts,
@@ -116,7 +116,7 @@ export class WebSocketService {
               `Check if WebSocket server is running at ${this.url}. ` +
               `Original error: ${error.message}`
             );
-            
+
             this.callHandler('connectionFailed', errorDetails);
             reject(finalError);
           } else {
@@ -143,8 +143,24 @@ export class WebSocketService {
           this.callHandler('subscriptionConfirmed', data);
         });
 
-        this.socket.on('error', (error) => {
-          console.error('⚠️ WebSocket error', error);
+        // serverError: application-level errors sent deliberately by the server
+        // (e.g. session not found, analysis failed). The server sends a plain
+        // object { message: string } so we extract message directly.
+        this.socket.on('serverError', (payload: { message?: string } | unknown) => {
+          const msg =
+            payload && typeof payload === 'object' && 'message' in payload
+              ? String((payload as { message: unknown }).message)
+              : String(payload);
+          console.error('⚠️ WebSocket server error', msg, payload);
+          this.callHandler('serverError', payload);
+        });
+
+        // error: reserved socket.io event for transport-level errors.
+        // The argument here is always an Error instance from the socket.io
+        // client internals, so we can safely access .message.
+        this.socket.on('error', (error: Error) => {
+          const msg = error instanceof Error ? error.message : String(error);
+          console.error('⚠️ WebSocket transport error', msg, error);
           this.callHandler('error', error);
         });
 
@@ -282,7 +298,7 @@ export class WebSocketService {
       this.isConnected = false;
       this.sessionId = null;
       this.eventHandlers.clear();
-      
+
       console.log('🔌 Disconnected from IKAS WebSocket server');
     }
   }
@@ -337,7 +353,7 @@ export class WebSocketService {
     lastPingTime?: number;
   }> {
     const healthy = await this.testConnection();
-    
+
     return {
       connected: this.isConnected,
       socketId: this.socket?.id,
@@ -352,17 +368,17 @@ export class WebSocketService {
   // Force reconnection
   async forceReconnect(userId?: string, realm?: string): Promise<void> {
     console.log('🔄 Forcing WebSocket reconnection...');
-    
+
     if (this.socket) {
       await this.disconnect();
     }
-    
+
     // Reset reconnection attempts
     this.reconnectAttempts = 0;
-    
+
     // Wait a moment before reconnecting
     await new Promise(resolve => setTimeout(resolve, 1000));
-    
+
     return this.connect(userId, realm);
   }
 }
