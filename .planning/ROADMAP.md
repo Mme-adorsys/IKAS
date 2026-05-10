@@ -13,7 +13,7 @@ AgentShield is built in 7 phases that map directly to the conference PoC structu
 Decimal phases appear between their surrounding integers in numeric order.
 
 - [ ] **Phase 1: Foundation & CLI** - Scaffold the `agentshield/` module, CLI entrypoint, config schema, and shared result types
-- [ ] **Phase 2: Discovery & Inventory** - Enumerate MCP servers, tool definitions, shadow servers, and CVE cross-reference
+- [x] **Phase 2: Discovery & Inventory** - Enumerate MCP servers, tool definitions, shadow servers, and CVE cross-reference
 - [ ] **Phase 3: Static Analysis** - Scan tool descriptions for prompt injection, detect poisoning patterns, audit configs, record hashes
 - [ ] **Phase 4: Dynamic Adversarial Testing** - Execute sandboxed attack simulations, inject RADE payloads, test privilege escalation, report ASR
 - [ ] **Phase 5: Runtime Behavioral Monitoring** - Intercept live MCP traffic via proxy, detect anomalous chains and PII exfiltration
@@ -143,7 +143,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6 → 7
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 1. Foundation & CLI | 4/4 | Complete | 2026-04-29 |
-| 2. Discovery & Inventory | 2/3 | In Progress | - |
+| 2. Discovery & Inventory | 3/3 | Complete | 2026-05-10 |
 | 3. Static Analysis | 0/4 | Not started | - |
 | 4. Dynamic Adversarial Testing | 0/4 | Not started | - |
 | 5. Runtime Behavioral Monitoring | 0/3 | Not started | - |
