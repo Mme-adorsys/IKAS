@@ -17,4 +17,5 @@ export interface Finding {
   score: number;
   remediation?: string;
   owaspCategory?: string;
+  cveId?: string;
 }
