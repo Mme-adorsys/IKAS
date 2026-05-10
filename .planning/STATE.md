@@ -5,7 +5,7 @@ milestone_name: milestone
 status: executing
 stopped_at: Phase 1 context gathered
 last_updated: "2026-05-04T09:12:54.560Z"
-last_activity: 2026-05-10 -- Phase 02 Plan 02 completed (shadow server detection, classifyShadowServers)
+last_activity: 2026-05-10 -- Phase 02 Plan 03 completed (CVE/OWASP lookup table, applyCveLookup)
 progress:
   total_phases: 7
   completed_phases: 1
@@ -25,10 +25,10 @@ See: .planning/PROJECT.md (updated 2026-04-29)
 
 ## Current Position
 
-Phase: 02 (discovery-inventory) — EXECUTING
-Plan: 3 of 3
-Status: Executing Phase 02
-Last activity: 2026-05-10 -- Phase 02 Plan 02 completed (shadow server detection, classifyShadowServers)
+Phase: 02 (discovery-inventory) — COMPLETE
+Plan: 3 of 3 (all plans complete)
+Status: Phase 02 complete — ready for Phase 03
+Last activity: 2026-05-10 -- Phase 02 Plan 03 completed (CVE/OWASP lookup table, applyCveLookup)
 
 Progress: [░░░░░░░░░░] 0%
 
@@ -70,6 +70,9 @@ Recent decisions affecting current work:
 - 02-02: canonicalizeForAllowList wraps normalizeBaseUrl with lowercase + fallback for malformed URLs
 - 02-02: Set-based allow-list lookup (O(1) per server, O(m) setup) in classifyShadowServers
 - 02-02: Integration tests use URL-based mockImplementation to survive parallel port sweep
+- 02-03: CVE_LOOKUP_TABLE uses separate match() and build() per row for easy extension
+- 02-03: ROW 4 build(server) interpolates actual matched tool names into description at runtime
+- 02-03: cveId is optional on Finding — not all rows have CVE IDs (KEYCLOAK-REST-NOAUTH, TOOL-COMMAND-INJECTION are IKAS-specific)
 
 ### Pending Todos
 
@@ -82,6 +85,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-05-10T19:11:50Z
-Stopped at: Completed 02-02-PLAN.md (shadow server detection)
+Last session: 2026-05-10T19:17:43Z
+Stopped at: Completed 02-03-PLAN.md (CVE/OWASP lookup table — Phase 02 fully complete)
 Resume file: None
