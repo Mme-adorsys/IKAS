@@ -70,11 +70,13 @@ export async function parseJsonRpcResponse(res: Response): Promise<Record<string
   if (contentType.includes('text/event-stream')) {
     const text = await res.text();
     for (const line of text.split('\n')) {
-      if (line.startsWith('data: ')) {
-        return JSON.parse(line.slice(6)) as Record<string, unknown>;
-      }
       if (line.startsWith('data:')) {
-        return JSON.parse(line.slice(5)) as Record<string, unknown>;
+        const raw = line.startsWith('data: ') ? line.slice(6) : line.slice(5);
+        try {
+          return JSON.parse(raw) as Record<string, unknown>;
+        } catch {
+          throw new Error(`Invalid JSON in SSE data line: ${raw.slice(0, 80)}`);
+        }
       }
     }
     throw new Error('No data line in SSE response');
