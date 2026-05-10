@@ -5,12 +5,12 @@ milestone_name: milestone
 status: executing
 stopped_at: Phase 1 context gathered
 last_updated: "2026-05-04T09:12:54.560Z"
-last_activity: 2026-05-04 -- Phase 02 execution started
+last_activity: 2026-05-10 -- Phase 02 Plan 01 completed (DiscoveryStage real probe logic)
 progress:
   total_phases: 7
   completed_phases: 1
   total_plans: 7
-  completed_plans: 4
+  completed_plans: 5
   percent: 57
 ---
 
@@ -26,9 +26,9 @@ See: .planning/PROJECT.md (updated 2026-04-29)
 ## Current Position
 
 Phase: 02 (discovery-inventory) — EXECUTING
-Plan: 1 of 3
+Plan: 2 of 3
 Status: Executing Phase 02
-Last activity: 2026-05-04 -- Phase 02 execution started
+Last activity: 2026-05-10 -- Phase 02 Plan 01 completed (DiscoveryStage real probe logic)
 
 Progress: [░░░░░░░░░░] 0%
 
@@ -64,6 +64,9 @@ Recent decisions affecting current work:
 - Init: CLI-first with `tsx` runner — consistent with IKAS stack, no new languages
 - Init: IKAS as primary scan target — CONCERNS.md documents 5+ real vulnerabilities for guaranteed demo findings
 - Init: Static CVE list for v1 — avoids live DB sync complexity for conference timeline
+- 02-01: probeMcpServer probes /mcp/ (JSON-RPC) before /tools (REST) — Neo4j is the primary target for SSE parsing
+- 02-01: normalizeBaseUrl converts 127.0.0.1 → localhost for canonical deduplication
+- 02-01: inventoryServer is identity function for Phase 2 — enrichment deferred to later phases
 
 ### Pending Todos
 
@@ -76,6 +79,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-04-29T22:21:45.780Z
-Stopped at: Phase 1 context gathered
-Resume file: .planning/phases/01-foundation-cli/01-CONTEXT.md
+Last session: 2026-05-10T19:04:53Z
+Stopped at: Completed 02-01-PLAN.md (DiscoveryStage real probe logic)
+Resume file: None
