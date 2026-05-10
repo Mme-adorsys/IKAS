@@ -265,12 +265,24 @@ describe('classifyShadowServers', () => {
 });
 
 describe('DiscoveryStage.run (shadow integration)', () => {
+  // URL-based mock: 8001 → Keycloak REST, all other ports → abort
+  function setupSingleServerMock() {
+    (global.fetch as jest.Mock).mockImplementation((url: string) => {
+      const urlStr = url.toString();
+      if (urlStr.includes(':8001')) {
+        if (urlStr.includes('/mcp/') || urlStr.includes('/api/mcp/')) {
+          return Promise.resolve({ ok: false, headers: { get: (_k: string): string | null => null }, status: 404 });
+        }
+        if (urlStr.includes('/tools')) {
+          return Promise.resolve(makeKeycloakFetchResponse(['list-users']));
+        }
+      }
+      return Promise.reject(new DOMException('Aborted', 'AbortError'));
+    });
+  }
+
   it('returns StageReport with findings.length===1 when allowedServers=[] and one server is discovered', async () => {
-    (global.fetch as jest.Mock)
-      .mockResolvedValueOnce({ ok: false, headers: { get: (_k: string): string | null => null }, status: 404 })  // POST /mcp/
-      .mockResolvedValueOnce({ ok: false, headers: { get: (_k: string): string | null => null }, status: 404 })  // POST /api/mcp/
-      .mockResolvedValueOnce(makeKeycloakFetchResponse(['list-users']))  // GET /tools → success
-      .mockRejectedValue(new DOMException('Aborted', 'AbortError'));  // all other ports fail
+    setupSingleServerMock();
 
     const config: AgentShieldConfig = { ...baseConfig, allowedServers: [] };
     const stage = new DiscoveryStage();
@@ -285,11 +297,7 @@ describe('DiscoveryStage.run (shadow integration)', () => {
   });
 
   it('returns StageReport with findings.length===0 when discovered server is in allowedServers', async () => {
-    (global.fetch as jest.Mock)
-      .mockResolvedValueOnce({ ok: false, headers: { get: (_k: string): string | null => null }, status: 404 })  // POST /mcp/
-      .mockResolvedValueOnce({ ok: false, headers: { get: (_k: string): string | null => null }, status: 404 })  // POST /api/mcp/
-      .mockResolvedValueOnce(makeKeycloakFetchResponse(['list-users']))  // GET /tools → success
-      .mockRejectedValue(new DOMException('Aborted', 'AbortError'));  // all other ports fail
+    setupSingleServerMock();
 
     const config: AgentShieldConfig = { ...baseConfig, allowedServers: ['http://localhost:8001'] };
     const stage = new DiscoveryStage();

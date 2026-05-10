@@ -3,6 +3,7 @@ import { AgentShieldConfig } from '../types/config';
 import { StageReport } from '../types/report';
 import { StageRunner } from './stage.interface';
 import { DiscoveredServer, ToolDefinition } from '../types/discovery';
+import { Finding, SeverityLevel } from '../types/findings';
 
 const DEFAULT_PROBE_TIMEOUT_MS = 2000;
 const DEFAULT_SWEEP_PORTS = [8000, 8001, 8002, 8003, 8004, 8005, 8006, 8007, 8008, 8009, 8010];
@@ -24,6 +25,43 @@ export function normalizeBaseUrl(rawUrl: string): string {
   const host = u.hostname === '127.0.0.1' ? 'localhost' : u.hostname;
   const port = u.port || (u.protocol === 'https:' ? '443' : '80');
   return `${u.protocol}//${host}:${port}`;
+}
+
+function canonicalizeForAllowList(rawUrl: string): string {
+  try {
+    return normalizeBaseUrl(rawUrl).toLowerCase();
+  } catch {
+    // Fallback: lowercase + strip trailing slash; never throw on bad input
+    return rawUrl.trim().toLowerCase().replace(/\/+$/, '');
+  }
+}
+
+export function classifyShadowServers(
+  discovered: DiscoveredServer[],
+  allowedServers: string[],
+): Finding[] {
+  const allowed = new Set(allowedServers.map(canonicalizeForAllowList));
+  const findings: Finding[] = [];
+  for (const server of discovered) {
+    if (allowed.has(canonicalizeForAllowList(server.baseUrl))) continue;
+    const toolList = server.tools.map((t) => t.name).join(', ');
+    findings.push({
+      id: randomUUID(),
+      title: `Shadow MCP server detected: ${server.baseUrl}`,
+      description:
+        `MCP server at ${server.baseUrl} (transport: ${server.transport}, ${server.tools.length} tools) ` +
+        `is not in the configured allow-list. Shadow servers operate outside organizational governance ` +
+        `and may use permissive default configurations. Tools exposed: ${toolList || '(none)'}`,
+      severity: 'critical' as SeverityLevel,
+      component: server.baseUrl,
+      score: 9.5,
+      owaspCategory: 'MCP09:2025',
+      remediation:
+        'Either add this server to config.allowedServers in agentshield.config.yaml after verifying ' +
+        'it is authorized, or shut down the unauthorized server.',
+    });
+  }
+  return findings;
 }
 
 export async function parseJsonRpcResponse(res: Response): Promise<Record<string, unknown>> {
@@ -165,15 +203,16 @@ export class DiscoveryStage implements StageRunner {
   readonly id = 'discovery';
   readonly name = 'Discovery & Inventory';
 
-  async run(target: string, _config: AgentShieldConfig): Promise<StageReport> {
+  async run(target: string, config: AgentShieldConfig): Promise<StageReport> {
     const start = Date.now();
     try {
       const discovered = await enumerateServers(target);
       const inventoried = await Promise.all(discovered.map(inventoryServer));
+      const shadowFindings = classifyShadowServers(inventoried, config.allowedServers);
       return {
         stageId: this.id,
         stageName: this.name,
-        findings: [],
+        findings: shadowFindings,
         duration: Date.now() - start,
         error: null,
         metadata: { discoveredServers: inventoried },
