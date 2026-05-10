@@ -1,4 +1,4 @@
-import { DiscoveryStage, enumerateServers, probeMcpServer, parseJsonRpcResponse } from '../../src/stages/discovery';
+import { DiscoveryStage, enumerateServers, probeMcpServer, parseJsonRpcResponse, classifyShadowServers } from '../../src/stages/discovery';
 import { AgentShieldConfig, STAGE_IDS } from '../../src/types/config';
 import { DiscoveredServer } from '../../src/types/discovery';
 
@@ -208,5 +208,94 @@ describe('DiscoveryStage.run', () => {
     expect(report.error).not.toBeNull();
     expect(report.metadata).toBeDefined();
     expect(Array.isArray((report.metadata as { discoveredServers: DiscoveredServer[] }).discoveredServers)).toBe(true);
+  });
+});
+
+// Helper for shadow classification tests
+function makeServer(baseUrl: string, tools: string[] = ['list-users']): DiscoveredServer {
+  return {
+    baseUrl,
+    transport: 'rest-keycloak',
+    endpoint: '/tools',
+    tools: tools.map((name) => ({ name })),
+    hasAuth: false,
+    responseTimeMs: 10,
+  };
+}
+
+describe('classifyShadowServers', () => {
+  it('returns [] when discovered server URL is in allowedServers', () => {
+    const findings = classifyShadowServers([makeServer('http://localhost:8001')], ['http://localhost:8001']);
+    expect(findings).toHaveLength(0);
+  });
+
+  it('returns 1 Finding with severity critical and MCP09:2025 when allowedServers is empty', () => {
+    const findings = classifyShadowServers([makeServer('http://localhost:8001')], []);
+    expect(findings).toHaveLength(1);
+    expect(findings[0].severity).toBe('critical');
+    expect(findings[0].owaspCategory).toBe('MCP09:2025');
+    expect(findings[0].component).toBe('http://localhost:8001');
+  });
+
+  it('returns [] when allowedServers contains 127.0.0.1 equivalent of localhost URL (normalization)', () => {
+    // normalizeBaseUrl maps 127.0.0.1 → localhost, so both should be treated as equal
+    const findings = classifyShadowServers([makeServer('http://localhost:8001')], ['http://127.0.0.1:8001']);
+    expect(findings).toHaveLength(0);
+  });
+
+  it('returns [] when allowedServers entry is case-insensitive and has trailing slash (normalization)', () => {
+    const findings = classifyShadowServers([makeServer('http://localhost:8001')], ['HTTP://LOCALHOST:8001/']);
+    expect(findings).toHaveLength(0);
+  });
+
+  it('returns exactly 1 finding for the unlisted server when 2 discovered, 1 in allow-list', () => {
+    const servers = [makeServer('http://localhost:8001'), makeServer('http://localhost:8002', ['read_neo4j_cypher'])];
+    const findings = classifyShadowServers(servers, ['http://localhost:8001']);
+    expect(findings).toHaveLength(1);
+    expect(findings[0].component).toBe('http://localhost:8002');
+  });
+
+  it('each shadow finding has a non-empty string id (UUID) and description containing the offending baseUrl', () => {
+    const findings = classifyShadowServers([makeServer('http://localhost:8002', ['schema', 'query'])], []);
+    expect(findings).toHaveLength(1);
+    expect(typeof findings[0].id).toBe('string');
+    expect(findings[0].id.length).toBeGreaterThan(0);
+    expect(findings[0].description).toContain('http://localhost:8002');
+  });
+});
+
+describe('DiscoveryStage.run (shadow integration)', () => {
+  it('returns StageReport with findings.length===1 when allowedServers=[] and one server is discovered', async () => {
+    (global.fetch as jest.Mock)
+      .mockResolvedValueOnce({ ok: false, headers: { get: (_k: string): string | null => null }, status: 404 })  // POST /mcp/
+      .mockResolvedValueOnce({ ok: false, headers: { get: (_k: string): string | null => null }, status: 404 })  // POST /api/mcp/
+      .mockResolvedValueOnce(makeKeycloakFetchResponse(['list-users']))  // GET /tools → success
+      .mockRejectedValue(new DOMException('Aborted', 'AbortError'));  // all other ports fail
+
+    const config: AgentShieldConfig = { ...baseConfig, allowedServers: [] };
+    const stage = new DiscoveryStage();
+    const report = await stage.run('http://localhost:8001', config);
+
+    expect(report.findings.length).toBeGreaterThanOrEqual(1);
+    const shadowFinding = report.findings.find((f) => f.owaspCategory === 'MCP09:2025');
+    expect(shadowFinding).toBeDefined();
+    expect(shadowFinding!.severity).toBe('critical');
+    const metadata = report.metadata as { discoveredServers: DiscoveredServer[] };
+    expect(metadata.discoveredServers.length).toBeGreaterThanOrEqual(1);
+  });
+
+  it('returns StageReport with findings.length===0 when discovered server is in allowedServers', async () => {
+    (global.fetch as jest.Mock)
+      .mockResolvedValueOnce({ ok: false, headers: { get: (_k: string): string | null => null }, status: 404 })  // POST /mcp/
+      .mockResolvedValueOnce({ ok: false, headers: { get: (_k: string): string | null => null }, status: 404 })  // POST /api/mcp/
+      .mockResolvedValueOnce(makeKeycloakFetchResponse(['list-users']))  // GET /tools → success
+      .mockRejectedValue(new DOMException('Aborted', 'AbortError'));  // all other ports fail
+
+    const config: AgentShieldConfig = { ...baseConfig, allowedServers: ['http://localhost:8001'] };
+    const stage = new DiscoveryStage();
+    const report = await stage.run('http://localhost:8001', config);
+
+    const shadowFindings = report.findings.filter((f) => f.owaspCategory === 'MCP09:2025');
+    expect(shadowFindings).toHaveLength(0);
   });
 });
