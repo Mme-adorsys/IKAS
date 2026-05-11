@@ -118,35 +118,9 @@ function parseYamlFile(content: string, filePath: string, findings: Finding[]): 
   }
   if (!doc || typeof doc !== 'object') return;
 
-  // Docker Compose services.*.environment handling (Pitfall 6)
-  const services = (doc as Record<string, unknown>)['services'];
-  if (services && typeof services === 'object') {
-    for (const svc of Object.values(services as Record<string, unknown>)) {
-      if (!svc || typeof svc !== 'object') continue;
-      const env = (svc as Record<string, unknown>)['environment'];
-      if (Array.isArray(env)) {
-        // List format: - KEY=value
-        for (const item of env) {
-          if (typeof item !== 'string') continue;
-          const eqIdx = item.indexOf('=');
-          if (eqIdx === -1) continue;
-          const key = item.slice(0, eqIdx);
-          const val = item.slice(eqIdx + 1);
-          checkCredential(key, val, filePath, findings);
-          checkInsecureTransport(key, val, filePath, findings);
-        }
-      } else if (env && typeof env === 'object') {
-        // Map format: KEY: value
-        for (const [k, v] of Object.entries(env as Record<string, unknown>)) {
-          const valStr = String(v ?? '');
-          checkCredential(k, valStr, filePath, findings);
-          checkInsecureTransport(k, valStr, filePath, findings);
-        }
-      }
-    }
-  }
-
-  // Generic recursive walk for all YAML keys (catches non-docker-compose configs)
+  // Single unified walk — covers docker-compose services.*.environment and all other YAML keys.
+  // The previous docker-compose-specific block was removed because walkYamlNode already recurses
+  // into services.*.environment nodes, causing every credential finding to be emitted twice (CR-01).
   walkYamlNode(doc, '', filePath, findings);
 }
 
