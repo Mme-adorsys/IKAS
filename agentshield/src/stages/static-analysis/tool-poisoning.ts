@@ -25,8 +25,17 @@ export function detectToolPoisoning(servers: DiscoveredServer[]): Finding[] {
     const distinctServers = new Set(entries.map((e) => e.server.baseUrl));
     if (distinctServers.size < 2) continue;
 
-    const descSet = new Set(entries.map((e) => e.tool.description ?? ''));
-    const sameDesc = descSet.size === 1;
+    // Count how many servers share the same description (WR-05).
+    // Using descSet.size === 1 (all descriptions identical) suppresses CRITICAL when a single
+    // server has a different description even though two or more others share the exact same one.
+    // Instead, flag CRITICAL if at least two servers share the same description.
+    const descCounts = new Map<string, number>();
+    for (const e of entries) {
+      const d = e.tool.description ?? '';
+      descCounts.set(d, (descCounts.get(d) ?? 0) + 1);
+    }
+    const maxDuplicateCount = Math.max(...descCounts.values());
+    const sameDesc = maxDuplicateCount >= 2; // at least 2 servers share the exact same description
     const severity = sameDesc ? 'critical' : 'high';
     const owaspCategory = sameDesc ? 'MCP09:2025' : 'MCP02:2025';
     const score = sameDesc ? 9.0 : 7.5;
