@@ -111,6 +111,27 @@ export async function recordToolHashes(
     }
   }
 
+  // Second pass: detect tools that existed in the baseline but are no longer present (WR-02).
+  // An attacker controlling an MCP server can silently remove a tool between scans; without this
+  // pass the removal goes undetected.
+  for (const [key, previousHash] of Object.entries(baseline)) {
+    if (currentHashes[key] === undefined) {
+      findings.push({
+        id: randomUUID(),
+        title: `Tool removed since last scan: ${key}`,
+        description:
+          `Tool "${key}" was present in the previous baseline (hash: ${previousHash.slice(0, 12)}...) ` +
+          `but is no longer exposed by the server. Unexpected tool removal may indicate a rug-pull. (D-16)`,
+        severity: 'high' as SeverityLevel,
+        component: key,
+        score: RUG_PULL_SCORE,
+        owaspCategory: 'MCP02:2025',
+        remediation:
+          'Verify the tool was intentionally removed. If unexpected, treat the server as untrusted.',
+      });
+    }
+  }
+
   // Always update baseline so the NEXT scan compares against current state (D-16)
   try {
     writeFileSync(baselinePath, JSON.stringify(currentHashes, null, 2), 'utf8');
