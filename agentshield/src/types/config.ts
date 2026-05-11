@@ -25,6 +25,7 @@ export const AgentShieldConfigSchema = z.object({
   auth: AuthConfigSchema.optional(),
   outputDir: z.string().default('./agentshield-output'),
   stages: z.array(z.enum(STAGE_IDS)).default([...STAGE_IDS]),
+  configPaths: z.array(z.string()).optional(),
 });
 
 export type AgentShieldConfig = z.infer<typeof AgentShieldConfigSchema>;
