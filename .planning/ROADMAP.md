@@ -14,7 +14,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 
 - [ ] **Phase 1: Foundation & CLI** - Scaffold the `agentshield/` module, CLI entrypoint, config schema, and shared result types
 - [x] **Phase 2: Discovery & Inventory** - Enumerate MCP servers, tool definitions, shadow servers, and CVE cross-reference
-- [ ] **Phase 3: Static Analysis** - Scan tool descriptions for prompt injection, detect poisoning patterns, audit configs, record hashes
+- [x] **Phase 3: Static Analysis** - Scan tool descriptions for prompt injection, detect poisoning patterns, audit configs, record hashes
 - [ ] **Phase 4: Dynamic Adversarial Testing** - Execute sandboxed attack simulations, inject RADE payloads, test privilege escalation, report ASR
 - [ ] **Phase 5: Runtime Behavioral Monitoring** - Intercept live MCP traffic via proxy, detect anomalous chains and PII exfiltration
 - [ ] **Phase 6: Remediation Report** - Synthesize all findings into scored JSON + Markdown report with OWASP mapping and fix guidance
@@ -67,12 +67,12 @@ Plans:
 **Plans**: 6 plans
 
 Plans:
-- [ ] 03-01-PLAN.md — Phase 3 foundations: extend StageRunner.run with previousReports, promote `leven` to direct dep, add `configPaths` to AgentShieldConfig, create PROMPT_INJECTION_PATTERNS data file (Wave 1, unblocks all sub-scanners)
-- [ ] 03-02-PLAN.md — STAT-01 scanPromptInjection: regex-and-keyword pattern library scanner over tool name+description with full-description evidence (Wave 2)
-- [ ] 03-03-PLAN.md — STAT-02 detectToolPoisoning: cross-server shadow detection (D-07) and Levenshtein name-squatting (D-06/D-08, threshold ≤ 2, names ≥ 4 chars) (Wave 2)
-- [ ] 03-04-PLAN.md — STAT-03 auditConfigFiles: two-factor credential scan (key-name keyword + Shannon entropy > 3.5) and http:// insecure-transport detection across env/yaml/json files (Wave 2)
-- [ ] 03-05-PLAN.md — STAT-04 recordToolHashes: SHA-256 baseline at `{outputDir}/tool-hashes.json`, first-scan INFO + rug-pull HIGH findings on re-scan (Wave 2)
-- [ ] 03-06-PLAN.md — StaticAnalysisStage orchestrator: merge all four sub-scanners, extract DiscoveredServer[] from previousReports, expose toolsScanned + hashBaselineWritten metadata (Wave 3)
+- [x] 03-01-PLAN.md — Phase 3 foundations: extend StageRunner.run with previousReports, promote `leven` to direct dep, add `configPaths` to AgentShieldConfig, create PROMPT_INJECTION_PATTERNS data file (Wave 1, unblocks all sub-scanners)
+- [x] 03-02-PLAN.md — STAT-01 scanPromptInjection: regex-and-keyword pattern library scanner over tool name+description with full-description evidence (Wave 2)
+- [x] 03-03-PLAN.md — STAT-02 detectToolPoisoning: cross-server shadow detection (D-07) and Levenshtein name-squatting (D-06/D-08, threshold ≤ 2, names ≥ 4 chars) (Wave 2)
+- [x] 03-04-PLAN.md — STAT-03 auditConfigFiles: two-factor credential scan (key-name keyword + Shannon entropy > 3.5) and http:// insecure-transport detection across env/yaml/json files (Wave 2)
+- [x] 03-05-PLAN.md — STAT-04 recordToolHashes: SHA-256 baseline at `{outputDir}/tool-hashes.json`, first-scan INFO + rug-pull HIGH findings on re-scan (Wave 2)
+- [x] 03-06-PLAN.md — StaticAnalysisStage orchestrator: merge all four sub-scanners, extract DiscoveredServer[] from previousReports, expose toolsScanned + hashBaselineWritten metadata (Wave 3)
 
 ### Phase 4: Dynamic Adversarial Testing
 **Goal**: AgentShield executes controlled attacks in a sandboxed context and produces an Attack Success Rate per attack type mapped to MCPSecBench taxonomy
@@ -146,7 +146,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6 → 7
 |-------|----------------|--------|-----------|
 | 1. Foundation & CLI | 4/4 | Complete | 2026-04-29 |
 | 2. Discovery & Inventory | 3/3 | Complete | 2026-05-10 |
-| 3. Static Analysis | 0/6 | Not started | - |
+| 3. Static Analysis | 6/6 | Complete | 2026-05-11 |
 | 4. Dynamic Adversarial Testing | 0/4 | Not started | - |
 | 5. Runtime Behavioral Monitoring | 0/3 | Not started | - |
 | 6. Remediation Report | 0/3 | Not started | - |
