@@ -98,7 +98,16 @@ function walkYamlNode(node: unknown, parentKey: string, filePath: string, findin
   }
   if (Array.isArray(node)) {
     for (const item of node) {
-      walkYamlNode(item, parentKey, filePath, findings);
+      // Docker-compose environment list format: "- KEY=VALUE" strings
+      if (typeof item === 'string' && item.includes('=')) {
+        const eqIdx = item.indexOf('=');
+        const k = item.slice(0, eqIdx).trim();
+        const v = item.slice(eqIdx + 1).trim();
+        checkCredential(k, v, filePath, findings);
+        checkInsecureTransport(k, v, filePath, findings);
+      } else {
+        walkYamlNode(item, parentKey, filePath, findings);
+      }
     }
     return;
   }
