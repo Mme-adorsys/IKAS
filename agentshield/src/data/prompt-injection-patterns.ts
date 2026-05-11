@@ -48,7 +48,12 @@ export const PROMPT_INJECTION_PATTERNS: InjectionPattern[] = [
     severity: 'medium',
     score: 5.0,
     owaspCategory: 'MCP06:2025',
-    match: (t) => /[A-Za-z0-9+/]{40,}={0,2}/.test(t.description ?? ''),
+    // Require at least one trailing '=' padding character to distinguish real base64 blobs
+    // from URL path segments. The previous ={0,2} allowance matched long URL paths such as
+    // "https://docs.example.com/api/v1/authentication/oauth2callback/verylongpathhere"
+    // because '/' is in the character class. Requiring ={1,2} substantially reduces false
+    // positives while still catching typical base64-encoded payloads (WR-04).
+    match: (t) => /[A-Za-z0-9+/]{40,}={1,2}/.test(t.description ?? ''),
   },
   {
     id: 'PI-UNICODE-ZWC-01',
