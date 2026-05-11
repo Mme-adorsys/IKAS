@@ -185,7 +185,15 @@ describe("auditConfigFiles — Pitfall 4 (node_modules exclusion)", () => {
 });
 
 describe("auditConfigFiles — empty inputs", () => {
-  it('returns [] for empty configPaths array', () => {
+  it('returns [] for empty configPaths array (explicit opt-out, no CWD scan)', () => {
+    // Write a real credential file INTO the temp scanRoot so that if auditConfigFiles
+    // falls back to DEFAULT_GLOB it would find findings. With configPaths: [] the function
+    // must return immediately without scanning anything (WR-03 mechanism check).
+    writeFileSync(
+      join(scanRoot, '.env'),
+      `API_KEY=${HIGH_ENTROPY_CRED}\n`,
+    );
+    // Override cwd via configPaths: [] — early-return should prevent any scan.
     const findings = auditConfigFiles(makeConfig({ configPaths: [] }));
     expect(findings).toEqual([]);
   });

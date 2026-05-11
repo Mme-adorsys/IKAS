@@ -166,6 +166,14 @@ function parseJsonFile(content: string, filePath: string, findings: Finding[]): 
 export function auditConfigFiles(config: AgentShieldConfig): Finding[] {
   const findings: Finding[] = [];
 
+  // Distinguish three cases (WR-03):
+  //   undefined  → not configured by caller, fall back to DEFAULT_GLOB
+  //   []         → caller explicitly opted out of config scanning; return immediately
+  //   [...]      → caller provided explicit paths; use them as-is
+  if (config.configPaths !== undefined && config.configPaths.length === 0) {
+    return findings;
+  }
+
   const patterns: string[] =
     config.configPaths && config.configPaths.length > 0
       ? config.configPaths
