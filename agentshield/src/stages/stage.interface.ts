@@ -4,5 +4,5 @@ import { StageReport } from '../types/report';
 export interface StageRunner {
   readonly name: string;
   readonly id: string;
-  run(target: string, config: AgentShieldConfig): Promise<StageReport>;
+  run(target: string, config: AgentShieldConfig, previousReports?: StageReport[]): Promise<StageReport>;
 }

@@ -37,7 +37,7 @@ export class ScanRunner {
     for (const stage of this.stages) {
       const start = Date.now();
       try {
-        const report = await stage.run(target, this.config);
+        const report = await stage.run(target, this.config, stageReports);
         stageReports.push({ ...report, duration: report.duration || Date.now() - start });
       } catch (error) {
         const message = error instanceof Error ? error.message : 'Unknown error';
