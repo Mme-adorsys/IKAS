@@ -29,10 +29,10 @@ A security engineer runs `agentshield scan <target>` and receives a prioritized,
 - [x] DISC-02: List all tool definitions, resource endpoints, and transport configs — Validated in Phase 02
 - [x] DISC-03: Detect shadow MCP servers and over-permissioned integrations — Validated in Phase 02
 - [x] DISC-04: Cross-reference against CVE-2025-6514, CVE-2025-49596, OWASP MCP Top 10 — Validated in Phase 02
-- [ ] STAT-01: Scan tool descriptions for hidden prompt injection payloads
-- [ ] STAT-02: Detect tool poisoning patterns (shadowing, name-squatting, rug-pull)
-- [ ] STAT-03: Audit configuration files for hardcoded credentials and excessive permissions
-- [ ] STAT-04: Record tool definition hashes for rug-pull detection
+- [x] STAT-01: Scan tool descriptions for hidden prompt injection payloads — Validated in Phase 03
+- [x] STAT-02: Detect tool poisoning patterns (shadowing, name-squatting, rug-pull) — Validated in Phase 03
+- [x] STAT-03: Audit configuration files for hardcoded credentials and excessive permissions — Validated in Phase 03
+- [x] STAT-04: Record tool definition hashes for rug-pull detection — Validated in Phase 03
 - [ ] DYN-01: Execute tool-shadowing and name-squatting attack simulations in sandbox
 - [ ] DYN-02: Inject RADE (Retrieval-Agent Deception) payloads against host LLM
 - [ ] DYN-03: Test indirect prompt injection via tool return values
@@ -102,4 +102,4 @@ This document evolves at phase transitions and milestone boundaries.
 4. Update Context with current state
 
 ---
-*Last updated: 2026-05-10 after Phase 02 completion*
+*Last updated: 2026-05-11 after Phase 03 completion*
