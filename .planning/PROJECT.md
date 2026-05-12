@@ -33,10 +33,10 @@ A security engineer runs `agentshield scan <target>` and receives a prioritized,
 - [x] STAT-02: Detect tool poisoning patterns (shadowing, name-squatting, rug-pull) — Validated in Phase 03
 - [x] STAT-03: Audit configuration files for hardcoded credentials and excessive permissions — Validated in Phase 03
 - [x] STAT-04: Record tool definition hashes for rug-pull detection — Validated in Phase 03
-- [ ] DYN-01: Execute tool-shadowing and name-squatting attack simulations in sandbox
-- [ ] DYN-02: Inject RADE (Retrieval-Agent Deception) payloads against host LLM
-- [ ] DYN-03: Test indirect prompt injection via tool return values
-- [ ] DYN-04: Report Attack Success Rate (ASR) per attack type
+- [x] DYN-01: Execute tool-shadowing and name-squatting attack simulations in sandbox — Validated in Phase 04
+- [x] DYN-02: Inject RADE (Retrieval-Agent Deception) payloads against host LLM — Validated in Phase 04
+- [x] DYN-03: Test indirect prompt injection via tool return values — Validated in Phase 04
+- [x] DYN-04: Report Attack Success Rate (ASR) per attack type — Validated in Phase 04
 - [ ] MON-01: Lightweight proxy layer intercepting MCP traffic
 - [ ] MON-02: Detect anomalous tool invocations and unexpected call chains
 - [ ] MON-03: PII exfiltration detection in tool inputs/outputs
