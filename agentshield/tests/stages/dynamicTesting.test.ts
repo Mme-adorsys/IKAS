@@ -24,7 +24,7 @@ jest.mock('../../src/stages/dynamic-testing/tool-shadowing', () => ({
 
 jest.mock('../../src/stages/dynamic-testing/rade-test', () => ({
   runRADETest: jest.fn(),
-  RADE_PAYLOADS: [],
+  RADE_PAYLOADS: [] as unknown[],
   detectRADESuccess: jest.fn(),
 }));
 
