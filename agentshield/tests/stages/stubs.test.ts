@@ -6,6 +6,35 @@ import { ReportStage } from '../../src/stages/report';
 import { StageRunner } from '../../src/stages/stage.interface';
 import { STAGE_IDS, AgentShieldConfig } from '../../src/types/config';
 
+// Mock the dynamic-testing modules so DynamicTestingStage does not make live calls
+jest.mock('../../src/stages/dynamic-testing/gateway-client', () => ({
+  checkGatewayReachable: jest.fn().mockResolvedValue(undefined),
+  callGateway: jest.fn(),
+  GATEWAY_URL: 'http://localhost:8005/api/chat',
+  GATEWAY_TIMEOUT_MS: 30000,
+  GATEWAY_PROBE_TIMEOUT_MS: 3000,
+  D04_ERROR_MESSAGE: 'Dynamic testing requires IKAS AI Gateway on http://localhost:8005. Start IKAS and re-run.',
+}));
+
+jest.mock('../../src/stages/dynamic-testing/tool-shadowing', () => ({
+  runToolShadowingTest: jest.fn().mockResolvedValue({ attempts: 1, successes: 0, findings: [] }),
+  SHADOW_TOOL_NAME: 'shadow-list-users',
+  TOOL_SHADOWING_OWASP: 'MCP09:2025',
+  TOOL_SHADOWING_LABEL: 'Tool Shadowing Attack',
+  buildShadowingPrompt: jest.fn(),
+}));
+
+jest.mock('../../src/stages/dynamic-testing/rade-test', () => ({
+  runRADETest: jest.fn().mockResolvedValue({ attempts: 9, successes: 0, findings: [] }),
+  RADE_PAYLOADS: [] as unknown[],
+  detectRADESuccess: jest.fn(),
+}));
+
+jest.mock('../../src/stages/dynamic-testing/escalation-test', () => ({
+  runEscalationChainTest: jest.fn().mockResolvedValue({ attempts: 1, successes: 0, findings: [] }),
+  detectEscalationSuccess: jest.fn(),
+}));
+
 const minimalConfig: AgentShieldConfig = {
   target: 'http://localhost:8001',
   allowedServers: [],
