@@ -15,7 +15,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 - [ ] **Phase 1: Foundation & CLI** - Scaffold the `agentshield/` module, CLI entrypoint, config schema, and shared result types
 - [x] **Phase 2: Discovery & Inventory** - Enumerate MCP servers, tool definitions, shadow servers, and CVE cross-reference
 - [x] **Phase 3: Static Analysis** - Scan tool descriptions for prompt injection, detect poisoning patterns, audit configs, record hashes
-- [ ] **Phase 4: Dynamic Adversarial Testing** - Execute sandboxed attack simulations, inject RADE payloads, test privilege escalation, report ASR
+- [x] **Phase 4: Dynamic Adversarial Testing** - Execute sandboxed attack simulations, inject RADE payloads, test privilege escalation, report ASR
 - [ ] **Phase 5: Runtime Behavioral Monitoring** - Intercept live MCP traffic via proxy, detect anomalous chains and PII exfiltration
 - [ ] **Phase 6: Remediation Report** - Synthesize all findings into scored JSON + Markdown report with OWASP mapping and fix guidance
 - [ ] **Phase 7: Conference Demo** - Wire end-to-end IKAS scan, format CLI output for live demo, produce sample remediation report
@@ -86,10 +86,10 @@ Plans:
 **Plans**: 4 plans
 
 Plans:
-- [ ] 04-01: Implement sandboxed tool-shadowing and name-squatting simulation: create a shadow mock server, invoke target LLM with conflicting tool names, record which tool is called
-- [ ] 04-02: Implement RADE and indirect prompt injection test: craft adversarial tool return payloads, inject via mock MCP response, capture LLM follow-on behavior as evidence
-- [ ] 04-03: Implement privilege escalation chain tester: enumerate cross-server call sequences, simulate chained invocations beyond intended scope, detect out-of-bounds tool access
-- [ ] 04-04: Implement ASR calculator and MCPSecBench taxonomy tagger: compute attack success rate per attack type, annotate each dynamic finding with taxonomy label and ASR value
+- [x] 04-01: Implement sandboxed tool-shadowing and name-squatting simulation: create a shadow mock server, invoke target LLM with conflicting tool names, record which tool is called
+- [x] 04-02: Implement RADE and indirect prompt injection test: craft adversarial tool return payloads, inject via mock MCP response, capture LLM follow-on behavior as evidence
+- [x] 04-03: Implement privilege escalation chain tester: enumerate cross-server call sequences, simulate chained invocations beyond intended scope, detect out-of-bounds tool access
+- [x] 04-04: Implement ASR calculator and MCPSecBench taxonomy tagger: compute attack success rate per attack type, annotate each dynamic finding with taxonomy label and ASR value
 
 ### Phase 5: Runtime Behavioral Monitoring
 **Goal**: AgentShield provides a proxy layer that intercepts live MCP traffic and flags anomalous behavior and PII exfiltration in real time
