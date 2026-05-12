@@ -36,7 +36,12 @@ describe('checkGatewayReachable', () => {
     await expect(checkGatewayReachable()).rejects.toThrow(
       'Dynamic testing requires IKAS AI Gateway on http://localhost:8005. Start IKAS and re-run.',
     );
-    expect((await checkGatewayReachable().catch((e: Error) => e)).message).toBe(D04_MSG);
+    // Second mock call for the second assertion
+    (global.fetch as jest.Mock).mockRejectedValue(
+      Object.assign(new TypeError('fetch failed'), { cause: { code: 'ECONNREFUSED' } }),
+    );
+    const caughtError = await checkGatewayReachable().catch((e: unknown) => e as Error);
+    expect(caughtError instanceof Error ? caughtError.message : '').toBe(D04_MSG);
   });
 
   it('resolves when fetch returns 200', async () => {
