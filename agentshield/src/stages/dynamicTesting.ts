@@ -29,11 +29,14 @@ function extractLegitimateTools(previousReports: StageReport[] | undefined): str
   return names;
 }
 
+const RADE_COMPONENT_TAXONOMY: Record<string, string> = {
+  'gateway:rade:role-takeover': 'rade-role-takeover',
+  'gateway:rade:data-exfiltration-redirect': 'rade-data-exfiltration',
+  'gateway:rade:privilege-escalation-command': 'rade-privilege-escalation',
+};
+
 function radeTaxonomyKey(component: string): string {
-  if (component.endsWith(':role-takeover')) return 'rade-role-takeover';
-  if (component.endsWith(':data-exfiltration-redirect')) return 'rade-data-exfiltration';
-  if (component.endsWith(':privilege-escalation-command')) return 'rade-privilege-escalation';
-  return 'rade';
+  return RADE_COMPONENT_TAXONOMY[component] ?? 'rade';
 }
 
 export class DynamicTestingStage implements StageRunner {
