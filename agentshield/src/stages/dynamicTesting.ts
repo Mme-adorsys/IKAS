@@ -7,7 +7,7 @@ import { checkGatewayReachable, callGateway, GATEWAY_URL } from './dynamic-testi
 import { runToolShadowingTest } from './dynamic-testing/tool-shadowing';
 import { runRADETest } from './dynamic-testing/rade-test';
 import { runEscalationChainTest } from './dynamic-testing/escalation-test';
-import { formatASR, MCPSECBENCH_TAXONOMY } from './dynamic-testing/asr-calculator';
+import { buildASRMetadata, MCPSECBENCH_TAXONOMY } from './dynamic-testing/asr-calculator';
 
 function extractLegitimateTools(previousReports: StageReport[] | undefined): string[] {
   if (!previousReports || previousReports.length === 0) return [];
@@ -68,11 +68,11 @@ export class DynamicTestingStage implements StageRunner {
         mcpSecBenchLabel: MCPSECBENCH_TAXONOMY['escalation'] ?? 'Unknown',
       }));
 
-      const asrByAttackType = {
-        toolShadowing: formatASR(shadowResult.successes, shadowResult.attempts, 'Tool Shadowing'),
-        rade: formatASR(radeResult.successes, radeResult.attempts, 'RADE'),
-        escalationChain: formatASR(escalationResult.successes, escalationResult.attempts, 'Escalation Chain'),
-      };
+      const asrByAttackType = buildASRMetadata({
+        toolShadowing: { successes: shadowResult.successes, attempts: shadowResult.attempts },
+        radePerPayload: radeResult.perPayload,
+        escalation: { successes: escalationResult.successes, attempts: escalationResult.attempts },
+      });
 
       const totalAttempts =
         shadowResult.attempts + radeResult.attempts + escalationResult.attempts;

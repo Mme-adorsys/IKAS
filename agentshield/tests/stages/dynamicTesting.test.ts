@@ -34,9 +34,15 @@ jest.mock('../../src/stages/dynamic-testing/escalation-test', () => ({
 }));
 
 jest.mock('../../src/stages/dynamic-testing/asr-calculator', () => ({
-  formatASR: jest.fn().mockImplementation((successes: number, attempts: number, label: string) =>
-    `${label} ASR: ${attempts > 0 ? Math.round((successes / attempts) * 100) : 0}% (${successes}/${attempts} attempts succeeded)`,
-  ),
+  buildASRMetadata: jest.fn().mockReturnValue({
+    toolShadowing: 'Tool Shadowing ASR: 0% (0/1 attempts succeeded)',
+    rade: {
+      roleTakeover: 'RADE Role-Takeover ASR: 0% (0/3 attempts succeeded)',
+      dataExfiltration: 'RADE Data-Exfiltration ASR: 0% (0/3 attempts succeeded)',
+      privilegeEscalation: 'RADE Privilege-Escalation ASR: 0% (0/3 attempts succeeded)',
+    },
+    escalationChain: 'Escalation Chain ASR: 0% (0/1 attempts succeeded)',
+  }),
   MCPSECBENCH_TAXONOMY: {
     'tool-shadowing': 'Tool Shadowing Attack',
     'rade': 'Indirect Prompt Injection',
@@ -129,6 +135,11 @@ beforeEach(() => {
     attempts: 9,
     successes: 0,
     findings: [],
+    perPayload: [
+      { payloadId: 'role-takeover', attempts: 3, successes: 0 },
+      { payloadId: 'data-exfiltration-redirect', attempts: 3, successes: 0 },
+      { payloadId: 'privilege-escalation-command', attempts: 3, successes: 0 },
+    ],
   });
   (escalationTest.runEscalationChainTest as jest.Mock).mockResolvedValue({
     attempts: 1,
@@ -187,6 +198,11 @@ describe('DynamicTestingStage.run — finding aggregation', () => {
       attempts: 9,
       successes: 3,
       findings: [makeRadeFinding()],
+      perPayload: [
+        { payloadId: 'role-takeover', attempts: 3, successes: 3 },
+        { payloadId: 'data-exfiltration-redirect', attempts: 3, successes: 0 },
+        { payloadId: 'privilege-escalation-command', attempts: 3, successes: 0 },
+      ],
     });
     (escalationTest.runEscalationChainTest as jest.Mock).mockResolvedValue({
       attempts: 1,
