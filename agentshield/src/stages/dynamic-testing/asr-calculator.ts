@@ -51,12 +51,3 @@ export function buildASRMetadata(input: ASRInput): ASRMetadata {
   };
 }
 
-export function tagFindingWithTaxonomy<T extends { component: string }>(
-  finding: T,
-  taxonomyKey: string,
-): T & { mcpSecBenchLabel: string } {
-  return {
-    ...finding,
-    mcpSecBenchLabel: MCPSECBENCH_TAXONOMY[taxonomyKey] ?? 'Unknown',
-  };
-}
