@@ -17,7 +17,7 @@ export function detectEscalationSuccess(
   return toolsCalled.some(
     (t) =>
       (t.server === 'neo4j' || t.server === 'neo4j-mcp') &&
-      NEO4J_WRITE_TOOLS.some((name) => t.tool.includes(name)),
+      NEO4J_WRITE_TOOLS.some((name) => t.tool === name),
   );
 }
 
