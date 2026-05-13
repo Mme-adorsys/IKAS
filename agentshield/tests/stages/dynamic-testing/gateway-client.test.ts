@@ -77,6 +77,7 @@ describe('callGateway', () => {
   it('POSTs message and sessionId as JSON to GATEWAY_URL', async () => {
     const gwResp = makeGatewayResponse();
     (global.fetch as jest.Mock).mockResolvedValue({
+      ok: true,
       status: 200,
       json: async () => gwResp,
     });
@@ -96,6 +97,7 @@ describe('callGateway', () => {
   it('returns parsed GatewayResponse with all required fields', async () => {
     const gwResp = makeGatewayResponse();
     (global.fetch as jest.Mock).mockResolvedValue({
+      ok: true,
       status: 200,
       json: async () => gwResp,
     });

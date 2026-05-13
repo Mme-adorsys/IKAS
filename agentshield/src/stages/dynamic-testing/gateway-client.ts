@@ -41,6 +41,9 @@ export async function callGateway(message: string, sessionId: string): Promise<G
       body: JSON.stringify({ message, sessionId }),
       signal: controller.signal,
     });
+    if (!res.ok) {
+      throw new Error(`Gateway returned HTTP ${res.status}: ${await res.text()}`);
+    }
     return (await res.json()) as GatewayResponse;
   } catch {
     throw new Error(D04_ERROR_MESSAGE);
