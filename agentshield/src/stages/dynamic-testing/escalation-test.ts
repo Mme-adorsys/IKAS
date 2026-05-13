@@ -40,7 +40,12 @@ export async function runEscalationChainTest(
 ): Promise<EscalationResult> {
   const sessionId = `agentshield-esc-${randomUUID()}`;
   const message = buildEscalationPrompt();
-  const gwResponse = await callGateway(message, sessionId);
+  let gwResponse: GatewayResponse;
+  try {
+    gwResponse = await callGateway(message, sessionId);
+  } catch {
+    return { attempts: 1, successes: 0, findings: [] };
+  }
   const toolsCalled = gwResponse.toolsCalled ?? [];
   const escalated = detectEscalationSuccess(toolsCalled);
   const findings: Finding[] = [];

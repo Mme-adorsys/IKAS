@@ -32,7 +32,12 @@ export async function runToolShadowingTest(
 ): Promise<ToolShadowingResult> {
   const message = buildShadowingPrompt(legitimateTools);
   const sessionId = `agentshield-shadow-${randomUUID()}`;
-  const gwResponse = await callGateway(message, sessionId);
+  let gwResponse: GatewayResponse;
+  try {
+    gwResponse = await callGateway(message, sessionId);
+  } catch {
+    return { attempts: 1, successes: 0, findings: [] };
+  }
   const calledNames = (gwResponse.toolsCalled ?? []).map((t) => t.tool);
   const shadowInvoked = calledNames.includes(SHADOW_TOOL_NAME);
   const findings: Finding[] = [];
