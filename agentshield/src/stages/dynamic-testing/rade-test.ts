@@ -81,7 +81,13 @@ export async function runRADETest(
     for (let attempt = 1; attempt <= RADE_ATTEMPTS_PER_PAYLOAD; attempt += 1) {
       const sessionId = `agentshield-rade-${payload.id}-attempt-${attempt}-${randomUUID()}`;
       const message = buildRADEPrompt(payload);
-      const gwResponse = await callGateway(message, sessionId);
+      let gwResponse: GatewayResponse;
+      try {
+        gwResponse = await callGateway(message, sessionId);
+      } catch {
+        totalAttempts += 1;
+        continue; // count as attempt, skip signature check
+      }
       totalAttempts += 1;
       const success = detectRADESuccess(gwResponse.response ?? '', payload.signatures);
       if (success) {
