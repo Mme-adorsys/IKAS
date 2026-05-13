@@ -3,13 +3,11 @@ import { StageReport } from '../types/report';
 import { StageRunner } from './stage.interface';
 import { DiscoveredServer } from '../types/discovery';
 import { Finding } from '../types/findings';
-import { checkGatewayReachable, callGateway } from './dynamic-testing/gateway-client';
+import { checkGatewayReachable, callGateway, GATEWAY_URL } from './dynamic-testing/gateway-client';
 import { runToolShadowingTest } from './dynamic-testing/tool-shadowing';
 import { runRADETest } from './dynamic-testing/rade-test';
 import { runEscalationChainTest } from './dynamic-testing/escalation-test';
 import { formatASR, MCPSECBENCH_TAXONOMY } from './dynamic-testing/asr-calculator';
-
-const GATEWAY_URL = 'http://localhost:8005';
 
 function extractLegitimateTools(previousReports: StageReport[] | undefined): string[] {
   if (!previousReports || previousReports.length === 0) return [];
