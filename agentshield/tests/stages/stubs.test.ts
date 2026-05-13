@@ -25,7 +25,16 @@ jest.mock('../../src/stages/dynamic-testing/tool-shadowing', () => ({
 }));
 
 jest.mock('../../src/stages/dynamic-testing/rade-test', () => ({
-  runRADETest: jest.fn().mockResolvedValue({ attempts: 9, successes: 0, findings: [] }),
+  runRADETest: jest.fn().mockResolvedValue({
+    attempts: 9,
+    successes: 0,
+    findings: [],
+    perPayload: [
+      { payloadId: 'role-takeover', attempts: 3, successes: 0 },
+      { payloadId: 'data-exfiltration-redirect', attempts: 3, successes: 0 },
+      { payloadId: 'privilege-escalation-command', attempts: 3, successes: 0 },
+    ],
+  }),
   RADE_PAYLOADS: [] as unknown[],
   detectRADESuccess: jest.fn(),
 }));
@@ -53,6 +62,12 @@ const allStages: StageRunner[] = [
 describe('Stage stubs', () => {
   // Mock fetch globally so DiscoveryStage never makes live network probes in CI.
   // All probe attempts immediately reject — discovery returns empty findings with no error.
+  //
+  // NOTE: DynamicTestingStage is protected from live calls by the jest.mock() blocks at the
+  // top of this file (gateway-client, tool-shadowing, rade-test, escalation-test are fully
+  // replaced). The fetch mock below does NOT prevent DynamicTestingStage from making live
+  // gateway calls — only the jest.mock() blocks do. Do not remove those mock blocks under the
+  // assumption that mocking fetch is sufficient for DynamicTestingStage isolation.
   beforeAll(() => {
     global.fetch = jest.fn().mockRejectedValue(new DOMException('Aborted', 'AbortError'));
   });
