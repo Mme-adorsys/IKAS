@@ -87,22 +87,25 @@ export async function runRADETest(
       if (success) {
         payloadSuccesses += 1;
         totalSuccesses += 1;
-        findings.push({
-          id: randomUUID(),
-          title: `RADE attack succeeded (${payload.mcpSecBenchLabel}): ${payload.id}`,
-          description:
-            `RADE payload "${payload.id}" (attempt ${attempt}/${RADE_ATTEMPTS_PER_PAYLOAD}) succeeded. ` +
-            `Injected instruction: "${payload.instruction}". ` +
-            `Full Claude response: ${gwResponse.response}`,
-          severity: 'high',
-          component: `gateway:rade:${payload.id}`,
-          score: 7.5,
-          owaspCategory: payload.owaspCategory,
-          remediation:
-            'Validate tool return values before passing back to the LLM. ' +
-            'Strip or sanitize content matching known injection signatures. ' +
-            'Add a tool-output filter layer between MCP responses and the LLM.',
-        });
+        if (payloadSuccesses === 1) {
+          // record finding only on the first success per payload
+          findings.push({
+            id: randomUUID(),
+            title: `RADE attack succeeded (${payload.mcpSecBenchLabel}): ${payload.id}`,
+            description:
+              `RADE payload "${payload.id}" (attempt ${attempt}/${RADE_ATTEMPTS_PER_PAYLOAD}) succeeded. ` +
+              `Injected instruction: "${payload.instruction}". ` +
+              `Full Claude response: ${gwResponse.response}`,
+            severity: 'high',
+            component: `gateway:rade:${payload.id}`,
+            score: 7.5,
+            owaspCategory: payload.owaspCategory,
+            remediation:
+              'Validate tool return values before passing back to the LLM. ' +
+              'Strip or sanitize content matching known injection signatures. ' +
+              'Add a tool-output filter layer between MCP responses and the LLM.',
+          });
+        }
       }
     }
     perPayload.push({
