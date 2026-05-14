@@ -18,7 +18,8 @@ program
   .option('-c, --config <path>', 'Path to agentshield.config.yaml', 'agentshield.config.yaml')
   .option('-o, --output-dir <dir>', 'Override output directory for report files')
   .option('-s, --stages <stages>', `Comma-separated stages to run (${STAGE_IDS.join(',')})`)
-  .action(async (target: string, options: { config: string; outputDir?: string; stages?: string }) => {
+  .option('-v, --verbose', 'Print attack prompts, responses, and tool calls during dynamic testing')
+  .action(async (target: string, options: { config: string; outputDir?: string; stages?: string; verbose?: boolean }) => {
     try {
       const config = loadConfig(options.config);
       if (options.outputDir) {
@@ -32,6 +33,9 @@ program
           process.exit(1);
         }
         config.stages = requested;
+      }
+      if (options.verbose) {
+        config.verbose = true;
       }
       const runner = new ScanRunner(config);
       await runner.run(target);

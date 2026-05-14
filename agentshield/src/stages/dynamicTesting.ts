@@ -49,14 +49,15 @@ export class DynamicTestingStage implements StageRunner {
     previousReports?: StageReport[],
   ): Promise<StageReport> {
     const start = Date.now();
+    const verbose = _config.verbose === true;
     try {
       await checkGatewayReachable();
 
       const legitimateTools = extractLegitimateTools(previousReports);
 
-      const shadowResult = await runToolShadowingTest(legitimateTools, callGateway);
-      const radeResult = await runRADETest(legitimateTools, callGateway);
-      const escalationResult = await runEscalationChainTest(legitimateTools, callGateway);
+      const shadowResult = await runToolShadowingTest(legitimateTools, callGateway, verbose);
+      const radeResult = await runRADETest(legitimateTools, callGateway, verbose);
+      const escalationResult = await runEscalationChainTest(legitimateTools, callGateway, verbose);
 
       const taggedShadow: Finding[] = shadowResult.findings.map((f) => ({
         ...f,

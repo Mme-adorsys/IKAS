@@ -70,6 +70,7 @@ export interface RADEResult {
 export async function runRADETest(
   _targetTools: string[],
   callGateway: (message: string, sessionId: string) => Promise<GatewayResponse>,
+  verbose = false,
 ): Promise<RADEResult> {
   const findings: Finding[] = [];
   const perPayload: RADEPayloadResult[] = [];
@@ -81,12 +82,22 @@ export async function runRADETest(
     for (let attempt = 1; attempt <= RADE_ATTEMPTS_PER_PAYLOAD; attempt += 1) {
       const sessionId = `agentshield-rade-${payload.id}-attempt-${attempt}-${randomUUID()}`;
       const message = buildRADEPrompt(payload);
+      if (verbose) {
+        console.log(`\n[verbose] ── RADE: ${payload.id} (attempt ${attempt}/${RADE_ATTEMPTS_PER_PAYLOAD}) ──`);
+        console.log(`[verbose] Session: ${sessionId}`);
+        console.log(`[verbose] Injected instruction: ${payload.instruction}`);
+        console.log(`[verbose] Prompt:\n${message}\n`);
+      }
       let gwResponse: GatewayResponse;
       try {
         gwResponse = await callGateway(message, sessionId);
       } catch {
         totalAttempts += 1;
         continue; // count as attempt, skip signature check
+      }
+      if (verbose) {
+        console.log(`[verbose] Response: ${gwResponse.response}`);
+        console.log(`[verbose] Tools called: ${JSON.stringify(gwResponse.toolsCalled ?? [])}`);
       }
       totalAttempts += 1;
       const success = detectRADESuccess(gwResponse.response ?? '', payload.signatures);

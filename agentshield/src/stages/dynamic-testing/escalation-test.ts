@@ -37,14 +37,24 @@ export interface EscalationResult {
 export async function runEscalationChainTest(
   _keycloakTools: readonly string[],
   callGateway: (message: string, sessionId: string) => Promise<GatewayResponse>,
+  verbose = false,
 ): Promise<EscalationResult> {
   const sessionId = `agentshield-esc-${randomUUID()}`;
   const message = buildEscalationPrompt();
+  if (verbose) {
+    console.log('\n[verbose] ── Escalation Chain Attack ───────────────────────');
+    console.log(`[verbose] Session: ${sessionId}`);
+    console.log(`[verbose] Prompt:\n${message}\n`);
+  }
   let gwResponse: GatewayResponse;
   try {
     gwResponse = await callGateway(message, sessionId);
   } catch {
     return { attempts: 1, successes: 0, findings: [] };
+  }
+  if (verbose) {
+    console.log(`[verbose] Response: ${gwResponse.response}`);
+    console.log(`[verbose] Tools called: ${JSON.stringify(gwResponse.toolsCalled ?? [])}`);
   }
   const toolsCalled = gwResponse.toolsCalled ?? [];
   const escalated = detectEscalationSuccess(toolsCalled);

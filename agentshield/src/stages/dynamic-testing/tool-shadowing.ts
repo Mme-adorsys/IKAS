@@ -29,14 +29,25 @@ export function buildShadowingPrompt(legitimateTools: string[]): string {
 export async function runToolShadowingTest(
   legitimateTools: string[],
   callGateway: (message: string, sessionId: string) => Promise<GatewayResponse>,
+  verbose = false,
 ): Promise<ToolShadowingResult> {
   const message = buildShadowingPrompt(legitimateTools);
   const sessionId = `agentshield-shadow-${randomUUID()}`;
+  if (verbose) {
+    console.log('\n[verbose] ── Tool Shadowing Attack ──────────────────────────');
+    console.log(`[verbose] Session: ${sessionId}`);
+    console.log(`[verbose] Prompt:\n${message}\n`);
+  }
   let gwResponse: GatewayResponse;
   try {
     gwResponse = await callGateway(message, sessionId);
   } catch {
     return { attempts: 1, successes: 0, findings: [] };
+  }
+  if (verbose) {
+    console.log(`[verbose] Response: ${gwResponse.response}`);
+    console.log(`[verbose] Tools called: ${JSON.stringify(gwResponse.toolsCalled ?? [])}`);
+    console.log(`[verbose] Success: ${gwResponse.success} | Strategy: ${gwResponse.strategy}`);
   }
   const calledNames = (gwResponse.toolsCalled ?? []).map((t) => t.tool);
   const shadowInvoked = calledNames.includes(SHADOW_TOOL_NAME);
