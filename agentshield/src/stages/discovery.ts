@@ -107,11 +107,21 @@ async function tryKeycloakRest(baseUrl: string, timeoutMs: number): Promise<Disc
     if (!res.ok) return null;
     const data = (await res.json()) as { tools?: unknown };
     if (!Array.isArray(data.tools)) return null;
-    const toolNames = data.tools.filter((t): t is string => typeof t === 'string');
-    const tools: ToolDefinition[] = toolNames.map((name) => ({
-      name,
-      description: KEYCLOAK_TOOL_DESCRIPTIONS[name],
-    }));
+    const tools: ToolDefinition[] = data.tools
+      .filter((t): t is string | Record<string, unknown> =>
+        typeof t === 'string' || (typeof t === 'object' && t !== null && typeof (t as { name?: unknown }).name === 'string'),
+      )
+      .map((t) => {
+        if (typeof t === 'string') {
+          return { name: t, description: KEYCLOAK_TOOL_DESCRIPTIONS[t] };
+        }
+        const name = t.name as string;
+        return {
+          name,
+          description: typeof t.description === 'string' ? t.description : KEYCLOAK_TOOL_DESCRIPTIONS[name],
+          inputSchema: (t.inputSchema as Record<string, unknown>) ?? undefined,
+        };
+      });
     return {
       baseUrl: normalizeBaseUrl(baseUrl),
       transport: 'rest-keycloak',
@@ -217,12 +227,28 @@ export class DiscoveryStage implements StageRunner {
     try {
       const discovered = await enumerateServers(target);
       const inventoried = await Promise.all(discovered.map(inventoryServer));
+
+      const targetNormalized = normalizeBaseUrl(target);
+      const targetReachable = inventoried.some((s) => s.baseUrl === targetNormalized);
+      const targetUnreachableFindings: Finding[] = targetReachable ? [] : [{
+        id: randomUUID(),
+        title: `Target MCP server not reachable: ${target}`,
+        description:
+          `The specified target URL ${target} did not respond to any MCP probe ` +
+          `(REST Keycloak /tools, JSON-RPC /mcp/, /api/mcp/). ` +
+          `${inventoried.length > 0 ? `${inventoried.length} other MCP server(s) were discovered via port sweep on the same host.` : 'No MCP servers were found on this host.'}`,
+        severity: 'info' as SeverityLevel,
+        component: target,
+        score: 0,
+        remediation: 'Verify the target URL is correct and the MCP server is running.',
+      }];
+
       const shadowFindings = classifyShadowServers(inventoried, config.allowedServers);
       const cveFindings = applyCveLookup(inventoried);
       return {
         stageId: this.id,
         stageName: this.name,
-        findings: [...shadowFindings, ...cveFindings],
+        findings: [...targetUnreachableFindings, ...shadowFindings, ...cveFindings],
         duration: Date.now() - start,
         error: null,
         metadata: { discoveredServers: inventoried },
