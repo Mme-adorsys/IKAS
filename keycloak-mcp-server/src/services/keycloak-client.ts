@@ -24,6 +24,11 @@ import {
 } from '../types/index.js';
 
 export class KeycloakClientService {
+  // Keycloak master realm default access token lifespan is 60s; assume slightly less to
+  // refresh before the server-side token actually dies.
+  private static readonly ASSUMED_TOKEN_LIFESPAN_MS = 50 * 1000;
+  private static readonly REFRESH_BUFFER_MS = 15 * 1000;
+
   private client: KcAdminClient;
   private currentRealm: string;
   private savedUsername?: string;
@@ -32,6 +37,16 @@ export class KeycloakClientService {
   private savedClientSecret?: string;
   private tokenExpiry?: number;
   private isAuthenticating = false;
+
+  /**
+   * True if the error message indicates an expired/missing access token. Matches
+   * both raw HTTP-401 surfaces and the @keycloak/keycloak-admin-client wrapped
+   * "Network response was not OK" string.
+   */
+  static isAuthError(error: unknown): boolean {
+    const message = error instanceof Error ? error.message : String(error);
+    return /\b401\b|Unauthorized|invalid[_ ]?token|access[_ ]?token.*expired|Network response was not OK/i.test(message);
+  }
 
   constructor(baseUrl: string, realmName: string = 'master') {
     this.client = new KcAdminClient({
@@ -59,9 +74,7 @@ export class KeycloakClientService {
       this.savedPassword = password;
       this.savedClientId = undefined;
       this.savedClientSecret = undefined;
-      
-      // Set token expiry to 5 minutes from now (Keycloak default is often 5-15 minutes)
-      this.tokenExpiry = Date.now() + (5 * 60 * 1000);
+      this.tokenExpiry = Date.now() + KeycloakClientService.ASSUMED_TOKEN_LIFESPAN_MS;
     } finally {
       this.isAuthenticating = false;
     }
@@ -84,9 +97,7 @@ export class KeycloakClientService {
       this.savedClientSecret = clientSecret;
       this.savedUsername = undefined;
       this.savedPassword = undefined;
-      
-      // Set token expiry to 5 minutes from now
-      this.tokenExpiry = Date.now() + (5 * 60 * 1000);
+      this.tokenExpiry = Date.now() + KeycloakClientService.ASSUMED_TOKEN_LIFESPAN_MS;
     } finally {
       this.isAuthenticating = false;
     }
@@ -101,10 +112,19 @@ export class KeycloakClientService {
       await new Promise(resolve => setTimeout(resolve, 100));
     }
     
-    // Check if token is expired or will expire within 30 seconds
-    if (!this.tokenExpiry || Date.now() >= (this.tokenExpiry - 30000)) {
+    if (!this.tokenExpiry || Date.now() >= (this.tokenExpiry - KeycloakClientService.REFRESH_BUFFER_MS)) {
       await this.refreshAuthentication();
     }
+  }
+
+  /**
+   * Force a re-authentication on the next call. Used by callers that detect a
+   * 401 from Keycloak after the proactive expiry check passed (which happens
+   * when the server-side token TTL is shorter than ASSUMED_TOKEN_LIFESPAN_MS).
+   */
+  async forceReauth(): Promise<void> {
+    this.tokenExpiry = undefined;
+    await this.refreshAuthentication();
   }
 
   /**
@@ -116,13 +136,18 @@ export class KeycloakClientService {
     }
 
     try {
-      if (this.savedUsername && this.savedPassword) {
+      const username = this.savedUsername ?? process.env.KEYCLOAK_USERNAME ?? process.env.KEYCLOAK_ADMIN;
+      const password = this.savedPassword ?? process.env.KEYCLOAK_PASSWORD ?? process.env.KEYCLOAK_ADMIN_PASSWORD;
+      const clientId = this.savedClientId ?? process.env.KEYCLOAK_CLIENT_ID;
+      const clientSecret = this.savedClientSecret ?? process.env.KEYCLOAK_CLIENT_SECRET;
+
+      if (username && password) {
         console.log('🔄 Refreshing Keycloak authentication using username/password');
-        await this.authenticate(this.savedUsername, this.savedPassword);
+        await this.authenticate(username, password);
         console.log('✅ Keycloak authentication refreshed successfully');
-      } else if (this.savedClientId && this.savedClientSecret) {
+      } else if (clientId && clientSecret) {
         console.log('🔄 Refreshing Keycloak authentication using client credentials');
-        await this.authenticateWithClientCredentials(this.savedClientId, this.savedClientSecret);
+        await this.authenticateWithClientCredentials(clientId, clientSecret);
         console.log('✅ Keycloak authentication refreshed successfully');
       } else {
         throw new Error('No saved credentials available for authentication refresh');
