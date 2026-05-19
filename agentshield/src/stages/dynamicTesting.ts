@@ -73,13 +73,25 @@ export class DynamicTestingStage implements StageRunner {
       }));
 
       const asrByAttackType = buildASRMetadata({
-        toolShadowing: { successes: shadowResult.successes, attempts: shadowResult.attempts },
+        toolShadowing: {
+          successes: shadowResult.successes,
+          attempts: shadowResult.attempts,
+          indeterminate: shadowResult.indeterminate,
+        },
         radePerPayload: radeResult.perPayload,
-        escalation: { successes: escalationResult.successes, attempts: escalationResult.attempts },
+        escalation: {
+          successes: escalationResult.successes,
+          attempts: escalationResult.attempts,
+          indeterminate: escalationResult.indeterminate,
+        },
       });
 
-      const totalAttempts =
+      const totalEvaluatedAttempts =
         shadowResult.attempts + radeResult.attempts + escalationResult.attempts;
+      const totalIndeterminate =
+        shadowResult.indeterminate +
+        radeResult.indeterminate +
+        escalationResult.indeterminate;
 
       return {
         stageId: this.id,
@@ -89,7 +101,8 @@ export class DynamicTestingStage implements StageRunner {
         error: null,
         metadata: {
           asrByAttackType,
-          totalAttempts,
+          totalAttempts: totalEvaluatedAttempts,
+          totalIndeterminate,
           gatewayUrl: GATEWAY_URL,
         },
       };
@@ -104,6 +117,7 @@ export class DynamicTestingStage implements StageRunner {
         metadata: {
           asrByAttackType: null,
           totalAttempts: 0,
+          totalIndeterminate: 0,
           gatewayUrl: GATEWAY_URL,
         },
       };
