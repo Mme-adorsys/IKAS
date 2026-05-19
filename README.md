@@ -232,6 +232,35 @@ Ready for IAM Conference presentation with:
 - Multi-language compliance analysis
 - Interactive system monitoring
 
+## 🔌 Service Ports
+
+All services and their assigned ports when running the full development stack:
+
+| Service | Port | Description |
+|---|---|---|
+| Frontend (Next.js) | 3002 | Main IKAS web UI with voice interface |
+| WebSocket Server | 3001 | Socket.io real-time communication hub |
+| Keycloak | 8080 | Identity provider admin console |
+| Keycloak MCP Server | 8001 | Node.js MCP server for Keycloak admin tools |
+| Neo4j MCP Server | 8002 | Python MCP server for graph query tools |
+| AI Gateway | 8005 | Express.js multi-LLM orchestration service |
+| Neo4j Browser | 7474 | Neo4j web console |
+| Neo4j Bolt | 7687 | Neo4j driver connection |
+| PostgreSQL | 5432 | Database backend for Keycloak |
+| Redis | 6379 | Caching and pub/sub messaging |
+
+## 📚 Additional Documentation
+
+The following generated reference docs provide deeper detail on individual aspects of the system:
+
+- **[docs/ARCHITECTURE.md](docs/ARCHITECTURE.md)**: Component diagram, data flow, and key abstractions
+- **[docs/GETTING-STARTED.md](docs/GETTING-STARTED.md)**: Prerequisites, first-run steps, and common setup issues
+- **[docs/DEVELOPMENT.md](docs/DEVELOPMENT.md)**: Build commands, code style, and PR process
+- **[docs/TESTING.md](docs/TESTING.md)**: Test framework setup, running tests, and coverage requirements
+- **[docs/API.md](docs/API.md)**: AI Gateway endpoints, request/response formats, and authentication
+- **[docs/CONFIGURATION.md](docs/CONFIGURATION.md)**: Environment variables reference and per-environment overrides
+- **[docs/DEPLOYMENT.md](docs/DEPLOYMENT.md)**: Docker deployment, CI/CD pipeline, and rollback procedure
+
 ---
 
 **Built with ❤️ for the future of IAM administration**
