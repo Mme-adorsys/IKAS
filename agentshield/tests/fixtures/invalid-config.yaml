@@ -1,0 +1,3 @@
+allowedServers:
+  - http://localhost:8001
+outputDir: ./out

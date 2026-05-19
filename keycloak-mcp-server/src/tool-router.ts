@@ -8,6 +8,7 @@ import { EventHandlers } from './handlers/event-handlers.js';
 import { MetricsHandlers } from './handlers/metrics-handlers.js';
 
 export class ToolRouter {
+  private keycloakService: KeycloakClientService;
   private realmHandlers: RealmHandlers;
   private userHandlers: UserHandlers;
   private clientHandlers: ClientHandlers;
@@ -17,6 +18,7 @@ export class ToolRouter {
   private metricsHandlers: MetricsHandlers;
 
   constructor(keycloakService: KeycloakClientService) {
+    this.keycloakService = keycloakService;
     this.realmHandlers = new RealmHandlers(keycloakService);
     this.userHandlers = new UserHandlers(keycloakService);
     this.clientHandlers = new ClientHandlers(keycloakService);
@@ -28,7 +30,30 @@ export class ToolRouter {
 
   async handleToolCall(toolName: string, arguments_: any): Promise<any> {
     try {
-      switch (toolName) {
+      return await this.dispatchTool(toolName, arguments_);
+    } catch (error) {
+      if (KeycloakClientService.isAuthError(error)) {
+        console.log(`🔄 Tool '${toolName}' hit auth error, forcing reauth and retrying once`);
+        try {
+          await this.keycloakService.forceReauth();
+        } catch (reauthError) {
+          const reauthMsg = reauthError instanceof Error ? reauthError.message : 'Unknown error';
+          throw new Error(`Tool execution failed for '${toolName}': reauth after 401 failed: ${reauthMsg}`);
+        }
+        try {
+          return await this.dispatchTool(toolName, arguments_);
+        } catch (retryError) {
+          const retryMsg = retryError instanceof Error ? retryError.message : 'Unknown error';
+          throw new Error(`Tool execution failed for '${toolName}': ${retryMsg}`);
+        }
+      }
+      const message = error instanceof Error ? error.message : 'Unknown error';
+      throw new Error(`Tool execution failed for '${toolName}': ${message}`);
+    }
+  }
+
+  private async dispatchTool(toolName: string, arguments_: any): Promise<any> {
+    switch (toolName) {
         // Realm operations
         case 'list-realms':
           return await this.realmHandlers.listRealms();
@@ -303,16 +328,8 @@ export class ToolRouter {
         case 'get-client-scopes':
           return await this.metricsHandlers.getClientScopes(arguments_.realm);
 
-        default:
-          throw new Error(`Unknown tool: ${toolName}`);
-      }
-    } catch (error) {
-      // Re-throw the error with additional context
-      if (error instanceof Error) {
-        throw new Error(`Tool execution failed for '${toolName}': ${error.message}`);
-      } else {
-        throw new Error(`Tool execution failed for '${toolName}': Unknown error`);
-      }
+      default:
+        throw new Error(`Unknown tool: ${toolName}`);
     }
   }
 }

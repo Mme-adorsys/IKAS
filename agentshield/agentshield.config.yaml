@@ -1,0 +1,11 @@
+target: http://localhost:8001
+allowedServers:
+  - http://localhost:8001
+  - http://localhost:8002
+outputDir: ./agentshield-output
+stages:
+  - discovery
+  - staticAnalysis
+  - dynamicTesting
+  - runtimeMonitoring
+  - report

@@ -22,7 +22,7 @@ services:
       postgres:
         condition: service_healthy
     healthcheck:
-      test: ["CMD-SHELL", "curl -f http://localhost:8080/health/ready || curl -f http://localhost:8080/realms/master || exit 1"]
+      test: ["CMD-SHELL", "wget --no-verbose --tries=1 --spider http://localhost:8080/health/ready || wget --no-verbose --tries=1 --spider http://localhost:8080/realms/master || exit 1"]
       interval: 10s
       timeout: 10s
       retries: 15
@@ -111,7 +111,7 @@ services:
       keycloak:
         condition: service_started
     healthcheck:
-      test: ["CMD-SHELL", "curl -f http://localhost:8001/health || exit 1"]
+      test: ["CMD-SHELL", "wget --no-verbose --tries=1 --spider http://localhost:8001/health || exit 1"]
       interval: 30s
       timeout: 10s
       retries: 3
@@ -138,7 +138,7 @@ services:
         condition: service_healthy
     # Neo4j MCP health check disabled due to 406 responses
     # healthcheck:
-    #   test: ["CMD-SHELL", "curl -f http://localhost:8002/api/mcp/ || exit 1"]
+    #   test: ["CMD-SHELL", "wget --no-verbose --tries=1 --spider http://localhost:8002/api/mcp/ || exit 1"]
     #   interval: 30s
     #   timeout: 10s
     #   retries: 3
@@ -165,7 +165,7 @@ services:
       neo4j:
         condition: service_healthy
     healthcheck:
-      test: ["CMD-SHELL", "curl -f http://localhost:8003/mcp/ || exit 1"]
+      test: ["CMD-SHELL", "wget --no-verbose --tries=1 --spider http://localhost:8003/mcp/ || exit 1"]
       interval: 30s
       timeout: 10s
       retries: 3
@@ -179,13 +179,18 @@ services:
     ports:
       - "8005:8005"
     environment:
-      GEMINI_API_KEY: AIzaSyDa1fNkc-LVV7EKhEBHm8VA7yyrpEitje4
+      GEMINI_API_KEY: ${GEMINI_API_KEY:-AIzaSyDa1fNkc-LVV7EKhEBHm8VA7yyrpEitje4}
+      ANTHROPIC_API_KEY: ${ANTHROPIC_API_KEY}
       REDIS_URL: redis://redis:6379
       KEYCLOAK_MCP_URL: http://keycloak-mcp:8001
       NEO4J_MCP_URL: http://neo4j-mcp:8002
       WEBSOCKET_SERVER_URL: http://websocket-server:3001
       NODE_ENV: development
       PORT: 8005
+      LLM_PROVIDER: ${LLM_PROVIDER:-anthropic}
+      LLM_MODEL: ${LLM_MODEL:-claude-sonnet-4-20250514}
+      LLM_TEMPERATURE: ${LLM_TEMPERATURE:-0.1}
+      LLM_MAX_TOKENS: ${LLM_MAX_TOKENS:-8192}
     depends_on:
       keycloak-mcp:
         condition: service_started
@@ -267,7 +272,7 @@ services:
       redis:
         condition: service_healthy
     healthcheck:
-      test: ["CMD-SHELL", "curl -f http://localhost:3001/health || exit 1"]
+      test: ["CMD-SHELL", "wget --no-verbose --tries=1 --spider http://localhost:3001/health || exit 1"]
       interval: 30s
       timeout: 10s
       retries: 3

@@ -215,28 +215,27 @@ export abstract class BaseMCPClient {
   }
 
   async healthCheck(): Promise<boolean> {
+    // validateStatus prevents axios from throwing on 4xx so we can inspect the status code.
+    // A 4xx response (e.g. 404 from Neo4j MCP which has no /health route) still means the
+    // server is reachable. Only a 5xx or a network error means genuinely unhealthy.
+    const options = {
+      timeout: 3000,
+      validateStatus: (status: number) => status < 500,
+    };
     try {
       let response: AxiosResponse;
 
-      if (this.serverName === 'keycloak') {
-        // Keycloak MCP has a custom health endpoint
-        response = await this.httpClient.get('/health', {
-          timeout: 3000
-        });
-      } else if (this.serverName === 'neo4j') {
-        // Neo4j MCP now has a standard health endpoint
-        response = await this.httpClient.get('/health', {
-          timeout: 3000
-        });
+      if (this.serverName === 'neo4j') {
+        // Neo4j MCP (FastMCP/Python) only exposes /api/mcp/ — /health returns 404.
+        // Probe the actual MCP endpoint; any non-5xx means the server is alive.
+        response = await this.httpClient.get('/api/mcp/', options);
       } else {
-        // Fallback
-        response = await this.httpClient.get('/health', {
-          timeout: 3000
-        });
+        // Keycloak MCP and others expose /health
+        response = await this.httpClient.get('/health', options);
       }
-      
+
       return response.status >= 200 && response.status < 500;
-      
+
     } catch (error) {
       logger.warn(`Health check failed for ${this.serverName}`, {
         error: error instanceof Error ? error.message : 'Unknown error'

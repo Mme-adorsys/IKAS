@@ -1,0 +1,13 @@
+target: http://localhost:8001
+allowedServers:
+  - http://localhost:8001
+  - http://localhost:8002
+auth:
+  apiKey: test-api-key-literal
+outputDir: ./agentshield-output
+stages:
+  - discovery
+  - staticAnalysis
+  - dynamicTesting
+  - runtimeMonitoring
+  - report

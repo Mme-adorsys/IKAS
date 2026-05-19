@@ -18,13 +18,13 @@ async function checkMcpService(url: string, serviceName: string): Promise<{statu
     const healthPath = '/health';
     const response = await axios.get(`${url}${healthPath}`, {
       timeout: config.HEALTH_CHECK_TIMEOUT,
-      validateStatus: (status) => status < 400 // Standard health check for all services
+      validateStatus: (status) => status < 500 // Standard health check for all services
     });
     
     const latency = Date.now() - startTime;
     
     // Standard health check for all services
-    const isHealthy = response.status < 400;
+    const isHealthy = response.status < 500;
     
     return {
       status: isHealthy ? 'healthy' : 'unhealthy',

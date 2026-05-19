@@ -1,0 +1,10 @@
+target: http://localhost:8001
+allowedServers:
+  - http://localhost:8001
+outputDir: ./tests/fixtures/runner-output
+stages:
+  - discovery
+  - staticAnalysis
+  - dynamicTesting
+  - runtimeMonitoring
+  - report
