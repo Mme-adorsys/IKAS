@@ -1,0 +1,472 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e3]:
+    - banner [ref=e17]:
+      - generic [ref=e18]:
+        - generic [ref=e19]:
+          - button [ref=e20]:
+            - img [ref=e21]
+          - generic [ref=e23]:
+            - heading "IKAS" [level=1] [ref=e24]
+            - generic [ref=e25]: Intelligentes Keycloak Admin System
+        - generic [ref=e26]:
+          - generic [ref=e29]: Verbunden
+          - button [ref=e30]:
+            - img [ref=e31]
+          - button [ref=e34]:
+            - img [ref=e35]
+    - generic [ref=e38]:
+      - navigation [ref=e39]:
+        - generic [ref=e41]:
+          - button "Dashboard" [ref=e42]:
+            - img [ref=e43]
+            - text: Dashboard
+          - button "Chat" [ref=e45]:
+            - img [ref=e46]
+            - text: Chat
+          - button "Benutzer 37" [ref=e411]:
+            - img [ref=e49]
+            - text: Benutzer
+            - generic [ref=e51]: "37"
+          - button "Compliance" [ref=e52]:
+            - img [ref=e53]
+            - text: Compliance
+          - button "Sicherheit" [ref=e55]:
+            - img [ref=e56]
+            - text: Sicherheit
+          - button "Analyse" [ref=e58]:
+            - img [ref=e59]
+            - text: Analyse
+          - button "Prompts 6" [ref=e61]:
+            - img [ref=e62]
+            - text: Prompts
+            - generic [ref=e64]: "6"
+      - main [ref=e65]:
+        - generic [ref=e431]:
+          - generic [ref=e432]:
+            - generic [ref=e433]:
+              - heading "Prompt Templates" [level=1] [ref=e434]
+              - paragraph [ref=e435]: Manage your reusable prompt templates with variables and markdown content
+            - button "Create New Prompt" [ref=e436]:
+              - img [ref=e437]
+              - text: Create New Prompt
+          - generic [ref=e440]:
+            - generic [ref=e441]:
+              - generic [ref=e442]: Search Prompts
+              - generic [ref=e443]:
+                - textbox "Search Prompts" [ref=e444]:
+                  - /placeholder: Search by title, description, tags, or category...
+                - img [ref=e445]
+            - generic [ref=e447]:
+              - generic [ref=e448]: Filter by Category
+              - generic [ref=e449]:
+                - button "all" [ref=e450]:
+                  - img [ref=e451]
+                  - generic [ref=e453]: all
+                - button "favorites" [ref=e454]:
+                  - img [ref=e455]
+                  - generic [ref=e457]: favorites
+                - button "sync" [ref=e458]:
+                  - img [ref=e459]
+                  - generic [ref=e461]: sync
+                - button "compliance" [ref=e462]:
+                  - img [ref=e463]
+                  - generic [ref=e465]: compliance
+                - button "analysis" [ref=e466]:
+                  - img [ref=e467]
+                  - generic [ref=e469]: analysis
+                - button "management" [ref=e470]:
+                  - img [ref=e471]
+                  - generic [ref=e473]: management
+                - button "monitoring" [ref=e474]:
+                  - img [ref=e475]
+                  - generic [ref=e477]: monitoring
+                - button "reporting" [ref=e478]:
+                  - img [ref=e479]
+                  - generic [ref=e481]: reporting
+                - button "custom" [ref=e482]:
+                  - img [ref=e483]
+                  - generic [ref=e485]: custom
+          - generic [ref=e486]: Showing 6 of 6 prompts
+          - generic [ref=e487]:
+            - generic [ref=e489]:
+              - generic [ref=e490]:
+                - generic [ref=e491]:
+                  - generic [ref=e492]: sync
+                  - img [ref=e493]
+                - generic [ref=e495]:
+                  - button "Remove from favorites" [ref=e496]:
+                    - img [ref=e497]
+                  - button "Edit prompt" [ref=e499]:
+                    - img [ref=e500]
+                  - button "Delete prompt" [ref=e502]:
+                    - img [ref=e503]
+              - generic [ref=e505] [cursor=pointer]:
+                - heading "Full Realm Sync" [level=3] [ref=e506]
+                - paragraph [ref=e507]: Synchronize all data from Keycloak to Neo4j with comprehensive relationship mapping
+                - generic [ref=e508]:
+                  - generic [ref=e509]: sync
+                  - generic [ref=e510]: neo4j
+                  - generic [ref=e511]: realm
+                  - generic [ref=e512]: +1 more
+              - generic [ref=e513]:
+                - generic [ref=e515]:
+                  - img [ref=e516]
+                  - text: 1 var
+                - generic [ref=e518]: 26/05/2026
+            - generic [ref=e520]:
+              - generic [ref=e521]:
+                - generic [ref=e522]:
+                  - generic [ref=e523]: compliance
+                  - img [ref=e524]
+                - generic [ref=e526]:
+                  - button "Remove from favorites" [ref=e527]:
+                    - img [ref=e528]
+                  - button "Edit prompt" [ref=e530]:
+                    - img [ref=e531]
+                  - button "Delete prompt" [ref=e533]:
+                    - img [ref=e534]
+              - generic [ref=e536] [cursor=pointer]:
+                - heading "Compliance Audit" [level=3] [ref=e537]
+                - paragraph [ref=e538]: Comprehensive security and compliance audit with automated remediation recommendations
+                - generic [ref=e539]:
+                  - generic [ref=e540]: compliance
+                  - generic [ref=e541]: security
+                  - generic [ref=e542]: audit
+                  - generic [ref=e543]: +1 more
+              - generic [ref=e544]:
+                - generic [ref=e546]:
+                  - img [ref=e547]
+                  - text: 2 vars
+                - generic [ref=e549]: 26/05/2026
+            - generic [ref=e551]:
+              - generic [ref=e552]:
+                - generic [ref=e554]: analysis
+                - generic [ref=e555]:
+                  - button "Add to favorites" [ref=e556]:
+                    - img [ref=e557]
+                  - button "Edit prompt" [ref=e559]:
+                    - img [ref=e560]
+                  - button "Delete prompt" [ref=e562]:
+                    - img [ref=e563]
+              - generic [ref=e565] [cursor=pointer]:
+                - heading "User Deep Analysis" [level=3] [ref=e566]
+                - paragraph [ref=e567]: Detailed analysis of a specific user including access patterns and security assessment
+                - generic [ref=e568]:
+                  - generic [ref=e569]: user-analysis
+                  - generic [ref=e570]: security
+                  - generic [ref=e571]: deep-dive
+                  - generic [ref=e572]: +1 more
+              - generic [ref=e573]:
+                - generic [ref=e575]:
+                  - img [ref=e576]
+                  - text: 2 vars
+                - generic [ref=e578]: 26/05/2026
+            - generic [ref=e580]:
+              - generic [ref=e581]:
+                - generic [ref=e582]:
+                  - generic [ref=e583]: monitoring
+                  - img [ref=e584]
+                - generic [ref=e586]:
+                  - button "Remove from favorites" [ref=e587]:
+                    - img [ref=e588]
+                  - button "Edit prompt" [ref=e590]:
+                    - img [ref=e591]
+                  - button "Delete prompt" [ref=e593]:
+                    - img [ref=e594]
+              - generic [ref=e596] [cursor=pointer]:
+                - heading "System Health Check" [level=3] [ref=e597]
+                - paragraph [ref=e598]: Monitor system health and performance metrics across all IKAS services
+                - generic [ref=e599]:
+                  - generic [ref=e600]: health-check
+                  - generic [ref=e601]: performance
+                  - generic [ref=e602]: monitoring
+                  - generic [ref=e603]: +1 more
+              - generic [ref=e604]:
+                - generic [ref=e606]:
+                  - img [ref=e607]
+                  - text: 1 var
+                - generic [ref=e609]: 26/05/2026
+            - generic [ref=e611]:
+              - generic [ref=e612]:
+                - generic [ref=e614]: reporting
+                - generic [ref=e615]:
+                  - button "Add to favorites" [ref=e616]:
+                    - img [ref=e617]
+                  - button "Edit prompt" [ref=e619]:
+                    - img [ref=e620]
+                  - button "Delete prompt" [ref=e622]:
+                    - img [ref=e623]
+              - generic [ref=e625] [cursor=pointer]:
+                - heading "Role Permission Matrix" [level=3] [ref=e626]
+                - paragraph [ref=e627]: Generate comprehensive role-permission matrix for access control documentation
+                - generic [ref=e628]:
+                  - generic [ref=e629]: roles
+                  - generic [ref=e630]: permissions
+                  - generic [ref=e631]: matrix
+                  - generic [ref=e632]: +2 more
+              - generic [ref=e633]:
+                - generic [ref=e635]:
+                  - img [ref=e636]
+                  - text: 1 var
+                - generic [ref=e638]: 26/05/2026
+            - generic [ref=e640]:
+              - generic [ref=e641]:
+                - generic [ref=e643]: management
+                - generic [ref=e644]:
+                  - button "Add to favorites" [ref=e645]:
+                    - img [ref=e646]
+                  - button "Edit prompt" [ref=e648]:
+                    - img [ref=e649]
+                  - button "Delete prompt" [ref=e651]:
+                    - img [ref=e652]
+              - generic [ref=e654] [cursor=pointer]:
+                - heading "Data Export & Backup" [level=3] [ref=e655]
+                - paragraph [ref=e656]: Export and backup critical system data with verification
+                - generic [ref=e657]:
+                  - generic [ref=e658]: export
+                  - generic [ref=e659]: backup
+                  - generic [ref=e660]: disaster-recovery
+                  - generic [ref=e661]: +1 more
+              - generic [ref=e662]:
+                - generic [ref=e664]:
+                  - img [ref=e665]
+                  - text: 3 vars
+                - generic [ref=e667]: 26/05/2026
+          - generic [ref=e671]:
+            - button [ref=e672]:
+              - img [ref=e673]
+            - generic [ref=e676]:
+              - generic [ref=e677]:
+                - generic [ref=e678]:
+                  - heading "Edit Prompt" [level=1] [ref=e679]
+                  - paragraph [ref=e680]: Modify the prompt template and its configuration
+                - generic [ref=e681]:
+                  - button "Cancel" [ref=e682]
+                  - button "Save Changes" [ref=e683]
+              - generic [ref=e684]:
+                - generic [ref=e685]:
+                  - generic [ref=e686]:
+                    - heading "Basic Information" [level=2] [ref=e687]
+                    - generic [ref=e688]:
+                      - generic [ref=e689]:
+                        - generic [ref=e690]: Title *
+                        - textbox "Enter a descriptive title for your prompt" [ref=e691]: Full Realm Sync
+                      - generic [ref=e692]:
+                        - generic [ref=e693]: Description
+                        - textbox "Optional description of what this prompt does" [ref=e694]: Synchronize all data from Keycloak to Neo4j with comprehensive relationship mapping
+                  - generic [ref=e695]:
+                    - heading "Prompt Content *" [level=2] [ref=e696]
+                    - generic [ref=e697]:
+                      - generic [ref=e698]:
+                        - generic [ref=e699]:
+                          - generic [ref=e700]:
+                            - button "Edit" [ref=e701]
+                            - button "Live" [ref=e702]
+                            - button "Preview" [ref=e703]
+                          - generic [ref=e704]:
+                            - generic [ref=e705]: "Variables:"
+                            - button "realm" [ref=e706]
+                        - generic [ref=e707]: 701 characters
+                      - generic [ref=e709]:
+                        - generic [ref=e710]:
+                          - list [ref=e711]:
+                            - listitem [ref=e712]:
+                              - button "Add bold text (ctrl + b)" [ref=e713] [cursor=pointer]:
+                                - img [ref=e714]
+                            - listitem [ref=e716]:
+                              - button "Add italic text (ctrl + i)" [ref=e717] [cursor=pointer]:
+                                - img [ref=e718]
+                            - listitem [ref=e720]:
+                              - button "Add strikethrough text (ctrl + shift + x)" [ref=e721] [cursor=pointer]:
+                                - img [ref=e722]
+                            - listitem [ref=e724]:
+                              - button "Insert HR (ctrl + h)" [ref=e725] [cursor=pointer]:
+                                - img [ref=e726]
+                            - listitem [ref=e728]:
+                              - button "Insert title" [ref=e729] [cursor=pointer]:
+                                - img [ref=e730]
+                            - listitem [ref=e732]
+                            - listitem [ref=e733]:
+                              - button "Add a link (ctrl + l)" [ref=e734] [cursor=pointer]:
+                                - img [ref=e735]
+                            - listitem [ref=e737]:
+                              - button "Insert a quote (ctrl + q)" [ref=e738] [cursor=pointer]:
+                                - img [ref=e739]
+                            - listitem [ref=e741]:
+                              - button "Insert code (ctrl + j)" [ref=e742] [cursor=pointer]:
+                                - img [ref=e743]
+                            - listitem [ref=e745]:
+                              - button "Insert Code Block (ctrl + shift + j)" [ref=e746] [cursor=pointer]:
+                                - img [ref=e747]
+                            - listitem [ref=e749]:
+                              - button "Insert comment (ctrl + /)" [ref=e750] [cursor=pointer]:
+                                - img [ref=e751]
+                            - listitem [ref=e756]:
+                              - button "Add image (ctrl + k)" [ref=e757] [cursor=pointer]:
+                                - img [ref=e758]
+                            - listitem [ref=e760]:
+                              - button "Add table" [ref=e761] [cursor=pointer]:
+                                - img [ref=e762]
+                            - listitem [ref=e764]
+                            - listitem [ref=e765]:
+                              - button "Add unordered list (ctrl + shift + u)" [ref=e766] [cursor=pointer]:
+                                - img [ref=e767]
+                            - listitem [ref=e769]:
+                              - button "Add ordered list (ctrl + shift + o)" [ref=e770] [cursor=pointer]:
+                                - img [ref=e771]
+                            - listitem [ref=e773]:
+                              - button "Add checked list (ctrl + shift + c)" [ref=e774] [cursor=pointer]:
+                                - img [ref=e775]
+                            - listitem [ref=e777]
+                            - listitem [ref=e778]:
+                              - button "Open help" [ref=e779] [cursor=pointer]:
+                                - img [ref=e780]
+                          - list [ref=e782]:
+                            - listitem [ref=e783]:
+                              - button "Edit code (ctrl + 7)" [ref=e784] [cursor=pointer]:
+                                - img [ref=e785]
+                            - listitem [ref=e788]:
+                              - button "Live code (ctrl + 8)" [ref=e789] [cursor=pointer]:
+                                - img [ref=e790]
+                            - listitem [ref=e793]:
+                              - button "Preview code (ctrl + 9)" [ref=e794] [cursor=pointer]:
+                                - img [ref=e795]
+                            - listitem [ref=e798]
+                            - listitem [ref=e799]:
+                              - button "Toggle fullscreen (ctrl + 0)" [ref=e800] [cursor=pointer]:
+                                - img [ref=e801]
+                        - generic [ref=e803]:
+                          - generic [ref=e805]:
+                            - generic [ref=e806]:
+                              - generic:
+                                - code:
+                                  - generic:
+                                    - generic: "# Full Realm Synchronization"
+                                  - generic:
+                                    - text: Synchronize
+                                    - generic: "**all users, groups, roles, and clients**"
+                                    - text: "from Keycloak realm `{{realm}}` to Neo4j graph database."
+                                  - generic:
+                                    - generic: "## Tasks to Perform:"
+                                  - generic: "- ✅ Export all users with their attributes"
+                                  - generic: "- ✅ Export all groups and subgroups"
+                                  - generic: "- ✅ Export all roles (realm and client roles)"
+                                  - generic: "- ✅ Export all clients and their configurations"
+                                  - generic: "- ✅ Create comprehensive relationship mappings:"
+                                  - generic: "- User ↔ Group memberships"
+                                  - generic: "- User ↔ Role assignments"
+                                  - generic: "- Client ↔ Role mappings"
+                                  - generic: "- Organizational hierarchy"
+                                  - generic:
+                                    - generic: "## Expected Output:"
+                                  - generic:
+                                    - text: Generate a
+                                    - generic: "**detailed summary report**"
+                                    - text: "showing:"
+                                  - generic: "- Number of entities synchronized"
+                                  - generic: "- Relationship counts"
+                                  - generic: "- Any conflicts or issues encountered"
+                                  - generic: "- Data integrity verification results"
+                            - 'textbox "Write your prompt content in markdown. Use {{variableName}} syntax for variables." [ref=e807]': "# Full Realm Synchronization Synchronize **all users, groups, roles, and clients** from Keycloak realm `{{realm}}` to Neo4j graph database. ## Tasks to Perform: - ✅ Export all users with their attributes - ✅ Export all groups and subgroups - ✅ Export all roles (realm and client roles) - ✅ Export all clients and their configurations - ✅ Create comprehensive relationship mappings: - User ↔ Group memberships - User ↔ Role assignments - Client ↔ Role mappings - Organizational hierarchy ## Expected Output: Generate a **detailed summary report** showing: - Number of entities synchronized - Relationship counts - Any conflicts or issues encountered - Data integrity verification results"
+                          - generic [ref=e809]:
+                            - heading "Full Realm Synchronization" [level=1] [ref=e810]
+                            - paragraph [ref=e811]:
+                              - text: Synchronize
+                              - strong [ref=e812]: all users, groups, roles, and clients
+                              - text: from Keycloak realm
+                              - code [ref=e813]: "{{realm}}"
+                              - text: to Neo4j graph database.
+                            - heading "Tasks to Perform:" [level=2] [ref=e814]
+                            - list [ref=e815]:
+                              - listitem [ref=e816]: ✅ Export all users with their attributes
+                              - listitem [ref=e817]: ✅ Export all groups and subgroups
+                              - listitem [ref=e818]: ✅ Export all roles (realm and client roles)
+                              - listitem [ref=e819]: ✅ Export all clients and their configurations
+                              - listitem [ref=e820]:
+                                - text: "✅ Create comprehensive relationship mappings:"
+                                - list [ref=e821]:
+                                  - listitem [ref=e822]: User ↔ Group memberships
+                                  - listitem [ref=e823]: User ↔ Role assignments
+                                  - listitem [ref=e824]: Client ↔ Role mappings
+                                  - listitem [ref=e825]: Organizational hierarchy
+                            - heading "Expected Output:" [level=2] [ref=e826]
+                            - paragraph [ref=e827]:
+                              - text: Generate a
+                              - strong [ref=e828]: detailed summary report
+                              - text: "showing:"
+                            - list [ref=e829]:
+                              - listitem [ref=e830]: Number of entities synchronized
+                              - listitem [ref=e831]: Relationship counts
+                              - listitem [ref=e832]: Any conflicts or issues encountered
+                              - listitem [ref=e833]: Data integrity verification results
+                      - generic [ref=e834]:
+                        - generic [ref=e835]: "Preview with example values:"
+                        - generic [ref=e837]: "{{realm}} → master"
+                      - generic [ref=e839]:
+                        - generic [ref=e840]: 💡 Use **bold** and *italic* for emphasis
+                        - generic [ref=e841]: "• Use `code` for inline code"
+                        - generic [ref=e842]: "• Use ```code blocks``` for longer code"
+                        - generic [ref=e843]: "• Click variable buttons to insert {{variable}}"
+                  - generic [ref=e845]:
+                    - generic [ref=e846]:
+                      - generic [ref=e847]:
+                        - heading "Variables" [level=3] [ref=e848]
+                        - paragraph [ref=e849]: "Define variables that can be used in your prompt with {{variableName}} syntax"
+                      - button "Add Variable" [ref=e850]:
+                        - img [ref=e851]
+                        - text: Add Variable
+                    - generic [ref=e853]:
+                      - img [ref=e854]
+                      - heading "No variables defined" [level=4] [ref=e856]
+                      - paragraph [ref=e857]: Add variables to make your prompts dynamic and reusable
+                - generic [ref=e858]:
+                  - generic [ref=e859]:
+                    - heading "Category" [level=3] [ref=e860]
+                    - combobox [ref=e861]:
+                      - option "Sync" [selected]
+                      - option "Compliance"
+                      - option "Analysis"
+                      - option "Management"
+                      - option "Monitoring"
+                      - option "Reporting"
+                      - option "Custom"
+                    - paragraph [ref=e862]: Data synchronization operations
+                  - generic [ref=e863]:
+                    - heading "Tags" [level=3] [ref=e864]
+                    - generic [ref=e865]:
+                      - generic [ref=e866]:
+                        - generic [ref=e867]:
+                          - text: sync
+                          - button [ref=e868]:
+                            - img [ref=e869]
+                        - generic [ref=e871]:
+                          - text: neo4j
+                          - button [ref=e872]:
+                            - img [ref=e873]
+                        - generic [ref=e875]:
+                          - text: realm
+                          - button [ref=e876]:
+                            - img [ref=e877]
+                        - generic [ref=e879]:
+                          - text: comprehensive
+                          - button [ref=e880]:
+                            - img [ref=e881]
+                        - textbox [ref=e883]
+                      - generic [ref=e884]: 4/8 tags
+                      - generic [ref=e885]: Press Enter, Tab, or comma to add tags. Backspace to remove.
+                  - generic [ref=e886]:
+                    - heading "Options" [level=3] [ref=e887]
+                    - generic [ref=e888]:
+                      - checkbox "Mark as favorite" [checked] [ref=e889]
+                      - generic [ref=e890]: Mark as favorite
+                    - paragraph [ref=e891]: Favorites appear at the top of the prompt library
+                  - generic [ref=e892]:
+                    - heading "Template Preview" [level=4] [ref=e893]
+                    - generic [ref=e894]:
+                      - generic [ref=e895]: "Variables: 1"
+                      - generic [ref=e896]: "Required: 1"
+                      - generic [ref=e897]: "Content length: 701 characters"
+                      - generic [ref=e898]: "Tags: 4"
+  - button "Open Next.js Dev Tools" [ref=e12] [cursor=pointer]:
+    - img [ref=e13]
+  - alert [ref=e16]

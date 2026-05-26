@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from 'react';
 import { useIKASStore } from '@/store';
-import { VoicePanel } from './VoicePanel';
+import { ChatPanel } from './ChatPanel';
 import { SystemStatus } from './SystemStatus';
 import { EventsPanel } from './EventsPanel';
 import { UsersPanel } from './UsersPanel';
@@ -10,13 +10,14 @@ import { CompliancePanel } from './CompliancePanel';
 import { AnalysisPanel } from './AnalysisPanel';
 import { NotificationsPanel } from './NotificationsPanel';
 import { QuickActions } from './QuickActions';
+import { SecurityPanel } from './SecurityPanel';
+import { FixesPanel } from './FixesPanel';
 import { PromptManagementView } from '@/components/prompts/PromptManagementView';
 
 export function IKASDashboard() {
   const {
     ui,
     system,
-    voice,
     data,
     analysis,
     prompts,
@@ -26,6 +27,7 @@ export function IKASDashboard() {
     toggleSidebar,
     toggleDarkMode
   } = useIKASStore();
+  const openFixCount = useIKASStore(s => s.security.findings.filter(f => f.status === 'open').length);
 
   const [isInitialized, setIsInitialized] = useState(false);
 
@@ -104,6 +106,21 @@ export function IKASDashboard() {
                 </span>
               </div>
 
+              {/* Cost-Locked Model Badge — always visible during the demo so the
+                  speaker (and the audience) sees that only the cheap model runs. */}
+              <div
+                className="flex items-center space-x-2 px-2.5 py-1 rounded-full bg-emerald-100 dark:bg-emerald-900/40 border border-emerald-300 dark:border-emerald-700"
+                title="Kosten-gesperrt: nur Claude Haiku 4.5 ist aktiviert"
+              >
+                <span className="relative flex h-2 w-2">
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                  <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+                </span>
+                <span className="text-xs font-semibold text-emerald-800 dark:text-emerald-200">
+                  Haiku 4.5
+                </span>
+              </div>
+
               {/* Dark Mode Toggle */}
               <button
                 onClick={toggleDarkMode}
@@ -158,20 +175,17 @@ export function IKASDashboard() {
                   </button>
 
                   <button
-                    onClick={() => setActiveView('voice')}
+                    onClick={() => setActiveView('chat')}
                     className={`w-full flex items-center px-3 py-2 text-sm font-medium rounded-md ${
-                      ui.activeView === 'voice'
+                      ui.activeView === 'chat'
                         ? 'bg-blue-100 text-blue-700 dark:bg-blue-900 dark:text-blue-200'
                         : 'text-gray-600 hover:text-gray-900 hover:bg-gray-50 dark:text-gray-300 dark:hover:text-white dark:hover:bg-gray-700'
                     }`}
                   >
                     <svg className="mr-3 h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z" />
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
                     </svg>
-                    Sprachsteuerung
-                    {voice.isListening && (
-                      <div className="ml-auto w-2 h-2 bg-red-400 rounded-full animate-pulse"></div>
-                    )}
+                    Chat
                   </button>
 
                   <button
@@ -211,6 +225,20 @@ export function IKASDashboard() {
                   </button>
 
                   <button
+                    onClick={() => setActiveView('security')}
+                    className={`w-full flex items-center px-3 py-2 text-sm font-medium rounded-md ${
+                      ui.activeView === 'security'
+                        ? 'bg-blue-100 text-blue-700 dark:bg-blue-900 dark:text-blue-200'
+                        : 'text-gray-600 hover:text-gray-900 hover:bg-gray-50 dark:text-gray-300 dark:hover:text-white dark:hover:bg-gray-700'
+                    }`}
+                  >
+                    <svg className="mr-3 h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.031 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                    </svg>
+                    Sicherheit
+                  </button>
+
+                  <button
                     onClick={() => setActiveView('analysis')}
                     className={`w-full flex items-center px-3 py-2 text-sm font-medium rounded-md ${
                       ui.activeView === 'analysis'
@@ -224,6 +252,25 @@ export function IKASDashboard() {
                     Analyse
                     {analysis.activeAnalyses.size > 0 && (
                       <div className="ml-auto w-2 h-2 bg-blue-400 rounded-full animate-pulse"></div>
+                    )}
+                  </button>
+
+                  <button
+                    onClick={() => setActiveView('fixes')}
+                    className={`w-full flex items-center px-3 py-2 text-sm font-medium rounded-md ${
+                      ui.activeView === 'fixes'
+                        ? 'bg-blue-100 text-blue-700 dark:bg-blue-900 dark:text-blue-200'
+                        : 'text-gray-600 hover:text-gray-900 hover:bg-gray-50 dark:text-gray-300 dark:hover:text-white dark:hover:bg-gray-700'
+                    }`}
+                  >
+                    <svg className="mr-3 h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11.42 15.17L17.25 21A2.652 2.652 0 0021 17.25l-5.877-5.877M11.42 15.17l2.496-3.03c.317-.384.74-.626 1.208-.766M11.42 15.17l-4.655 5.653a2.548 2.548 0 11-3.586-3.586l6.837-5.63m5.108-.233c.55-.164 1.163-.188 1.743-.14a4.5 4.5 0 004.486-6.336l-3.276 3.277a3.004 3.004 0 01-2.25-2.25l3.276-3.276a4.5 4.5 0 00-6.336 4.486c.091 1.076-.071 2.264-.904 2.95l-.102.085m-1.745 1.437L5.909 7.5H4.5L2.25 3.75l1.5-1.5L7.5 4.5v1.409l4.26 4.26m-1.745 1.437l1.745-1.437m6.615 8.206L15.75 15.75M4.867 19.125h.008v.008h-.008v-.008z" />
+                    </svg>
+                    Fixes
+                    {openFixCount > 0 && (
+                      <span className="ml-auto text-xs bg-emerald-100 text-emerald-800 dark:bg-emerald-900 dark:text-emerald-200 px-2 py-1 rounded-full">
+                        {openFixCount}
+                      </span>
                     )}
                   </button>
 
@@ -251,10 +298,12 @@ export function IKASDashboard() {
           {/* Main Content */}
           <main className="flex-1 p-6">
             {ui.activeView === 'dashboard' && <DashboardOverview />}
-            {ui.activeView === 'voice' && <VoicePanel />}
+            {ui.activeView === 'chat' && <ChatPanel />}
             {ui.activeView === 'users' && <UsersPanel />}
             {ui.activeView === 'compliance' && <CompliancePanel />}
+            {ui.activeView === 'security' && <SecurityPanel />}
             {ui.activeView === 'analysis' && <AnalysisPanel />}
+            {ui.activeView === 'fixes' && <FixesPanel />}
             {ui.activeView === 'prompts' && <PromptManagementView />}
           </main>
         </div>

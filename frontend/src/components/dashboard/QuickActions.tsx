@@ -100,7 +100,7 @@ export function QuickActions({ className = '' }: QuickActionsProps) {
         title: 'Variables Required',
         message: `Prompt "${prompt.title}" requires variables. Loading to chat for customization.`
       });
-      setActiveView('voice');
+      setActiveView('chat');
       // Switch to chat tab and load prompt
       return;
     }
@@ -119,7 +119,7 @@ export function QuickActions({ className = '' }: QuickActionsProps) {
       await executePrompt(promptId, variables);
       
       // Switch to voice/chat view to show results
-      setActiveView('voice');
+      setActiveView('chat');
       
     } catch (error) {
       addNotification({

@@ -1,0 +1,243 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e3]:
+    - banner [ref=e8]:
+      - generic [ref=e9]:
+        - generic [ref=e10]:
+          - button [ref=e11]:
+            - img [ref=e12]
+          - generic [ref=e14]:
+            - heading "IKAS" [level=1] [ref=e15]
+            - generic [ref=e16]: Intelligentes Keycloak Admin System
+        - generic [ref=e17]:
+          - generic [ref=e20]: Verbunden
+          - button [ref=e21]:
+            - img [ref=e22]
+          - generic [ref=e24]:
+            - button [ref=e25]:
+              - img [ref=e26]
+            - generic [ref=e348]: "1"
+    - generic [ref=e28]:
+      - navigation [ref=e29]:
+        - generic [ref=e31]:
+          - button "Dashboard" [ref=e32]:
+            - img [ref=e33]
+            - text: Dashboard
+          - button "Chat" [ref=e35]:
+            - img [ref=e36]
+            - text: Chat
+          - button "Benutzer 0" [ref=e38]:
+            - img [ref=e39]
+            - text: Benutzer
+            - generic [ref=e41]: "0"
+          - button "Compliance" [ref=e42]:
+            - img [ref=e43]
+            - text: Compliance
+          - button "Sicherheit" [ref=e45]:
+            - img [ref=e46]
+            - text: Sicherheit
+          - button "Analyse" [ref=e48]:
+            - img [ref=e49]
+            - text: Analyse
+          - button "Prompts 6" [ref=e51]:
+            - img [ref=e52]
+            - text: Prompts
+            - generic [ref=e54]: "6"
+      - main [ref=e55]:
+        - generic [ref=e769]:
+          - generic [ref=e770]:
+            - generic [ref=e771]:
+              - heading "Prompt Templates" [level=1] [ref=e772]
+              - paragraph [ref=e773]: Manage your reusable prompt templates with variables and markdown content
+            - button "Create New Prompt" [ref=e774]:
+              - img [ref=e775]
+              - text: Create New Prompt
+          - generic [ref=e778]:
+            - generic [ref=e779]:
+              - generic [ref=e780]: Search Prompts
+              - generic [ref=e781]:
+                - textbox "Search Prompts" [ref=e782]:
+                  - /placeholder: Search by title, description, tags, or category...
+                - img [ref=e783]
+            - generic [ref=e785]:
+              - generic [ref=e786]: Filter by Category
+              - generic [ref=e787]:
+                - button "all" [ref=e788]:
+                  - img [ref=e789]
+                  - generic [ref=e791]: all
+                - button "favorites" [ref=e792]:
+                  - img [ref=e793]
+                  - generic [ref=e795]: favorites
+                - button "sync" [ref=e796]:
+                  - img [ref=e797]
+                  - generic [ref=e799]: sync
+                - button "compliance" [ref=e800]:
+                  - img [ref=e801]
+                  - generic [ref=e803]: compliance
+                - button "analysis" [ref=e804]:
+                  - img [ref=e805]
+                  - generic [ref=e807]: analysis
+                - button "management" [ref=e808]:
+                  - img [ref=e809]
+                  - generic [ref=e811]: management
+                - button "monitoring" [ref=e812]:
+                  - img [ref=e813]
+                  - generic [ref=e815]: monitoring
+                - button "reporting" [ref=e816]:
+                  - img [ref=e817]
+                  - generic [ref=e819]: reporting
+                - button "custom" [ref=e820]:
+                  - img [ref=e821]
+                  - generic [ref=e823]: custom
+          - generic [ref=e824]: Showing 6 of 6 prompts
+          - generic [ref=e825]:
+            - generic [ref=e827]:
+              - generic [ref=e828]:
+                - generic [ref=e829]:
+                  - generic [ref=e830]: sync
+                  - img [ref=e831]
+                - generic [ref=e833]:
+                  - button "Remove from favorites" [ref=e834]:
+                    - img [ref=e835]
+                  - button "Edit prompt" [ref=e837]:
+                    - img [ref=e838]
+                  - button "Delete prompt" [ref=e840]:
+                    - img [ref=e841]
+              - heading "Full Realm Sync" [level=3] [ref=e843]
+              - paragraph [ref=e844]: Synchronize all data from Keycloak to Neo4j with comprehensive relationship mapping
+              - generic [ref=e845]:
+                - generic [ref=e846]: sync
+                - generic [ref=e847]: neo4j
+                - generic [ref=e848]: realm
+                - generic [ref=e849]: +1 more
+              - generic [ref=e850]:
+                - generic [ref=e852]:
+                  - img [ref=e853]
+                  - text: 1 var
+                - generic [ref=e855]: 26/05/2026
+            - generic [ref=e857]:
+              - generic [ref=e858]:
+                - generic [ref=e859]:
+                  - generic [ref=e860]: compliance
+                  - img [ref=e861]
+                - generic [ref=e863]:
+                  - button "Remove from favorites" [ref=e864]:
+                    - img [ref=e865]
+                  - button "Edit prompt" [ref=e867]:
+                    - img [ref=e868]
+                  - button "Delete prompt" [ref=e870]:
+                    - img [ref=e871]
+              - heading "Compliance Audit" [level=3] [ref=e873]
+              - paragraph [ref=e874]: Comprehensive security and compliance audit with automated remediation recommendations
+              - generic [ref=e875]:
+                - generic [ref=e876]: compliance
+                - generic [ref=e877]: security
+                - generic [ref=e878]: audit
+                - generic [ref=e879]: +1 more
+              - generic [ref=e880]:
+                - generic [ref=e882]:
+                  - img [ref=e883]
+                  - text: 2 vars
+                - generic [ref=e885]: 26/05/2026
+            - generic [ref=e887]:
+              - generic [ref=e888]:
+                - generic [ref=e890]: analysis
+                - generic [ref=e891]:
+                  - button "Add to favorites" [ref=e892]:
+                    - img [ref=e893]
+                  - button "Edit prompt" [ref=e895]:
+                    - img [ref=e896]
+                  - button "Delete prompt" [ref=e898]:
+                    - img [ref=e899]
+              - heading "User Deep Analysis" [level=3] [ref=e901]
+              - paragraph [ref=e902]: Detailed analysis of a specific user including access patterns and security assessment
+              - generic [ref=e903]:
+                - generic [ref=e904]: user-analysis
+                - generic [ref=e905]: security
+                - generic [ref=e906]: deep-dive
+                - generic [ref=e907]: +1 more
+              - generic [ref=e908]:
+                - generic [ref=e910]:
+                  - img [ref=e911]
+                  - text: 2 vars
+                - generic [ref=e913]: 26/05/2026
+            - generic [ref=e915]:
+              - generic [ref=e916]:
+                - generic [ref=e917]:
+                  - generic [ref=e918]: monitoring
+                  - img [ref=e919]
+                - generic [ref=e921]:
+                  - button "Remove from favorites" [ref=e922]:
+                    - img [ref=e923]
+                  - button "Edit prompt" [ref=e925]:
+                    - img [ref=e926]
+                  - button "Delete prompt" [ref=e928]:
+                    - img [ref=e929]
+              - heading "System Health Check" [level=3] [ref=e931]
+              - paragraph [ref=e932]: Monitor system health and performance metrics across all IKAS services
+              - generic [ref=e933]:
+                - generic [ref=e934]: health-check
+                - generic [ref=e935]: performance
+                - generic [ref=e936]: monitoring
+                - generic [ref=e937]: +1 more
+              - generic [ref=e938]:
+                - generic [ref=e940]:
+                  - img [ref=e941]
+                  - text: 1 var
+                - generic [ref=e943]: 26/05/2026
+            - generic [ref=e945]:
+              - generic [ref=e946]:
+                - generic [ref=e948]: reporting
+                - generic [ref=e949]:
+                  - button "Add to favorites" [ref=e950]:
+                    - img [ref=e951]
+                  - button "Edit prompt" [ref=e953]:
+                    - img [ref=e954]
+                  - button "Delete prompt" [ref=e956]:
+                    - img [ref=e957]
+              - heading "Role Permission Matrix" [level=3] [ref=e959]
+              - paragraph [ref=e960]: Generate comprehensive role-permission matrix for access control documentation
+              - generic [ref=e961]:
+                - generic [ref=e962]: roles
+                - generic [ref=e963]: permissions
+                - generic [ref=e964]: matrix
+                - generic [ref=e965]: +2 more
+              - generic [ref=e966]:
+                - generic [ref=e968]:
+                  - img [ref=e969]
+                  - text: 1 var
+                - generic [ref=e971]: 26/05/2026
+            - generic [ref=e973]:
+              - generic [ref=e974]:
+                - generic [ref=e976]: management
+                - generic [ref=e977]:
+                  - button "Add to favorites" [ref=e978]:
+                    - img [ref=e979]
+                  - button "Edit prompt" [ref=e981]:
+                    - img [ref=e982]
+                  - button "Delete prompt" [ref=e984]:
+                    - img [ref=e985]
+              - heading "Data Export & Backup" [level=3] [ref=e987]
+              - paragraph [ref=e988]: Export and backup critical system data with verification
+              - generic [ref=e989]:
+                - generic [ref=e990]: export
+                - generic [ref=e991]: backup
+                - generic [ref=e992]: disaster-recovery
+                - generic [ref=e993]: +1 more
+              - generic [ref=e994]:
+                - generic [ref=e996]:
+                  - img [ref=e997]
+                  - text: 3 vars
+                - generic [ref=e999]: 26/05/2026
+    - generic [ref=e352]:
+      - img [ref=e354]
+      - generic [ref=e356]:
+        - generic [ref=e357]:
+          - heading "Failed to Switch Model" [level=4] [ref=e358]
+          - generic [ref=e359]:
+            - generic [ref=e360]: vor 3m
+            - button [ref=e361]:
+              - img [ref=e362]
+        - paragraph [ref=e364]: Request validation failed
+  - button "Open Next.js Dev Tools" [ref=e203] [cursor=pointer]:
+    - img [ref=e204]
+  - alert [ref=e7]

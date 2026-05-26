@@ -101,7 +101,7 @@ export function ChatMessages() {
             </svg>
           </div>
           <p className="text-sm">Start a conversation</p>
-          <p className="text-xs mt-1">Type a message or use voice commands</p>
+          <p className="text-xs mt-1">Type a message to start chatting with IKAS</p>
         </div>
       </div>
     );

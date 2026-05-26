@@ -1,28 +1,28 @@
-import { OrchestrationRequest, OrchestrationResponse, ExecutionStrategy, MCPToolCall, ToolDefinition } from '../types';
-import { FunctionCallingMode } from '@google/generative-ai';
-import { LLMService, LLMFactory, MCPToolDiscovery, LLMProvider, LLMChatRequest, LLMFunctionCall, LLMFunction } from '../llm';
-import { IntelligentRouter } from './routing';
+import { OrchestrationRequest, OrchestrationResponse, ExecutionStrategy, MCPToolCall } from '../types';
+import { LLMService, LLMFactory, MCPToolDiscovery, LLMChatRequest, LLMFunction } from '../llm';
 import { getKeycloakClient, getNeo4jClient } from '../mcp';
 import { logger, RequestTracker } from '../utils/logger';
-import { v4 as uuidv4 } from 'uuid';
 
 export class Orchestrator {
   private llmService: LLMService;
   private toolDiscovery: MCPToolDiscovery;
-  private router: IntelligentRouter;
   private toolResults: Map<string, any> = new Map();
+  private sessionCleanupInterval?: NodeJS.Timeout;
 
   constructor() {
-    // Use factory to create LLM service based on configuration
     this.llmService = LLMFactory.createLLMService();
     this.toolDiscovery = new MCPToolDiscovery();
-    this.router = new IntelligentRouter();
 
     const providerInfo = this.llmService.getProviderInfo();
     logger.info('Orchestrator initialized', {
       llmProvider: providerInfo.provider,
       llmModel: providerInfo.model
     });
+
+    // Periodically prune stale in-memory session histories so they don't grow unbounded.
+    this.sessionCleanupInterval = setInterval(() => {
+      (this.llmService as any).cleanupOldSessions?.();
+    }, 15 * 60 * 1000);
   }
 
   async processRequest(request: OrchestrationRequest): Promise<OrchestrationResponse> {
@@ -43,57 +43,23 @@ export class Orchestrator {
       context: request.context
     });
 
+    // Strategy is kept in the response for back-compat with the WS server / dashboard, but it
+    // no longer drives any branching — the LLM is the orchestrator. Tools are always all-available;
+    // tool_choice: 'auto' lets Claude/Gemini pick. The previous strategy-based name-filter hid
+    // create/delete tools from read-intent requests, which broke any follow-up that needed them.
+    const strategy: ExecutionStrategy = request.strategy || ExecutionStrategy.COORDINATED_MULTI_MCP;
+
     try {
-      // 1. Determine execution strategy (if not provided)
-      const strategy = request.strategy || await this.router.determineExecutionStrategy(
-        request.userInput, 
-        { realm: request.context?.realm }
-      );
-
-      logger.info('📋 Strategy determined', {
-        requestId,
-        sessionId: request.sessionId,
-        strategy,
-        wasProvided: !!request.strategy,
-        reasoning: strategy !== request.strategy ? 'Auto-selected by router' : 'User-provided'
-      });
-
-      // 2. Get appropriate tools for the strategy
-      const intent = this.getIntentFromStrategy(strategy);
       const discoveryResult = await this.toolDiscovery.discoverAllTools();
-      // Flatten tools from all servers
-      const allTools = Object.values(discoveryResult.tools).flat();
-      
-      // Filter tools based on intent (simplified for now)
-      const availableTools = intent === 'all' ? allTools : allTools.filter((tool: ToolDefinition) => {
-        if (intent === 'read') {
-          return !tool.name.includes('create') && !tool.name.includes('delete');
-        } else if (intent === 'write') {
-          return tool.name.includes('create') || tool.name.includes('delete') || tool.name.includes('write');
-        } else if (intent === 'analyze') {
-          return tool.name.includes('get') || tool.name.includes('read') || tool.name.includes('query');
-        }
-        return true;
-      });
+      const availableTools = Object.values(discoveryResult.tools).flat();
 
-      logger.info('🛠️ Tools selected for request', {
+      logger.info('🛠️ Tools available for request', {
         requestId,
         sessionId: request.sessionId,
-        strategy,
-        intent,
         toolCount: availableTools.length,
-        availableTools: availableTools.map((tool: ToolDefinition) => ({
-          name: tool.name,
-          description: tool.description.substring(0, 100)
-        }))
+        availableTools: availableTools.map(tool => tool.name)
       });
 
-      // 3. Execute pre-processing based on strategy
-      await this.executePreProcessing(strategy, request.context?.realm || 'master');
-
-      // 4. Determine function calling mode based on request type
-      const functionCallingMode = this.determineFunctionCallingMode(request.userInput);
-      
       logger.info(`🧠 Sending request to ${this.llmService.provider}`, {
         requestId,
         sessionId: request.sessionId,
@@ -101,7 +67,6 @@ export class Orchestrator {
         model: this.llmService.model,
         message: request.userInput,
         toolCount: availableTools.length,
-        functionCallingMode,
         context: {
           realm: request.context?.realm,
           language: request.context?.preferredLanguage || 'en'
@@ -140,7 +105,7 @@ export class Orchestrator {
       let finalResponse = llmResponse.response;
       let aggregatedData: any = {};
       let currentResponse = llmResponse;
-      let maxIterations = parseInt(process.env.MAX_FUNCTION_ITERATIONS || '10'); // Safety limit to prevent infinite loops
+      let maxIterations = parseInt(process.env.MAX_FUNCTION_ITERATIONS || '4'); // Safety limit to prevent infinite loops
       let iteration = 0;
 
       // Clear previous tool results for this session
@@ -280,9 +245,6 @@ export class Orchestrator {
         }))
       });
 
-      // 6. Execute post-processing if needed
-      await this.executePostProcessing(strategy, toolsCalled, request.context?.realm || 'master');
-
       const duration = RequestTracker.endRequest(requestId);
 
       logger.info('✅ Orchestration request completed successfully', {
@@ -337,38 +299,28 @@ export class Orchestrator {
     }
   }
 
-  private getIntentFromStrategy(strategy: ExecutionStrategy): 'read' | 'write' | 'analyze' | 'all' {
-    switch (strategy) {
-      case ExecutionStrategy.KEYCLOAK_FRESH_DATA:
-        return 'read';
-      case ExecutionStrategy.NEO4J_ANALYSIS_ONLY:
-        return 'analyze';
-      case ExecutionStrategy.KEYCLOAK_WRITE_THEN_SYNC:
-        return 'write';
-      case ExecutionStrategy.SYNC_THEN_ANALYZE:
-        return 'all';
-      case ExecutionStrategy.COORDINATED_MULTI_MCP:
-      default:
-        return 'all';
-    }
+  /**
+   * Public wrapper so streaming routes can execute MCP tool calls using the same validation,
+   * sanitisation, and result-tracking pipeline as the non-streaming flow.
+   */
+  async executeFunctionCallPublic(functionCall: { name: string; args: Record<string, any> }, realm?: string): Promise<any> {
+    return this.executeFunctionCall(functionCall, realm);
   }
 
-  private async executePreProcessing(strategy: ExecutionStrategy, realm: string): Promise<void> {
-    // No pre-processing needed - let Gemini orchestrate all operations
-    logger.debug('Skipping pre-processing - Gemini will handle orchestration', { strategy, realm });
+  /**
+   * Public access to the MCP tool catalog for the streaming route.
+   */
+  async getToolsForLLM(): Promise<LLMFunction[]> {
+    const discoveryResult = await this.toolDiscovery.discoverAllTools();
+    const allTools = Object.values(discoveryResult.tools).flat();
+    return this.convertToolsToLLMFormat(allTools);
   }
 
-  private async executePostProcessing(
-    strategy: ExecutionStrategy, 
-    toolsCalled: MCPToolCall[], 
-    realm: string
-  ): Promise<void> {
-    // No post-processing needed - Gemini handles all synchronization
-    logger.debug('Skipping post-processing - Gemini orchestrates all operations', { 
-      strategy, 
-      realm,
-      toolsCalledCount: toolsCalled.length 
-    });
+  /**
+   * Access the underlying LLM service so streaming routes can use provider-specific APIs.
+   */
+  getLLMService(): LLMService {
+    return this.llmService;
   }
 
   private async executeFunctionCall(functionCall: { name: string; args: Record<string, any> }, realm?: string): Promise<any> {
@@ -501,11 +453,6 @@ export class Orchestrator {
     return toolName; // Return as-is if no prefix found
   }
 
-  private isReadOperation(toolName: string): boolean {
-    const readOperations = ['list-users', 'get-user', 'list-realms', 'get-realm', 'list-clients', 'get-client', 'get-metrics'];
-    return readOperations.some(op => toolName.includes(op));
-  }
-
   private aggregateToolResults(toolsCalled: MCPToolCall[]): any {
     const aggregatedData: any = {};
     
@@ -536,32 +483,11 @@ export class Orchestrator {
     return null;
   }
 
-  private determineFunctionCallingMode(userInput: string): FunctionCallingMode {
-    const input = userInput.toLowerCase();
-    
-    // Force function calls for sync operations and multi-step workflows
-    const syncKeywords = ['sync', 'synchron', 'list all', 'get all', 'fetch all', 'migrate', 'copy', 'transfer'];
-    const actionKeywords = ['create', 'delete', 'update', 'add', 'remove', 'modify'];
-    
-    if (syncKeywords.some(keyword => input.includes(keyword)) || 
-        actionKeywords.some(keyword => input.includes(keyword))) {
-      return FunctionCallingMode.ANY; // Force function calls for operational tasks
-    }
-    
-    // Use AUTO for informational queries
-    const queryKeywords = ['what is', 'how many', 'show me', 'explain', 'describe'];
-    if (queryKeywords.some(keyword => input.includes(keyword))) {
-      return FunctionCallingMode.AUTO; // Let Gemini decide
-    }
-    
-    // Default to ANY for unknown patterns to ensure action
-    return FunctionCallingMode.ANY;
-  }
-
-  // Cleanup method for old chat sessions
   cleanup(): void {
-    // Note: Session cleanup should be implemented in abstract interface if needed
-    // this.llmService.cleanupOldSessions();
+    if (this.sessionCleanupInterval) {
+      clearInterval(this.sessionCleanupInterval);
+      this.sessionCleanupInterval = undefined;
+    }
     logger.debug('Orchestrator cleanup completed');
   }
 
@@ -683,7 +609,7 @@ export class Orchestrator {
   }
 
 
-  private convertToolsToLLMFormat(mcpTools: ToolDefinition[]): LLMFunction[] {
+  private convertToolsToLLMFormat(mcpTools: Array<{ name: string; description: string; inputSchema: { properties?: Record<string, any>; required?: string[] } }>): LLMFunction[] {
     return mcpTools.map(tool => ({
       name: tool.name,
       description: tool.description,

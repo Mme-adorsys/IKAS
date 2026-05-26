@@ -5,6 +5,7 @@ import { ToolDefinition } from '../types';
 import { withRetry, CircuitBreaker, GEMINI_RETRY_CONFIG, GEMINI_CIRCUIT_BREAKER_CONFIG, CircuitBreakerOpenError } from '../utils/retry';
 import { LLMService, LLMProvider, LLMChatRequest, LLMChatResponse, LLMFunctionProcessingResult, LLMFunction, LLMFunctionCall } from './llm-interface';
 import { LLMUtils, LLMError } from '../types/llm';
+import { buildIKASSystemPrompt } from './system-prompt';
 
 export interface GeminiFunction {
   name: string;
@@ -82,33 +83,7 @@ export class GeminiService extends LLMService {
           mode: FunctionCallingMode.AUTO // Let Gemini decide when to call functions
         }
       },
-      systemInstruction: `You are IKAS, an intelligent assistant for Keycloak and Neo4j system management.
-
-FUNCTION CALLING BEHAVIOR:
-- Call functions to complete user requests
-- For multi-step operations, call functions sequentially as needed
-- Examine each function result to determine if additional functions are required
-- Complete all necessary steps to fully satisfy the user's request
-
-COMMON WORKFLOWS:
-
-1. DATA SYNCHRONIZATION ("write users to database", "sync to Neo4j"):
-   Step 1: Call keycloak function to get user data (e.g., list-users)
-   Step 2: Call neo4j_get_neo4j_schema to understand the database structure
-   Step 3: Call neo4j_write_neo4j_cypher with proper Cypher query to store the data
-
-2. USER QUERIES ("show users", "list users"):
-   - Call appropriate keycloak function directly
-
-3. ANALYSIS TASKS ("analyze patterns", "find duplicates"):  
-   - Call neo4j functions for data analysis
-   - May require sync first if data is stale
-
-AVAILABLE FUNCTIONS:
-Keycloak: create-user, list-users, delete-user, get-user, list-realms, list-admin-events, get-event-details, get-metrics
-Neo4j: get_neo4j_schema, read_neo4j_cypher, write_neo4j_cypher
-
-IMPORTANT: When writing to Neo4j, always include a complete 'query' parameter with valid Cypher syntax.`
+      systemInstruction: buildIKASSystemPrompt()
     });
 
     logger.info('Gemini service initialized', {
@@ -121,19 +96,7 @@ IMPORTANT: When writing to Neo4j, always include a complete 'query' parameter wi
   }
 
   async isAvailable(): Promise<boolean> {
-    try {
-      // Try a simple request to check if the service is available
-      const testModel = this.genAI.getGenerativeModel({ model: this.model });
-      await testModel.generateContent('test');
-      return true;
-    } catch (error) {
-      geminiLogger.warn('Gemini service availability check failed', {
-        provider: this.provider,
-        model: this.model,
-        error: error instanceof Error ? error.message : String(error)
-      });
-      return false;
-    }
+    return !!(config.GEMINI_API_KEY && this.genAI);
   }
 
   convertMcpToolsToGeminiFormat(mcpTools: Record<string, ToolDefinition[]>): GeminiFunction[] {
@@ -359,9 +322,9 @@ IMPORTANT: When writing to Neo4j, always include a complete 'query' parameter wi
       
       history.push(newUserMessage, newModelMessage);
 
-      // Keep only last 20 messages to avoid context window issues
-      if (history.length > 20) {
-        history = history.slice(-20);
+      // Keep only last 8 messages to control input-token cost
+      if (history.length > 8) {
+        history = history.slice(-8);
       }
 
       this.chatHistory.set(sessionId, history);
@@ -662,9 +625,9 @@ IMPORTANT: When writing to Neo4j, always include a complete 'query' parameter wi
       
       history.push(functionMessage, finalModelMessage);
 
-      // Keep only last 20 messages to avoid context window issues
-      if (history.length > 20) {
-        const trimmedHistory = history.slice(-20);
+      // Keep only last 8 messages to control input-token cost
+      if (history.length > 8) {
+        const trimmedHistory = history.slice(-8);
         this.chatHistory.set(sessionId, trimmedHistory);
       } else {
         this.chatHistory.set(sessionId, history);

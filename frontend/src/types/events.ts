@@ -22,11 +22,6 @@ export enum EventType {
   ERROR_OCCURRED = 'error:occurred',
   HEARTBEAT = 'heartbeat',
   
-  // Voice Command Events
-  VOICE_COMMAND = 'voice:command',
-  VOICE_RESPONSE = 'voice:response',
-  VOICE_ERROR = 'voice:error',
-  
   // Data Events
   DATA_UPDATE = 'data:update',
   
@@ -116,19 +111,6 @@ export interface ComplianceEvent extends BaseEvent {
   };
 }
 
-export interface VoiceEvent extends BaseEvent {
-  type: EventType.VOICE_COMMAND | EventType.VOICE_RESPONSE | EventType.VOICE_ERROR;
-  payload: {
-    command?: string;
-    transcript?: string;
-    confidence?: number;
-    language?: string;
-    response?: string;
-    error?: string;
-    executionTime?: number;
-  };
-}
-
 export interface DataEvent extends BaseEvent {
   type: EventType.DATA_UPDATE;
   payload: {
@@ -151,27 +133,18 @@ export interface ConnectionEvent extends BaseEvent {
   };
 }
 
-export type IKASEvent = 
+export type IKASEvent =
   | UserEvent
   | GraphEvent
   | AnalysisEvent
   | ComplianceEvent
-  | VoiceEvent
   | DataEvent
   | ConnectionEvent;
 
 // WebSocket message types
 export interface SocketMessage {
-  type: 'event' | 'connected' | 'error' | 'voiceCommandReceived' | 'subscriptionConfirmed';
+  type: 'event' | 'connected' | 'error' | 'subscriptionConfirmed';
   data?: any;
-}
-
-export interface VoiceCommand {
-  command: string;
-  transcript: string;
-  confidence: number;
-  language: string;
-  timestamp: string;
 }
 
 export interface Subscription {

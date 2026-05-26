@@ -1065,4 +1065,141 @@ export class KeycloakClientService {
       throw new Error(`Failed to get client scopes: ${error instanceof Error ? error.message : 'Unknown error'}`);
     }
   }
+
+  // ===== SECURITY-SCAN PROJECTIONS =====
+  // These methods derive narrow, audit-focused views from a single getRealm() call so the security
+  // engine doesn't need to ship the whole RealmRepresentation to the LLM (it's huge).
+
+  /**
+   * Security-relevant subset of a realm's configuration.
+   */
+  async getRealmConfig(realm: string): Promise<any> {
+    await this.ensureAuthenticated();
+    const r: any = await this.client.realms.findOne({ realm });
+    if (!r) throw new Error(`Realm '${realm}' not found`);
+    return {
+      realm: r.realm,
+      enabled: r.enabled,
+      sslRequired: r.sslRequired,                     // 'all' | 'external' | 'none'
+      registrationAllowed: r.registrationAllowed,
+      registrationEmailAsUsername: r.registrationEmailAsUsername,
+      verifyEmail: r.verifyEmail,
+      loginWithEmailAllowed: r.loginWithEmailAllowed,
+      duplicateEmailsAllowed: r.duplicateEmailsAllowed,
+      resetPasswordAllowed: r.resetPasswordAllowed,
+      rememberMe: r.rememberMe,
+      editUsernameAllowed: r.editUsernameAllowed,
+      bruteForceProtected: r.bruteForceProtected,
+      permanentLockout: r.permanentLockout,
+      accessTokenLifespan: r.accessTokenLifespan,
+      accessTokenLifespanForImplicitFlow: r.accessTokenLifespanForImplicitFlow,
+      ssoSessionIdleTimeout: r.ssoSessionIdleTimeout,
+      ssoSessionMaxLifespan: r.ssoSessionMaxLifespan,
+      offlineSessionIdleTimeout: r.offlineSessionIdleTimeout,
+      offlineSessionMaxLifespanEnabled: r.offlineSessionMaxLifespanEnabled,
+      passwordPolicy: r.passwordPolicy,
+      otpPolicyType: r.otpPolicyType,
+      eventsEnabled: r.eventsEnabled,
+      adminEventsEnabled: r.adminEventsEnabled,
+      eventsExpiration: r.eventsExpiration,
+      enabledEventTypes: r.enabledEventTypes
+    };
+  }
+
+  /**
+   * Parse the password policy string into structured rules.
+   * Keycloak stores the policy as e.g. "length(8) and digits(1) and notUsername(undefined)".
+   */
+  async getPasswordPolicy(realm: string): Promise<any> {
+    await this.ensureAuthenticated();
+    const r: any = await this.client.realms.findOne({ realm });
+    if (!r) throw new Error(`Realm '${realm}' not found`);
+    const raw: string | undefined = r.passwordPolicy;
+    const rules: Record<string, string | null> = {};
+    if (raw) {
+      for (const segment of raw.split(/\s+and\s+/i)) {
+        const m = segment.trim().match(/^([a-zA-Z]+)\(([^)]*)\)$/);
+        if (m) rules[m[1]] = m[2] === 'undefined' ? null : m[2];
+      }
+    }
+    return {
+      realm: r.realm,
+      raw: raw || null,
+      configured: !!raw,
+      rules                                            // e.g. { length: '8', digits: '1', specialChars: '1' }
+    };
+  }
+
+  async getBruteForceDetection(realm: string): Promise<any> {
+    await this.ensureAuthenticated();
+    const r: any = await this.client.realms.findOne({ realm });
+    if (!r) throw new Error(`Realm '${realm}' not found`);
+    return {
+      realm: r.realm,
+      bruteForceProtected: r.bruteForceProtected,
+      permanentLockout: r.permanentLockout,
+      maxFailureWaitSeconds: r.maxFailureWaitSeconds,
+      minimumQuickLoginWaitSeconds: r.minimumQuickLoginWaitSeconds,
+      waitIncrementSeconds: r.waitIncrementSeconds,
+      quickLoginCheckMilliSeconds: r.quickLoginCheckMilliSeconds,
+      maxDeltaTimeSeconds: r.maxDeltaTimeSeconds,
+      failureFactor: r.failureFactor
+    };
+  }
+
+  async getOtpPolicy(realm: string): Promise<any> {
+    await this.ensureAuthenticated();
+    const r: any = await this.client.realms.findOne({ realm });
+    if (!r) throw new Error(`Realm '${realm}' not found`);
+    return {
+      realm: r.realm,
+      otpPolicyType: r.otpPolicyType,
+      otpPolicyAlgorithm: r.otpPolicyAlgorithm,
+      otpPolicyDigits: r.otpPolicyDigits,
+      otpPolicyInitialCounter: r.otpPolicyInitialCounter,
+      otpPolicyLookAheadWindow: r.otpPolicyLookAheadWindow,
+      otpPolicyPeriod: r.otpPolicyPeriod,
+      otpSupportedApplications: r.otpSupportedApplications
+    };
+  }
+
+  async getEventsConfig(realm: string): Promise<any> {
+    await this.ensureAuthenticated();
+    const r: any = await this.client.realms.findOne({ realm });
+    if (!r) throw new Error(`Realm '${realm}' not found`);
+    return {
+      realm: r.realm,
+      eventsEnabled: r.eventsEnabled,
+      adminEventsEnabled: r.adminEventsEnabled,
+      adminEventsDetailsEnabled: r.adminEventsDetailsEnabled,
+      eventsListeners: r.eventsListeners,
+      enabledEventTypes: r.enabledEventTypes,
+      eventsExpiration: r.eventsExpiration
+    };
+  }
+
+  /**
+   * One-row-per-client summary for the security scanner.
+   * Flags the protocol + every flow boolean so the scanner can spot risky combinations
+   * (e.g. publicClient + implicitFlowEnabled, or directAccessGrantsEnabled on a browser client).
+   */
+  async getClientProtocolsSummary(realm: string): Promise<any[]> {
+    await this.ensureAuthenticated();
+    const clients = await this.client.clients.find({ realm });
+    return clients.map((c: any) => ({
+      id: c.id,
+      clientId: c.clientId,
+      name: c.name,
+      protocol: c.protocol,                            // 'openid-connect' | 'saml'
+      enabled: c.enabled,
+      publicClient: c.publicClient,
+      bearerOnly: c.bearerOnly,
+      standardFlowEnabled: c.standardFlowEnabled,
+      implicitFlowEnabled: c.implicitFlowEnabled,
+      directAccessGrantsEnabled: c.directAccessGrantsEnabled,
+      serviceAccountsEnabled: c.serviceAccountsEnabled,
+      consentRequired: c.consentRequired,
+      redirectUris: c.redirectUris
+    }));
+  }
 }

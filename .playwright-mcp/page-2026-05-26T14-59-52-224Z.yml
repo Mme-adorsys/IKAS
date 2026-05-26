@@ -1,0 +1,123 @@
+- generic [ref=e1]:
+  - generic [ref=e3]:
+    - banner [ref=e17]:
+      - generic [ref=e18]:
+        - generic [ref=e19]:
+          - button [ref=e20]:
+            - img [ref=e21]
+          - generic [ref=e23]:
+            - heading "IKAS" [level=1] [ref=e24]
+            - generic [ref=e25]: Intelligentes Keycloak Admin System
+        - generic [ref=e26]:
+          - generic [ref=e29]: Verbunden
+          - button [ref=e30]:
+            - img [ref=e31]
+          - button [ref=e34]:
+            - img [ref=e35]
+    - generic [ref=e38]:
+      - navigation [ref=e39]:
+        - generic [ref=e41]:
+          - button "Dashboard" [ref=e42]:
+            - img [ref=e43]
+            - text: Dashboard
+          - button "Chat" [ref=e45]:
+            - img [ref=e46]
+            - text: Chat
+          - button "Benutzer 37" [ref=e411]:
+            - img [ref=e49]
+            - text: Benutzer
+            - generic [ref=e51]: "37"
+          - button "Compliance" [ref=e52]:
+            - img [ref=e53]
+            - text: Compliance
+          - button "Sicherheit" [ref=e55]:
+            - img [ref=e56]
+            - text: Sicherheit
+          - button "Analyse" [ref=e58]:
+            - img [ref=e59]
+            - text: Analyse
+          - button "Prompts 6" [ref=e61]:
+            - img [ref=e62]
+            - text: Prompts
+            - generic [ref=e64]: "6"
+      - main [ref=e65]:
+        - generic [ref=e317]:
+          - generic [ref=e318]:
+            - heading "Datenanalyse" [level=2] [ref=e319]
+            - paragraph [ref=e320]: KI-gestützte Analysen für Keycloak-Daten und Sicherheitsprüfungen
+          - generic [ref=e321]:
+            - generic [ref=e322]:
+              - heading "Neue Analyse starten" [level=3] [ref=e323]
+              - generic [ref=e324]:
+                - generic [ref=e325]:
+                  - generic [ref=e326]: Analyse-Typ
+                  - generic [ref=e327]:
+                    - generic [ref=e329] [cursor=pointer]:
+                      - img [ref=e331]
+                      - generic [ref=e333]:
+                        - heading "Doppelte Benutzer finden" [level=4] [ref=e334]
+                        - paragraph [ref=e335]: Identifiziert Benutzer mit identischen oder ähnlichen Eigenschaften
+                    - generic [ref=e337] [cursor=pointer]:
+                      - img [ref=e339]
+                      - generic [ref=e341]:
+                        - heading "Inaktive Benutzer" [level=4] [ref=e342]
+                        - paragraph [ref=e343]: Analysiert Benutzeraktivität und identifiziert inaktive Konten
+                    - generic [ref=e345] [cursor=pointer]:
+                      - img [ref=e347]
+                      - generic [ref=e349]:
+                        - heading "Rollen-Analyse" [level=4] [ref=e350]
+                        - paragraph [ref=e351]: Überprüft Rollenzuweisungen und identifiziert Anomalien
+                    - generic [ref=e353] [cursor=pointer]:
+                      - img [ref=e355]
+                      - generic [ref=e357]:
+                        - heading "Sicherheits-Audit" [level=4] [ref=e358]
+                        - paragraph [ref=e359]: Umfassende Sicherheitsprüfung aller Konfigurationen
+                    - generic [ref=e361] [cursor=pointer]:
+                      - img [ref=e363]
+                      - generic [ref=e365]:
+                        - heading "Nutzungsmuster" [level=4] [ref=e366]
+                        - paragraph [ref=e367]: Analysiert Benutzerverhalten und Zugriffsmuster
+                    - generic [ref=e369] [cursor=pointer]:
+                      - img [ref=e371]
+                      - generic [ref=e373]:
+                        - heading "Compliance-Prüfung" [level=4] [ref=e374]
+                        - paragraph [ref=e375]: Überprüft Einhaltung von Sicherheitsrichtlinien
+                - generic [ref=e376]:
+                  - generic [ref=e377]: Parameter
+                  - generic [ref=e378]:
+                    - generic [ref=e379]: Realm
+                    - combobox [ref=e380]:
+                      - option "Alle Realms" [selected]
+                      - option "Master"
+                      - option "Company Realm"
+                  - generic [ref=e381]:
+                    - generic [ref=e382]: Ähnlichkeitsschwelle (%)
+                    - slider [ref=e383]: "80"
+                    - generic [ref=e384]:
+                      - generic [ref=e385]: 50%
+                      - generic [ref=e386]: 80%
+                      - generic [ref=e387]: 100%
+                  - generic [ref=e389]:
+                    - checkbox "Deaktivierte Benutzer einschließen" [ref=e390]
+                    - generic [ref=e391]: Deaktivierte Benutzer einschließen
+                - button "Analyse starten" [active] [ref=e392]:
+                  - img [ref=e393]
+                  - text: Analyse starten
+            - generic [ref=e395]:
+              - heading "Laufende Analysen (0)" [level=3] [ref=e396]
+              - generic [ref=e398]:
+                - img [ref=e399]
+                - paragraph [ref=e401]: Keine laufenden Analysen
+                - paragraph [ref=e402]: Starte eine neue Analyse
+          - generic [ref=e403]:
+            - heading "Analyse-Verlauf (1)" [level=3] [ref=e412]
+            - generic [ref=e414]:
+              - generic [ref=e417]:
+                - heading "Doppelte Benutzer finden" [level=4] [ref=e418]
+                - paragraph [ref=e419]: 26. Mai 2026, 16:59
+              - generic [ref=e420]:
+                - generic [ref=e421]: 0s
+                - button "Ergebnisse anzeigen" [ref=e422]
+  - button "Open Next.js Dev Tools" [ref=e12] [cursor=pointer]:
+    - img [ref=e13]
+  - alert [ref=e16]

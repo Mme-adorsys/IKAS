@@ -25,11 +25,6 @@ export enum EventType {
   ERROR_OCCURRED = 'error:occurred',
   HEARTBEAT = 'heartbeat',
   
-  // Voice Command Events
-  VOICE_COMMAND = 'voice:command',
-  VOICE_RESPONSE = 'voice:response',
-  VOICE_ERROR = 'voice:error',
-  
   // Session Events
   SESSION_STARTED = 'session:started',
   SESSION_ENDED = 'session:ended',
@@ -121,20 +116,6 @@ export const ComplianceEventSchema = BaseEventSchema.extend({
   })
 });
 
-// Voice Command Events
-export const VoiceEventSchema = BaseEventSchema.extend({
-  type: z.enum([EventType.VOICE_COMMAND, EventType.VOICE_RESPONSE, EventType.VOICE_ERROR]),
-  payload: z.object({
-    command: z.string().optional(),
-    transcript: z.string().optional(),
-    confidence: z.number().min(0).max(1).optional(),
-    language: z.string().default('de-DE'),
-    response: z.string().optional(),
-    error: z.string().optional(),
-    executionTime: z.number().optional()
-  })
-});
-
 // Connection Events
 export const ConnectionEventSchema = BaseEventSchema.extend({
   type: z.enum([EventType.CONNECTION_STATUS, EventType.HEARTBEAT]),
@@ -151,12 +132,11 @@ export const ConnectionEventSchema = BaseEventSchema.extend({
 });
 
 // Union type for all events
-export type IKASEvent = 
+export type IKASEvent =
   | z.infer<typeof UserEventSchema>
   | z.infer<typeof GraphEventSchema>
   | z.infer<typeof AnalysisEventSchema>
   | z.infer<typeof ComplianceEventSchema>
-  | z.infer<typeof VoiceEventSchema>
   | z.infer<typeof ConnectionEventSchema>;
 
 // Event validation functions
@@ -167,7 +147,6 @@ export function validateEvent(event: any): IKASEvent {
     GraphEventSchema,
     AnalysisEventSchema,
     ComplianceEventSchema,
-    VoiceEventSchema,
     ConnectionEventSchema
   ];
 
@@ -232,26 +211,3 @@ export function createAnalysisEvent(
   };
 }
 
-export function createVoiceEvent(
-  sessionId: string,
-  type: EventType.VOICE_COMMAND | EventType.VOICE_RESPONSE | EventType.VOICE_ERROR,
-  payload: {
-    command?: string;
-    transcript?: string;
-    confidence?: number;
-    response?: string;
-    error?: string;
-    executionTime?: number;
-  }
-): z.infer<typeof VoiceEventSchema> {
-  return {
-    id: randomUUID(),
-    type,
-    timestamp: new Date().toISOString(),
-    sessionId,
-    payload: {
-      language: 'de-DE',
-      ...payload
-    }
-  };
-}

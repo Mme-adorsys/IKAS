@@ -1,0 +1,31 @@
+version: '3.8'
+
+services:
+  kali:
+    image: kalilinux/kali-rolling:latest
+    container_name: kali_hackbox
+    hostname: kali
+    restart: unless-stopped
+    tty: true
+    stdin_open: true
+    cap_add:
+      - NET_ADMIN
+      - SYS_ADMIN
+    security_opt:
+      - seccomp:unconfined
+    networks:
+      - hacknet
+    volumes:
+      - ./kali_data:/root/loot
+      - /tmp/.X11-unix:/tmp/.X11-unix
+    environment:
+      - DISPLAY=${DISPLAY}
+      - TERM=xterm-256color
+    devices:
+      - "/dev/net/tun:/dev/net/tun"
+    privileged: true
+
+networks:
+  hacknet:
+    driver: bridge
+

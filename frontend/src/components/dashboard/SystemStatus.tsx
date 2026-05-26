@@ -4,12 +4,11 @@ import React, { useEffect, useState } from 'react';
 import { useIKASStore } from '@/store';
 
 export function SystemStatus() {
-  const { 
-    system, 
-    voice, 
-    reconnectWebSocket, 
+  const {
+    system,
+    reconnectWebSocket,
     checkServiceHealth,
-    addNotification 
+    addNotification
   } = useIKASStore();
   
   const [isReconnecting, setIsReconnecting] = useState(false);
@@ -106,9 +105,8 @@ export function SystemStatus() {
     }
   };
 
-  const isOverallHealthy = services.every(s => s.status === 'healthy') && 
-                         system.websocketConnected && 
-                         voice.voiceSupported;
+  const isOverallHealthy = services.every(s => s.status === 'healthy') &&
+                         system.websocketConnected;
 
   return (
     <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
@@ -161,23 +159,6 @@ export function SystemStatus() {
           </div>
           <div className={`w-2 h-2 rounded-full ${
             system.websocketConnected ? 'bg-green-400' : 'bg-red-400'
-          }`}></div>
-        </div>
-
-        {/* Voice Recognition */}
-        <div className="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-700 rounded-lg">
-          <div>
-            <p className="text-sm font-medium text-gray-900 dark:text-white">
-              Spracherkennung
-            </p>
-            <p className="text-xs text-gray-500 dark:text-gray-400">
-              {voice.voiceSupported ? 'Verfügbar' : 'Nicht verfügbar'}
-              {voice.hotwordMode && ' • Hotword aktiv'}
-              {voice.isListening && ' • Hörend'}
-            </p>
-          </div>
-          <div className={`w-2 h-2 rounded-full ${
-            voice.voiceSupported ? 'bg-green-400' : 'bg-gray-400'
           }`}></div>
         </div>
 

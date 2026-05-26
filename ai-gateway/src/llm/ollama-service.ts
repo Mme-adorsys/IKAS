@@ -101,25 +101,28 @@ export class OllamaService extends LLMService {
   }
 
   async isAvailable(): Promise<boolean> {
+    // Cheap presence check only — no network call. Ollama health is verified lazily on first chat().
+    return !!this.baseURL;
+  }
+
+  /**
+   * Optional deeper check used by the orchestrator's startup health-probe, not by /api/models polling.
+   */
+  async checkOllamaServer(): Promise<boolean> {
     try {
-      // Check if Ollama server is running
       const response = await this.client.get('/api/tags', { timeout: 5000 });
-      
-      // Check if our model is available
       const models = response.data.models || [];
       const modelExists = models.some((m: any) => m.name.includes(this.model));
-      
+
       if (!modelExists) {
         logger.info(`Model ${this.model} not found locally, attempting to pull...`, {
           provider: this.provider,
           model: this.model,
           availableModels: models.map((m: any) => m.name)
         });
-        
-        // Try to pull the model
         await this.pullModel(this.model);
       }
-      
+
       return true;
     } catch (error) {
       logger.warn('Ollama service availability check failed', {

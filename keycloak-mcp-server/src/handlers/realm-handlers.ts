@@ -42,4 +42,44 @@ export class RealmHandlers {
       throw new Error(`Failed to delete realm '${realm}': ${error instanceof Error ? error.message : 'Unknown error'}`);
     }
   }
+
+  async getRealmConfig(realm: string): Promise<any> {
+    try {
+      return await this.keycloakService.getRealmConfig(realm);
+    } catch (error) {
+      throw new Error(`Failed to get realm config '${realm}': ${error instanceof Error ? error.message : 'Unknown error'}`);
+    }
+  }
+
+  async getPasswordPolicy(realm: string): Promise<any> {
+    try {
+      return await this.keycloakService.getPasswordPolicy(realm);
+    } catch (error) {
+      throw new Error(`Failed to get password policy '${realm}': ${error instanceof Error ? error.message : 'Unknown error'}`);
+    }
+  }
+
+  async getBruteForceDetection(realm: string): Promise<any> {
+    try {
+      return await this.keycloakService.getBruteForceDetection(realm);
+    } catch (error) {
+      throw new Error(`Failed to get brute-force settings '${realm}': ${error instanceof Error ? error.message : 'Unknown error'}`);
+    }
+  }
+
+  async getOtpPolicy(realm: string): Promise<any> {
+    try {
+      return await this.keycloakService.getOtpPolicy(realm);
+    } catch (error) {
+      throw new Error(`Failed to get OTP policy '${realm}': ${error instanceof Error ? error.message : 'Unknown error'}`);
+    }
+  }
+
+  async getEventsConfig(realm: string): Promise<any> {
+    try {
+      return await this.keycloakService.getEventsConfig(realm);
+    } catch (error) {
+      throw new Error(`Failed to get events config '${realm}': ${error instanceof Error ? error.message : 'Unknown error'}`);
+    }
+  }
 }

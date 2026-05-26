@@ -16,7 +16,7 @@ const configSchema = z.object({
   // Anthropic Model Selection (validated at service level)
   ANTHROPIC_MODEL: z.string().optional(),
   LLM_TEMPERATURE: z.coerce.number().min(0).max(2).default(0.1),
-  LLM_MAX_TOKENS: z.coerce.number().min(1).max(200000).default(8192),
+  LLM_MAX_TOKENS: z.coerce.number().min(1).max(200000).default(2048),
   LLM_TOP_P: z.coerce.number().min(0).max(1).default(0.95),
   LLM_TIMEOUT: z.coerce.number().default(30000),
   
@@ -104,9 +104,9 @@ function validateProviderConfig(config: Config): void {
  */
 export function getDefaultModel(provider: string): string {
   const modelDefaults: Record<string, string> = {
-    'gemini': 'gemini-2.5-pro',
+    'gemini': 'gemini-2.5-flash',
     'ollama': 'llama3',
-    'anthropic': 'claude-opus-4-1-20250805', // Default to Opus 4.1
+    'anthropic': 'claude-haiku-4-5-20251001',
     'openai': 'gpt-4-turbo'
   };
   
@@ -170,24 +170,34 @@ function getApiKeyForProvider(provider: string): string | undefined {
 export function getAvailableAnthropicModels() {
   return [
     {
-      id: 'claude-opus-4-1-20250805',
-      name: 'Claude Opus 4.1',
-      displayName: 'Opus 4.1',
-      description: 'Superior reasoning and problem-solving capabilities',
-      capabilities: ['text', 'tools', 'function_calling', 'analysis', 'deep_reasoning'],
-      speed: 'moderate',
-      cost: 'high',
-      recommended: 'Complex reasoning, analysis, multi-step problems'
+      id: 'claude-haiku-4-5-20251001',
+      name: 'Claude Haiku 4.5',
+      displayName: 'Haiku 4.5',
+      description: 'Fastest and cheapest Claude model with full tool-use support',
+      capabilities: ['text', 'tools', 'function_calling'],
+      speed: 'fast',
+      cost: 'low',
+      recommended: 'Default for all IKAS workloads — fast, cheap, capable'
     },
     {
       id: 'claude-sonnet-4-20250514',
       name: 'Claude Sonnet 4',
       displayName: 'Sonnet 4',
-      description: 'Fast and efficient with excellent capabilities',
+      description: 'Balanced performance for complex reasoning',
       capabilities: ['text', 'tools', 'function_calling', 'analysis'],
       speed: 'fast',
       cost: 'moderate',
-      recommended: 'General tasks, quick responses, balanced performance'
+      recommended: 'Escalation for complex Cypher generation or multi-step analysis'
+    },
+    {
+      id: 'claude-opus-4-1-20250805',
+      name: 'Claude Opus 4.1',
+      displayName: 'Opus 4.1',
+      description: 'Superior reasoning, highest cost',
+      capabilities: ['text', 'tools', 'function_calling', 'analysis', 'deep_reasoning'],
+      speed: 'moderate',
+      cost: 'high',
+      recommended: 'Only for the hardest reasoning tasks; expensive'
     }
   ];
 }
@@ -197,9 +207,9 @@ export function getAvailableAnthropicModels() {
  */
 export function getAllSupportedAnthropicModels() {
   return [
-    'claude-opus-4-1-20250805',     // Opus 4.1 - Superior reasoning
-    'claude-sonnet-4-20250514',     // Sonnet 4 - Faster, efficient  
-    'claude-3-sonnet-20240229'      // Legacy support
+    'claude-haiku-4-5-20251001',
+    'claude-sonnet-4-20250514',
+    'claude-opus-4-1-20250805'
   ];
 }
 

@@ -1,9 +1,9 @@
 import { create } from 'zustand';
 import { subscribeWithSelector, devtools } from 'zustand/middleware';
-import { IKASEvent, EventType, VoiceCommand } from '@/types/events';
+import { IKASEvent, EventType } from '@/types/events';
 import { PromptTemplate, PromptCategory, PromptFilter, PromptExecution, DEFAULT_PROMPT_TEMPLATES } from '@/types/prompts';
-import { VoiceService } from '@/services/voice';
 import { websocketService } from '@/services/websocket';
+import { Finding, Scan, ScanScope, CheckCategory, Severity, FindingStatus, LiveLoginEvent } from '@/types/security';
 
 // System state interfaces
 interface SystemStatus {
@@ -15,16 +15,6 @@ interface SystemStatus {
     keycloakMcp: 'healthy' | 'unhealthy' | 'unknown';
     neo4jMcp: 'healthy' | 'unhealthy' | 'unknown';
   };
-}
-
-// Voice state interfaces
-interface VoiceState {
-  isListening: boolean;
-  hotwordMode: boolean;
-  currentTranscript: string;
-  lastCommand: VoiceCommand | null;
-  lastResponse: string | null;
-  voiceSupported: boolean;
 }
 
 // Model and Chat state interfaces
@@ -139,7 +129,7 @@ interface DataState {
 interface UIState {
   darkMode: boolean;
   sidebarOpen: boolean;
-  activeView: 'dashboard' | 'users' | 'compliance' | 'analysis' | 'voice' | 'prompts';
+  activeView: 'dashboard' | 'users' | 'compliance' | 'analysis' | 'chat' | 'prompts' | 'security' | 'fixes';
   notifications: Array<{
     id: string;
     type: 'info' | 'success' | 'warning' | 'error';
@@ -148,6 +138,74 @@ interface UIState {
     timestamp: Date;
     read: boolean;
   }>;
+}
+
+// Security state
+interface SecurityState {
+  activeScan: Scan | null;
+  findings: Finding[];
+  filter: { category?: CheckCategory; severity?: Severity; status?: FindingStatus };
+  isLoading: boolean;
+  lastError: string | null;
+  liveEvents: LiveLoginEvent[];        // ring buffer, cap 200, newest first
+  identityGraph: IdentityGraphData | null;
+  // Epoch ms of the last completed scan. Used by panel useEffects to gate the
+  // auto-scan: re-running only when older than SECURITY_SCAN_TTL_MS.
+  lastScanAt: number | null;
+}
+
+// Auto-rescan interval used by panel auto-effects. Reasonable default for the
+// demo: stays fresh within a 5-minute talk, doesn't re-run on every tab switch.
+export const SECURITY_SCAN_TTL_MS = 5 * 60 * 1000;
+
+/**
+ * True when the last security scan is older than the TTL (or never ran).
+ * Use from panel `useEffect` to decide whether to trigger an auto-scan.
+ */
+export function isSecurityScanStale(lastScanAt: number | null, ttlMs = SECURITY_SCAN_TTL_MS): boolean {
+  if (lastScanAt === null) return true;
+  return Date.now() - lastScanAt > ttlMs;
+}
+
+export interface IdentityGraphNode {
+  id: string;
+  label: string;
+  type: 'realm' | 'user' | 'client' | 'group' | 'role' | 'finding';
+  affected: boolean;
+  // User-only stammdaten passed through from the backend projection (for click-drill-down).
+  username?: string;
+  email?: string;
+  firstName?: string;
+  lastName?: string;
+  enabled?: boolean;
+  emailVerified?: boolean;
+  realm?: string;
+  createdAt?: string;
+  // Group-only / Role-only
+  groupName?: string;
+  roleName?: string;
+  description?: string;
+}
+
+export interface AdminEvent {
+  id: string;
+  time: string;
+  operation: 'ASSIGN_ROLE' | 'JOIN_GROUP' | 'CREATE_USER' | string;
+  actor: string;
+  targetType: string;
+  targetUsername?: string;
+  details?: string;
+}
+
+export interface IdentityGraphData {
+  realm: string;
+  nodes: IdentityGraphNode[];
+  links: Array<{ source: string; target: string; type: string }>;
+  // Adjacency lists for UserDetailModal's "roles & privileges" section. The graph above is
+  // for visualisation; these maps are the ergonomic API for "which roles does this user have?"
+  membershipByUser?: Record<string, string[]>;       // userId -> groupId[]
+  rolesByGroup?: Record<string, string[]>;           // groupId -> roleId[]
+  directRolesByUser?: Record<string, string[]>;      // userId -> roleId[]
 }
 
 // Prompt management state
@@ -166,7 +224,6 @@ interface PromptState {
 interface IKASStore {
   // State
   system: SystemStatus;
-  voice: VoiceState;
   model: ModelState;
   chat: ChatState;
   events: EventState;
@@ -174,9 +231,7 @@ interface IKASStore {
   data: DataState;
   ui: UIState;
   prompts: PromptState;
-
-  // Voice service instance
-  voiceService: VoiceService | null;
+  security: SecurityState;
 
   // Actions
   initializeServices: () => Promise<void>;
@@ -184,13 +239,6 @@ interface IKASStore {
   disconnectWebSocket: () => Promise<void>;
   reconnectWebSocket: (userId?: string, realm?: string) => Promise<void>;
   checkServiceHealth: () => Promise<void>;
-  
-  // Voice actions
-  initializeVoice: () => void;
-  startListening: () => void;
-  stopListening: () => void;
-  toggleHotwordMode: () => void;
-  sendVoiceCommand: (command: VoiceCommand) => Promise<void>;
 
   // Model actions
   loadAvailableModels: () => Promise<void>;
@@ -212,6 +260,9 @@ interface IKASStore {
 
   // Analysis actions
   startAnalysis: (type: string, parameters?: Record<string, any>) => Promise<void>;
+  loadKeycloakUsers: () => Promise<void>;
+  updateKeycloakUser: (realm: string, id: string, fields: { firstName?: string; lastName?: string; email?: string; emailVerified?: boolean; enabled?: boolean }) => Promise<boolean>;
+  toggleKeycloakUserEnabled: (realm: string, id: string, enabled: boolean) => Promise<boolean>;
   updateAnalysisProgress: (analysisId: string, progress: number, status?: string) => void;
   completeAnalysis: (analysisId: string, result: any, success: boolean) => void;
 
@@ -232,6 +283,23 @@ interface IKASStore {
   importPrompts: (prompts: PromptTemplate[]) => void;
   getFilteredPrompts: () => PromptTemplate[];
   getFavoritePrompts: () => PromptTemplate[];
+
+  // Security actions
+  runSecurityScan: (realm: string, scope?: ScanScope) => Promise<void>;
+  loadSecurityFindings: () => Promise<void>;
+  dismissSecurityFinding: (id: string) => Promise<void>;
+  enrichSecurityFinding: (id: string) => Promise<void>;
+  setSecurityFilter: (filter: Partial<SecurityState['filter']>) => void;
+  loadLiveEvents: () => Promise<void>;
+  appendLiveEvent: (event: LiveLoginEvent) => void;
+  loadIdentityGraph: (realm: string) => Promise<void>;
+  triggerDemoScenario: (scenario: 'brute-force' | 'stuffing' | 'impossible-travel' | 'calm' | 'mixed') => Promise<void>;
+  loadAdminEventsForUser: (userId: string) => Promise<AdminEvent[]>;
+  syncRealmNow: () => Promise<{ added: number; updated: number; removed: number; realms: string[]; durationMs: number; errors: string[] } | null>;
+  applyAutoFix: (findingId: string) => Promise<{ summary: string } | null>;
+  resetDemo: () => Promise<{ durationMs: number; summary: any } | null>;
+  autoFixableRules: string[];
+  loadAutoFixableRules: () => Promise<void>;
 
   // UI actions
   toggleDarkMode: () => void;
@@ -255,15 +323,6 @@ export const useIKASStore = create<IKASStore>()(
           keycloakMcp: 'unknown',
           neo4jMcp: 'unknown'
         }
-      },
-
-      voice: {
-        isListening: false,
-        hotwordMode: false,
-        currentTranscript: '',
-        lastCommand: null,
-        lastResponse: null,
-        voiceSupported: false
       },
 
       model: {
@@ -321,13 +380,21 @@ export const useIKASStore = create<IKASStore>()(
         searchQuery: ''
       },
 
-      voiceService: null,
+      security: {
+        activeScan: null,
+        findings: [],
+        filter: {},
+        isLoading: false,
+        lastError: null,
+        liveEvents: [],
+        identityGraph: null,
+        lastScanAt: null
+      },
 
       // Service initialization
       initializeServices: async () => {
-        const { initializeVoice, loadAvailableModels, loadPrompts } = get();
-        initializeVoice();
-        
+        const { loadAvailableModels, loadPrompts } = get();
+
         // Load available models on initialization (non-blocking)
         loadAvailableModels().catch((error) => {
           console.warn('Models not available during initialization:', error);
@@ -573,119 +640,6 @@ export const useIKASStore = create<IKASStore>()(
         }
       },
 
-      // Voice actions
-      initializeVoice: () => {
-        if (typeof window === 'undefined') return;
-
-        const voiceService = new VoiceService(
-          {
-            language: 'en-US',
-            continuous: false,
-            interimResults: true,
-            hotwordEnabled: true,
-            hotwords: ['ikas', 'hey ikas']
-          },
-          {
-            onResult: (transcript, isFinal, confidence) => {
-              set((state) => ({
-                voice: {
-                  ...state.voice,
-                  currentTranscript: transcript
-                }
-              }));
-            },
-            onCommand: async (command) => {
-              set((state) => ({
-                voice: {
-                  ...state.voice,
-                  lastCommand: command
-                }
-              }));
-              
-              await get().sendVoiceCommand(command);
-            },
-            onHotword: (transcript) => {
-              get().addNotification({
-                type: 'info',
-                title: 'Hotword Detected',
-                message: `"${transcript}" recognized`
-              });
-            },
-            onStart: () => {
-              set((state) => ({
-                voice: {
-                  ...state.voice,
-                  isListening: true
-                }
-              }));
-            },
-            onEnd: () => {
-              set((state) => ({
-                voice: {
-                  ...state.voice,
-                  isListening: false
-                }
-              }));
-            },
-            onError: (error) => {
-              get().addNotification({
-                type: 'error',
-                title: 'Voice Recognition Error',
-                message: error
-              });
-            }
-          }
-        );
-
-        set((state) => ({
-          voiceService,
-          voice: {
-            ...state.voice,
-            voiceSupported: true
-          }
-        }));
-      },
-
-      startListening: () => {
-        const { voiceService } = get();
-        voiceService?.startListening();
-      },
-
-      stopListening: () => {
-        const { voiceService } = get();
-        voiceService?.stopListening();
-      },
-
-      toggleHotwordMode: () => {
-        const { voiceService } = get();
-        if (voiceService) {
-          const hotwordMode = voiceService.toggleHotwordMode();
-          set((state) => ({
-            voice: {
-              ...state.voice,
-              hotwordMode
-            }
-          }));
-        }
-      },
-
-      sendVoiceCommand: async (command: VoiceCommand) => {
-        try {
-          await websocketService.sendVoiceCommand(command);
-          get().addNotification({
-            type: 'info',
-            title: 'Voice Command Sent',
-            message: `"${command.command}" sent for processing`
-          });
-        } catch (error) {
-          get().addNotification({
-            type: 'error',
-            title: 'Failed to Send Command',
-            message: error instanceof Error ? error.message : 'Unknown error'
-          });
-        }
-      },
-
       // Model actions
       loadAvailableModels: async () => {
         set((state) => ({
@@ -749,8 +703,11 @@ export const useIKASStore = create<IKASStore>()(
               'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-              provider: modelId,
-              sessionId: get().chat.sessionId
+              // Backend accepts {modelId} (full id like "anthropic-haiku-4.5") or {provider}
+              // (e.g. "anthropic"). We send the id since that's what the UI tracks.
+              modelId,
+              // Backend zod schema rejects null sessionId — only include if it's a real string.
+              ...(get().chat.sessionId ? { sessionId: get().chat.sessionId } : {})
             })
           });
 
@@ -975,20 +932,6 @@ export const useIKASStore = create<IKASStore>()(
       handleIncomingEvent: (event: IKASEvent) => {
         // Handle different event types
         switch (event.type) {
-          case EventType.VOICE_RESPONSE:
-            if (event.payload.response) {
-              set((state) => ({
-                voice: {
-                  ...state.voice,
-                  lastResponse: event.payload.response || null
-                }
-              }));
-              
-              // Speak the response
-              get().voiceService?.speak(event.payload.response);
-            }
-            break;
-
           case EventType.ANALYSIS_STARTED: {
             // Fallback: create entry if the direct 'analysisStarted' socket event was missed
             const payload = event.payload as any;
@@ -1031,12 +974,20 @@ export const useIKASStore = create<IKASStore>()(
             // Implementation depends on specific requirements
             break;
 
-          case EventType.DATA_UPDATE:
+          case EventType.DATA_UPDATE: {
             // Handle data updates from backend
             const { dataType, data } = event.payload;
+
+            // Live login events from the demo simulator. Push directly into the security
+            // slice's ring buffer; widgets subscribe to security.liveEvents.
+            if (dataType === 'liveLogin') {
+              get().appendLiveEvent(data as LiveLoginEvent);
+              break;
+            }
+
             set((state) => {
               const updatedData = { ...state.data };
-              
+
               switch (dataType) {
                 case 'users':
                   updatedData.users = Array.isArray(data) ? data : [];
@@ -1053,10 +1004,11 @@ export const useIKASStore = create<IKASStore>()(
                 default:
                   console.warn('Unknown data type:', dataType);
               }
-              
+
               return { data: updatedData };
             });
             break;
+          }
 
           case EventType.COMPLIANCE_ALERT:
             // Add compliance issue
@@ -1125,11 +1077,179 @@ export const useIKASStore = create<IKASStore>()(
       },
 
       // Analysis actions
-      startAnalysis: async (type: string, parameters: Record<string, any> = {}) => {
+      // Update a Keycloak user via the new /api/users PUT. Returns true on success and refreshes
+      // the local cache so the UI reflects the change.
+      updateKeycloakUser: async (realm, id, fields) => {
+        const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8005';
         try {
-          await websocketService.startAnalysis(type, parameters);
-          // Analysis tracking is initialized when the server confirms via 'analysisStarted' event
+          const res = await fetch(`${apiUrl}/api/users/${encodeURIComponent(realm)}/${encodeURIComponent(id)}`, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(fields)
+          });
+          if (!res.ok) throw new Error(`Update failed: ${res.status}`);
+          // Optimistic local update so the UI changes immediately, then refresh from server.
+          set((state) => ({
+            data: {
+              ...state.data,
+              users: state.data.users.map(u => u.id === id ? { ...u, ...fields } as typeof u : u)
+            }
+          }));
+          void get().loadKeycloakUsers();
+          return true;
+        } catch (err) {
+          get().addNotification({
+            type: 'error', title: 'User-Update fehlgeschlagen',
+            message: err instanceof Error ? err.message : 'Unknown error'
+          });
+          return false;
+        }
+      },
+
+      // PATCH the enabled flag — same logic as updateKeycloakUser but narrower.
+      toggleKeycloakUserEnabled: async (realm, id, enabled) => {
+        const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8005';
+        try {
+          const res = await fetch(`${apiUrl}/api/users/${encodeURIComponent(realm)}/${encodeURIComponent(id)}/enabled`, {
+            method: 'PATCH',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ enabled })
+          });
+          if (!res.ok) throw new Error(`Toggle failed: ${res.status}`);
+          set((state) => ({
+            data: {
+              ...state.data,
+              users: state.data.users.map(u => u.id === id ? { ...u, enabled } : u)
+            }
+          }));
+          return true;
+        } catch (err) {
+          get().addNotification({
+            type: 'error', title: 'User-Status-Änderung fehlgeschlagen',
+            message: err instanceof Error ? err.message : 'Unknown error'
+          });
+          return false;
+        }
+      },
+
+      // Aggregated keycloak user list, served by /api/users (proxies keycloak-mcp list-users
+       // across every realm). Used by the Benutzer-Tab + Analyse `duplicate-users` type.
+      loadKeycloakUsers: async () => {
+        const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8005';
+        try {
+          const res = await fetch(`${apiUrl}/api/users`);
+          if (!res.ok) throw new Error(`Failed to load users: ${res.status}`);
+          const json = await res.json();
+          set((state) => ({
+            data: {
+              ...state.data,
+              users: (json.users ?? []).map((u: any) => ({
+                id: u.id,
+                username: u.username,
+                email: u.email ?? '',
+                firstName: u.firstName,
+                lastName: u.lastName,
+                enabled: u.enabled !== false,
+                realm: u.realm
+              }))
+            }
+          }));
+        } catch (err) {
+          console.warn('loadKeycloakUsers failed:', err);
+        }
+      },
+
+      // Runs an analysis "for real" against the existing APIs and pushes a structured result
+      // into analysisHistory. The original websocket-based flow rarely delivered a usable
+      // result payload, so AnalysisPanel's "Ergebnisse anzeigen" was always empty.
+      startAnalysis: async (type: string, parameters: Record<string, any> = {}) => {
+        const id = `local-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
+        const startTime = Date.now();
+        const realm: string = parameters.realm && parameters.realm !== 'all' ? parameters.realm : 'corporate';
+
+        const finish = (success: boolean, result: any) => {
+          const completedAt = new Date();
+          set((state) => ({
+            analysis: {
+              ...state.analysis,
+              analysisHistory: [
+                { id, type, completedAt, duration: Math.max(1, Math.round((Date.now() - startTime) / 1000)), success, result },
+                ...state.analysis.analysisHistory
+              ].slice(0, 50)
+            }
+          }));
+        };
+
+        try {
+          if (type === 'compliance-check' || type === 'security-audit' || type === 'role-analysis') {
+            const scope = type === 'compliance-check' ? 'compliance'
+              : type === 'role-analysis' ? 'fraud'   // privilege checks live under fraud
+              : 'all';
+            // Trigger the real scan and read the resulting findings out of the store after it
+            // finishes. runSecurityScan polls until completion before resolving.
+            await get().runSecurityScan(realm, scope as any);
+            const activeScan = get().security.activeScan;
+            const findings = activeScan?.findings ?? [];
+            const filteredFindings = type === 'role-analysis'
+              ? findings.filter(f => ['USER_GOD_MODE', 'REDUNDANT_GROUP', 'ORPHAN_ROLE', 'EXCESSIVE_PRIVILEGE'].includes(f.rule))
+              : findings;
+            const patterns = filteredFindings.slice(0, 20).map(f => ({
+              severity: f.severity,
+              rule: f.rule,
+              title: f.title,
+              affected: f.affected.map(a => `${a.type}:${a.name}`).join(', ')
+            }));
+            finish(true, {
+              summary: `Scan in '${realm}' abgeschlossen — ${filteredFindings.length} Findings.`,
+              patterns,
+              realm,
+              totalFindings: filteredFindings.length
+            });
+          } else if (type === 'duplicate-users') {
+            await get().loadKeycloakUsers();
+            const users = get().data.users;
+            // Group by lowercase email — duplicates have ≥2 users with the same address.
+            const byEmail: Record<string, typeof users> = {};
+            for (const u of users) {
+              if (!u.email) continue;
+              const key = u.email.toLowerCase();
+              (byEmail[key] ??= []).push(u);
+            }
+            const duplicates = Object.entries(byEmail)
+              .filter(([, list]) => list.length > 1)
+              .map(([email, list]) => ({
+                severity: 'warning',
+                rule: 'DUPLICATE_EMAIL',
+                title: `${list.length} Accounts mit Email "${email}"`,
+                affected: list.map(u => `user:${u.username} (${u.realm})`).join(', ')
+              }));
+            finish(true, {
+              summary: duplicates.length === 0
+                ? `Keine doppelten Email-Adressen in ${users.length} Accounts gefunden.`
+                : `${duplicates.length} doppelte Email-Adressen gefunden.`,
+              patterns: duplicates,
+              totalFindings: duplicates.length
+            });
+          } else if (type === 'inactive-users' || type === 'usage-patterns') {
+            // Both require Keycloak admin-events which are disabled in the demo realm.
+            finish(false, {
+              summary: 'Diese Analyse benötigt Keycloak Admin-Events (aktuell deaktiviert im Demo-Realm).',
+              patterns: [],
+              totalFindings: 0
+            });
+          } else {
+            finish(false, {
+              summary: `Analyse-Typ "${type}" wird (noch) nicht unterstützt.`,
+              patterns: [],
+              totalFindings: 0
+            });
+          }
         } catch (error) {
+          finish(false, {
+            summary: error instanceof Error ? error.message : 'Unknown error',
+            patterns: [],
+            totalFindings: 0
+          });
           get().addNotification({
             type: 'error',
             title: 'Analysis Failed',
@@ -1190,6 +1310,354 @@ export const useIKASStore = create<IKASStore>()(
         }
       },
 
+
+      // Security actions
+      runSecurityScan: async (realm: string, scope: ScanScope = 'all') => {
+        const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8005';
+
+        set((state) => ({
+          security: { ...state.security, isLoading: true, lastError: null, activeScan: null }
+        }));
+
+        try {
+          const startRes = await fetch(`${apiUrl}/api/security/scan`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ realm, scope })
+          });
+          if (!startRes.ok) throw new Error(`Failed to start scan: ${startRes.status}`);
+          const { scanId } = await startRes.json();
+
+          // Poll scan status until completed/failed.
+          while (true) {
+            await new Promise(r => setTimeout(r, 1500));
+            const statusRes = await fetch(`${apiUrl}/api/security/scan/${scanId}`);
+            if (!statusRes.ok) throw new Error(`Failed to poll scan: ${statusRes.status}`);
+            const scan: Scan = await statusRes.json();
+            set((state) => ({ security: { ...state.security, activeScan: scan } }));
+            if (scan.state === 'completed' || scan.state === 'failed') {
+              set((state) => ({
+                security: {
+                  ...state.security,
+                  activeScan: scan,
+                  findings: scan.findings,
+                  isLoading: false,
+                  lastScanAt: scan.state === 'completed' ? Date.now() : state.security.lastScanAt
+                }
+              }));
+              get().addNotification({
+                type: scan.state === 'completed' ? 'success' : 'error',
+                title: scan.state === 'completed' ? 'Sicherheitsscan abgeschlossen' : 'Sicherheitsscan fehlgeschlagen',
+                message: scan.state === 'completed'
+                  ? `${scan.findings.length} Findings gefunden`
+                  : (scan.error || 'Unbekannter Fehler')
+              });
+              return;
+            }
+          }
+        } catch (err) {
+          const msg = err instanceof Error ? err.message : 'Unknown error';
+          set((state) => ({ security: { ...state.security, isLoading: false, lastError: msg } }));
+          get().addNotification({ type: 'error', title: 'Sicherheitsscan-Fehler', message: msg });
+        }
+      },
+
+      loadSecurityFindings: async () => {
+        const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8005';
+        try {
+          const res = await fetch(`${apiUrl}/api/security/findings`);
+          if (!res.ok) throw new Error(`Failed to load findings: ${res.status}`);
+          const { findings } = await res.json();
+          set((state) => ({ security: { ...state.security, findings } }));
+        } catch (err) {
+          const msg = err instanceof Error ? err.message : 'Unknown error';
+          set((state) => ({ security: { ...state.security, lastError: msg } }));
+        }
+      },
+
+      dismissSecurityFinding: async (id: string) => {
+        const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8005';
+        try {
+          const res = await fetch(`${apiUrl}/api/security/findings/${id}/dismiss`, { method: 'POST' });
+          if (!res.ok) throw new Error(`Failed to dismiss finding: ${res.status}`);
+          set((state) => ({
+            security: {
+              ...state.security,
+              findings: state.security.findings.map(f => f.id === id ? { ...f, status: 'dismissed' } : f)
+            }
+          }));
+        } catch (err) {
+          const msg = err instanceof Error ? err.message : 'Unknown error';
+          get().addNotification({ type: 'error', title: 'Fehler beim Verwerfen', message: msg });
+        }
+      },
+
+      setSecurityFilter: (filter) => {
+        set((state) => ({
+          security: { ...state.security, filter: { ...state.security.filter, ...filter } }
+        }));
+      },
+
+      enrichSecurityFinding: async (id: string) => {
+        const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8005';
+        try {
+          const res = await fetch(`${apiUrl}/api/security/findings/${id}/enrich`, { method: 'POST' });
+          if (!res.ok) throw new Error(`Failed to enrich: ${res.status}`);
+          const finding: Finding = await res.json();
+          set((state) => ({
+            security: {
+              ...state.security,
+              findings: state.security.findings.map(f => f.id === id ? finding : f)
+            }
+          }));
+        } catch (err) {
+          const msg = err instanceof Error ? err.message : 'Unknown error';
+          get().addNotification({ type: 'error', title: 'AI-Analyse fehlgeschlagen', message: msg });
+        }
+      },
+
+      loadLiveEvents: async () => {
+        const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8005';
+        try {
+          const since = new Date(Date.now() - 24 * 3600_000).toISOString();
+          const res = await fetch(`${apiUrl}/api/security/live-events?since=${encodeURIComponent(since)}&limit=500`);
+          if (!res.ok) throw new Error(`Failed to load live events: ${res.status}`);
+          const { events } = await res.json();
+          set((state) => ({
+            security: { ...state.security, liveEvents: events.slice(0, 200) }
+          }));
+        } catch (err) {
+          console.warn('loadLiveEvents failed:', err);
+        }
+      },
+
+      appendLiveEvent: (event: LiveLoginEvent) => {
+        set((state) => ({
+          security: {
+            ...state.security,
+            liveEvents: [event, ...state.security.liveEvents].slice(0, 200)
+          }
+        }));
+      },
+
+      loadIdentityGraph: async (realm: string) => {
+        const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8005';
+        try {
+          const res = await fetch(`${apiUrl}/api/security/graph?realm=${encodeURIComponent(realm)}&maxNodes=60`);
+          if (!res.ok) throw new Error(`Failed to load graph: ${res.status}`);
+          const json = await res.json();
+          // Backend returns { realm, data: [{ realm, users, clients, groups, findings }] }
+          const projection = (json.data || [])[0];
+          if (!projection) {
+            set((state) => ({ security: { ...state.security, identityGraph: null } }));
+            return;
+          }
+          const affectedIds = new Set((projection.findings || []).map((f: any) => f.targetId));
+          const realmNode = projection.realm;
+          const nodes = [
+            { id: realmNode.id ?? realmNode.name, label: realmNode.name ?? 'realm', type: 'realm' as const, affected: affectedIds.has(realmNode.id) },
+            // Pass user stammdaten through so the UserDetailDrawer can render them on click.
+            ...(projection.users || []).map((u: any) => ({
+              id: u.id,
+              label: u.username ?? u.id,
+              type: 'user' as const,
+              affected: affectedIds.has(u.id),
+              username: u.username,
+              email: u.email,
+              firstName: u.firstName,
+              lastName: u.lastName,
+              enabled: u.enabled,
+              emailVerified: u.emailVerified,
+              realm: u.realm,
+              createdAt: u.createdAt
+            })),
+            ...(projection.clients || []).map((c: any) => ({ id: c.id, label: c.clientId ?? c.name ?? c.id, type: 'client' as const, affected: affectedIds.has(c.id) })),
+            ...(projection.groups || []).map((g: any) => ({
+              id: g.id,
+              label: g.name ?? g.id,
+              type: 'group' as const,
+              affected: affectedIds.has(g.id),
+              groupName: g.name,
+              realm: g.realm
+            })),
+            ...(projection.roles || []).map((r: any) => ({
+              id: r.id,
+              label: r.name ?? r.id,
+              type: 'role' as const,
+              affected: affectedIds.has(r.id),
+              roleName: r.name,
+              description: r.description,
+              realm: r.realm
+            }))
+          ];
+          const realmId = realmNode.id ?? realmNode.name;
+          // Memberships / grants / direct role assignments come as flat pair-lists from the
+          // backend; turn them into graph edges and adjacency maps.
+          const memberships = (projection.memberships || []) as Array<{ userId: string; groupId: string }>;
+          const grants = (projection.grants || []) as Array<{ groupId: string; roleId: string }>;
+          const directRoles = (projection.directRoles || []) as Array<{ userId: string; roleId: string }>;
+
+          const membershipByUser: Record<string, string[]> = {};
+          for (const m of memberships) {
+            if (!m.userId || !m.groupId) continue;
+            (membershipByUser[m.userId] ??= []).push(m.groupId);
+          }
+          const rolesByGroup: Record<string, string[]> = {};
+          for (const g of grants) {
+            if (!g.groupId || !g.roleId) continue;
+            (rolesByGroup[g.groupId] ??= []).push(g.roleId);
+          }
+          const directRolesByUser: Record<string, string[]> = {};
+          for (const d of directRoles) {
+            if (!d.userId || !d.roleId) continue;
+            (directRolesByUser[d.userId] ??= []).push(d.roleId);
+          }
+
+          const links = [
+            ...(projection.users || []).map((u: any) => ({ source: u.id, target: realmId, type: 'BELONGS_TO' })),
+            ...(projection.clients || []).map((c: any) => ({ source: c.id, target: realmId, type: 'IN_REALM' })),
+            ...(projection.groups || []).map((g: any) => ({ source: g.id, target: realmId, type: 'IN_REALM' })),
+            ...(projection.roles || []).map((r: any) => ({ source: r.id, target: realmId, type: 'IN_REALM' })),
+            ...memberships.filter(m => m.userId && m.groupId).map(m => ({ source: m.userId, target: m.groupId, type: 'MEMBER_OF' })),
+            ...grants.filter(g => g.groupId && g.roleId).map(g => ({ source: g.groupId, target: g.roleId, type: 'GRANTS_ROLE' })),
+            ...directRoles.filter(d => d.userId && d.roleId).map(d => ({ source: d.userId, target: d.roleId, type: 'HAS_ROLE' }))
+          ];
+          set((state) => ({
+            security: {
+              ...state.security,
+              identityGraph: { realm, nodes, links, membershipByUser, rolesByGroup, directRolesByUser }
+            }
+          }));
+        } catch (err) {
+          console.warn('loadIdentityGraph failed:', err);
+        }
+      },
+
+      triggerDemoScenario: async (scenario) => {
+        const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8005';
+        try {
+          await fetch(`${apiUrl}/api/security/demo/scenario`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ scenario })
+          });
+        } catch (err) {
+          console.warn('triggerDemoScenario failed:', err);
+        }
+      },
+
+      // Lifecycle timeline for the UserDetailModal — pulls synthetic AdminEvent rows from
+      // the AI gateway (which reads them from Neo4j). Caller decides what to do with them.
+      loadAdminEventsForUser: async (userId: string): Promise<AdminEvent[]> => {
+        const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8005';
+        try {
+          const res = await fetch(`${apiUrl}/api/security/admin-events?userId=${encodeURIComponent(userId)}`);
+          if (!res.ok) throw new Error(`Failed to load admin events: ${res.status}`);
+          const { events } = await res.json();
+          return events ?? [];
+        } catch (err) {
+          console.warn('loadAdminEventsForUser failed:', err);
+          return [];
+        }
+      },
+
+      autoFixableRules: [] as string[],
+
+      loadAutoFixableRules: async () => {
+        const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8005';
+        try {
+          const res = await fetch(`${apiUrl}/api/security/auto-fix/availability`);
+          if (!res.ok) return;
+          const { rules } = await res.json();
+          set({ autoFixableRules: Array.isArray(rules) ? rules : [] } as any);
+        } catch (err) {
+          console.warn('loadAutoFixableRules failed:', err);
+        }
+      },
+
+      applyAutoFix: async (findingId: string) => {
+        const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8005';
+        try {
+          const res = await fetch(`${apiUrl}/api/security/findings/${findingId}/apply-fix`, { method: 'POST' });
+          if (!res.ok) {
+            const detail = await res.json().catch(() => ({}));
+            throw new Error(detail.message || detail.error || `Auto-Fix fehlgeschlagen (${res.status})`);
+          }
+          const { finding, fix } = await res.json();
+          // Reflect the resolved status + any field updates in the store so the panel updates.
+          if (finding) {
+            set((state) => ({
+              security: {
+                ...state.security,
+                findings: state.security.findings.map(f => f.id === findingId ? finding : f)
+              }
+            }));
+          }
+          get().addNotification({
+            type: 'success',
+            title: 'Auto-Fix angewendet',
+            message: fix?.summary ?? 'Finding wurde behoben.'
+          });
+          // Also refresh the identity graph since most fixes mutate it visibly.
+          await get().loadIdentityGraph('corporate').catch(() => {});
+          return fix;
+        } catch (err) {
+          const msg = err instanceof Error ? err.message : 'Unknown error';
+          get().addNotification({ type: 'error', title: 'Auto-Fix fehlgeschlagen', message: msg });
+          return null;
+        }
+      },
+
+      resetDemo: async () => {
+        const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8005';
+        try {
+          const res = await fetch(`${apiUrl}/api/security/reset`, { method: 'POST' });
+          if (!res.ok) throw new Error(`Reset fehlgeschlagen (${res.status})`);
+          const body = await res.json();
+          // Wipe local caches so the next scan starts clean.
+          set((state) => ({
+            security: {
+              ...state.security,
+              findings: [],
+              activeScan: null,
+              lastScanAt: null,
+              identityGraph: null
+            }
+          }));
+          get().addNotification({
+            type: 'success',
+            title: 'Demo zurückgesetzt',
+            message: `Graph in ${body.durationMs}ms neu geseedet.`
+          });
+          // Re-run a scan so the panel immediately shows the restored findings.
+          await get().runSecurityScan('corporate', 'all').catch(() => {});
+          await get().loadIdentityGraph('corporate').catch(() => {});
+          return { durationMs: body.durationMs, summary: body.summary };
+        } catch (err) {
+          const msg = err instanceof Error ? err.message : 'Unknown error';
+          get().addNotification({ type: 'error', title: 'Reset fehlgeschlagen', message: msg });
+          return null;
+        }
+      },
+
+      // Manually triggers the realm-to-graph sync. Reloads identityGraph + findings on success.
+      syncRealmNow: async () => {
+        const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8005';
+        try {
+          const res = await fetch(`${apiUrl}/api/security/sync`, { method: 'POST' });
+          if (!res.ok) throw new Error(`Sync failed: ${res.status}`);
+          const delta = await res.json();
+          // Refresh anything that depends on user counts so the UI shows the delta immediately.
+          if (delta.added > 0 || delta.updated > 0 || delta.removed > 0) {
+            await get().loadIdentityGraph('corporate').catch(() => {});
+            await get().loadKeycloakUsers().catch(() => {});
+          }
+          return delta;
+        } catch (err) {
+          console.warn('syncRealmNow failed:', err);
+          return null;
+        }
+      },
 
       // UI actions
       toggleDarkMode: () => {

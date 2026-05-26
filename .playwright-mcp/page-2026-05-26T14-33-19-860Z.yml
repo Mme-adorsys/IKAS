@@ -1,0 +1,167 @@
+- generic [ref=e1]:
+  - generic [ref=e3]:
+    - banner [ref=e8]:
+      - generic [ref=e9]:
+        - generic [ref=e10]:
+          - button [ref=e11]:
+            - img [ref=e12]
+          - generic [ref=e14]:
+            - heading "IKAS" [level=1] [ref=e15]
+            - generic [ref=e16]: Intelligentes Keycloak Admin System
+        - generic [ref=e17]:
+          - generic [ref=e20]: Verbunden
+          - button [ref=e21]:
+            - img [ref=e22]
+          - generic [ref=e24]:
+            - button [ref=e25]:
+              - img [ref=e26]
+            - generic [ref=e220]: "1"
+    - generic [ref=e28]:
+      - navigation [ref=e29]:
+        - generic [ref=e31]:
+          - button "Dashboard" [ref=e32]:
+            - img [ref=e33]
+            - text: Dashboard
+          - button "Chat" [ref=e35]:
+            - img [ref=e36]
+            - text: Chat
+          - button "Benutzer 0" [ref=e38]:
+            - img [ref=e39]
+            - text: Benutzer
+            - generic [ref=e41]: "0"
+          - button "Compliance" [ref=e42]:
+            - img [ref=e43]
+            - text: Compliance
+          - button "Sicherheit" [ref=e45]:
+            - img [ref=e46]
+            - text: Sicherheit
+          - button "Analyse" [ref=e48]:
+            - img [ref=e49]
+            - text: Analyse
+          - button "Prompts 6" [ref=e51]:
+            - img [ref=e52]
+            - text: Prompts
+            - generic [ref=e54]: "6"
+      - main [ref=e55]:
+        - generic [ref=e56]:
+          - generic [ref=e57]:
+            - heading "Dashboard" [level=2] [ref=e58]
+            - paragraph [ref=e59]: Willkommen im IKAS Intelligenten Keycloak Admin System
+          - generic [ref=e60]:
+            - generic [ref=e61]:
+              - generic [ref=e62]:
+                - heading "System Status" [level=3] [ref=e63]
+                - generic [ref=e65]: "Last check: 16:33:18"
+              - button "⚡ Health Check" [active] [ref=e68]
+              - generic [ref=e69]:
+                - generic [ref=e71]:
+                  - paragraph [ref=e72]: WebSocket Verbindung
+                  - paragraph [ref=e73]: "Session: 2238f3a4-1620-4824-be9e-b78d776d44e9"
+                - generic [ref=e75]:
+                  - paragraph [ref=e76]: IKAS Services
+                  - generic [ref=e77]:
+                    - generic [ref=e78]:
+                      - generic [ref=e79]:
+                        - generic [ref=e80]:
+                          - paragraph [ref=e81]: WebSocket Server
+                          - generic "Connected" [ref=e82]
+                        - generic [ref=e83]:
+                          - paragraph [ref=e84]: Real-time Communication Hub
+                          - generic [ref=e85]: :3001
+                      - generic [ref=e87]: ✅ Gesund
+                    - generic [ref=e88]:
+                      - generic [ref=e89]:
+                        - paragraph [ref=e91]: AI Gateway
+                        - generic [ref=e92]:
+                          - paragraph [ref=e93]: LLM Orchestration Service
+                          - generic [ref=e94]: :8005
+                      - generic [ref=e96]: ✅ Gesund
+                    - generic [ref=e97]:
+                      - generic [ref=e98]:
+                        - paragraph [ref=e100]: Keycloak MCP
+                        - generic [ref=e101]:
+                          - paragraph [ref=e102]: User Management Service
+                          - generic [ref=e103]: :8001
+                      - generic [ref=e105]: ✅ Gesund
+                    - generic [ref=e106]:
+                      - generic [ref=e107]:
+                        - paragraph [ref=e109]: Neo4j MCP
+                        - generic [ref=e110]:
+                          - paragraph [ref=e111]: Graph Database Service
+                          - generic [ref=e112]: :8002
+                      - generic [ref=e114]: ✅ Gesund
+                - generic [ref=e116]:
+                  - generic [ref=e117]:
+                    - paragraph [ref=e118]: Overall System Health
+                    - paragraph [ref=e119]: All systems operational
+                    - paragraph [ref=e120]: "Session: 2238f3a4..."
+                  - generic [ref=e121]: 🟢 Optimal
+            - generic [ref=e122]:
+              - generic [ref=e123]:
+                - heading "Letzte Events" [level=3] [ref=e124]
+                - generic [ref=e125]:
+                  - generic [ref=e207]: 1 neu
+                  - button "Löschen" [ref=e126]
+              - generic [ref=e208]:
+                - img [ref=e210]
+                - generic [ref=e212]:
+                  - generic [ref=e213]:
+                    - paragraph [ref=e214]: System-Event
+                    - paragraph [ref=e215]: gerade eben
+                  - paragraph [ref=e216]: Details verfügbar
+                  - paragraph [ref=e217]: "Session: system..."
+              - button "Alle als gelesen markieren" [ref=e219]
+            - generic [ref=e133]:
+              - generic [ref=e134]:
+                - heading "Quick ActionsFavorites" [level=3] [ref=e135]
+                - button "Manage" [ref=e137]
+              - generic [ref=e138]:
+                - generic [ref=e139] [cursor=pointer]:
+                  - img [ref=e141]
+                  - generic [ref=e143]:
+                    - img [ref=e145]
+                    - generic [ref=e147]:
+                      - paragraph [ref=e148]: Full Realm Sync
+                      - paragraph [ref=e149]: Synchronize all data from Keycloak to Neo4j with comprehensive relationship mapping
+                      - generic [ref=e151]: sync
+                  - generic [ref=e152]:
+                    - img [ref=e153]
+                    - generic [ref=e155]: 1 variable
+                - generic [ref=e157] [cursor=pointer]:
+                  - img [ref=e159]
+                  - generic [ref=e161]:
+                    - img [ref=e163]
+                    - generic [ref=e165]:
+                      - paragraph [ref=e166]: Compliance Audit
+                      - paragraph [ref=e167]: Comprehensive security and compliance audit with automated remediation recommendations
+                      - generic [ref=e169]: compliance
+                  - generic [ref=e170]:
+                    - img [ref=e171]
+                    - generic [ref=e173]: 2 variables
+                - generic [ref=e175] [cursor=pointer]:
+                  - img [ref=e177]
+                  - generic [ref=e179]:
+                    - img [ref=e181]
+                    - generic [ref=e183]:
+                      - paragraph [ref=e184]: System Health Check
+                      - paragraph [ref=e185]: Monitor system health and performance metrics across all IKAS services
+                      - generic [ref=e187]: monitoring
+                  - generic [ref=e188]:
+                    - img [ref=e189]
+                    - generic [ref=e191]: 1 variable
+              - button "Create New Prompt" [ref=e194]:
+                - img [ref=e195]
+                - generic [ref=e197]: Create New Prompt
+    - generic [ref=e223]:
+      - img [ref=e225]
+      - generic [ref=e227]:
+        - generic [ref=e228]:
+          - heading "Health Check" [level=4] [ref=e229]
+          - generic [ref=e230]:
+            - generic [ref=e231]: gerade eben
+            - button [ref=e232]:
+              - img [ref=e233]
+        - paragraph [ref=e235]: Service health status updated
+  - button "Open Next.js Dev Tools" [ref=e203] [cursor=pointer]:
+    - img [ref=e204]
+  - alert [ref=e7]

@@ -1,22 +1,49 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useIKASStore } from '@/store';
 
+const DEFAULT_MODEL_ID = 'anthropic-haiku-4.5';
+
 export function ModelSelector() {
-  const { 
-    model, 
-    switchModel, 
-    loadAvailableModels 
+  const {
+    model,
+    switchModel,
+    loadAvailableModels
   } = useIKASStore();
-  
+
   const [isOpen, setIsOpen] = useState(false);
+  // One-shot auto-pick: we only try to switch to the default model once per page load.
+  // If the backend rejects (e.g. provider not configured) the user can still pick manually,
+  // but we don't loop indefinitely re-firing the switch request.
+  const autoSwitchAttemptedRef = useRef(false);
+
+  // Load the model list on mount if it's empty, then auto-pick the default model so the
+  // chat is usable without the user having to open the dropdown first.
+  useEffect(() => {
+    if (model.availableModels.length === 0 && !model.isLoading) {
+      void loadAvailableModels();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  useEffect(() => {
+    if (autoSwitchAttemptedRef.current) return;
+    if (model.currentModel || model.isLoading || model.availableModels.length === 0) return;
+    const preferred = model.availableModels.find(m => m.id === DEFAULT_MODEL_ID && m.available)
+      ?? model.availableModels.find(m => m.available);
+    if (preferred) {
+      autoSwitchAttemptedRef.current = true;
+      void switchModel(preferred.id);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [model.availableModels, model.currentModel, model.isLoading]);
 
   const handleModelSwitch = async (modelId: string) => {
     if (modelId === model.currentModel?.id || model.isLoading) {
       return;
     }
-    
+
     setIsOpen(false);
     await switchModel(modelId);
   };

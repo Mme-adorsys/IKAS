@@ -9,8 +9,8 @@ const inter = Inter({
 
 export const metadata: Metadata = {
   title: "IKAS - Intelligentes Keycloak Admin System",
-  description: "AI-powered Keycloak administration with voice commands and real-time analytics",
-  keywords: "Keycloak, Admin, AI, Voice Commands, Analytics, IKAS",
+  description: "AI-powered Keycloak administration with natural-language chat and real-time analytics",
+  keywords: "Keycloak, Admin, AI, Chat, Analytics, IKAS",
 };
 
 export default function RootLayout({

@@ -1,0 +1,81 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e3]:
+    - banner [ref=e8]:
+      - generic [ref=e9]:
+        - generic [ref=e10]:
+          - button [ref=e11]:
+            - img [ref=e12]
+          - generic [ref=e14]:
+            - heading "IKAS" [level=1] [ref=e15]
+            - generic [ref=e16]: Intelligentes Keycloak Admin System
+        - generic [ref=e17]:
+          - generic [ref=e20]: Verbunden
+          - button [ref=e21]:
+            - img [ref=e22]
+          - generic [ref=e24]:
+            - button [ref=e25]:
+              - img [ref=e26]
+            - generic [ref=e348]: "1"
+    - generic [ref=e28]:
+      - navigation [ref=e29]:
+        - generic [ref=e31]:
+          - button "Dashboard" [ref=e32]:
+            - img [ref=e33]
+            - text: Dashboard
+          - button "Chat" [ref=e35]:
+            - img [ref=e36]
+            - text: Chat
+          - button "Benutzer 0" [ref=e38]:
+            - img [ref=e39]
+            - text: Benutzer
+            - generic [ref=e41]: "0"
+          - button "Compliance" [ref=e42]:
+            - img [ref=e43]
+            - text: Compliance
+          - button "Sicherheit" [ref=e45]:
+            - img [ref=e46]
+            - text: Sicherheit
+          - button "Analyse" [ref=e48]:
+            - img [ref=e49]
+            - text: Analyse
+          - button "Prompts 6" [ref=e51]:
+            - img [ref=e52]
+            - text: Prompts
+            - generic [ref=e54]: "6"
+      - main [ref=e55]:
+        - generic [ref=e236]:
+          - generic [ref=e237]:
+            - generic [ref=e238]:
+              - heading "IKAS Chat" [level=2] [ref=e239]
+              - paragraph [ref=e240]: Send text commands to IKAS and stream responses back.
+            - button "No model selected" [ref=e243] [cursor=pointer]:
+              - generic [ref=e244]:
+                - generic [ref=e247]: No model selected
+                - img [ref=e248]
+          - generic [ref=e250]:
+            - heading "Chat with AI" [level=3] [ref=e253]
+            - generic [ref=e255]:
+              - img [ref=e257]
+              - paragraph [ref=e259]: Start a conversation
+              - paragraph [ref=e260]: Type a message to start chatting with IKAS
+            - generic [ref=e262]:
+              - generic [ref=e263]:
+                - textbox "Type your message to IKAS..." [ref=e265]
+                - button "Open Prompt Library (Ctrl/Cmd + P)" [ref=e266]:
+                  - img [ref=e267]
+                - button [disabled] [ref=e269]:
+                  - img [ref=e270]
+              - generic [ref=e273]: Enterto send•Shift + Enterfor new line
+    - generic [ref=e352]:
+      - img [ref=e354]
+      - generic [ref=e356]:
+        - generic [ref=e357]:
+          - heading "Failed to Switch Model" [level=4] [ref=e358]
+          - generic [ref=e359]:
+            - generic [ref=e360]: gerade eben
+            - button [ref=e361]:
+              - img [ref=e362]
+        - paragraph [ref=e364]: Request validation failed
+  - button "Open Next.js Dev Tools" [ref=e203] [cursor=pointer]:
+    - img [ref=e204]
+  - alert [ref=e7]

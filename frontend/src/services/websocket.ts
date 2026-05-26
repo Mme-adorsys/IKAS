@@ -1,5 +1,5 @@
 import { io, Socket } from 'socket.io-client';
-import { IKASEvent, EventType, VoiceCommand, Subscription } from '@/types/events';
+import { IKASEvent, EventType, Subscription } from '@/types/events';
 
 export class WebSocketService {
   private socket: Socket | null = null;
@@ -128,11 +128,6 @@ export class WebSocketService {
           this.handleIncomingEvent(event);
         });
 
-        this.socket.on('voiceCommandReceived', (data) => {
-          console.log('🎤 Voice command acknowledged', data);
-          this.callHandler('voiceCommandReceived', data);
-        });
-
         this.socket.on('analysisStarted', (data) => {
           console.log('🔬 Analysis started', data);
           this.callHandler('analysisStarted', data);
@@ -188,20 +183,6 @@ export class WebSocketService {
 
   off(eventType: EventType | string): void {
     this.eventHandlers.delete(eventType);
-  }
-
-  // Voice command methods
-  async sendVoiceCommand(voiceCommand: VoiceCommand): Promise<void> {
-    if (!this.isConnected || !this.socket) {
-      throw new Error('WebSocket not connected');
-    }
-
-    console.log('🎤 Sending voice command', {
-      command: voiceCommand.command,
-      confidence: voiceCommand.confidence
-    });
-
-    this.socket.emit('voiceCommand', voiceCommand);
   }
 
   // Subscription methods

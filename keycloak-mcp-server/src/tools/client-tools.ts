@@ -135,5 +135,16 @@ export const clientTools: Tool[] = [
       },
       required: ["realm", "clientId"]
     }
+  },
+  {
+    name: "get-client-protocols-summary",
+    description: "Returns one row per client with protocol + flow flags: publicClient, standardFlowEnabled, implicitFlowEnabled, directAccessGrantsEnabled, serviceAccountsEnabled. For security scanning.",
+    inputSchema: {
+      type: "object",
+      properties: {
+        realm: { type: "string", description: "The realm name" }
+      },
+      required: ["realm"]
+    }
   }
 ];

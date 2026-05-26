@@ -1,0 +1,166 @@
+- generic [ref=e1]:
+  - generic [ref=e3]:
+    - banner [ref=e8]:
+      - generic [ref=e9]:
+        - generic [ref=e10]:
+          - button [ref=e11]:
+            - img [ref=e12]
+          - generic [ref=e14]:
+            - heading "IKAS" [level=1] [ref=e15]
+            - generic [ref=e16]: Intelligentes Keycloak Admin System
+        - generic [ref=e17]:
+          - generic [ref=e20]: Verbunden
+          - button [ref=e21]:
+            - img [ref=e22]
+          - generic [ref=e24]:
+            - button [ref=e25]:
+              - img [ref=e26]
+            - generic [ref=e348]: "1"
+    - generic [ref=e28]:
+      - navigation [ref=e29]:
+        - generic [ref=e31]:
+          - button "Dashboard" [ref=e32]:
+            - img [ref=e33]
+            - text: Dashboard
+          - button "Chat" [ref=e35]:
+            - img [ref=e36]
+            - text: Chat
+          - button "Benutzer 0" [ref=e38]:
+            - img [ref=e39]
+            - text: Benutzer
+            - generic [ref=e41]: "0"
+          - button "Compliance" [ref=e42]:
+            - img [ref=e43]
+            - text: Compliance
+          - button "Sicherheit" [ref=e45]:
+            - img [ref=e46]
+            - text: Sicherheit
+          - button "Analyse" [ref=e48]:
+            - img [ref=e49]
+            - text: Analyse
+          - button "Prompts 6" [ref=e51]:
+            - img [ref=e52]
+            - text: Prompts
+            - generic [ref=e54]: "6"
+      - main [ref=e55]:
+        - generic [ref=e436]:
+          - generic [ref=e437]:
+            - heading "Compliance Überwachung" [level=2] [ref=e438]
+            - paragraph [ref=e439]: Sicherheits- und Compliance-Probleme im Keycloak System
+          - generic [ref=e440]:
+            - generic [ref=e442]:
+              - img [ref=e445]
+              - generic [ref=e447]:
+                - paragraph [ref=e448]: Kritisch
+                - paragraph [ref=e449]: "1"
+            - generic [ref=e451]:
+              - img [ref=e454]
+              - generic [ref=e456]:
+                - paragraph [ref=e457]: Fehler
+                - paragraph [ref=e458]: "1"
+            - generic [ref=e460]:
+              - img [ref=e463]
+              - generic [ref=e465]:
+                - paragraph [ref=e466]: Warnungen
+                - paragraph [ref=e467]: "1"
+            - generic [ref=e469]:
+              - img [ref=e472]
+              - generic [ref=e474]:
+                - paragraph [ref=e475]: Info
+                - paragraph [ref=e476]: "1"
+          - generic [ref=e478]:
+            - generic [ref=e479]:
+              - generic [ref=e480]: "Filter nach Schweregrad:"
+              - combobox [ref=e481]:
+                - option "Alle (4)" [selected]
+                - option "Kritisch (1)"
+                - option "Fehler (1)"
+                - option "Warnungen (1)"
+                - option "Info (1)"
+            - button "Compliance Check durchführen" [active] [ref=e482]:
+              - img [ref=e483]
+              - text: Compliance Check durchführen
+          - generic [ref=e485]:
+            - heading "Compliance Probleme (4)" [level=3] [ref=e487]
+            - generic [ref=e488]:
+              - generic [ref=e490]:
+                - img [ref=e492]
+                - generic [ref=e494]:
+                  - generic [ref=e495]:
+                    - heading "Password Policy Violation" [level=4] [ref=e496]
+                    - generic [ref=e497]:
+                      - generic [ref=e498]: Kritisch
+                      - generic [ref=e499]: vor 2 Stunden
+                  - paragraph [ref=e500]: Benutzer haben schwache Passwörter, die nicht den Mindestanforderungen entsprechen
+                  - generic [ref=e501]:
+                    - paragraph [ref=e502]: "Betroffene Objekte (2):"
+                    - generic [ref=e503]:
+                      - generic [ref=e504]: "user: john.doe"
+                      - generic [ref=e505]: "user: jane.smith"
+                  - generic [ref=e506]:
+                    - button "Details anzeigen" [ref=e507]
+                    - button "Lösen" [ref=e508]
+                    - button "Ignorieren" [ref=e509]
+              - generic [ref=e511]:
+                - img [ref=e513]
+                - generic [ref=e515]:
+                  - generic [ref=e516]:
+                    - heading "Inactive User Account" [level=4] [ref=e517]
+                    - generic [ref=e518]:
+                      - generic [ref=e519]: Warnung
+                      - generic [ref=e520]: vor 6 Stunden
+                  - paragraph [ref=e521]: Benutzerkonten waren über 90 Tage inaktiv und sollten überprüft werden
+                  - generic [ref=e522]:
+                    - paragraph [ref=e523]: "Betroffene Objekte (1):"
+                    - generic [ref=e525]: "user: old.user"
+                  - generic [ref=e526]:
+                    - button "Details anzeigen" [ref=e527]
+                    - button "Lösen" [ref=e528]
+                    - button "Ignorieren" [ref=e529]
+              - generic [ref=e531]:
+                - img [ref=e533]
+                - generic [ref=e535]:
+                  - generic [ref=e536]:
+                    - heading "Duplicate Email Addresses" [level=4] [ref=e537]
+                    - generic [ref=e538]:
+                      - generic [ref=e539]: Fehler
+                      - generic [ref=e540]: vor 12 Stunden
+                  - paragraph [ref=e541]: Mehrere Benutzer verwenden dieselbe E-Mail-Adresse
+                  - generic [ref=e542]:
+                    - paragraph [ref=e543]: "Betroffene Objekte (2):"
+                    - generic [ref=e544]:
+                      - generic [ref=e545]: "user: duplicate1"
+                      - generic [ref=e546]: "user: duplicate2"
+                  - generic [ref=e547]:
+                    - button "Details anzeigen" [ref=e548]
+                    - button "Lösen" [ref=e549]
+                    - button "Ignorieren" [ref=e550]
+              - generic [ref=e552]:
+                - img [ref=e554]
+                - generic [ref=e556]:
+                  - generic [ref=e557]:
+                    - heading "Role Assignment Review" [level=4] [ref=e558]
+                    - generic [ref=e559]:
+                      - generic [ref=e560]: Info
+                      - generic [ref=e561]: vor 1 Tag
+                  - paragraph [ref=e562]: Regelmäßige Überprüfung der Rollenzuweisungen ist fällig
+                  - generic [ref=e563]:
+                    - paragraph [ref=e564]: "Betroffene Objekte (1):"
+                    - generic [ref=e566]: "realm: company-realm"
+                  - generic [ref=e567]:
+                    - button "Details anzeigen" [ref=e568]
+                    - button "Lösen" [ref=e569]
+                    - button "Ignorieren" [ref=e570]
+    - generic [ref=e352]:
+      - img [ref=e354]
+      - generic [ref=e356]:
+        - generic [ref=e357]:
+          - heading "Failed to Switch Model" [level=4] [ref=e358]
+          - generic [ref=e359]:
+            - generic [ref=e360]: vor 2m
+            - button [ref=e361]:
+              - img [ref=e362]
+        - paragraph [ref=e364]: Request validation failed
+  - button "Open Next.js Dev Tools" [ref=e203] [cursor=pointer]:
+    - img [ref=e204]
+  - alert [ref=e7]

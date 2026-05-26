@@ -1,0 +1,88 @@
+- generic [ref=e1]:
+  - generic [ref=e3]:
+    - banner [ref=e17]:
+      - generic [ref=e18]:
+        - generic [ref=e19]:
+          - button [ref=e20]:
+            - img [ref=e21]
+          - generic [ref=e23]:
+            - heading "IKAS" [level=1] [ref=e24]
+            - generic [ref=e25]: Intelligentes Keycloak Admin System
+        - generic [ref=e26]:
+          - generic [ref=e29]: Verbunden
+          - button [ref=e30]:
+            - img [ref=e31]
+          - button [ref=e34]:
+            - img [ref=e35]
+    - generic [ref=e37]:
+      - navigation [ref=e38]:
+        - generic [ref=e40]:
+          - button "Dashboard" [ref=e41]:
+            - img [ref=e42]
+            - text: Dashboard
+          - button "Chat" [ref=e44]:
+            - img [ref=e45]
+            - text: Chat
+          - button "Benutzer 37" [ref=e267]:
+            - img [ref=e48]
+            - text: Benutzer
+            - generic [ref=e50]: "37"
+          - button "Compliance" [active] [ref=e51]:
+            - img [ref=e52]
+            - text: Compliance
+          - button "Sicherheit" [ref=e54]:
+            - img [ref=e55]
+            - text: Sicherheit
+          - button "Analyse" [ref=e57]:
+            - img [ref=e58]
+            - text: Analyse
+          - button "Prompts 6" [ref=e60]:
+            - img [ref=e61]
+            - text: Prompts
+            - generic [ref=e63]: "6"
+      - main [ref=e64]:
+        - generic [ref=e1001]:
+          - generic [ref=e1002]:
+            - heading "Compliance Überwachung" [level=2] [ref=e1003]
+            - paragraph [ref=e1004]: DSGVO- und OWASP-Findings aus dem aktuellen Sicherheits-Scan
+          - generic [ref=e1005]:
+            - generic [ref=e1007]:
+              - img [ref=e1009]
+              - generic [ref=e1011]:
+                - paragraph [ref=e1012]: Kritisch
+                - paragraph [ref=e1013]: "0"
+            - generic [ref=e1015]:
+              - img [ref=e1017]
+              - generic [ref=e1019]:
+                - paragraph [ref=e1020]: Fehler
+                - paragraph [ref=e1021]: "0"
+            - generic [ref=e1023]:
+              - img [ref=e1025]
+              - generic [ref=e1027]:
+                - paragraph [ref=e1028]: Warnungen
+                - paragraph [ref=e1029]: "0"
+            - generic [ref=e1031]:
+              - img [ref=e1033]
+              - generic [ref=e1035]:
+                - paragraph [ref=e1036]: Info
+                - paragraph [ref=e1037]: "0"
+          - generic [ref=e1039]:
+            - generic [ref=e1040]:
+              - generic [ref=e1041]: "Filter nach Schweregrad:"
+              - combobox [ref=e1042]:
+                - option "Alle (0)" [selected]
+                - option "Kritisch (0)"
+                - option "Fehler (0)"
+                - option "Warnungen (0)"
+                - option "Info (0)"
+            - button "Compliance Check durchführen" [ref=e1043]:
+              - img [ref=e1044]
+              - text: Compliance Check durchführen
+          - generic [ref=e1046]:
+            - heading "Compliance & OWASP Findings (0)" [level=3] [ref=e1048]
+            - generic [ref=e1050]:
+              - img [ref=e1051]
+              - paragraph [ref=e1053]: Noch kein Compliance-Scan durchgeführt — klicke "Compliance Check durchführen".
+  - button "Open Next.js Dev Tools" [ref=e12] [cursor=pointer]:
+    - img [ref=e13]
+  - alert [ref=e16]

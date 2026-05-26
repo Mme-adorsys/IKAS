@@ -20,11 +20,24 @@ import { LLMError, LLMRateLimitError, LLMAuthError, LLMUnavailableError } from '
 import { config, getProviderConfig, getAllSupportedAnthropicModels } from '../utils/config';
 import { logger } from '../utils/logger';
 import { RequestTracker } from '../utils/request-tracker';
+import { buildIKASSystemPrompt } from './system-prompt';
 
 // Extended function call interface with id for Anthropic
 interface AnthropicFunctionCall extends LLMFunctionCall {
   id?: string;
 }
+
+/**
+ * Events emitted by streamWithTools. Consumers (e.g. the SSE route) translate these
+ * directly to network events for the client.
+ */
+export type StreamEvent =
+  | { type: 'text'; delta: string }
+  | { type: 'tool_use'; id: string; name: string; input: any }
+  | { type: 'tool_result'; id: string; name: string; success: boolean; data?: any; error?: string }
+  | { type: 'usage'; inputTokens: number; outputTokens: number; cacheReadInputTokens?: number; cacheCreationInputTokens?: number }
+  | { type: 'done'; toolsCalled: string[]; iterations: number }
+  | { type: 'error'; message: string };
 
 /**
  * Anthropic Claude Service Implementation
@@ -34,7 +47,7 @@ export class AnthropicService extends LLMService {
   public readonly model: string;
   private client: Anthropic;
   private chatHistory: Map<string, Anthropic.MessageParam[]> = new Map();
-  private readonly maxHistoryLength = 20;
+  private readonly maxHistoryLength = 8;
 
   constructor() {
     super();
@@ -58,18 +71,19 @@ export class AnthropicService extends LLMService {
         requestedModel: this.model,
         supportedModels
       });
-      this.model = 'claude-opus-4-1-20250805';
+      this.model = 'claude-haiku-4-5-20251001';
     }
-    
+
     // Initialize Anthropic client
     this.client = new Anthropic({
       apiKey: config.ANTHROPIC_API_KEY,
       timeout: providerConfig.timeout || 30000
     });
 
-    const modelName = this.model.includes('opus') ? 'Opus 4.1' : 
-                     this.model.includes('sonnet-4') ? 'Sonnet 4' : 
-                     'Legacy Sonnet';
+    const modelName = this.model.includes('haiku') ? 'Haiku 4.5' :
+                     this.model.includes('opus') ? 'Opus 4.1' :
+                     this.model.includes('sonnet-4') ? 'Sonnet 4' :
+                     this.model;
 
     logger.info('Anthropic service initialized', {
       provider: this.provider,
@@ -80,23 +94,7 @@ export class AnthropicService extends LLMService {
   }
 
   async isAvailable(): Promise<boolean> {
-    try {
-      // Test with a simple message
-      const testMessage = await this.client.messages.create({
-        model: this.model,
-        max_tokens: 10,
-        messages: [{ role: 'user', content: 'test' }]
-      });
-      
-      return testMessage && testMessage.content && testMessage.content.length > 0;
-    } catch (error) {
-      logger.warn('Anthropic service availability check failed', {
-        provider: this.provider,
-        model: this.model,
-        error: error instanceof Error ? error.message : String(error)
-      });
-      return false;
-    }
+    return !!(config.ANTHROPIC_API_KEY && this.client);
   }
 
   async chat(request: LLMChatRequest, isRetry: boolean = false): Promise<LLMChatResponse> {
@@ -108,7 +106,7 @@ export class AnthropicService extends LLMService {
       const isNewSession = messages.length === 0;
       
       // Reset conversation history if it becomes too long to prevent tool_result corruption
-      if (messages.length > 20) {
+      if (messages.length > this.maxHistoryLength) {
         logger.warn('Conversation history too long, resetting to prevent tool_result errors', {
           requestId,
           sessionId: request.sessionId,
@@ -128,21 +126,21 @@ export class AnthropicService extends LLMService {
         content: userContent
       });
 
-      // Prepare system message for IKAS context
+      // Prepare system message for IKAS context — wrapped as content block with cache_control
+      // so Anthropic caches the system prompt + tools (saves ~90% input tokens on continuation calls).
       const systemMessage = this.buildSystemMessage();
 
-      // Convert tools to Anthropic format
+      // Convert tools to Anthropic format. The last tool carries cache_control which caches the
+      // entire tools array (and system prompt before it) for ~5 minutes.
       const anthropicTools = request.tools ? this.convertToAnthropicTools(request.tools) : undefined;
 
-      // Create the API request
       const anthropicRequest: Anthropic.Messages.MessageCreateParams = {
         model: this.model,
-        max_tokens: request.options?.maxTokens || 8192,
+        max_tokens: request.options?.maxTokens || config.LLM_MAX_TOKENS,
         temperature: request.options?.temperature || 0.1,
-        system: systemMessage,
+        system: [{ type: 'text', text: systemMessage, cache_control: { type: 'ephemeral' } }] as any,
         messages: messages,
         tools: anthropicTools,
-        // Enhanced behavior control for Claude Opus 4.1
         tool_choice: anthropicTools && anthropicTools.length > 0 ? { type: 'auto' } : undefined
       };
 
@@ -248,28 +246,29 @@ export class AnthropicService extends LLMService {
       for (const call of functionCalls) {
         try {
           const result = await functionExecutor(call);
-          
-          // Add tool result for Anthropic
+
+          // Compact + truncate tool result before it enters history.
+          // Full MCP responses (e.g. list-users with 100 users) would otherwise be resent as
+          // input tokens on every subsequent turn in the session.
           toolResults.push({
             type: 'tool_result',
             tool_use_id: call.id || `call_${Date.now()}`,
-            content: typeof result === 'string' ? result : JSON.stringify(result, null, 2)
+            content: this.truncateToolResult(result)
           });
-          
+
           logger.debug('Function call executed successfully', {
             requestId,
             functionName: call.name,
             resultLength: JSON.stringify(result).length
           });
-          
+
         } catch (error) {
           logger.warn('Function call failed', {
             requestId,
             functionName: call.name,
             error: error instanceof Error ? error.message : String(error)
           });
-          
-          // Add error result
+
           toolResults.push({
             type: 'tool_result',
             tool_use_id: call.id || `call_${Date.now()}`,
@@ -291,11 +290,11 @@ export class AnthropicService extends LLMService {
       // Convert tools to Anthropic format
       const anthropicTools = this.convertToAnthropicTools(tools);
 
-      // Continue conversation with tool results
+      // Continue conversation with tool results. Reuse cached system+tools (cache_control set).
       const continueResponse = await this.client.messages.create({
         model: this.model,
-        max_tokens: 8192,
-        system: this.buildSystemMessage(),
+        max_tokens: config.LLM_MAX_TOKENS,
+        system: [{ type: 'text', text: this.buildSystemMessage(), cache_control: { type: 'ephemeral' } }] as any,
         messages: messages,
         tools: anthropicTools
       });
@@ -345,6 +344,143 @@ export class AnthropicService extends LLMService {
     }
   }
 
+  /**
+   * Stream a chat with tool-use loop end-to-end. Yields text deltas as they arrive from
+   * Claude, plus structured tool_use / tool_result events as the orchestrator executes each
+   * MCP tool. Caller (the SSE route) just serialises each yielded event.
+   *
+   * Manages chat history the same way as chat() + processFunctionCalls(), so streaming and
+   * non-streaming sessions are interchangeable.
+   */
+  async *streamWithTools(
+    request: LLMChatRequest,
+    functionExecutor: (call: AnthropicFunctionCall) => Promise<any>,
+    maxIterations: number = 4
+  ): AsyncGenerator<StreamEvent, void, unknown> {
+    const requestId = RequestTracker.startRequest();
+
+    try {
+      let messages = this.chatHistory.get(request.sessionId) || [];
+
+      if (messages.length > this.maxHistoryLength) {
+        messages = [];
+        this.chatHistory.set(request.sessionId, messages);
+      }
+
+      const userContent = request.context?.realm
+        ? `[Realm: ${request.context.realm}] ${request.message}`
+        : request.message;
+      messages.push({ role: 'user', content: userContent });
+
+      const systemMessage = this.buildSystemMessage();
+      const anthropicTools = request.tools ? this.convertToAnthropicTools(request.tools) : undefined;
+
+      const toolsCalled: string[] = [];
+      let iteration = 0;
+
+      while (iteration < maxIterations) {
+        iteration++;
+
+        const stream = this.client.messages.stream({
+          model: this.model,
+          max_tokens: request.options?.maxTokens || config.LLM_MAX_TOKENS,
+          temperature: request.options?.temperature || 0.1,
+          system: [{ type: 'text', text: systemMessage, cache_control: { type: 'ephemeral' } }] as any,
+          messages,
+          tools: anthropicTools,
+          tool_choice: anthropicTools && anthropicTools.length > 0 ? { type: 'auto' } : undefined
+        });
+
+        // Iterate raw events for true incremental yields.
+        for await (const event of stream) {
+          if (event.type === 'content_block_delta' && (event.delta as any).type === 'text_delta') {
+            yield { type: 'text', delta: (event.delta as any).text as string };
+          }
+        }
+
+        const finalMessage = await stream.finalMessage();
+
+        // Persist the assistant turn (including any tool_use blocks) so future iterations and
+        // future requests can match tool_result blocks to their tool_use ids.
+        messages.push({ role: 'assistant', content: finalMessage.content });
+
+        if (finalMessage.usage) {
+          yield {
+            type: 'usage',
+            inputTokens: finalMessage.usage.input_tokens,
+            outputTokens: finalMessage.usage.output_tokens,
+            cacheReadInputTokens: (finalMessage.usage as any).cache_read_input_tokens,
+            cacheCreationInputTokens: (finalMessage.usage as any).cache_creation_input_tokens
+          };
+        }
+
+        // Collect any tool_use blocks from this turn.
+        const toolUseBlocks = finalMessage.content.filter(
+          (b): b is Anthropic.ToolUseBlock => b.type === 'tool_use'
+        );
+
+        if (toolUseBlocks.length === 0) {
+          break;
+        }
+
+        // Execute each tool and append tool_result blocks for the next iteration.
+        const toolResults: Anthropic.ToolResultBlockParam[] = [];
+        for (const block of toolUseBlocks) {
+          toolsCalled.push(block.name);
+          yield { type: 'tool_use', id: block.id, name: block.name, input: block.input };
+
+          try {
+            const result = await functionExecutor({ id: block.id, name: block.name, args: (block.input as any) || {} });
+            toolResults.push({
+              type: 'tool_result',
+              tool_use_id: block.id,
+              content: this.truncateToolResult(result)
+            });
+            yield {
+              type: 'tool_result',
+              id: block.id,
+              name: block.name,
+              success: result?.success !== false,
+              data: result?.data
+            };
+          } catch (error) {
+            const errorMessage = error instanceof Error ? error.message : String(error);
+            toolResults.push({
+              type: 'tool_result',
+              tool_use_id: block.id,
+              content: `Error: ${errorMessage}`,
+              is_error: true
+            });
+            yield { type: 'tool_result', id: block.id, name: block.name, success: false, error: errorMessage };
+          }
+        }
+
+        messages.push({ role: 'user', content: toolResults });
+
+        // Trim if needed before next iteration.
+        if (messages.length > this.maxHistoryLength) {
+          messages = messages.slice(-this.maxHistoryLength);
+        }
+      }
+
+      this.chatHistory.set(request.sessionId, messages);
+      yield { type: 'done', toolsCalled, iterations: iteration };
+
+      logger.info('Anthropic streaming chat completed', {
+        requestId,
+        sessionId: request.sessionId,
+        iterations: iteration,
+        toolsCalled: toolsCalled.length
+      });
+    } catch (error) {
+      const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+      logger.error('Anthropic streaming chat failed', { requestId, sessionId: request.sessionId, error: errorMessage });
+      yield { type: 'error', message: errorMessage };
+    } finally {
+      RequestTracker.endRequest(requestId);
+    }
+  }
+
   clearChatHistory(sessionId: string): void {
     this.chatHistory.delete(sessionId);
     logger.debug('Chat history cleared', {
@@ -357,119 +493,41 @@ export class AnthropicService extends LLMService {
     return Array.from(this.chatHistory.keys());
   }
 
-  /**
-   * Build system message for IKAS context
-   */
   private buildSystemMessage(): string {
-    return `<role>
-You are IKAS (Intelligentes Keycloak Admin System), an expert AI assistant specialized in Keycloak identity management and Neo4j graph database operations. You excel at multi-step orchestration and intelligent data synchronization.
-</role>
-
-<behavior>
-- Think step-by-step for complex requests
-- Always explain your reasoning before taking actions
-- Use structured responses with clear sections
-- Be proactive in suggesting related operations
-- Maintain context awareness across function calls
-</behavior>
-
-<thinking_process>
-For each user request:
-1. <analysis>Analyze the user's intent and identify required steps</analysis>
-2. <planning>Plan the sequence of function calls needed</planning>
-3. <execution>Execute functions in logical order</execution>
-4. <verification>Verify results and suggest next steps if needed</verification>
-</thinking_process>
-
-<function_calling>
-STRATEGIC APPROACH:
-- Call functions to complete user requests with precision
-- For multi-step operations, call functions sequentially as needed
-- Examine each function result before determining next actions
-- Complete ALL necessary steps to fully satisfy the user's request
-- Use tool choice wisely - prefer targeted operations over broad searches
-
-KEY WORKFLOWS:
-
-<workflow name="data_synchronization">
-Purpose: "write users to database", "sync to Neo4j", "synchronize data"
-Steps:
-1. Call keycloak function to retrieve source data (e.g., list-users, list-realms)
-2. Call neo4j_get_neo4j_schema to understand target database structure  
-3. Call neo4j_write_neo4j_cypher with properly structured Cypher query
-4. Verify successful synchronization
-</workflow>
-
-<workflow name="user_queries">
-Purpose: "show users", "list users", "get user info"
-Steps:
-1. Call appropriate keycloak function directly
-2. Format response for clarity
-</workflow>
-
-<workflow name="analysis_tasks">
-Purpose: "analyze patterns", "find duplicates", "compliance check"
-Steps:
-1. Check if Neo4j data is current (may need sync first)
-2. Call neo4j_read_neo4j_cypher for analysis queries
-3. Interpret results and provide insights
-</workflow>
-
-<workflow name="administrative_tasks">
-Purpose: "create user", "delete user", "manage realm"
-Steps:
-1. Call appropriate keycloak administrative function
-2. Optional: Sync changes to Neo4j for audit trail
-</workflow>
-</function_calling>
-
-<available_functions>
-Keycloak MCP Tools:
-- create-user: Create new user accounts
-- list-users: Retrieve user information  
-- delete-user: Remove user accounts
-- get-user: Get specific user details
-- list-realms: List available realms
-- list-admin-events: Get administrative audit logs
-- get-event-details: Detailed event information
-- get-metrics: System usage metrics
-
-Neo4j MCP Tools:
-- get_neo4j_schema: Understand database structure
-- read_neo4j_cypher: Execute read-only Cypher queries
-- write_neo4j_cypher: Execute write Cypher operations
-</available_functions>
-
-<critical_requirements>
-1. When writing to Neo4j, ALWAYS include complete 'query' parameter with valid Cypher syntax
-2. Use proper error handling and provide meaningful feedback
-3. For German language requests, respond in German when appropriate
-4. Maintain data consistency between Keycloak and Neo4j
-5. Consider security implications of all operations
-</critical_requirements>
-
-<response_format>
-Structure your responses with:
-- Brief summary of what you're doing
-- Step-by-step execution with clear reasoning
-- Results summary with actionable insights
-- Suggestions for next steps when relevant
-</response_format>`;
+    return buildIKASSystemPrompt();
   }
 
   /**
-   * Convert LLM functions to Anthropic tool format
+   * Compact + truncate a tool result before it enters chat history.
+   * Pretty-printed MCP dumps (list-users with 100 users etc.) are paid for again as input
+   * tokens on every subsequent LLM turn, so we cap the per-result size.
+   */
+  private truncateToolResult(result: any, maxChars = 2000): string {
+    const serialized = typeof result === 'string' ? result : JSON.stringify(result);
+    if (serialized.length <= maxChars) return serialized;
+    return serialized.substring(0, maxChars) + `... [truncated, ${serialized.length} chars total]`;
+  }
+
+  /**
+   * Convert LLM functions to Anthropic tool format. The last tool gets cache_control,
+   * which caches the entire tools array + the preceding system prompt for ~5 minutes.
    */
   private convertToAnthropicTools(functions: LLMFunction[]): Anthropic.Tool[] {
-    return functions.map(func => ({
-      name: func.name,
-      description: func.description,
-      input_schema: {
-        type: 'object',
-        properties: func.parameters.properties || {},
-        required: func.parameters.required || []
+    return functions.map((func, idx) => {
+      const tool: any = {
+        name: func.name,
+        description: func.description,
+        input_schema: {
+          type: 'object',
+          properties: func.parameters.properties || {},
+          required: func.parameters.required || []
+        }
+      };
+      if (idx === functions.length - 1) {
+        tool.cache_control = { type: 'ephemeral' };
       }
-    }));
+      return tool as Anthropic.Tool;
+    });
   }
 
   /**

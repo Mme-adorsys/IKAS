@@ -81,4 +81,12 @@ export class ClientHandlers {
       throw new Error(`Failed to get client users: ${error instanceof Error ? error.message : 'Unknown error'}`);
     }
   }
+
+  async getClientProtocolsSummary(realm: string): Promise<any[]> {
+    try {
+      return await this.keycloakService.getClientProtocolsSummary(realm);
+    } catch (error) {
+      throw new Error(`Failed to get client protocols summary for '${realm}': ${error instanceof Error ? error.message : 'Unknown error'}`);
+    }
+  }
 }

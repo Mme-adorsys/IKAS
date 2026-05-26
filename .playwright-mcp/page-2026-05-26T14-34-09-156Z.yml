@@ -1,0 +1,117 @@
+- generic [ref=e1]:
+  - generic [ref=e3]:
+    - banner [ref=e8]:
+      - generic [ref=e9]:
+        - generic [ref=e10]:
+          - button [ref=e11]:
+            - img [ref=e12]
+          - generic [ref=e14]:
+            - heading "IKAS" [level=1] [ref=e15]
+            - generic [ref=e16]: Intelligentes Keycloak Admin System
+        - generic [ref=e17]:
+          - generic [ref=e20]: Verbunden
+          - button [ref=e21]:
+            - img [ref=e22]
+          - button [ref=e25]:
+            - img [ref=e26]
+    - generic [ref=e28]:
+      - navigation [ref=e29]:
+        - generic [ref=e31]:
+          - button "Dashboard" [ref=e32]:
+            - img [ref=e33]
+            - text: Dashboard
+          - button "Chat" [ref=e35]:
+            - img [ref=e36]
+            - text: Chat
+          - button "Benutzer 0" [ref=e38]:
+            - img [ref=e39]
+            - text: Benutzer
+            - generic [ref=e41]: "0"
+          - button "Compliance" [ref=e42]:
+            - img [ref=e43]
+            - text: Compliance
+          - button "Sicherheit" [ref=e45]:
+            - img [ref=e46]
+            - text: Sicherheit
+          - button "Analyse" [ref=e48]:
+            - img [ref=e49]
+            - text: Analyse
+          - button "Prompts 6" [ref=e51]:
+            - img [ref=e52]
+            - text: Prompts
+            - generic [ref=e54]: "6"
+      - main [ref=e55]:
+        - generic [ref=e236]:
+          - generic [ref=e237]:
+            - generic [ref=e238]:
+              - heading "IKAS Chat" [level=2] [ref=e239]
+              - paragraph [ref=e240]: Send text commands to IKAS and stream responses back.
+            - generic [ref=e242]:
+              - button "No model selected" [active] [ref=e243] [cursor=pointer]:
+                - generic [ref=e244]:
+                  - generic [ref=e247]: No model selected
+                  - img [ref=e248]
+              - generic [ref=e275]:
+                - generic [ref=e277]:
+                  - heading "Available Models" [level=3] [ref=e278]
+                  - button "Refresh" [ref=e279]
+                - generic [ref=e280]:
+                  - button "Claude Haiku 4.5 Anthropic • Fastest and cheapest Claude model with full tool-use support text tools function_calling" [ref=e281]:
+                    - generic [ref=e285]:
+                      - generic [ref=e286]: Claude Haiku 4.5
+                      - generic [ref=e287]: Anthropic • Fastest and cheapest Claude model with full tool-use support
+                      - generic [ref=e288]:
+                        - generic [ref=e289]: text
+                        - generic [ref=e290]: tools
+                        - generic [ref=e291]: function_calling
+                  - button "Claude Sonnet 4 Anthropic • Balanced performance for complex reasoning text tools function_calling +1" [ref=e294]:
+                    - generic [ref=e298]:
+                      - generic [ref=e299]: Claude Sonnet 4
+                      - generic [ref=e300]: Anthropic • Balanced performance for complex reasoning
+                      - generic [ref=e301]:
+                        - generic [ref=e302]: text
+                        - generic [ref=e303]: tools
+                        - generic [ref=e304]: function_calling
+                        - generic [ref=e305]: "+1"
+                  - button "Claude Opus 4.1 Anthropic • Superior reasoning, highest cost text tools function_calling +2" [ref=e308]:
+                    - generic [ref=e312]:
+                      - generic [ref=e313]: Claude Opus 4.1
+                      - generic [ref=e314]: Anthropic • Superior reasoning, highest cost
+                      - generic [ref=e315]:
+                        - generic [ref=e316]: text
+                        - generic [ref=e317]: tools
+                        - generic [ref=e318]: function_calling
+                        - generic [ref=e319]: "+2"
+                  - button "Gemini Pro Google • Fast and efficient language model with strong reasoning text tools function_calling +1" [ref=e322]:
+                    - generic [ref=e326]:
+                      - generic [ref=e327]: Gemini Pro
+                      - generic [ref=e328]: Google • Fast and efficient language model with strong reasoning
+                      - generic [ref=e329]:
+                        - generic [ref=e330]: text
+                        - generic [ref=e331]: tools
+                        - generic [ref=e332]: function_calling
+                        - generic [ref=e333]: "+1"
+                  - button "Ollama Local Ollama • Local language model running via Ollama text local" [ref=e336]:
+                    - generic [ref=e340]:
+                      - generic [ref=e341]: Ollama Local
+                      - generic [ref=e342]: Ollama • Local language model running via Ollama
+                      - generic [ref=e343]:
+                        - generic [ref=e344]: text
+                        - generic [ref=e345]: local
+          - generic [ref=e250]:
+            - heading "Chat with AI" [level=3] [ref=e253]
+            - generic [ref=e255]:
+              - img [ref=e257]
+              - paragraph [ref=e259]: Start a conversation
+              - paragraph [ref=e260]: Type a message to start chatting with IKAS
+            - generic [ref=e262]:
+              - generic [ref=e263]:
+                - textbox "Type your message to IKAS..." [ref=e265]
+                - button "Open Prompt Library (Ctrl/Cmd + P)" [ref=e266]:
+                  - img [ref=e267]
+                - button [disabled] [ref=e269]:
+                  - img [ref=e270]
+              - generic [ref=e273]: Enterto send•Shift + Enterfor new line
+  - button "Open Next.js Dev Tools" [ref=e203] [cursor=pointer]:
+    - img [ref=e204]
+  - alert [ref=e7]

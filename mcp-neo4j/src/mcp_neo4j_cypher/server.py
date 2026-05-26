@@ -35,7 +35,7 @@ def _is_write_query(query: str) -> bool:
 
 
 def create_mcp_server(neo4j_driver: AsyncDriver, database: str = "neo4j", namespace: str = "") -> FastMCP:
-    mcp: FastMCP = FastMCP("mcp-neo4j-cypher", dependencies=["neo4j", "pydantic"], stateless_http=True)
+    mcp: FastMCP = FastMCP("mcp-neo4j-cypher")
 
     namespace_prefix = _format_namespace(namespace)
 

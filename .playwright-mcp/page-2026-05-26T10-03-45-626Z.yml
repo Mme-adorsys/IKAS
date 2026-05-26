@@ -1,0 +1,173 @@
+- generic [ref=e1]:
+  - generic [ref=e3]:
+    - banner [ref=e17]:
+      - generic [ref=e18]:
+        - generic [ref=e19]:
+          - button [ref=e20]:
+            - img [ref=e21]
+          - generic [ref=e23]:
+            - heading "IKAS" [level=1] [ref=e24]
+            - generic [ref=e25]: Intelligentes Keycloak Admin System
+        - generic [ref=e26]:
+          - generic [ref=e29]: Verbunden
+          - button [ref=e30]:
+            - img [ref=e31]
+          - button [ref=e34]:
+            - img [ref=e35]
+    - generic [ref=e37]:
+      - navigation [ref=e38]:
+        - generic [ref=e40]:
+          - button "Dashboard" [ref=e41]:
+            - img [ref=e42]
+            - text: Dashboard
+          - button "Chat" [ref=e44]:
+            - img [ref=e45]
+            - text: Chat
+          - button "Benutzer 0" [ref=e47]:
+            - img [ref=e48]
+            - text: Benutzer
+            - generic [ref=e50]: "0"
+          - button "Compliance" [ref=e51]:
+            - img [ref=e52]
+            - text: Compliance
+          - button "Sicherheit" [ref=e54]:
+            - img [ref=e55]
+            - text: Sicherheit
+          - button "Analyse" [ref=e57]:
+            - img [ref=e58]
+            - text: Analyse
+          - button "Prompts 6" [ref=e60]:
+            - img [ref=e61]
+            - text: Prompts
+            - generic [ref=e63]: "6"
+      - main [ref=e64]:
+        - generic [ref=e207]:
+          - generic [ref=e208]:
+            - generic [ref=e209]:
+              - heading "Sicherheit" [level=2] [ref=e210]
+              - paragraph [ref=e211]: KI-gestützter Sicherheitscheck für deine Keycloak-Installation.
+            - button "Vollständigen Scan starten" [ref=e213]
+          - generic [ref=e214]:
+            - generic [ref=e215]:
+              - generic [ref=e216]: Demo-Szenarien
+              - button "Brute-Force" [active] [ref=e217]
+              - button "Credential Stuffing" [ref=e218]
+              - button "Impossible Travel" [ref=e219]
+              - button "Mixed" [ref=e220]
+              - button "Calm" [ref=e221]
+            - generic [ref=e222]:
+              - generic [ref=e224]:
+                - generic [ref=e225]:
+                  - generic [ref=e226]:
+                    - generic [ref=e227]: Login-Origins (Echtzeit)
+                    - generic [ref=e228]: 0 Events sichtbar
+                  - generic [ref=e229]:
+                    - generic [ref=e230]: Erfolg
+                    - generic [ref=e232]: Fehler
+                - img [ref=e235]
+              - generic [ref=e239]:
+                - generic [ref=e240]: Bedrohungsstufe
+                - img [ref=e242]
+                - generic [ref=e247]:
+                  - generic [ref=e248]: "55"
+                  - generic [ref=e249]: Hoch
+                - generic [ref=e250]:
+                  - generic [ref=e251]:
+                    - generic [ref=e252]: "2"
+                    - generic [ref=e253]: krit.
+                  - generic [ref=e254]:
+                    - generic [ref=e255]: "4"
+                    - generic [ref=e256]: err.
+                  - generic [ref=e257]:
+                    - generic [ref=e258]: "7"
+                    - generic [ref=e259]: warn.
+                  - generic [ref=e260]:
+                    - generic [ref=e261]: "1"
+                    - generic [ref=e262]: info
+              - generic [ref=e264]:
+                - generic [ref=e265]:
+                  - generic [ref=e266]:
+                    - generic [ref=e267]: Identity Graph
+                    - generic [ref=e268]: Lade …
+                  - generic [ref=e269]:
+                    - generic [ref=e270]: realm
+                    - generic [ref=e272]: user
+                    - generic [ref=e274]: client
+                    - generic [ref=e276]: group
+                - img [ref=e279]
+              - generic [ref=e281]:
+                - generic [ref=e282]:
+                  - generic [ref=e283]:
+                    - generic [ref=e284]: Live-Aktivitätsfeed
+                    - generic [ref=e285]: 0 Events
+                  - generic [ref=e286]: Live
+                - generic [ref=e291]: Warte auf Events …
+            - paragraph [ref=e292]: Analysiert mit Claude Haiku 4.5 · Daten aus Neo4j Knowledge Graph
+          - navigation [ref=e294]:
+            - button "Konfiguration 6" [ref=e295]:
+              - text: Konfiguration
+              - generic [ref=e296]: "6"
+            - button "Verdächtiges Verhalten 0" [ref=e297]:
+              - text: Verdächtiges Verhalten
+              - generic [ref=e298]: "0"
+            - button "OWASP Top 10 4" [ref=e299]:
+              - text: OWASP Top 10
+              - generic [ref=e300]: "4"
+            - button "Compliance (DSGVO) 4" [ref=e301]:
+              - text: Compliance (DSGVO)
+              - generic [ref=e302]: "4"
+            - button "Live-Monitoring 0" [disabled] [ref=e303]:
+              - text: Live-Monitoring
+              - generic [ref=e304]: "0"
+          - list [ref=e306]:
+            - listitem [ref=e307] [cursor=pointer]:
+              - generic [ref=e308]:
+                - generic [ref=e309]:
+                  - generic [ref=e310]: critical
+                  - code [ref=e311]: BRUTE_FORCE_DISABLED
+                - generic [ref=e312]: 26.5.2026, 11:57:44
+              - paragraph [ref=e313]: Brute-Force-Schutz ist deaktiviert
+              - paragraph [ref=e314]: realm:corporate
+            - listitem [ref=e315] [cursor=pointer]:
+              - generic [ref=e316]:
+                - generic [ref=e317]:
+                  - generic [ref=e318]: error
+                  - code [ref=e319]: PASSWORD_POLICY_MISSING
+                - generic [ref=e320]: 26.5.2026, 11:57:44
+              - paragraph [ref=e321]: Keine Passwortrichtlinie konfiguriert
+              - paragraph [ref=e322]: realm:corporate
+            - listitem [ref=e323] [cursor=pointer]:
+              - generic [ref=e324]:
+                - generic [ref=e325]:
+                  - generic [ref=e326]: error
+                  - code [ref=e327]: SSL_REQUIRED_WEAK
+                - generic [ref=e328]: 26.5.2026, 11:57:44
+              - paragraph [ref=e329]: SSL ist auf 'unbekannt' gesetzt
+              - paragraph [ref=e330]: realm:corporate
+            - listitem [ref=e331] [cursor=pointer]:
+              - generic [ref=e332]:
+                - generic [ref=e333]:
+                  - generic [ref=e334]: warning
+                  - code [ref=e335]: NO_MFA_POLICY
+                - generic [ref=e336]: 26.5.2026, 11:57:44
+              - paragraph [ref=e337]: Keine MFA/OTP-Richtlinie definiert
+              - paragraph [ref=e338]: realm:corporate
+            - listitem [ref=e339] [cursor=pointer]:
+              - generic [ref=e340]:
+                - generic [ref=e341]:
+                  - generic [ref=e342]: warning
+                  - code [ref=e343]: USER_EVENTS_DISABLED
+                - generic [ref=e344]: 26.5.2026, 11:57:44
+              - paragraph [ref=e345]: User-Events sind deaktiviert
+              - paragraph [ref=e346]: realm:corporate
+            - listitem [ref=e347] [cursor=pointer]:
+              - generic [ref=e348]:
+                - generic [ref=e349]:
+                  - generic [ref=e350]: warning
+                  - code [ref=e351]: ADMIN_EVENTS_DISABLED
+                - generic [ref=e352]: 26.5.2026, 11:57:44
+              - paragraph [ref=e353]: Admin-Events sind deaktiviert (kein Audit-Trail)
+              - paragraph [ref=e354]: realm:corporate
+  - button "Open Next.js Dev Tools" [ref=e12] [cursor=pointer]:
+    - img [ref=e13]
+  - alert [ref=e16]

@@ -9,18 +9,6 @@ export function EventsPanel() {
 
   const getEventIcon = (eventType: EventType) => {
     switch (eventType) {
-      case EventType.VOICE_COMMAND:
-        return (
-          <svg className="h-4 w-4 text-purple-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z" />
-          </svg>
-        );
-      case EventType.VOICE_RESPONSE:
-        return (
-          <svg className="h-4 w-4 text-blue-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
-          </svg>
-        );
       case EventType.USER_CREATED:
       case EventType.USER_UPDATED:
       case EventType.USER_DELETED:
@@ -59,8 +47,6 @@ export function EventsPanel() {
 
   const getEventTitle = (eventType: EventType) => {
     switch (eventType) {
-      case EventType.VOICE_COMMAND: return 'Sprachbefehl';
-      case EventType.VOICE_RESPONSE: return 'Sprachantwort';
       case EventType.USER_CREATED: return 'Benutzer erstellt';
       case EventType.USER_UPDATED: return 'Benutzer aktualisiert';
       case EventType.USER_DELETED: return 'Benutzer gelöscht';
@@ -73,12 +59,6 @@ export function EventsPanel() {
   };
 
   const formatEventPayload = (event: any) => {
-    if (event.type === EventType.VOICE_COMMAND) {
-      return `"${event.payload.command}"`;
-    }
-    if (event.type === EventType.VOICE_RESPONSE) {
-      return event.payload.response?.substring(0, 50) + '...';
-    }
     if (event.type === EventType.USER_CREATED || event.type === EventType.USER_UPDATED) {
       return `${event.payload.username} (${event.payload.email})`;
     }

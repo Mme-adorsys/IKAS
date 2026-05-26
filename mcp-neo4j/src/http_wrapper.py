@@ -8,8 +8,24 @@ from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from neo4j import AsyncGraphDatabase, RoutingControl
+from neo4j.time import DateTime as Neo4jDateTime, Date as Neo4jDate, Time as Neo4jTime, Duration as Neo4jDuration
 from mcp_neo4j_cypher.server import create_mcp_server
 import os
+
+
+def _normalize_neo4j_value(value):
+    """Recursively convert Neo4j temporal/graph types to JSON-serialisable values."""
+    if isinstance(value, (Neo4jDateTime, Neo4jDate, Neo4jTime)):
+        return value.iso_format()
+    if isinstance(value, Neo4jDuration):
+        return str(value)
+    if isinstance(value, dict):
+        return {k: _normalize_neo4j_value(v) for k, v in value.items()}
+    if isinstance(value, list):
+        return [_normalize_neo4j_value(v) for v in value]
+    if isinstance(value, tuple):
+        return [_normalize_neo4j_value(v) for v in value]
+    return value
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)
@@ -133,9 +149,10 @@ async def read_neo4j_cypher(request: ToolRequest):
         if not query:
             return ToolResponse(success=False, error="Query parameter is required")
         
-        # Check if it's a write query (should be rejected for read endpoint)
-        write_keywords = ["MERGE", "CREATE", "SET", "DELETE", "REMOVE", "ADD"]
-        if any(keyword in query.upper() for keyword in write_keywords):
+        # Check if it's a write query (should be rejected for read endpoint).
+        # Use word boundaries so substrings like "ADD" inside "created_at" do not match.
+        import re as _re
+        if _re.search(r"\b(MERGE|CREATE|SET|DELETE|REMOVE|ADD)\b", query, _re.IGNORECASE):
             return ToolResponse(success=False, error="Only MATCH queries are allowed for read-query")
         
         result = await neo4j_driver.execute_query(
@@ -145,9 +162,9 @@ async def read_neo4j_cypher(request: ToolRequest):
             database_=database,
             result_transformer_=lambda r: r.data()
         )
-        
-        return ToolResponse(success=True, data=result)
-        
+
+        return ToolResponse(success=True, data=_normalize_neo4j_value(result))
+
     except Exception as e:
         logger.error(f"Error executing read query: {e}")
         return ToolResponse(success=False, error=f"Neo4j Error: {str(e)}")
@@ -163,9 +180,9 @@ async def write_neo4j_cypher(request: ToolRequest):
         if not query:
             return ToolResponse(success=False, error="Query parameter is required")
         
-        # Check if it's actually a write query
-        write_keywords = ["MERGE", "CREATE", "SET", "DELETE", "REMOVE", "ADD"]
-        if not any(keyword in query.upper() for keyword in write_keywords):
+        # Check if it's actually a write query (word boundary, not substring)
+        import re as _re
+        if not _re.search(r"\b(MERGE|CREATE|SET|DELETE|REMOVE|ADD)\b", query, _re.IGNORECASE):
             return ToolResponse(success=False, error="Only write queries are allowed for write-query")
         
         _, summary, _ = await neo4j_driver.execute_query(

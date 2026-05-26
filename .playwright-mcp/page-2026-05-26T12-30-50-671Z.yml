@@ -1,0 +1,709 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e3]:
+    - banner [ref=e8]:
+      - generic [ref=e9]:
+        - generic [ref=e10]:
+          - button [ref=e11]:
+            - img [ref=e12]
+          - generic [ref=e14]:
+            - heading "IKAS" [level=1] [ref=e15]
+            - generic [ref=e16]: Intelligentes Keycloak Admin System
+        - generic [ref=e17]:
+          - generic [ref=e20]: Verbunden
+          - button [ref=e21]:
+            - img [ref=e22]
+          - generic [ref=e24]:
+            - button [ref=e25]:
+              - img [ref=e26]
+            - generic [ref=e1207]: "1"
+    - generic [ref=e28]:
+      - navigation [ref=e29]:
+        - generic [ref=e31]:
+          - button "Dashboard" [ref=e32]:
+            - img [ref=e33]
+            - text: Dashboard
+          - button "Chat" [ref=e35]:
+            - img [ref=e36]
+            - text: Chat
+          - button "Benutzer 0" [ref=e38]:
+            - img [ref=e39]
+            - text: Benutzer
+            - generic [ref=e41]: "0"
+          - button "Compliance" [ref=e42]:
+            - img [ref=e43]
+            - text: Compliance
+          - button "Sicherheit" [ref=e45]:
+            - img [ref=e46]
+            - text: Sicherheit
+          - button "Analyse" [ref=e48]:
+            - img [ref=e49]
+            - text: Analyse
+          - button "Prompts 6" [ref=e51]:
+            - img [ref=e52]
+            - text: Prompts
+            - generic [ref=e54]: "6"
+      - main [ref=e55]:
+        - generic [ref=e215]:
+          - generic [ref=e216]:
+            - generic [ref=e217]:
+              - heading "Sicherheit" [level=2] [ref=e218]
+              - paragraph [ref=e219]: KI-gestützter Sicherheitscheck für deine Keycloak-Installation.
+            - button "Vollständigen Scan starten" [ref=e1208]
+          - generic [ref=e225]:
+            - generic [ref=e226]:
+              - generic [ref=e227]: Demo-Szenarien
+              - button "Brute-Force" [ref=e228]
+              - button "Credential Stuffing" [ref=e229]
+              - button "Impossible Travel" [ref=e230]
+              - button "Mixed" [ref=e231]
+              - button "Calm" [ref=e232]
+            - generic [ref=e233]:
+              - generic [ref=e235]:
+                - generic [ref=e237]:
+                  - generic [ref=e238]: Login-Origins (Echtzeit)
+                  - generic [ref=e239]: 200 Events sichtbar · Anker IKAS · Wien
+                - generic [ref=e240]:
+                  - img [ref=e241]:
+                    - generic [ref=e746]: IKAS · Wien
+                  - generic:
+                    - generic: Letzte 5 Minuten
+                    - generic:
+                      - generic: "117"
+                      - generic:
+                        - text: Logins ·
+                        - generic: 38%
+                    - generic: 73 Failed
+                    - generic:
+                      - generic: Top-Risiko-IP
+                      - generic: 199.249.230.83
+                      - generic: tor · 26×
+                  - generic:
+                    - generic:
+                      - generic: Login
+                      - generic: Failed
+                    - generic:
+                      - generic: Datacenter
+                      - generic: Tor
+                      - generic: Known-bad
+                  - generic:
+                    - generic: Top-5 angegriffen
+                    - generic:
+                      - generic: r.werner
+                      - generic: 14×
+                    - generic:
+                      - generic: p.huber
+                      - generic: 14×
+                    - generic:
+                      - generic: test
+                      - generic: 12×
+                    - generic:
+                      - generic: i.zimmermann
+                      - generic: 10×
+                    - generic:
+                      - generic: customer5@example.com
+                      - generic: 9×
+              - generic [ref=e748]:
+                - generic [ref=e749]: Bedrohungsstufe
+                - button "Top-Finding öffnen" [ref=e1209]:
+                  - generic [ref=e1210]:
+                    - generic [ref=e1211]: ⚠ Top-Risiko · critical
+                    - code [ref=e1212]: OWASP_A07_NO_BRUTE_FORCE
+                  - generic [ref=e1213]: Kein Brute-Force-Schutz aktiv
+                  - generic [ref=e1214]:
+                    - generic [ref=e1215]: realm:corporate
+                    - generic [ref=e1216]: Details ›
+                - img [ref=e751]
+                - generic [ref=e755]:
+                  - generic [ref=e756]: "100"
+                  - generic [ref=e757]: Kritisch
+                - generic [ref=e758]:
+                  - 'button "Kritisch: 13 Findings" [ref=e1217] [cursor=pointer]':
+                    - generic [ref=e760]:
+                      - generic [ref=e761]: ⛔
+                      - generic [ref=e762]: "13"
+                    - generic [ref=e763]: Kritisch
+                    - generic [ref=e1218]: Details ›
+                  - 'button "Error: 33 Findings" [ref=e1219] [cursor=pointer]':
+                    - generic [ref=e765]:
+                      - generic [ref=e766]: ⚠️
+                      - generic [ref=e767]: "33"
+                    - generic [ref=e768]: Error
+                    - generic [ref=e1220]: Details ›
+                  - 'button "Warnung: 7 Findings" [ref=e1221] [cursor=pointer]':
+                    - generic [ref=e770]:
+                      - generic [ref=e771]: ⚡
+                      - generic [ref=e772]: "7"
+                    - generic [ref=e773]: Warnung
+                    - generic [ref=e1222]: Details ›
+                  - 'button "Info: 8 Findings" [ref=e1223] [cursor=pointer]':
+                    - generic [ref=e775]:
+                      - generic [ref=e776]: ℹ️
+                      - generic [ref=e777]: "8"
+                    - generic [ref=e778]: Info
+                    - generic [ref=e1224]: Details ›
+              - generic [ref=e780]:
+                - generic [ref=e781]:
+                  - generic [ref=e782]:
+                    - generic [ref=e783]: Identity Graph · AI-Risk-Analyse
+                    - generic [ref=e784]: 25 Knoten · Realm "corporate" · Klick auf User für Details
+                  - generic [ref=e785]:
+                    - generic [ref=e786]:
+                      - generic [ref=e788]: critical
+                      - generic [ref=e789]: "6"
+                    - generic [ref=e790]:
+                      - generic [ref=e792]: warning
+                      - generic [ref=e793]: "11"
+                    - generic [ref=e794]:
+                      - generic [ref=e796]: caution
+                      - generic [ref=e797]: "3"
+                    - generic [ref=e798]:
+                      - generic [ref=e800]: safe
+                      - generic [ref=e801]: "0"
+                - img [ref=e803]:
+                  - generic [ref=e1251]:
+                    - 'generic "realm: corporate ⚠ betroffen" [ref=e1252]':
+                      - generic [ref=e1255]: corporate
+                    - 'generic "user: demo-old · Risk 8 (caution)" [ref=e1256] [cursor=pointer]':
+                      - generic [ref=e1258]: demo-old
+                    - 'generic "user: admin2 · Risk 21 (critical)" [ref=e1259] [cursor=pointer]':
+                      - generic [ref=e1262]: admin2
+                    - 'generic "user: test · Risk 23 (critical)" [ref=e1263] [cursor=pointer]':
+                      - generic [ref=e1266]: test
+                    - 'generic "user: i.zimmermann · Risk 22 (critical)" [ref=e1267] [cursor=pointer]':
+                      - generic [ref=e1270]: i.zimmermann
+                    - 'generic "user: h.kruger · Risk 13 (warning)" [ref=e1271] [cursor=pointer]':
+                      - generic [ref=e1274]: h.kruger
+                    - 'generic "user: r.werner · Risk 28 (critical)" [ref=e1275] [cursor=pointer]':
+                      - generic [ref=e1278]: r.werner
+                    - 'generic "user: d.lange · Risk 12 (warning)" [ref=e1279] [cursor=pointer]':
+                      - generic [ref=e1282]: d.lange
+                    - 'generic "user: j.richter · Risk 9 (caution)" [ref=e1283] [cursor=pointer]':
+                      - generic [ref=e1285]: j.richter
+                    - 'generic "user: f.schneider · Risk 26 (critical)" [ref=e1286] [cursor=pointer]':
+                      - generic [ref=e1289]: f.schneider
+                    - 'generic "user: n.meyer · Risk 9 (warning)" [ref=e1290] [cursor=pointer]':
+                      - generic [ref=e1293]: n.meyer
+                    - 'generic "user: t.schmidt · Risk 9 (warning)" [ref=e1294] [cursor=pointer]':
+                      - generic [ref=e1297]: t.schmidt
+                    - 'generic "user: m.hoffmann · Risk 13 (warning)" [ref=e1298] [cursor=pointer]':
+                      - generic [ref=e1301]: m.hoffmann
+                    - 'generic "user: e.becker · Risk 8 (caution)" [ref=e1302] [cursor=pointer]':
+                      - generic [ref=e1304]: e.becker
+                    - 'generic "user: k.wagner · Risk 12 (warning)" [ref=e1305] [cursor=pointer]':
+                      - generic [ref=e1308]: k.wagner
+                    - 'generic "user: s.bauer · Risk 9 (warning)" [ref=e1309] [cursor=pointer]':
+                      - generic [ref=e1312]: s.bauer
+                    - 'generic "user: l.koch · Risk 13 (warning)" [ref=e1313] [cursor=pointer]':
+                      - generic [ref=e1316]: l.koch
+                    - 'generic "user: p.huber · Risk 24 (critical)" [ref=e1317] [cursor=pointer]':
+                      - generic [ref=e1320]: p.huber
+                    - 'generic "user: m.schulz · Risk 9 (warning)" [ref=e1321] [cursor=pointer]':
+                      - generic [ref=e1324]: m.schulz
+                    - 'generic "user: a.fischer · Risk 9 (warning)" [ref=e1325] [cursor=pointer]':
+                      - generic [ref=e1328]: a.fischer
+                    - 'generic "user: j.weber · Risk 12 (warning)" [ref=e1329] [cursor=pointer]':
+                      - generic [ref=e1332]: j.weber
+                    - 'generic "client: api-gateway" [ref=e1333]':
+                      - generic [ref=e1335]: api-gateway
+                    - 'generic "client: legacy-portal" [ref=e1336]':
+                      - generic [ref=e1338]: legacy-portal
+                    - 'generic "client: mobile-app" [ref=e1339]':
+                      - generic [ref=e1341]: mobile-app
+                    - 'generic "client: web-app" [ref=e1342]':
+                      - generic [ref=e1344]: web-app
+              - generic [ref=e914]:
+                - generic [ref=e915]:
+                  - generic [ref=e916]:
+                    - generic [ref=e917]: Live-Aktivitätsfeed
+                    - generic [ref=e918]: 200 Events
+                  - generic [ref=e919]: Live
+                - generic [ref=e923]:
+                  - generic [ref=e924]:
+                    - generic [ref=e925]:
+                      - generic [ref=e926]: 14:30:39
+                      - generic [ref=e927]: LOGIN
+                    - generic [ref=e928]:
+                      - text: customer1@example.com · 193.99.144.85 ·
+                      - generic [ref=e929]: Hannover, DE
+                  - generic [ref=e930]:
+                    - generic [ref=e931]:
+                      - generic [ref=e932]: 14:30:33
+                      - generic [ref=e933]: LOGIN
+                    - generic [ref=e934]:
+                      - text: k.wagner · 193.99.144.85 ·
+                      - generic [ref=e935]: Hannover, DE
+                  - generic [ref=e936]:
+                    - generic [ref=e937]:
+                      - generic [ref=e938]: 14:30:27
+                      - generic [ref=e939]: LOGIN
+                    - generic [ref=e940]:
+                      - text: customer7@example.com · 203.0.113.42 ·
+                      - generic [ref=e941]: Tokyo, JP
+                  - generic [ref=e942]:
+                    - generic [ref=e943]:
+                      - generic [ref=e944]: 14:30:21
+                      - generic [ref=e945]: LOGIN
+                    - generic [ref=e946]:
+                      - text: k.wagner · 193.99.144.85 ·
+                      - generic [ref=e947]: Hannover, DE
+                  - generic [ref=e948]:
+                    - generic [ref=e949]:
+                      - generic [ref=e950]: 14:30:15
+                      - generic [ref=e951]: LOGIN
+                    - generic [ref=e952]:
+                      - text: m.schulz · 85.214.10.4 ·
+                      - generic [ref=e953]: Berlin, DE
+                  - generic [ref=e954]:
+                    - generic [ref=e955]:
+                      - generic [ref=e956]: 14:30:14
+                      - generic [ref=e957]: LOGIN_ERROR
+                    - generic [ref=e958]:
+                      - text: customer5@example.com · 194.165.16.77 ·
+                      - generic [ref=e959]: Moscow, RU
+                    - generic [ref=e960]: known-bad
+                  - generic [ref=e961]:
+                    - generic [ref=e962]:
+                      - generic [ref=e963]: 14:30:14
+                      - generic [ref=e964]: LOGIN_ERROR
+                    - generic [ref=e965]:
+                      - text: customer5@example.com · 194.165.16.77 ·
+                      - generic [ref=e966]: Moscow, RU
+                    - generic [ref=e967]: known-bad
+                  - generic [ref=e968]:
+                    - generic [ref=e969]:
+                      - generic [ref=e970]: 14:30:14
+                      - generic [ref=e971]: LOGIN_ERROR
+                    - generic [ref=e972]:
+                      - text: customer5@example.com · 194.165.16.77 ·
+                      - generic [ref=e973]: Moscow, RU
+                    - generic [ref=e974]: known-bad
+                  - generic [ref=e975]:
+                    - generic [ref=e976]:
+                      - generic [ref=e977]: 14:30:13
+                      - generic [ref=e978]: LOGIN_ERROR
+                    - generic [ref=e979]:
+                      - text: customer5@example.com · 194.165.16.77 ·
+                      - generic [ref=e980]: Moscow, RU
+                    - generic [ref=e981]: known-bad
+                  - generic [ref=e982]:
+                    - generic [ref=e983]:
+                      - generic [ref=e984]: 14:30:13
+                      - generic [ref=e985]: LOGIN_ERROR
+                    - generic [ref=e986]:
+                      - text: customer5@example.com · 194.165.16.77 ·
+                      - generic [ref=e987]: Moscow, RU
+                    - generic [ref=e988]: known-bad
+                  - generic [ref=e989]:
+                    - generic [ref=e990]:
+                      - generic [ref=e991]: 14:30:13
+                      - generic [ref=e992]: LOGIN_ERROR
+                    - generic [ref=e993]:
+                      - text: customer5@example.com · 194.165.16.77 ·
+                      - generic [ref=e994]: Moscow, RU
+                    - generic [ref=e995]: known-bad
+                  - generic [ref=e996]:
+                    - generic [ref=e997]:
+                      - generic [ref=e998]: 14:30:12
+                      - generic [ref=e999]: LOGIN_ERROR
+                    - generic [ref=e1000]:
+                      - text: customer5@example.com · 194.165.16.77 ·
+                      - generic [ref=e1001]: Moscow, RU
+                    - generic [ref=e1002]: known-bad
+                  - generic [ref=e1003]:
+                    - generic [ref=e1004]:
+                      - generic [ref=e1005]: 14:30:12
+                      - generic [ref=e1006]: LOGIN_ERROR
+                    - generic [ref=e1007]:
+                      - text: customer5@example.com · 194.165.16.77 ·
+                      - generic [ref=e1008]: Moscow, RU
+                    - generic [ref=e1009]: known-bad
+                  - generic [ref=e1010]:
+                    - generic [ref=e1011]:
+                      - generic [ref=e1012]: 14:30:12
+                      - generic [ref=e1013]: LOGIN_ERROR
+                    - generic [ref=e1014]:
+                      - text: customer5@example.com · 194.165.16.77 ·
+                      - generic [ref=e1015]: Moscow, RU
+                    - generic [ref=e1016]: known-bad
+                  - generic [ref=e1017]:
+                    - generic [ref=e1018]:
+                      - generic [ref=e1019]: 14:30:09
+                      - generic [ref=e1020]: LOGIN
+                    - generic [ref=e1021]:
+                      - text: svc-billing · 99.79.20.18 ·
+                      - generic [ref=e1022]: Toronto, CA
+                  - generic [ref=e1023]:
+                    - generic [ref=e1024]:
+                      - generic [ref=e1025]: 14:30:03
+                      - generic [ref=e1026]: LOGIN
+                    - generic [ref=e1027]:
+                      - text: customer8@example.com · 99.79.20.18 ·
+                      - generic [ref=e1028]: Toronto, CA
+                  - generic [ref=e1029]:
+                    - generic [ref=e1030]:
+                      - generic [ref=e1031]: 14:29:57
+                      - generic [ref=e1032]: LOGIN
+                    - generic [ref=e1033]:
+                      - text: customer6@example.com · 212.83.41.7 ·
+                      - generic [ref=e1034]: Paris, FR
+                  - generic [ref=e1035]:
+                    - generic [ref=e1036]:
+                      - generic [ref=e1037]: 14:29:51
+                      - generic [ref=e1038]: LOGIN_ERROR
+                    - generic [ref=e1039]:
+                      - text: m.hoffmann · 151.101.0.84 ·
+                      - generic [ref=e1040]: Amsterdam, NL
+                  - generic [ref=e1041]:
+                    - generic [ref=e1042]:
+                      - generic [ref=e1043]: 14:29:45
+                      - generic [ref=e1044]: LOGIN
+                    - generic [ref=e1045]:
+                      - text: svc-billing · 85.214.10.4 ·
+                      - generic [ref=e1046]: Berlin, DE
+                  - generic [ref=e1047]:
+                    - generic [ref=e1048]:
+                      - generic [ref=e1049]: 14:29:39
+                      - generic [ref=e1050]: LOGIN
+                    - generic [ref=e1051]:
+                      - text: partner-supplier-c · 178.62.20.5 ·
+                      - generic [ref=e1052]: London, GB
+                  - generic [ref=e1053]:
+                    - generic [ref=e1054]:
+                      - generic [ref=e1055]: 14:29:33
+                      - generic [ref=e1056]: LOGIN
+                    - generic [ref=e1057]:
+                      - text: t.schmidt · 99.79.20.18 ·
+                      - generic [ref=e1058]: Toronto, CA
+                  - generic [ref=e1059]:
+                    - generic [ref=e1060]:
+                      - generic [ref=e1061]: 14:29:30
+                      - generic [ref=e1062]: LOGIN_ERROR
+                    - generic [ref=e1063]:
+                      - text: r.werner · 199.249.230.83 ·
+                      - generic [ref=e1064]: Newark, US
+                    - generic [ref=e1065]: tor
+                  - generic [ref=e1066]:
+                    - generic [ref=e1067]:
+                      - generic [ref=e1068]: 14:29:30
+                      - generic [ref=e1069]: LOGIN_ERROR
+                    - generic [ref=e1070]:
+                      - text: r.werner · 199.249.230.83 ·
+                      - generic [ref=e1071]: Newark, US
+                    - generic [ref=e1072]: tor
+                  - generic [ref=e1073]:
+                    - generic [ref=e1074]:
+                      - generic [ref=e1075]: 14:29:30
+                      - generic [ref=e1076]: LOGIN_ERROR
+                    - generic [ref=e1077]:
+                      - text: r.werner · 199.249.230.83 ·
+                      - generic [ref=e1078]: Newark, US
+                    - generic [ref=e1079]: tor
+                  - generic [ref=e1080]:
+                    - generic [ref=e1081]:
+                      - generic [ref=e1082]: 14:29:30
+                      - generic [ref=e1083]: LOGIN_ERROR
+                    - generic [ref=e1084]:
+                      - text: r.werner · 199.249.230.83 ·
+                      - generic [ref=e1085]: Newark, US
+                    - generic [ref=e1086]: tor
+                  - generic [ref=e1087]:
+                    - generic [ref=e1088]:
+                      - generic [ref=e1089]: 14:29:29
+                      - generic [ref=e1090]: LOGIN_ERROR
+                    - generic [ref=e1091]:
+                      - text: r.werner · 199.249.230.83 ·
+                      - generic [ref=e1092]: Newark, US
+                    - generic [ref=e1093]: tor
+                  - generic [ref=e1094]:
+                    - generic [ref=e1095]:
+                      - generic [ref=e1096]: 14:29:29
+                      - generic [ref=e1097]: LOGIN_ERROR
+                    - generic [ref=e1098]:
+                      - text: r.werner · 199.249.230.83 ·
+                      - generic [ref=e1099]: Newark, US
+                    - generic [ref=e1100]: tor
+                  - generic [ref=e1101]:
+                    - generic [ref=e1102]:
+                      - generic [ref=e1103]: 14:29:29
+                      - generic [ref=e1104]: LOGIN_ERROR
+                    - generic [ref=e1105]:
+                      - text: r.werner · 199.249.230.83 ·
+                      - generic [ref=e1106]: Newark, US
+                    - generic [ref=e1107]: tor
+                  - generic [ref=e1108]:
+                    - generic [ref=e1109]:
+                      - generic [ref=e1110]: 14:29:29
+                      - generic [ref=e1111]: LOGIN_ERROR
+                    - generic [ref=e1112]:
+                      - text: r.werner · 199.249.230.83 ·
+                      - generic [ref=e1113]: Newark, US
+                    - generic [ref=e1114]: tor
+                  - generic [ref=e1115]:
+                    - generic [ref=e1116]:
+                      - generic [ref=e1117]: 14:29:28
+                      - generic [ref=e1118]: LOGIN_ERROR
+                    - generic [ref=e1119]:
+                      - text: r.werner · 199.249.230.83 ·
+                      - generic [ref=e1120]: Newark, US
+                    - generic [ref=e1121]: tor
+                  - generic [ref=e1122]:
+                    - generic [ref=e1123]:
+                      - generic [ref=e1124]: 14:29:28
+                      - generic [ref=e1125]: LOGIN_ERROR
+                    - generic [ref=e1126]:
+                      - text: r.werner · 199.249.230.83 ·
+                      - generic [ref=e1127]: Newark, US
+                    - generic [ref=e1128]: tor
+                  - generic [ref=e1129]:
+                    - generic [ref=e1130]:
+                      - generic [ref=e1131]: 14:29:28
+                      - generic [ref=e1132]: LOGIN_ERROR
+                    - generic [ref=e1133]:
+                      - text: r.werner · 199.249.230.83 ·
+                      - generic [ref=e1134]: Newark, US
+                    - generic [ref=e1135]: tor
+                  - generic [ref=e1136]:
+                    - generic [ref=e1137]:
+                      - generic [ref=e1138]: 14:29:27
+                      - generic [ref=e1139]: LOGIN_ERROR
+                    - generic [ref=e1140]:
+                      - text: r.werner · 199.249.230.83 ·
+                      - generic [ref=e1141]: Newark, US
+                    - generic [ref=e1142]: tor
+                  - generic [ref=e1143]:
+                    - generic [ref=e1144]:
+                      - generic [ref=e1145]: 14:29:27
+                      - generic [ref=e1146]: LOGIN_ERROR
+                    - generic [ref=e1147]:
+                      - text: r.werner · 199.249.230.83 ·
+                      - generic [ref=e1148]: Newark, US
+                    - generic [ref=e1149]: tor
+                  - generic [ref=e1150]:
+                    - generic [ref=e1151]:
+                      - generic [ref=e1152]: 14:29:27
+                      - generic [ref=e1153]: LOGIN
+                    - generic [ref=e1154]:
+                      - text: customer9@example.com · 151.101.0.84 ·
+                      - generic [ref=e1155]: Amsterdam, NL
+                  - generic [ref=e1156]:
+                    - generic [ref=e1157]:
+                      - generic [ref=e1158]: 14:29:27
+                      - generic [ref=e1159]: LOGIN_ERROR
+                    - generic [ref=e1160]:
+                      - text: r.werner · 199.249.230.83 ·
+                      - generic [ref=e1161]: Newark, US
+                    - generic [ref=e1162]: tor
+                  - generic [ref=e1163]:
+                    - generic [ref=e1164]:
+                      - generic [ref=e1165]: 14:29:21
+                      - generic [ref=e1166]: LOGIN
+                    - generic [ref=e1167]:
+                      - text: admin2 · 194.95.245.140 ·
+                      - generic [ref=e1168]: Frankfurt, DE
+                  - generic [ref=e1169]:
+                    - generic [ref=e1170]:
+                      - generic [ref=e1171]: 14:29:15
+                      - generic [ref=e1172]: LOGIN
+                    - generic [ref=e1173]:
+                      - text: demo-old · 85.214.10.4 ·
+                      - generic [ref=e1174]: Berlin, DE
+                  - generic [ref=e1175]:
+                    - generic [ref=e1176]:
+                      - generic [ref=e1177]: 14:29:09
+                      - generic [ref=e1178]: LOGIN
+                    - generic [ref=e1179]:
+                      - text: demo-old · 203.0.113.42 ·
+                      - generic [ref=e1180]: Tokyo, JP
+                  - generic [ref=e1181]:
+                    - generic [ref=e1182]:
+                      - generic [ref=e1183]: 14:29:03
+                      - generic [ref=e1184]: LOGIN
+                    - generic [ref=e1185]:
+                      - text: e.becker · 212.83.41.7 ·
+                      - generic [ref=e1186]: Paris, FR
+            - paragraph [ref=e1187]: Analysiert mit Claude Haiku 4.5 · Daten aus Neo4j Knowledge Graph
+          - generic [ref=e1189]:
+            - generic [ref=e1190]: Scan abgeschlossen — 61 Findings
+            - generic [ref=e1191]: 100%
+          - navigation [ref=e1195]:
+            - button "Konfiguration 6" [ref=e1345]:
+              - text: Konfiguration
+              - generic [ref=e1197]: "6"
+            - button "Verdächtiges Verhalten 47" [ref=e1346]:
+              - text: Verdächtiges Verhalten
+              - generic [ref=e1199]: "47"
+            - button "OWASP Top 10 4" [ref=e1347]:
+              - text: OWASP Top 10
+              - generic [ref=e1201]: "4"
+            - button "Compliance (DSGVO) 4" [ref=e1348]:
+              - text: Compliance (DSGVO)
+              - generic [ref=e1203]: "4"
+          - list [ref=e1349]:
+            - listitem [ref=e1350] [cursor=pointer]:
+              - generic [ref=e1351]:
+                - generic [ref=e1352]:
+                  - generic [ref=e1353]: critical
+                  - code [ref=e1354]: BRUTE_FORCE_DISABLED
+                - generic [ref=e1355]: 26.5.2026, 14:30:41
+              - paragraph [ref=e1356]: Brute-Force-Schutz ist deaktiviert
+              - paragraph [ref=e1357]: realm:corporate
+            - listitem [ref=e1358] [cursor=pointer]:
+              - generic [ref=e1359]:
+                - generic [ref=e1360]:
+                  - generic [ref=e1361]: error
+                  - code [ref=e1362]: SSL_REQUIRED_WEAK
+                - generic [ref=e1363]: 26.5.2026, 14:30:41
+              - paragraph [ref=e1364]: SSL ist auf 'unbekannt' gesetzt
+              - paragraph [ref=e1365]: realm:corporate
+            - listitem [ref=e1366] [cursor=pointer]:
+              - generic [ref=e1367]:
+                - generic [ref=e1368]:
+                  - generic [ref=e1369]: error
+                  - code [ref=e1370]: PASSWORD_POLICY_MISSING
+                - generic [ref=e1371]: 26.5.2026, 14:30:41
+              - paragraph [ref=e1372]: Keine Passwortrichtlinie konfiguriert
+              - paragraph [ref=e1373]: realm:corporate
+            - listitem [ref=e1374] [cursor=pointer]:
+              - generic [ref=e1375]:
+                - generic [ref=e1376]:
+                  - generic [ref=e1377]: warning
+                  - code [ref=e1378]: ADMIN_EVENTS_DISABLED
+                - generic [ref=e1379]: 26.5.2026, 14:30:41
+              - paragraph [ref=e1380]: Admin-Events sind deaktiviert (kein Audit-Trail)
+              - paragraph [ref=e1381]: realm:corporate
+            - listitem [ref=e1382] [cursor=pointer]:
+              - generic [ref=e1383]:
+                - generic [ref=e1384]:
+                  - generic [ref=e1385]: warning
+                  - code [ref=e1386]: USER_EVENTS_DISABLED
+                - generic [ref=e1387]: 26.5.2026, 14:30:41
+              - paragraph [ref=e1388]: User-Events sind deaktiviert
+              - paragraph [ref=e1389]: realm:corporate
+            - listitem [ref=e1390] [cursor=pointer]:
+              - generic [ref=e1391]:
+                - generic [ref=e1392]:
+                  - generic [ref=e1393]: warning
+                  - code [ref=e1394]: NO_MFA_POLICY
+                - generic [ref=e1395]: 26.5.2026, 14:30:41
+              - paragraph [ref=e1396]: Keine MFA/OTP-Richtlinie definiert
+              - paragraph [ref=e1397]: realm:corporate
+          - dialog [ref=e1398]:
+            - generic [ref=e1401]:
+              - generic [ref=e1402]:
+                - generic [ref=e1403]:
+                  - generic [ref=e1404]: J.
+                  - generic [ref=e1405]:
+                    - paragraph [ref=e1406]: User · Realm corporate
+                    - heading "j.weber" [level=3] [ref=e1407]
+                    - paragraph [ref=e1408]: jonas.weber@acme.example
+                - button "Schließen" [ref=e1409]:
+                  - img [ref=e1410]
+              - generic [ref=e1412]:
+                - generic [ref=e1413]:
+                  - generic [ref=e1414]: AI-Risk-Score
+                  - generic [ref=e1415]: Verdächtig
+                - generic [ref=e1416]: "12"
+              - generic [ref=e1417]:
+                - generic [ref=e1418]:
+                  - generic [ref=e1419]:
+                    - generic [ref=e1420]: Findings
+                    - generic [ref=e1421]: "2"
+                  - generic [ref=e1422]: ⚠️
+                - generic [ref=e1423]:
+                  - generic [ref=e1424]:
+                    - generic [ref=e1425]: Failed (24h)
+                    - generic [ref=e1426]: "0"
+                  - generic [ref=e1427]: 🔴
+                - generic [ref=e1428]:
+                  - generic [ref=e1429]:
+                    - generic [ref=e1430]: Unique IPs
+                    - generic [ref=e1431]: "0"
+                  - generic [ref=e1432]: 🌐
+                - generic [ref=e1433]:
+                  - generic [ref=e1434]:
+                    - generic [ref=e1435]: Tor / Bad
+                    - generic [ref=e1436]: "0"
+                  - generic [ref=e1437]: 🕵️
+              - generic [ref=e1438]:
+                - heading "Stammdaten" [level=4] [ref=e1439]
+                - generic [ref=e1440]:
+                  - generic [ref=e1441]:
+                    - term [ref=e1442]: Username
+                    - definition [ref=e1443]: j.weber
+                  - generic [ref=e1444]:
+                    - term [ref=e1445]: Email
+                    - definition [ref=e1446]: jonas.weber@acme.example
+                  - generic [ref=e1447]:
+                    - term [ref=e1448]: Vorname
+                    - definition [ref=e1449]: Jonas
+                  - generic [ref=e1450]:
+                    - term [ref=e1451]: Nachname
+                    - definition [ref=e1452]: Weber
+                  - generic [ref=e1453]:
+                    - term [ref=e1454]: Realm
+                    - definition [ref=e1455]: corporate
+                  - generic [ref=e1456]:
+                    - term [ref=e1457]: Account angelegt
+                    - definition [ref=e1458]: 30.7.2025, 15:27:35
+                  - generic [ref=e1459]:
+                    - term [ref=e1460]: Enabled
+                    - definition [ref=e1461]: ✅ Ja
+                  - generic [ref=e1462]:
+                    - term [ref=e1463]: Email verified
+                    - definition [ref=e1464]: ✅ Ja
+              - generic [ref=e1465]:
+                - heading "Verdächtige Konfiguration" [level=4] [ref=e1466]
+                - list [ref=e1467]:
+                  - listitem [ref=e1468]:
+                    - generic [ref=e1469]: ⚪
+                    - generic [ref=e1470]: MFA-Status unbekannt (kein Keycloak-Credential-Tool angebunden)
+                  - listitem [ref=e1471]: Keine weiteren Auffälligkeiten in den Stammdaten.
+              - generic [ref=e1472]:
+                - heading "Aktive Findings (2)" [level=4] [ref=e1473]:
+                  - text: Aktive Findings
+                  - generic [ref=e1474]: (2)
+                - list [ref=e1475]:
+                  - listitem [ref=e1476] [cursor=pointer]:
+                    - generic [ref=e1477]:
+                      - generic [ref=e1478]:
+                        - generic [ref=e1479]: critical
+                        - code [ref=e1480]: USER_BRUTE_FORCE_TARGET
+                      - generic [ref=e1481]: 26.5.2026, 14:30:42
+                    - paragraph [ref=e1482]: 120 fehlgeschlagene Logins für Benutzer 257cec67af4849af4314abdf in 24h
+                    - paragraph [ref=e1483]: user:257cec67af4849af4314abdf
+                  - listitem [ref=e1484] [cursor=pointer]:
+                    - generic [ref=e1485]:
+                      - generic [ref=e1486]:
+                        - generic [ref=e1487]: error
+                        - code [ref=e1488]: USER_MANY_IPS
+                      - generic [ref=e1489]: 26.5.2026, 14:30:43
+                    - paragraph [ref=e1490]: Benutzer 257cec67af4849af4314abdf hat sich von 23 verschiedenen IPs angemeldet
+                    - paragraph [ref=e1491]: user:257cec67af4849af4314abdf
+              - generic [ref=e1492]:
+                - heading "Login-Aktivität (24h, letzte 0)" [level=4] [ref=e1493]
+                - paragraph [ref=e1494]: Keine Login-Events in den letzten 24h.
+              - generic [ref=e1495]:
+                - heading "Mögliche Duplikate (0)" [level=4] [ref=e1496]:
+                  - text: Mögliche Duplikate
+                  - generic [ref=e1497]: (0)
+                - paragraph [ref=e1498]: Keine Duplikate gefunden.
+              - generic [ref=e1499]:
+                - generic [ref=e1500]: 🧠 AI-Analyse
+                - paragraph [ref=e1501]: Keine auffälligen Muster erkannt.
+                - generic [ref=e1502]: Empfehlung
+                - list [ref=e1503]:
+                  - listitem [ref=e1504]: MFA erzwingen
+              - button "Schließen" [ref=e1506]
+    - generic [ref=e1509]:
+      - img [ref=e1511]
+      - generic [ref=e1513]:
+        - generic [ref=e1514]:
+          - heading "Sicherheitsscan abgeschlossen" [level=4] [ref=e1515]
+          - generic [ref=e1516]:
+            - generic [ref=e1517]: gerade eben
+            - button [ref=e1518]:
+              - img [ref=e1519]
+        - paragraph [ref=e1521]: 61 Findings gefunden
+  - button "Open Next.js Dev Tools" [ref=e211] [cursor=pointer]:
+    - img [ref=e212]
+  - alert [ref=e7]

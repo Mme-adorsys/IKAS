@@ -112,11 +112,6 @@ export class EventHandlers {
         await this.handleComplianceEvent(event);
         break;
 
-      case EventType.VOICE_COMMAND:
-      case EventType.VOICE_RESPONSE:
-        await this.handleVoiceEvent(event);
-        break;
-
       case EventType.GRAPH_UPDATE:
         await this.handleGraphEvent(event);
         break;
@@ -224,41 +219,6 @@ export class EventHandlers {
         description: payload.description,
         affected: payload.affected
       });
-    }
-  }
-
-  /**
-   * Handle voice command events
-   */
-  private async handleVoiceEvent(event: IKASEvent): Promise<void> {
-    const payload = event.payload as any;
-
-    if (event.type === EventType.VOICE_COMMAND && payload.command) {
-      // Log voice commands for analytics
-      this.logger.info('Voice command processed', {
-        sessionId: event.sessionId,
-        command: payload.command,
-        confidence: payload.confidence,
-        language: payload.language
-      });
-
-      // If voice command has low confidence, create a response event asking for clarification
-      if (payload.confidence && payload.confidence < 0.7) {
-        const clarificationEvent: any = {
-          id: randomUUID(),
-          type: EventType.VOICE_RESPONSE,
-          timestamp: new Date().toISOString(),
-          sessionId: event.sessionId,
-          payload: {
-            response: 'Entschuldigung, ich habe Sie nicht ganz verstanden. Können Sie das bitte wiederholen?',
-            confidence: 1.0,
-            language: 'de-DE'
-          }
-        };
-
-        const validatedEvent = validateEvent(clarificationEvent);
-        await this.eventPublisher.publishEvent(validatedEvent);
-      }
     }
   }
 

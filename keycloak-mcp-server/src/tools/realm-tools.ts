@@ -70,5 +70,60 @@ export const realmTools: Tool[] = [
       },
       required: ["realm"]
     }
+  },
+  {
+    name: "get-realm-config",
+    description: "Get security-relevant subset of realm configuration (SSL, registration, token lifetimes, OTP, brute-force, events). For the security scanner.",
+    inputSchema: {
+      type: "object",
+      properties: {
+        realm: { type: "string", description: "The realm name" }
+      },
+      required: ["realm"]
+    }
+  },
+  {
+    name: "get-password-policy",
+    description: "Get the parsed password policy for a realm (length, digits, special chars, uppercase, lowercase, etc.)",
+    inputSchema: {
+      type: "object",
+      properties: {
+        realm: { type: "string", description: "The realm name" }
+      },
+      required: ["realm"]
+    }
+  },
+  {
+    name: "get-brute-force-detection",
+    description: "Get the brute-force detection settings for a realm: enabled, failure threshold, lockout duration, etc.",
+    inputSchema: {
+      type: "object",
+      properties: {
+        realm: { type: "string", description: "The realm name" }
+      },
+      required: ["realm"]
+    }
+  },
+  {
+    name: "get-otp-policy",
+    description: "Get the OTP / MFA policy for a realm: algorithm, digits, period, look-ahead window.",
+    inputSchema: {
+      type: "object",
+      properties: {
+        realm: { type: "string", description: "The realm name" }
+      },
+      required: ["realm"]
+    }
+  },
+  {
+    name: "get-events-config",
+    description: "Get the events configuration for a realm: which event types are enabled, retention, admin-events flag.",
+    inputSchema: {
+      type: "object",
+      properties: {
+        realm: { type: "string", description: "The realm name" }
+      },
+      required: ["realm"]
+    }
   }
 ];

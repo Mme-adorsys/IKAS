@@ -1,0 +1,147 @@
+- generic [ref=e1]:
+  - generic [ref=e3]:
+    - banner [ref=e8]:
+      - generic [ref=e9]:
+        - generic [ref=e10]:
+          - button [ref=e11]:
+            - img [ref=e12]
+          - generic [ref=e14]:
+            - heading "IKAS" [level=1] [ref=e15]
+            - generic [ref=e16]: Intelligentes Keycloak Admin System
+        - generic [ref=e17]:
+          - generic [ref=e20]: Verbunden
+          - button [ref=e21]:
+            - img [ref=e22]
+          - generic [ref=e24]:
+            - button [ref=e25]:
+              - img [ref=e26]
+            - generic [ref=e348]: "1"
+    - generic [ref=e28]:
+      - navigation [ref=e29]:
+        - generic [ref=e31]:
+          - button "Dashboard" [ref=e32]:
+            - img [ref=e33]
+            - text: Dashboard
+          - button "Chat" [ref=e35]:
+            - img [ref=e36]
+            - text: Chat
+          - button "Benutzer 0" [ref=e38]:
+            - img [ref=e39]
+            - text: Benutzer
+            - generic [ref=e41]: "0"
+          - button "Compliance" [ref=e42]:
+            - img [ref=e43]
+            - text: Compliance
+          - button "Sicherheit" [ref=e45]:
+            - img [ref=e46]
+            - text: Sicherheit
+          - button "Analyse" [ref=e48]:
+            - img [ref=e49]
+            - text: Analyse
+          - button "Prompts 6" [ref=e51]:
+            - img [ref=e52]
+            - text: Prompts
+            - generic [ref=e54]: "6"
+      - main [ref=e55]:
+        - generic [ref=e588]:
+          - generic [ref=e589]:
+            - heading "Datenanalyse" [level=2] [ref=e590]
+            - paragraph [ref=e591]: KI-gestützte Analysen für Keycloak-Daten und Sicherheitsprüfungen
+          - generic [ref=e592]:
+            - generic [ref=e593]:
+              - heading "Neue Analyse starten" [level=3] [ref=e594]
+              - generic [ref=e595]:
+                - generic [ref=e596]:
+                  - generic [ref=e597]: Analyse-Typ
+                  - generic [ref=e598]:
+                    - generic [ref=e600] [cursor=pointer]:
+                      - img [ref=e602]
+                      - generic [ref=e604]:
+                        - heading "Doppelte Benutzer finden" [level=4] [ref=e605]
+                        - paragraph [ref=e606]: Identifiziert Benutzer mit identischen oder ähnlichen Eigenschaften
+                    - generic [ref=e608] [cursor=pointer]:
+                      - img [ref=e610]
+                      - generic [ref=e612]:
+                        - heading "Inaktive Benutzer" [level=4] [ref=e613]
+                        - paragraph [ref=e614]: Analysiert Benutzeraktivität und identifiziert inaktive Konten
+                    - generic [ref=e616] [cursor=pointer]:
+                      - img [ref=e618]
+                      - generic [ref=e620]:
+                        - heading "Rollen-Analyse" [level=4] [ref=e621]
+                        - paragraph [ref=e622]: Überprüft Rollenzuweisungen und identifiziert Anomalien
+                    - generic [ref=e624] [cursor=pointer]:
+                      - img [ref=e626]
+                      - generic [ref=e628]:
+                        - heading "Sicherheits-Audit" [level=4] [ref=e629]
+                        - paragraph [ref=e630]: Umfassende Sicherheitsprüfung aller Konfigurationen
+                    - generic [ref=e632] [cursor=pointer]:
+                      - img [ref=e634]
+                      - generic [ref=e636]:
+                        - heading "Nutzungsmuster" [level=4] [ref=e637]
+                        - paragraph [ref=e638]: Analysiert Benutzerverhalten und Zugriffsmuster
+                    - generic [ref=e640] [cursor=pointer]:
+                      - img [ref=e642]
+                      - generic [ref=e644]:
+                        - heading "Compliance-Prüfung" [level=4] [ref=e645]
+                        - paragraph [ref=e646]: Überprüft Einhaltung von Sicherheitsrichtlinien
+                - generic [ref=e647]:
+                  - generic [ref=e648]: Parameter
+                  - generic [ref=e649]:
+                    - generic [ref=e650]: Realm
+                    - combobox [ref=e651]:
+                      - option "Alle Realms" [selected]
+                      - option "Master"
+                      - option "Company Realm"
+                  - generic [ref=e652]:
+                    - generic [ref=e653]: Ähnlichkeitsschwelle (%)
+                    - slider [ref=e654]: "80"
+                    - generic [ref=e655]:
+                      - generic [ref=e656]: 50%
+                      - generic [ref=e657]: 80%
+                      - generic [ref=e658]: 100%
+                  - generic [ref=e660]:
+                    - checkbox "Deaktivierte Benutzer einschließen" [ref=e661]
+                    - generic [ref=e662]: Deaktivierte Benutzer einschließen
+                - button "Analyse starten" [active] [ref=e663]:
+                  - img [ref=e664]
+                  - text: Analyse starten
+            - generic [ref=e666]:
+              - heading "Laufende Analysen (1)" [level=3] [ref=e699]
+              - generic [ref=e700]:
+                - generic [ref=e701]:
+                  - heading "user_patterns" [level=4] [ref=e702]
+                  - generic [ref=e703]: Gestartet
+                - generic [ref=e705]:
+                  - generic [ref=e706]: Fortschritt
+                  - generic [ref=e707]: 0%
+                - generic [ref=e710]: "Laufzeit: 0s"
+          - generic [ref=e674]:
+            - heading "Analyse-Verlauf (2)" [level=3] [ref=e676]
+            - generic [ref=e677]:
+              - generic [ref=e679]:
+                - generic [ref=e682]:
+                  - heading "compliance_check" [level=4] [ref=e683]
+                  - paragraph [ref=e684]: 26. Mai 2026, 16:37
+                - generic [ref=e685]:
+                  - generic [ref=e686]: 5s
+                  - button "Ergebnisse anzeigen" [ref=e687]
+              - generic [ref=e689]:
+                - generic [ref=e692]:
+                  - heading "user_patterns" [level=4] [ref=e693]
+                  - paragraph [ref=e694]: 26. Mai 2026, 16:36
+                - generic [ref=e695]:
+                  - generic [ref=e696]: 5s
+                  - button "Ergebnisse anzeigen" [ref=e697]
+    - generic [ref=e352]:
+      - img [ref=e354]
+      - generic [ref=e356]:
+        - generic [ref=e357]:
+          - heading "Failed to Switch Model" [level=4] [ref=e358]
+          - generic [ref=e359]:
+            - generic [ref=e360]: vor 2m
+            - button [ref=e361]:
+              - img [ref=e362]
+        - paragraph [ref=e364]: Request validation failed
+  - button "Open Next.js Dev Tools" [ref=e203] [cursor=pointer]:
+    - img [ref=e204]
+  - alert [ref=e7]

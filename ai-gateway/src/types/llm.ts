@@ -252,9 +252,9 @@ export class LLMUtils {
         'gemini-1.5-pro': 'Gemini 1.5 Pro'
       },
       [LLMProvider.ANTHROPIC]: {
-        'claude-3-opus-20240229': 'Claude 3 Opus',
-        'claude-3-sonnet-20240229': 'Claude 3 Sonnet',
-        'claude-3-haiku-20240307': 'Claude 3 Haiku'
+        'claude-haiku-4-5-20251001': 'Claude Haiku 4.5',
+        'claude-sonnet-4-20250514': 'Claude Sonnet 4',
+        'claude-opus-4-1-20250805': 'Claude Opus 4.1'
       },
       [LLMProvider.OLLAMA]: {
         'llama3': 'Llama 3',

@@ -8,6 +8,23 @@ import { z } from 'zod';
 import axios from 'axios';
 import { LLMFactory } from '../llm/llm-factory';
 import { LLMProvider } from '../llm/llm-interface';
+import { AnthropicService, StreamEvent } from '../llm/anthropic-service';
+
+// Cost-lock: only Haiku 4.5 is allowed for live demos. Toggleable via env (set
+// IKAS_MODEL_ALLOWLIST to a comma-separated list of Anthropic model IDs, or
+// "*" to disable the lock entirely).
+const HAIKU_MODEL_ID = 'claude-haiku-4-5-20251001';
+const MODEL_ALLOWLIST: string[] | null = (() => {
+  const raw = process.env.IKAS_MODEL_ALLOWLIST?.trim();
+  if (raw === '*') return null; // explicit opt-out
+  if (!raw) return [HAIKU_MODEL_ID];
+  return raw.split(',').map(s => s.trim()).filter(Boolean);
+})();
+function isModelAllowed(modelId: string | undefined): boolean {
+  if (!MODEL_ALLOWLIST) return true;
+  if (!modelId) return false;
+  return MODEL_ALLOWLIST.includes(modelId);
+}
 
 // Reuse the health check method from health.ts
 async function checkMcpService(url: string, serviceName: string): Promise<{status: 'healthy' | 'unhealthy'; latency?: number; error?: string; lastChecked: string}> {
@@ -143,6 +160,90 @@ orchestrationRouter.post('/chat', async (req, res): Promise<any> => {
       message: error instanceof Error ? error.message : 'Unknown error',
       timestamp: new Date().toISOString()
     });
+  }
+});
+
+/**
+ * Streaming chat endpoint. SSE response.
+ *
+ * Emits events in order:
+ *   text         { delta: string }          — token deltas from the LLM
+ *   tool_use     { id, name, input }        — Claude requested a tool call (sent before exec)
+ *   tool_result  { id, name, success, ... } — orchestrator executed the tool (sent after exec)
+ *   usage        { inputTokens, ... }       — per-iteration token usage incl. cache hit counters
+ *   done         { toolsCalled[], iterations } — terminator
+ *   error        { message }                — fatal error; stream ends after
+ *
+ * Anthropic-only at this stage; other providers return 501.
+ */
+orchestrationRouter.post('/chat/stream', async (req, res): Promise<any> => {
+  try {
+    const validatedData = chatRequestSchema.parse(req.body);
+    const { message, sessionId, context } = validatedData;
+
+    const llmService = orchestrator.getLLMService();
+    if (!(llmService instanceof AnthropicService)) {
+      return res.status(501).json({
+        error: 'Streaming not implemented for this provider',
+        provider: llmService.provider,
+        hint: 'Set LLM_PROVIDER=anthropic to use the streaming endpoint'
+      });
+    }
+
+    res.setHeader('Content-Type', 'text/event-stream');
+    res.setHeader('Cache-Control', 'no-cache, no-transform');
+    res.setHeader('Connection', 'keep-alive');
+    res.setHeader('X-Accel-Buffering', 'no'); // disable nginx buffering if proxied
+    res.flushHeaders();
+
+    const sendEvent = (event: StreamEvent) => {
+      res.write(`event: ${event.type}\ndata: ${JSON.stringify(event)}\n\n`);
+    };
+
+    const tools = await orchestrator.getToolsForLLM();
+    const realm = context?.realm;
+
+    logger.info('🎬 Stream request started', {
+      sessionId,
+      messageLength: message.length,
+      toolCount: tools.length,
+      realm
+    });
+
+    const generator = llmService.streamWithTools(
+      {
+        message,
+        sessionId,
+        tools,
+        context: { realm, language: context?.preferredLanguage || 'en' }
+      },
+      (call) => orchestrator.executeFunctionCallPublic(call, realm),
+      parseInt(process.env.MAX_FUNCTION_ITERATIONS || '4')
+    );
+
+    req.on('close', () => {
+      logger.info('Stream client disconnected', { sessionId });
+    });
+
+    for await (const event of generator) {
+      sendEvent(event);
+      if (event.type === 'done' || event.type === 'error') break;
+    }
+
+    res.end();
+  } catch (error) {
+    if (error instanceof z.ZodError) {
+      return res.status(400).json({ error: 'Invalid request', details: error.errors });
+    }
+    const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+    logger.error('Stream endpoint error:', error);
+    // If headers were already sent, terminate the SSE stream cleanly.
+    if (res.headersSent) {
+      res.write(`event: error\ndata: ${JSON.stringify({ type: 'error', message: errorMessage })}\n\n`);
+      res.end();
+    } else {
+      res.status(500).json({ error: 'Internal server error', message: errorMessage });
+    }
   }
 });
 
@@ -327,37 +428,43 @@ orchestrationRouter.get('/models', async (req, res) => {
     // Build models array with individual Anthropic models
     const models: any[] = [];
     
-    // Add Anthropic models individually
+    // Add Anthropic models individually — filtered through cost-lock allowlist
+    // so that the UI never even displays expensive models during the demo.
     if (availableProviders.includes(LLMProvider.ANTHROPIC)) {
-      anthropicModels.forEach(anthropicModel => {
-        models.push({
-          id: `anthropic-${anthropicModel.displayName.toLowerCase().replace(/\s+/g, '-')}`,
-          name: anthropicModel.name,
-          displayName: anthropicModel.displayName,
-          provider: 'Anthropic',
-          model: anthropicModel.id,
-          capabilities: anthropicModel.capabilities,
-          description: anthropicModel.description,
-          speed: anthropicModel.speed,
-          cost: anthropicModel.cost,
-          recommended: anthropicModel.recommended,
-          available: true,
-          current: currentProvider === LLMProvider.ANTHROPIC && currentModel === anthropicModel.id
+      anthropicModels
+        .filter(m => isModelAllowed(m.id))
+        .forEach(anthropicModel => {
+          models.push({
+            id: `anthropic-${anthropicModel.displayName.toLowerCase().replace(/\s+/g, '-')}`,
+            name: anthropicModel.name,
+            displayName: anthropicModel.displayName,
+            provider: 'Anthropic',
+            model: anthropicModel.id,
+            capabilities: anthropicModel.capabilities,
+            description: anthropicModel.description,
+            speed: anthropicModel.speed,
+            cost: anthropicModel.cost,
+            recommended: anthropicModel.recommended,
+            available: true,
+            current: currentProvider === LLMProvider.ANTHROPIC && currentModel === anthropicModel.id
+          });
         });
-      });
     }
-    
-    // Add other providers
-    availableProviders
-      .filter(provider => provider !== LLMProvider.ANTHROPIC)
-      .forEach(provider => {
-        models.push({
-          ...providerDetails[provider],
-          id: provider,
-          available: true,
-          current: provider === currentProvider
+
+    // Other providers: only expose if the allowlist is disabled (the demo lock
+    // is Anthropic-only; Gemini/Ollama/OpenAI stay hidden while it's active).
+    if (!MODEL_ALLOWLIST) {
+      availableProviders
+        .filter(provider => provider !== LLMProvider.ANTHROPIC)
+        .forEach(provider => {
+          models.push({
+            ...providerDetails[provider],
+            id: provider,
+            available: true,
+            current: provider === currentProvider
+          });
         });
-      });
+    }
     
     logger.info('Models info retrieved', {
       availableProviders: availableProviders.length,
@@ -433,10 +540,26 @@ orchestrationRouter.post('/models/switch', async (req, res): Promise<any> => {
       sessionId
     });
 
-    // Check if the requested provider is available
+    // Cost-lock: reject anything outside the allowlist before we instantiate a
+    // real LLM client. Set IKAS_MODEL_ALLOWLIST=* to disable (see top of file).
+    if (MODEL_ALLOWLIST && (targetProvider !== 'anthropic' || !isModelAllowed(targetModel))) {
+      logger.warn('Model switch blocked by cost-lock allowlist', {
+        attemptedProvider: targetProvider,
+        attemptedModel: targetModel,
+        allowlist: MODEL_ALLOWLIST
+      });
+      return res.status(403).json({
+        error: 'Model not allowed',
+        message: `Cost-locked to ${MODEL_ALLOWLIST.join(', ')}. Set IKAS_MODEL_ALLOWLIST=* to disable.`,
+        allowlist: MODEL_ALLOWLIST
+      });
+    }
+
+    // Check if the requested provider is available. The LLMProvider enum values are
+    // lowercase ('anthropic', 'gemini', …) — match case-insensitively against the targetProvider.
     const availableProviders = await LLMFactory.getAvailableProviders();
-    const providerEnum = targetProvider?.toUpperCase() as LLMProvider;
-    
+    const providerEnum = (targetProvider ?? '').toLowerCase() as LLMProvider;
+
     if (!availableProviders.includes(providerEnum)) {
       return res.status(400).json({
         error: 'Provider not available',

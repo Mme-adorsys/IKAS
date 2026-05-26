@@ -46,6 +46,22 @@ export class ToolRouter {
         case 'delete-realm':
           return await this.realmHandlers.deleteRealm(arguments_.realm);
 
+        // Realm security-scan projections
+        case 'get-realm-config':
+          return await this.realmHandlers.getRealmConfig(arguments_.realm);
+
+        case 'get-password-policy':
+          return await this.realmHandlers.getPasswordPolicy(arguments_.realm);
+
+        case 'get-brute-force-detection':
+          return await this.realmHandlers.getBruteForceDetection(arguments_.realm);
+
+        case 'get-otp-policy':
+          return await this.realmHandlers.getOtpPolicy(arguments_.realm);
+
+        case 'get-events-config':
+          return await this.realmHandlers.getEventsConfig(arguments_.realm);
+
         // User operations
         case 'create-user':
           return await this.userHandlers.createUser(arguments_);
@@ -106,11 +122,14 @@ export class ToolRouter {
 
         case 'get-client-users':
           return await this.clientHandlers.getClientUsers(
-            arguments_.realm, 
-            arguments_.clientId, 
-            arguments_.first, 
+            arguments_.realm,
+            arguments_.clientId,
+            arguments_.first,
             arguments_.max
           );
+
+        case 'get-client-protocols-summary':
+          return await this.clientHandlers.getClientProtocolsSummary(arguments_.realm);
 
         // Group operations
         case 'create-group':

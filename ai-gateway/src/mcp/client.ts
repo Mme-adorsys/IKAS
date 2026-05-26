@@ -115,8 +115,22 @@ export abstract class BaseMCPClient {
         responseHeaders: response.headers
       });
 
-      // Both Neo4j and Keycloak now use REST API format
-      const responseData = response.data;
+      // Both Neo4j and Keycloak now use REST API format.
+      // Neo4j MCP wraps every result in `{success, data, error}` (ToolResponse).
+      // Unwrap so downstream callers see the raw rows/objects they expect.
+      let responseData = response.data;
+      if (
+        this.serverName === 'neo4j'
+        && responseData
+        && typeof responseData === 'object'
+        && 'success' in responseData
+        && 'data' in responseData
+      ) {
+        if (responseData.success === false) {
+          throw new Error(responseData.error || 'Neo4j MCP returned error');
+        }
+        responseData = responseData.data;
+      }
 
       return {
         success: true,

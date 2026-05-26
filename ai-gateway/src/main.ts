@@ -6,7 +6,13 @@ import { logger } from './utils/logger';
 import { config } from './utils/config';
 import { healthRouter } from './api/health';
 import { orchestrationRouter } from './api/orchestration';
+import { securityRouter } from './api/security';
+import { usersRouter } from './api/users';
 import { wsClient } from './websocket';
+import { getNeo4jClient } from './mcp';
+import { getGraphSeeder } from './security/graph-seeder';
+import { getRealmSyncWorker } from './security/realm-sync';
+import { getDemoSimulator } from './security/demo-simulator';
 
 const app = express();
 const server = createServer(app);
@@ -19,7 +25,7 @@ app.use(cors({
       ? ['https://your-production-domain.com']
       : (process.env.CORS_ORIGINS?.split(',') || ['http://localhost:3000', 'http://localhost:3001', 'http://localhost:3002']),
   credentials: true,
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization'],
   preflightContinue: false,
   optionsSuccessStatus: 204 // Some legacy browsers (IE11, various SmartTVs) choke on 204
@@ -49,6 +55,8 @@ app.use((req, res, next) => {
 // Routes
 app.use('/health', healthRouter);
 app.use('/api', orchestrationRouter);
+app.use('/api/security', securityRouter);
+app.use('/api/users', usersRouter);
 
 // Global error handler
 app.use((error: any, req: express.Request, res: express.Response, _next: express.NextFunction) => {
@@ -127,10 +135,47 @@ if (require.main === module) {
       await wsClient.connect();
       logger.info('WebSocket client connected successfully');
     } catch (error) {
-      logger.error('Failed to connect WebSocket client', { 
+      logger.error('Failed to connect WebSocket client', {
         error: error instanceof Error ? error.message : 'Unknown error'
       });
       // Continue running without WebSocket connection
+    }
+
+    // Demo bootstrap: seed the Neo4j knowledge graph (idempotent) and start the live
+    // simulator. Both controlled by env flags so production deployments stay quiet.
+    if (process.env.DEMO_SEED_ON_BOOT === 'true') {
+      try {
+        const summary = await getGraphSeeder(getNeo4jClient()).seedAll();
+        logger.info('Demo graph seeded on boot', summary);
+      } catch (error) {
+        logger.warn('Demo graph seed on boot failed (continuing)', {
+          error: error instanceof Error ? error.message : 'Unknown error'
+        });
+      }
+    }
+
+    if (process.env.DEMO_SIMULATOR === 'true') {
+      try {
+        await getDemoSimulator(getNeo4jClient()).start();
+      } catch (error) {
+        logger.warn('Demo simulator failed to start (continuing)', {
+          error: error instanceof Error ? error.message : 'Unknown error'
+        });
+      }
+    }
+
+    // Realm-sync poller: opt-in via REALM_SYNC_INTERVAL_MS (ms between polls).
+    // 0 / unset = disabled (manual /api/security/sync still works). Defaulting
+    // to 60s in the dev compose file.
+    const syncInterval = parseInt(process.env.REALM_SYNC_INTERVAL_MS || '0', 10);
+    if (syncInterval > 0) {
+      try {
+        getRealmSyncWorker(getNeo4jClient()).start(syncInterval);
+      } catch (error) {
+        logger.warn('Realm-sync worker failed to start (continuing)', {
+          error: error instanceof Error ? error.message : 'Unknown error'
+        });
+      }
     }
   });
 }

@@ -1,20 +1,11 @@
 import { io, Socket } from 'socket.io-client';
-import { logger, RequestTracker } from '../utils/logger';
-import { config } from '../utils/config';
+import { logger } from '../utils/logger';
 
 export interface WebSocketConfig {
   url?: string;
   reconnection?: boolean;
   reconnectionAttempts?: number;
   reconnectionDelay?: number;
-}
-
-export interface VoiceCommand {
-  command: string;
-  transcript: string;
-  confidence: number;
-  sessionId: string;
-  timestamp: string;
 }
 
 export interface AnalysisRequest {
@@ -24,7 +15,7 @@ export interface AnalysisRequest {
 }
 
 export interface AIGatewayEvent {
-  type: 'voice_command' | 'analysis_request' | 'chat_message';
+  type: 'analysis_request' | 'chat_message';
   sessionId: string;
   payload: any;
   timestamp: string;
@@ -68,10 +59,10 @@ export class WebSocketClient {
             socketId: this.socket?.id
           });
 
-          // Subscribe to all events for AI Gateway processing
+          // Subscribe to analysis + compliance events. Voice/chat is no longer routed via WS —
+          // the frontend hits the AI Gateway's /api/chat endpoints directly.
           this.socket?.emit('subscribe', {
             eventTypes: [
-              'voice:command',
               'analysis:started',
               'compliance:check'
             ],
@@ -116,10 +107,6 @@ export class WebSocketClient {
           this.handleIncomingEvent(event);
         });
 
-        this.socket.on('voiceCommandReceived', (data) => {
-          logger.debug('Voice command acknowledgment received', data);
-        });
-
         this.socket.on('subscriptionConfirmed', (data) => {
           logger.debug('Subscription confirmed', data);
         });
@@ -143,10 +130,6 @@ export class WebSocketClient {
     });
 
     switch (event.type) {
-      case 'voice:command':
-        this.handleVoiceCommand(event);
-        break;
-      
       case 'analysis:started':
         this.handleAnalysisRequest(event);
         break;
@@ -170,82 +153,6 @@ export class WebSocketClient {
           error: error instanceof Error ? error.message : 'Unknown error'
         });
       }
-    }
-  }
-
-  private async handleVoiceCommand(event: any): Promise<void> {
-    try {
-      const payload = event.payload;
-      
-      logger.info('Processing voice command', {
-        command: payload.command,
-        sessionId: event.sessionId,
-        confidence: payload.confidence
-      });
-
-      // Forward to orchestration layer
-      const response = await this.processWithOrchestrator({
-        userInput: payload.command || payload.transcript,
-        sessionId: event.sessionId,
-        context: {
-          source: 'voice',
-          confidence: payload.confidence,
-          language: payload.language || 'de-DE'
-        }
-      });
-
-      // Send response back through WebSocket
-      await this.sendVoiceResponse(event.sessionId, {
-        response: response.response,
-        executionTime: response.duration,
-        success: response.success
-      });
-
-      // Send data updates if available
-      if (response.success && response.data) {
-        logger.info('📤 Processing data updates from orchestration response', {
-          sessionId: event.sessionId,
-          hasData: !!response.data,
-          dataKeys: Object.keys(response.data),
-          dataCount: Object.keys(response.data).length
-        });
-
-        for (const [dataType, data] of Object.entries(response.data)) {
-          if (data && dataType !== 'usage' && dataType !== 'finishReason') {
-            logger.debug('📦 Sending data update', {
-              sessionId: event.sessionId,
-              dataType,
-              hasData: !!data,
-              dataPreview: Array.isArray(data) ? `Array[${data.length}]` : typeof data
-            });
-            await this.sendDataUpdate(event.sessionId, dataType, data);
-          } else {
-            logger.debug('⏭️ Skipping data update', {
-              sessionId: event.sessionId,
-              dataType,
-              reason: data ? 'metadata type' : 'no data'
-            });
-          }
-        }
-      } else {
-        logger.debug('📭 No data updates to send', {
-          sessionId: event.sessionId,
-          success: response.success,
-          hasData: !!response.data
-        });
-      }
-
-    } catch (error) {
-      logger.error('Error processing voice command', {
-        error: error instanceof Error ? error.message : 'Unknown error',
-        eventId: event.id
-      });
-
-      await this.sendVoiceResponse(event.sessionId, {
-        response: 'Entschuldigung, es gab einen Fehler bei der Verarbeitung Ihres Befehls.',
-        success: false,
-        error: error instanceof Error ? error.message : 'Unknown error'
-      });
     }
   }
 
@@ -323,32 +230,6 @@ export class WebSocketClient {
     const orchestrator = new Orchestrator();
     
     return await orchestrator.processRequest(request);
-  }
-
-  async sendVoiceResponse(sessionId: string, payload: {
-    response: string;
-    executionTime?: number;
-    success: boolean;
-    error?: string;
-  }): Promise<void> {
-    if (!this.isConnected || !this.socket) {
-      logger.warn('Cannot send voice response - not connected');
-      return;
-    }
-
-    const responseEvent = {
-      type: 'voice:response',
-      sessionId,
-      timestamp: new Date().toISOString(),
-      payload
-    };
-
-    this.socket.emit('event', responseEvent);
-    
-    logger.debug('Sent voice response', {
-      sessionId,
-      success: payload.success
-    });
   }
 
   async sendDataUpdate(sessionId: string, dataType: string, data: any): Promise<void> {
