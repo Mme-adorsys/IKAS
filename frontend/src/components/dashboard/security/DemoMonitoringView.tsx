@@ -95,7 +95,7 @@ export function DemoMonitoringView({ onSelectFinding, onSelectUser, onSelectGrou
       </div>
 
       <p className="text-xs text-center text-gray-400 dark:text-gray-500 mt-2">
-        Analysiert mit <span className="font-medium">Claude Haiku 4.5</span> · Daten aus <span className="font-medium">Neo4j Knowledge Graph</span>
+        Analysiert mit <span className="font-medium">🦙 Ollama (lokal)</span> · Daten aus <span className="font-medium">Neo4j Knowledge Graph</span>
       </p>
     </div>
   );

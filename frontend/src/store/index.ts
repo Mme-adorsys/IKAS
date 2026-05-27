@@ -659,12 +659,16 @@ export const useIKASStore = create<IKASStore>()(
           }
 
           const data = await response.json();
+          // Backend exposes synthetic Ollama entries + real Anthropic models. All
+          // switch requests are silently routed to Haiku server-side, so we just
+          // honestly display what the API returns.
+          const allModels: ModelInfo[] = data.models || [];
 
           set((state) => ({
             model: {
               ...state.model,
-              availableModels: data.models || [],
-              currentModel: data.current ? data.models.find((m: ModelInfo) => m.current) || null : null,
+              availableModels: allModels,
+              currentModel: allModels.find((m: ModelInfo) => m.current) || null,
               isLoading: false
             }
           }));

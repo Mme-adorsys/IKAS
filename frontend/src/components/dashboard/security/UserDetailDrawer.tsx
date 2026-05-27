@@ -30,6 +30,7 @@ const DAY_MS = 24 * 3600 * 1000;
 
 export function UserDetailDrawer({ user, findings, liveEvents, allUsers, graph, onClose, onSelectFinding }: Props) {
   const loadAdminEventsForUser = useIKASStore(s => s.loadAdminEventsForUser);
+  const loadLiveEvents = useIKASStore(s => s.loadLiveEvents);
   const [adminEvents, setAdminEvents] = useState<AdminEvent[]>([]);
 
   // Close on ESC, like other modals/drawers.
@@ -39,6 +40,17 @@ export function UserDetailDrawer({ user, findings, liveEvents, allUsers, graph, 
     window.addEventListener('keydown', h);
     return () => window.removeEventListener('keydown', h);
   }, [user, onClose]);
+
+  // Ensure liveEvents is populated when this drawer is opened from contexts that
+  // don't auto-load it (Benutzer-Tab, Fixes-Tab). The Sicherheit-Tab already
+  // polls every 10s, so this is a no-op there.
+  useEffect(() => {
+    if (!user) return;
+    if (liveEvents.length === 0) {
+      void loadLiveEvents();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [user?.id]);
 
   // Fetch admin-event lifecycle whenever the modal opens for a new user.
   useEffect(() => {

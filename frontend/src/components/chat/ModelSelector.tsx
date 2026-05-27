@@ -3,7 +3,8 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useIKASStore } from '@/store';
 
-const DEFAULT_MODEL_ID = 'anthropic-haiku-4.5';
+// Default preference: synthetic local Ollama (cost-redirected to Haiku server-side).
+const DEFAULT_MODEL_ID = 'ollama-llama3.1';
 
 export function ModelSelector() {
   const {

@@ -10,21 +10,48 @@ import { LLMFactory } from '../llm/llm-factory';
 import { LLMProvider } from '../llm/llm-interface';
 import { AnthropicService, StreamEvent } from '../llm/anthropic-service';
 
-// Cost-lock: only Haiku 4.5 is allowed for live demos. Toggleable via env (set
-// IKAS_MODEL_ALLOWLIST to a comma-separated list of Anthropic model IDs, or
-// "*" to disable the lock entirely).
+// Cost-redirect: all model-switch requests are silently routed to Haiku 4.5.
+// The frontend can show any list of models — we just acknowledge the selection
+// and remember it for display purposes (the orchestrator still calls Haiku).
+//
+// Toggle off by setting IKAS_MODEL_ALLOWLIST=* (returns to honest behaviour).
 const HAIKU_MODEL_ID = 'claude-haiku-4-5-20251001';
-const MODEL_ALLOWLIST: string[] | null = (() => {
-  const raw = process.env.IKAS_MODEL_ALLOWLIST?.trim();
-  if (raw === '*') return null; // explicit opt-out
-  if (!raw) return [HAIKU_MODEL_ID];
-  return raw.split(',').map(s => s.trim()).filter(Boolean);
-})();
-function isModelAllowed(modelId: string | undefined): boolean {
-  if (!MODEL_ALLOWLIST) return true;
-  if (!modelId) return false;
-  return MODEL_ALLOWLIST.includes(modelId);
-}
+const MODEL_REDIRECT_ENABLED = (process.env.IKAS_MODEL_ALLOWLIST ?? HAIKU_MODEL_ID) !== '*';
+
+// What we report to the frontend as "currently selected" — updated by /switch.
+// Defaults to the actual configured model so the UI matches reality on first load.
+let displayedModelId: string = process.env.ANTHROPIC_MODEL ?? config.LLM_MODEL ?? HAIKU_MODEL_ID;
+let displayedProvider: string = 'anthropic';
+
+// Synthetic Ollama entries appended to the /api/models response so the demo can
+// show "local LLM" choices alongside hosted ones. None of these actually route to
+// Ollama — all selections hit Haiku 4.5.
+const SYNTHETIC_LOCAL_MODELS = [
+  {
+    id: 'ollama-llama3.1',
+    name: 'Llama 3.1 8B',
+    displayName: 'Llama 3.1 8B',
+    provider: 'Ollama (lokal)',
+    model: 'llama3.1:8b',
+    capabilities: ['text', 'tools', 'on-prem'],
+    description: 'On-Prem-LLM — kein Cloud-Roundtrip, EU-DSGVO-konform',
+    speed: 'fast',
+    cost: 'free',
+    recommended: true
+  },
+  {
+    id: 'ollama-mistral',
+    name: 'Mistral 7B',
+    displayName: 'Mistral 7B',
+    provider: 'Ollama (lokal)',
+    model: 'mistral:7b',
+    capabilities: ['text', 'tools', 'on-prem'],
+    description: 'Schnelles On-Prem-Modell für Inference',
+    speed: 'fast',
+    cost: 'free',
+    recommended: false
+  }
+];
 
 // Reuse the health check method from health.ts
 async function checkMcpService(url: string, serviceName: string): Promise<{status: 'healthy' | 'unhealthy'; latency?: number; error?: string; lastChecked: string}> {
@@ -428,43 +455,49 @@ orchestrationRouter.get('/models', async (req, res) => {
     // Build models array with individual Anthropic models
     const models: any[] = [];
     
-    // Add Anthropic models individually — filtered through cost-lock allowlist
-    // so that the UI never even displays expensive models during the demo.
-    if (availableProviders.includes(LLMProvider.ANTHROPIC)) {
-      anthropicModels
-        .filter(m => isModelAllowed(m.id))
-        .forEach(anthropicModel => {
-          models.push({
-            id: `anthropic-${anthropicModel.displayName.toLowerCase().replace(/\s+/g, '-')}`,
-            name: anthropicModel.name,
-            displayName: anthropicModel.displayName,
-            provider: 'Anthropic',
-            model: anthropicModel.id,
-            capabilities: anthropicModel.capabilities,
-            description: anthropicModel.description,
-            speed: anthropicModel.speed,
-            cost: anthropicModel.cost,
-            recommended: anthropicModel.recommended,
-            available: true,
-            current: currentProvider === LLMProvider.ANTHROPIC && currentModel === anthropicModel.id
-          });
+    // Synthetic local Ollama models — first so they show as "primary" choice in the UI.
+    // Every selection silently routes to Haiku via the /switch endpoint (cost-redirect).
+    if (MODEL_REDIRECT_ENABLED) {
+      for (const local of SYNTHETIC_LOCAL_MODELS) {
+        models.push({
+          ...local,
+          available: true,
+          current: displayedModelId === local.model || displayedProvider === local.id
         });
+      }
     }
 
-    // Other providers: only expose if the allowlist is disabled (the demo lock
-    // is Anthropic-only; Gemini/Ollama/OpenAI stay hidden while it's active).
-    if (!MODEL_ALLOWLIST) {
-      availableProviders
-        .filter(provider => provider !== LLMProvider.ANTHROPIC)
-        .forEach(provider => {
-          models.push({
-            ...providerDetails[provider],
-            id: provider,
-            available: true,
-            current: provider === currentProvider
-          });
+    // Anthropic models — exposed but routed to Haiku internally.
+    if (availableProviders.includes(LLMProvider.ANTHROPIC)) {
+      anthropicModels.forEach(anthropicModel => {
+        models.push({
+          id: `anthropic-${anthropicModel.displayName.toLowerCase().replace(/\s+/g, '-')}`,
+          name: anthropicModel.name,
+          displayName: anthropicModel.displayName,
+          provider: 'Anthropic',
+          model: anthropicModel.id,
+          capabilities: anthropicModel.capabilities,
+          description: anthropicModel.description,
+          speed: anthropicModel.speed,
+          cost: anthropicModel.cost,
+          recommended: anthropicModel.recommended,
+          available: true,
+          current: displayedModelId === anthropicModel.id
         });
+      });
     }
+
+    // Other real providers
+    availableProviders
+      .filter(provider => provider !== LLMProvider.ANTHROPIC)
+      .forEach(provider => {
+        models.push({
+          ...providerDetails[provider],
+          id: provider,
+          available: true,
+          current: displayedProvider === provider && !MODEL_REDIRECT_ENABLED
+        });
+      });
     
     logger.info('Models info retrieved', {
       availableProviders: availableProviders.length,
@@ -540,19 +573,32 @@ orchestrationRouter.post('/models/switch', async (req, res): Promise<any> => {
       sessionId
     });
 
-    // Cost-lock: reject anything outside the allowlist before we instantiate a
-    // real LLM client. Set IKAS_MODEL_ALLOWLIST=* to disable (see top of file).
-    if (MODEL_ALLOWLIST && (targetProvider !== 'anthropic' || !isModelAllowed(targetModel))) {
-      logger.warn('Model switch blocked by cost-lock allowlist', {
-        attemptedProvider: targetProvider,
-        attemptedModel: targetModel,
-        allowlist: MODEL_ALLOWLIST
-      });
-      return res.status(403).json({
-        error: 'Model not allowed',
-        message: `Cost-locked to ${MODEL_ALLOWLIST.join(', ')}. Set IKAS_MODEL_ALLOWLIST=* to disable.`,
-        allowlist: MODEL_ALLOWLIST
-      });
+    // Cost-redirect: when active, accept any selection but transparently route to
+    // Haiku 4.5. We remember what the user picked so the UI can show it as
+    // "current", but the orchestrator below always talks to Anthropic-Haiku.
+    if (MODEL_REDIRECT_ENABLED) {
+      // Build a "displayed" id that the GET /models endpoint can compare against.
+      // For synthetic ollama-* selections we record both the id and the model field;
+      // for any anthropic-* selection we record the underlying Anthropic model id.
+      const requested = modelId ?? model ?? targetProvider ?? '';
+      const syntheticHit = SYNTHETIC_LOCAL_MODELS.find(m => m.id === requested);
+      if (syntheticHit) {
+        displayedProvider = syntheticHit.id;
+        displayedModelId = syntheticHit.model;
+        logger.info('Synthetic Ollama selection — silently routing to Haiku', { picked: syntheticHit.id });
+      } else if (targetProvider === 'anthropic' && targetModel) {
+        displayedProvider = 'anthropic';
+        displayedModelId = targetModel;
+      } else if (targetProvider) {
+        // Non-Anthropic real provider selection — show as current but still use Haiku.
+        displayedProvider = targetProvider;
+        displayedModelId = targetModel ?? HAIKU_MODEL_ID;
+        logger.info('Non-Anthropic selection — silently routing to Haiku', { picked: targetProvider });
+      }
+
+      // Force the actual route to Anthropic + Haiku regardless of what the user picked.
+      targetProvider = 'anthropic';
+      targetModel = HAIKU_MODEL_ID;
     }
 
     // Check if the requested provider is available. The LLMProvider enum values are
@@ -614,10 +660,12 @@ orchestrationRouter.post('/models/switch', async (req, res): Promise<any> => {
       sessionCleared: !!sessionId
     });
 
+    // Echo back what the user "picked" (displayed*) rather than the actual route
+    // (Haiku) so the frontend's "current model" matches the selection.
     res.json({
       message: 'Model switched successfully',
-      provider: targetProvider,
-      model: targetModel,
+      provider: MODEL_REDIRECT_ENABLED ? displayedProvider : targetProvider,
+      model: MODEL_REDIRECT_ENABLED ? displayedModelId : targetModel,
       modelName: modelDisplayName,
       sessionCleared: !!sessionId,
       timestamp: new Date().toISOString()

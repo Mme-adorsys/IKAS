@@ -59,20 +59,54 @@ export function EventsPanel() {
   };
 
   const formatEventPayload = (event: any) => {
-    if (event.type === EventType.USER_CREATED || event.type === EventType.USER_UPDATED) {
-      return `${event.payload.username} (${event.payload.email})`;
+    const p = event.payload ?? {};
+    if (event.type === EventType.USER_CREATED || event.type === EventType.USER_UPDATED || event.type === EventType.USER_DELETED) {
+      // BaseEvent payload nests user under `user`, see types/events.ts:48.
+      const user = p.user ?? p;
+      return `${user.username ?? 'unbekannt'}${user.email ? ` <${user.email}>` : ''}${user.realm ? ` · ${user.realm}` : ''}`;
     }
-    if (event.type === EventType.COMPLIANCE_ALERT) {
-      return `${event.payload.rule}: ${event.payload.severity}`;
+    if (event.type === EventType.COMPLIANCE_ALERT || event.type === EventType.COMPLIANCE_CHECK) {
+      const sev = p.severity ? `[${p.severity}] ` : '';
+      const rule = p.rule ?? p.checkId ?? 'rule';
+      const desc = p.description ?? p.title ?? '';
+      return `${sev}${rule}${desc ? ` — ${desc}` : ''}`;
     }
     if (event.type === EventType.ANALYSIS_PROGRESS) {
-      return `${event.payload.analysisType}: ${event.payload.progress}%`;
+      return `${p.analysisType ?? 'analysis'}: ${p.progress ?? 0}%${p.status ? ` (${p.status})` : ''}`;
     }
-    if (event.type === EventType.ANALYSIS_COMPLETED) {
-      return `${event.payload.analysisType}: ${event.payload.status}`;
+    if (event.type === EventType.ANALYSIS_COMPLETED || event.type === EventType.ANALYSIS_STARTED) {
+      return `${p.analysisType ?? 'analysis'}: ${p.status ?? 'unbekannt'}`;
     }
-    
-    return 'Details verfügbar';
+    if (event.type === EventType.GRAPH_UPDATE) {
+      const n = p.nodes?.length ?? 0;
+      const r = p.relationships?.length ?? 0;
+      return `${n} Knoten, ${r} Kanten aktualisiert`;
+    }
+    if (event.type === EventType.PATTERN_DETECTED) {
+      return `${p.pattern?.type ?? 'pattern'} (Konfidenz ${Math.round((p.pattern?.confidence ?? 0) * 100)}%)`;
+    }
+    if (event.type === EventType.DATA_UPDATE) {
+      // Backend uses this for finding broadcasts (`dataType: 'complianceIssue'`) — see ai-gateway publishFindingEvent.
+      const d = p.data ?? {};
+      if (p.dataType === 'complianceIssue') {
+        return `${d.severity ?? 'info'} · ${d.rule ?? d.id ?? 'finding'}${d.description ? ` — ${d.description}` : ''}`;
+      }
+      return `${p.dataType ?? 'update'}${d.summary ? ` — ${d.summary}` : ''}`;
+    }
+    if (event.type === EventType.CONNECTION_STATUS) {
+      return `${p.status ?? 'unbekannt'}${p.clientCount != null ? ` · ${p.clientCount} Clients` : ''}`;
+    }
+    // Fallback: show the first useful string in the payload.
+    const fallback = pickFirstString(p);
+    return fallback ?? 'Keine zusätzlichen Details';
+  };
+
+  const pickFirstString = (obj: any): string | null => {
+    if (!obj || typeof obj !== 'object') return null;
+    for (const v of Object.values(obj)) {
+      if (typeof v === 'string' && v.length > 0 && v.length < 200) return v;
+    }
+    return null;
   };
 
   const formatTimestamp = (timestamp: string) => {
@@ -155,9 +189,13 @@ export function EventsPanel() {
                   {formatEventPayload(event)}
                 </p>
                 
-                {event.sessionId && (
-                  <p className="text-xs text-gray-400 dark:text-gray-500 mt-1">
-                    Session: {event.sessionId.substring(0, 8)}...
+                {(event.realm || event.userId || (event.sessionId && event.sessionId !== 'system')) && (
+                  <p className="text-xs text-gray-400 dark:text-gray-500 mt-1 flex items-center gap-2 flex-wrap">
+                    {event.realm && <span>Realm: <code className="text-gray-500 dark:text-gray-300">{event.realm}</code></span>}
+                    {event.userId && <span>User: <code className="text-gray-500 dark:text-gray-300">{event.userId.substring(0, 12)}</code></span>}
+                    {event.sessionId && event.sessionId !== 'system' && (
+                      <span>Session: <code className="text-gray-500 dark:text-gray-300">{event.sessionId.substring(0, 8)}…</code></span>
+                    )}
                   </p>
                 )}
               </div>

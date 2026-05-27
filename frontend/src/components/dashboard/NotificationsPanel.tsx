@@ -6,14 +6,15 @@ import { useIKASStore } from '@/store';
 export function NotificationsPanel() {
   const { ui, markNotificationAsRead, clearNotifications } = useIKASStore();
 
-  // Auto-remove notifications after 5 seconds for success and info
+  // Auto-remove notifications after 8 seconds for success and info — long enough
+  // that the user actually sees the toast after a button click before it vanishes.
   useEffect(() => {
     const timers = ui.notifications
       .filter(n => (n.type === 'success' || n.type === 'info') && !n.read)
       .map(notification => {
         return setTimeout(() => {
           markNotificationAsRead(notification.id);
-        }, 5000);
+        }, 8000);
       });
 
     return () => {
@@ -92,7 +93,7 @@ export function NotificationsPanel() {
   };
 
   return (
-    <div className="fixed bottom-0 right-0 z-50 p-4 space-y-3 w-96 max-w-full">
+    <div className="fixed top-20 right-4 z-50 p-4 space-y-3 w-96 max-w-full">
       {/* Clear all button */}
       {visibleNotifications.length > 1 && (
         <div className="flex justify-end">

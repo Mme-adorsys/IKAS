@@ -59,6 +59,16 @@ async function fetchRecentAdminEvents(ctx: CheckContext): Promise<any[]> {
   return (res.data as any[]) || [];
 }
 
+// Pick a human-readable display name for a user from the event-details payload.
+// Falls back to the userId hash so old data still renders something.
+function displayUserName(events: UserEvent[], userId: string): string {
+  for (const e of events) {
+    const u = e.details?.username;
+    if (typeof u === 'string' && u.length > 0) return u;
+  }
+  return userId;
+}
+
 const bruteForceTarget: SecurityCheck = {
   id: 'fraud.brute-force-target',
   category: 'fraud',
@@ -77,16 +87,17 @@ const bruteForceTarget: SecurityCheck = {
     for (const [userId, fails] of failedByUser) {
       if (fails.length >= 10) {
         const uniqIps = new Set(fails.map(f => f.ipAddress).filter(Boolean)).size;
+        const username = displayUserName(fails, userId);
         findings.push({
           checkId: 'fraud.brute-force-target',
           category: 'fraud',
           severity: fails.length >= 50 ? 'critical' : 'error',
           realm: ctx.realm,
           rule: 'USER_BRUTE_FORCE_TARGET',
-          title: `${fails.length} fehlgeschlagene Logins für Benutzer ${userId} in ${LOOKBACK_HOURS}h`,
+          title: `${fails.length} fehlgeschlagene Logins für Benutzer ${username} in ${LOOKBACK_HOURS}h`,
           references: ['OWASP:A07', 'CWE-307'],
-          affected: [{ type: 'user', id: userId, name: userId }],
-          evidence: { failedLogins: fails.length, uniqueIps: uniqIps, lookbackHours: LOOKBACK_HOURS }
+          affected: [{ type: 'user', id: userId, name: username }],
+          evidence: { failedLogins: fails.length, uniqueIps: uniqIps, lookbackHours: LOOKBACK_HOURS, username }
         });
       }
     }
@@ -108,19 +119,27 @@ const ipRotation: SecurityCheck = {
         ipsByUser.set(ev.userId, set);
       }
     }
+    // Build a userId → username map once so each finding gets a human name.
+    const usernamesById = new Map<string, string>();
+    for (const ev of events) {
+      if (ev.userId && ev.details?.username && !usernamesById.has(ev.userId)) {
+        usernamesById.set(ev.userId, ev.details.username as string);
+      }
+    }
     const findings: RawFinding[] = [];
     for (const [userId, ips] of ipsByUser) {
       if (ips.size >= 5) {
+        const username = usernamesById.get(userId) ?? userId;
         findings.push({
           checkId: 'fraud.ip-rotation',
           category: 'fraud',
           severity: ips.size >= 10 ? 'error' : 'warning',
           realm: ctx.realm,
           rule: 'USER_MANY_IPS',
-          title: `Benutzer ${userId} hat sich von ${ips.size} verschiedenen IPs angemeldet`,
+          title: `Benutzer ${username} hat sich von ${ips.size} verschiedenen IPs angemeldet`,
           references: ['OWASP:A07'],
-          affected: [{ type: 'user', id: userId, name: userId }],
-          evidence: { distinctIps: ips.size, sample: Array.from(ips).slice(0, 5) }
+          affected: [{ type: 'user', id: userId, name: username }],
+          evidence: { distinctIps: ips.size, sample: Array.from(ips).slice(0, 5), username }
         });
       }
     }
@@ -142,18 +161,25 @@ const offHoursLogin: SecurityCheck = {
         offHoursByUser.set(ev.userId, (offHoursByUser.get(ev.userId) ?? 0) + 1);
       }
     }
+    const usernamesById = new Map<string, string>();
+    for (const ev of events) {
+      if (ev.userId && ev.details?.username && !usernamesById.has(ev.userId)) {
+        usernamesById.set(ev.userId, ev.details.username as string);
+      }
+    }
     const findings: RawFinding[] = [];
     for (const [userId, n] of offHoursByUser) {
       if (n >= 3) {
+        const username = usernamesById.get(userId) ?? userId;
         findings.push({
           checkId: 'fraud.off-hours-login',
           category: 'fraud',
           severity: 'info',
           realm: ctx.realm,
           rule: 'OFF_HOURS_LOGIN',
-          title: `${n} Logins außerhalb 05–22 UTC für ${userId}`,
-          affected: [{ type: 'user', id: userId, name: userId }],
-          evidence: { count: n }
+          title: `${n} Logins außerhalb 05–22 UTC für ${username}`,
+          affected: [{ type: 'user', id: userId, name: username }],
+          evidence: { count: n, username }
         });
       }
     }

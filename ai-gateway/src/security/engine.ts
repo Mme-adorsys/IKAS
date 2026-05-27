@@ -54,8 +54,26 @@ export class SecurityEngine {
   }
 
   listFindings(filters?: { category?: CheckCategory; realm?: string; status?: string }): Finding[] {
-    const all = Array.from(this.scans.values()).flatMap(s => s.findings);
-    return all
+    // Dedupe by finding-id across all scans. Re-runs produce the same finding-id
+    // (deterministic hash), so we keep the most-recent-detected version — that's
+    // also the one carrying the current status (dismissed / resolved / open).
+    const byId = new Map<string, Finding>();
+    for (const scan of this.scans.values()) {
+      for (const f of scan.findings) {
+        const existing = byId.get(f.id);
+        if (!existing) {
+          byId.set(f.id, f);
+          continue;
+        }
+        // Prefer the most-recently-detected entry, but never let `open` overwrite
+        // an explicit dismissed/resolved (those are user actions, sticky).
+        if (existing.status !== 'open' && f.status === 'open') continue;
+        if (f.detectedAt.localeCompare(existing.detectedAt) >= 0) {
+          byId.set(f.id, f);
+        }
+      }
+    }
+    return Array.from(byId.values())
       .filter(f => !filters?.category || f.category === filters.category)
       .filter(f => !filters?.realm || f.realm === filters.realm)
       .filter(f => !filters?.status || f.status === filters.status)
@@ -63,14 +81,19 @@ export class SecurityEngine {
   }
 
   dismissFinding(id: string): Finding | null {
+    // Update every copy of this finding across scans so the dedup keeps the
+    // dismissed status sticky on rerender. Without this, a fresh scan would
+    // re-add an `open` copy that the dedup might surface above the dismissed one.
+    let last: Finding | null = null;
     for (const scan of this.scans.values()) {
-      const f = scan.findings.find(x => x.id === id);
-      if (f) {
-        f.status = 'dismissed';
-        return f;
+      for (const f of scan.findings) {
+        if (f.id === id) {
+          f.status = 'dismissed';
+          last = f;
+        }
       }
     }
-    return null;
+    return last;
   }
 
   /**
@@ -78,14 +101,17 @@ export class SecurityEngine {
    * has actually performed a remediation rather than choosing to ignore it.
    */
   resolveFinding(id: string): Finding | null {
+    // Same fix as dismissFinding: update every copy so re-scans don't resurrect.
+    let last: Finding | null = null;
     for (const scan of this.scans.values()) {
-      const f = scan.findings.find(x => x.id === id);
-      if (f) {
-        f.status = 'resolved';
-        return f;
+      for (const f of scan.findings) {
+        if (f.id === id) {
+          f.status = 'resolved';
+          last = f;
+        }
       }
     }
-    return null;
+    return last;
   }
 
   /**
@@ -239,6 +265,17 @@ export class SecurityEngine {
     const affectedKey = (raw.affected || []).map((a: any) => `${a.type}:${a.id}`).join(',');
     const idSource = `${raw.checkId}|${realm}|${affectedKey}|${raw.rule}`;
     const id = createHash('sha256').update(idSource).digest('hex').substring(0, 24);
+    // Sticky status: if an earlier scan saw this finding-id and the user has
+    // dismissed/resolved it, the new scan inherits that status. Otherwise a TTL
+    // re-scan would resurrect dismissed/resolved findings as "open" copies.
+    let priorStatus: 'open' | 'dismissed' | 'resolved' = 'open';
+    for (const scan of this.scans.values()) {
+      for (const f of scan.findings) {
+        if (f.id === id && (f.status === 'dismissed' || f.status === 'resolved')) {
+          priorStatus = f.status;
+        }
+      }
+    }
     return {
       id,
       checkId: raw.checkId,
@@ -253,7 +290,7 @@ export class SecurityEngine {
       affected: raw.affected,
       evidence: raw.evidence,
       detectedAt: new Date().toISOString(),
-      status: 'open'
+      status: priorStatus
     };
   }
 

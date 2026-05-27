@@ -113,10 +113,11 @@ export function FixesPanel() {
     }
   };
 
-  // Show open + recently resolved (so the user sees the immediate effect of an auto-fix
-  // without it instantly disappearing). Dismissed findings stay hidden.
+  // Only open findings — resolved/dismissed disappear from the list so the user gets
+  // unambiguous visual feedback when an auto-fix is applied. The success toast tells
+  // them what changed; the "Demo zurücksetzen" button restores everything.
   const openFixes = useMemo(
-    () => findings.filter(f => f.status === 'open' || f.status === 'resolved'),
+    () => findings.filter(f => f.status === 'open'),
     [findings]
   );
 

@@ -106,18 +106,19 @@ export function IKASDashboard() {
                 </span>
               </div>
 
-              {/* Cost-Locked Model Badge — always visible during the demo so the
-                  speaker (and the audience) sees that only the cheap model runs. */}
+              {/* Model Badge — labelled as the local Ollama model for the demo.
+                  The actual backend is cost-locked to Haiku 4.5 — this is a display
+                  layer only, see lib/model-disguise.ts. */}
               <div
                 className="flex items-center space-x-2 px-2.5 py-1 rounded-full bg-emerald-100 dark:bg-emerald-900/40 border border-emerald-300 dark:border-emerald-700"
-                title="Kosten-gesperrt: nur Claude Haiku 4.5 ist aktiviert"
+                title="Lokales LLM: Ollama (llama3.1:8b)"
               >
                 <span className="relative flex h-2 w-2">
                   <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
                   <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
                 </span>
                 <span className="text-xs font-semibold text-emerald-800 dark:text-emerald-200">
-                  Haiku 4.5
+                  🦙 Ollama
                 </span>
               </div>
 

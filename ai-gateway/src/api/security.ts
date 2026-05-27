@@ -6,7 +6,7 @@ import { CheckCategory, ScanScope } from '../security/types';
 import { getNeo4jClient } from '../mcp';
 import { getGraphSeeder } from '../security/graph-seeder';
 import { getRealmSyncWorker } from '../security/realm-sync';
-import { applyAutoFix, hasAutoFix } from '../security/auto-fix';
+import { applyAutoFix, hasAutoFix, listAutoFixRules } from '../security/auto-fix';
 import { getDemoSimulator, Scenario } from '../security/demo-simulator';
 import { LIVE_EVENTS_QUERY, IDENTITY_GRAPH_QUERY, ADMIN_EVENTS_FOR_USER_QUERY } from '../security/graph-queries';
 
@@ -104,10 +104,8 @@ securityRouter.post('/findings/:id/apply-fix', async (req, res): Promise<any> =>
 });
 
 securityRouter.get('/auto-fix/availability', (_req, res): any => {
-  // Tells the frontend which rules have an auto-fix handler so the UI can show
-  // the "Auto-Fix" button only when it'd do something useful.
-  const rules = ['USER_GOD_MODE', 'ORPHAN_ROLE', 'REDUNDANT_GROUP', 'STALE_ACCOUNT', 'UNUSED_IDP', 'WEAK_AUTH_FLOW'];
-  res.json({ rules });
+  // Dynamic — single source of truth is the HANDLERS map in auto-fix.ts.
+  res.json({ rules: listAutoFixRules() });
 });
 
 /**
