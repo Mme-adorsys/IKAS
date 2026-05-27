@@ -38,10 +38,10 @@ export async function ensureSchema(neo4j: Neo4jMCPClient): Promise<void> {
 
 export const LIVE_EVENTS_QUERY = `
   MATCH (e:LoginEvent)-[:FROM_IP]->(ip:IpAddress)-[:GEOLOCATED_AT]->(geo:Geolocation)
+  WHERE toString(e.time) >= $since
   OPTIONAL MATCH (e)-[:FOR_USER]->(u:User)
-  WHERE e.time >= datetime($since)
-  RETURN e.id        AS id,
-         e.time      AS time,
+  RETURN e.id              AS id,
+         toString(e.time)  AS time,
          e.type      AS type,
          e.success   AS success,
          u.username  AS username,

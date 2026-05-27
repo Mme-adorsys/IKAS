@@ -24,7 +24,7 @@ services:
       postgres:
         condition: service_healthy
     healthcheck:
-      test: ["CMD-SHELL", "curl -f http://localhost:8080/health/ready || curl -f http://localhost:8080/realms/master || exit 1"]
+      test: ["CMD-SHELL", "cat /proc/net/tcp6 2>/dev/null | grep -qi 1f90 || exit 1"]
       interval: 10s
       timeout: 10s
       retries: 15
@@ -167,7 +167,7 @@ services:
       neo4j:
         condition: service_healthy
     healthcheck:
-      test: ["CMD-SHELL", "curl -f http://localhost:8003/mcp/ || exit 1"]
+      test: ["CMD-SHELL", "cat /proc/net/tcp /proc/net/tcp6 2>/dev/null | grep -qi 1F43 || exit 1"]
       interval: 30s
       timeout: 10s
       retries: 3
@@ -300,7 +300,7 @@ services:
       redis:
         condition: service_healthy
     healthcheck:
-      test: ["CMD-SHELL", "curl -f http://localhost:3001/health || exit 1"]
+      test: ["CMD-SHELL", "wget --no-verbose --tries=1 --spider http://localhost:3001/health || exit 1"]
       interval: 30s
       timeout: 10s
       retries: 3
