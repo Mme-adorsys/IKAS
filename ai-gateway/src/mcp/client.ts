@@ -4,6 +4,66 @@ import { config } from '../utils/config';
 import { MCPResponse, MCPToolCall, ToolDefinition, MCPResponseMetadata } from '../types';
 import { v4 as uuidv4 } from 'uuid';
 
+// Hardcoded input schemas for Neo4j MCP tools.
+// The Neo4j MCP server's /tools endpoint only returns tool names (strings) — no schema.
+// Without these schemas the LLM receives an empty input_schema and calls the tools
+// with no arguments, causing "Query parameter is required" errors.
+const NEO4J_TOOL_SCHEMAS: Record<string, ToolDefinition> = {
+  get_neo4j_schema: {
+    name: 'get_neo4j_schema',
+    description: 'Retrieve the Neo4j graph schema including node labels, relationship types, property keys, constraints, and indexes.',
+    inputSchema: {
+      type: 'object',
+      properties: {},
+      required: []
+    }
+  },
+  read_neo4j_cypher: {
+    name: 'read_neo4j_cypher',
+    description: 'Execute a read-only Cypher MATCH query against Neo4j and return the results. Only MATCH queries are allowed.',
+    inputSchema: {
+      type: 'object',
+      properties: {
+        query: {
+          type: 'string',
+          description: 'The Cypher MATCH query to execute. Must be a read-only query (MATCH, RETURN, WITH, etc). No MERGE, CREATE, SET, DELETE, REMOVE, or ADD.'
+        },
+        params: {
+          type: 'object',
+          description: 'Optional query parameters as key-value pairs.'
+        },
+        database: {
+          type: 'string',
+          description: 'Optional Neo4j database name. Defaults to "neo4j".'
+        }
+      },
+      required: ['query']
+    }
+  },
+  write_neo4j_cypher: {
+    name: 'write_neo4j_cypher',
+    description: 'Execute a write Cypher query against Neo4j (MERGE, CREATE, SET, DELETE, REMOVE, ADD). Use for data updates and synchronisation.',
+    inputSchema: {
+      type: 'object',
+      properties: {
+        query: {
+          type: 'string',
+          description: 'The Cypher write query to execute. Must contain at least one write keyword: MERGE, CREATE, SET, DELETE, REMOVE, or ADD.'
+        },
+        params: {
+          type: 'object',
+          description: 'Optional query parameters as key-value pairs.'
+        },
+        database: {
+          type: 'string',
+          description: 'Optional Neo4j database name. Defaults to "neo4j".'
+        }
+      },
+      required: ['query']
+    }
+  }
+};
+
 export abstract class BaseMCPClient {
   protected httpClient: AxiosInstance;
   protected serverName: 'keycloak' | 'neo4j';
@@ -12,7 +72,7 @@ export abstract class BaseMCPClient {
   constructor(serverName: 'keycloak' | 'neo4j', baseUrl: string) {
     this.serverName = serverName;
     this.baseUrl = baseUrl;
-    
+
     this.httpClient = axios.create({
       baseURL: baseUrl,
       timeout: config.HEALTH_CHECK_TIMEOUT,
@@ -59,10 +119,10 @@ export abstract class BaseMCPClient {
   }
 
   async callTool<T = any>(toolName: string, args: Record<string, any>): Promise<MCPResponse<T>> {
-    const requestId = RequestTracker.startRequest({ 
-      server: this.serverName, 
-      tool: toolName, 
-      type: 'mcp_call' 
+    const requestId = RequestTracker.startRequest({
+      server: this.serverName,
+      tool: toolName,
+      type: 'mcp_call'
     });
 
     try {
@@ -173,14 +233,14 @@ export abstract class BaseMCPClient {
   async listTools(): Promise<ToolDefinition[]> {
     try {
       logger.debug(`Listing tools for ${this.serverName}`);
-      
+
       let response: AxiosResponse;
 
       if (this.serverName === 'keycloak') {
         // Keycloak MCP returns full tool objects with schema
         response = await this.httpClient.get('/tools');
         const toolsData = response.data.tools || [];
-        
+
         // Handle both old format (strings) and new format (objects)
         if (Array.isArray(toolsData) && toolsData.length > 0) {
           if (typeof toolsData[0] === 'string') {
@@ -201,29 +261,36 @@ export abstract class BaseMCPClient {
         }
         return [];
       } else if (this.serverName === 'neo4j') {
-        // Neo4j MCP now uses REST API like Keycloak
+        // Neo4j MCP /tools returns only an array of tool name strings — no schema.
+        // Use the hardcoded NEO4J_TOOL_SCHEMAS so the LLM receives proper parameter
+        // definitions and knows to include the required `query` argument.
         response = await this.httpClient.get('/tools');
-        const toolNames = response.data.tools || [];
-        
-        // Convert tool names to ToolDefinition format
-        return toolNames.map((name: string) => ({
-          name,
-          description: `Neo4j ${name} tool`,
-          inputSchema: { type: 'object', properties: {} }
-        }));
+        const toolNames: string[] = response.data.tools || [];
+
+        return toolNames.map((name: string) => {
+          if (NEO4J_TOOL_SCHEMAS[name]) {
+            return NEO4J_TOOL_SCHEMAS[name];
+          }
+          // Fallback for any unknown future tools
+          return {
+            name,
+            description: `Neo4j ${name} tool`,
+            inputSchema: { type: 'object', properties: {} }
+          };
+        });
       } else {
         // Fallback
         response = await this.httpClient.get('/tools');
         return response.data.tools || [];
       }
-      
+
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : 'Unknown error';
-      
+
       logger.error(`Failed to list tools for ${this.serverName}`, {
         error: errorMessage
       });
-      
+
       return [];
     }
   }
@@ -248,9 +315,9 @@ export abstract class BaseMCPClient {
           timeout: 3000
         });
       }
-      
+
       return response.status >= 200 && response.status < 500;
-      
+
     } catch (error) {
       logger.warn(`Health check failed for ${this.serverName}`, {
         error: error instanceof Error ? error.message : 'Unknown error'
